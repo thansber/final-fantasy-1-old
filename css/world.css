@@ -1,0 +1,40 @@
+#world { width:50%; height:100%; float:left; }
+#view { margin:2em; width:112px; height:112px; border:1px solid black; overflow:hidden; background-image:url(../images/grass_test.png); background-position:-64px -64px; }
+#player { width:16px; height:16px; background-color:red; margin-top:48px; margin-left:48px;}
+
+.map .row { clear:both; }
+.map .tile { width:16px; height:16px; float:left; background-repeat:no-repeat; overflow:hidden; }
+.map.world .tile { background-image:url(../images/ff_tiles.png); background-position:16px 16px; }
+.map.world .tile.none { background-image:none; background-color:#008D00; }
+.map.world .tile.unknown { background-image:none; background-color:black; }
+
+.map.world .tile.forest { background-position:-128px -96px; }
+.map.world .tile.forest.top { background-position:-128px -80px; }
+.map.world .tile.forest.left { background-position:-112px -96px; }
+.map.world .tile.forest.right { background-position:-144px -96px; }
+.map.world .tile.forest.bottom { background-position:-128px -112px; }
+.map.world .tile.forest.tl { background-position:-112px -80px; }
+.map.world .tile.forest.tr { background-position:-144px -80px; }
+.map.world .tile.forest.bl { background-position:-112px -112px; }
+.map.world .tile.forest.br { background-position:-144px -112px; }
+
+.map.world .tile.water { background-position:-16px -16px; }
+.map.world .tile.water.top { background-position:-16px 0px; }
+.map.world .tile.water.left { background-position:0px -16px; }
+.map.world .tile.water.right { background-position:-32px -16px; }
+.map.world .tile.water.bottom { background-position:-16px -32px; }
+
+.map.world .tile.coastline.tl { background-position:0 0; }
+.map.world .tile.coastline.tr { background-position:-32px 0; }
+.map.world .tile.coastline.bl { background-position:0 -32px; }
+.map.world .tile.coastline.br { background-position:-32px -32px; }
+
+.map.world .tile.mountain { background-position:-16px -96px; }
+.map.world .tile.mountain.top { background-position:-16px -80px; }
+.map.world .tile.mountain.left { background-position:0px -96px; }
+.map.world .tile.mountain.right { background-position:-32px -96px; }
+.map.world .tile.mountain.bottom { background-position:-16px -112px; }
+.map.world .tile.mountain.tl { background-position:0px -80px; }
+.map.world .tile.mountain.tr { background-position:-32px -80px; }
+.map.world .tile.mountain.bl { background-position:-0px -112px; }
+.map.world .tile.mountain.br { background-position:-32px -112px; }

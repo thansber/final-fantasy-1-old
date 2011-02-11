@@ -1,0 +1,35 @@
+#debug { float:left; width:50%; height:100%; background-color:white; }
+#debug .menu { list-style-type:none; margin:0; padding:0; float:left; padding-top:2em; text-align:right; margin-left:1em; }
+#debug .menu a { color:blue; text-decoration:none; font-size:0.8em; padding:0.2em 1em 0.4em 0; width:9em; display:block; }
+#debug .menu a:hover { text-decoration:underline; }
+#debug .menu .selected { background-color:black; color:white; }
+#debug .menu .selected a { color:white; font-weight:bold; }
+#debug .menu .selected a:hover { text-decoration:none; }
+#debug section { float:left; border:1px solid black; width:65%; margin-top:1em; padding:1em; }
+
+#debug .movement .directions { position:relative; height:10em;}
+#debug .movement .directions a { width:3em; height:1.2em; text-decoration:none; background-color:green; padding:0.2em; color:white; position:absolute; text-align:center;} 
+#debug .movement .directions a.left { top:2em; }
+#debug .movement .directions a.right { top:2em; left:8em; }
+#debug .movement .directions a.down { left:4em; top:4em; }
+#debug .movement .directions a.up { left:4em; }
+
+#debug .world-map .map { margin-top:1em; width:272px; height:272px; position:relative; }
+#debug .world-map .map.loaded { border-left:1px solid black; border-top:1px solid black; }
+#debug .world-map .map .row { clear:both; }
+#debug .world-map .map .row p { width:16px; height:16px; float:left; text-align:center; border-right:1px solid black; border-bottom:1px solid black; cursor:default; }
+#debug .world-map .map.no-border { border:none; }
+#debug .world-map .map.no-border .row p { border:none; }
+#debug .world-map .map .tile.selected { border:2px solid red !important; }
+#debug .world-map img { position:absolute; }
+
+#debug .world-map .tile.properties .container { float:left; }
+#debug .world-map .tile.properties p { clear:both; }
+#debug .world-map .tile.properties label { float:left; display:block; width:7em; text-align:right; }
+#debug .world-map .tile.properties span { float:left; display:block; margin-left:0.6em; }
+#debug .world-map .tile.properties .surrounding { float:right; position:relative; width:10em; }
+#debug .world-map .tile.properties .surrounding p { border:1px solid black; padding:0.2em; text-align:center; position:absolute; width:1em;}
+#debug .world-map .tile.properties .surrounding p.top { left:1.5em; top:2px; border-bottom:none; }
+#debug .world-map .tile.properties .surrounding p.left { top:1.6em; left:2px; border-right:none; }
+#debug .world-map .tile.properties .surrounding p.right { top:1.6em; left:3em; border-left:none; } 
+#debug .world-map .tile.properties .surrounding p.bottom { top:3.2em; left:1.5em; border-top:none; } 

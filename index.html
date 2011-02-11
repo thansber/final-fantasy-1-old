@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Final Fantasy I</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link type="text/css" rel="stylesheet" href="css/global.css"/>
+  <link type="text/css" rel="stylesheet" href="css/debug.css"/>
+  <link type="text/css" rel="stylesheet" href="css/world.css"/>
+  <script type="text/javascript" src="js/lib/jquery-1.4.4.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.backgroundPosition-7.js"></script>
+  <script type="text/javascript" src="js/movement.js"></script>
+  <script type="text/javascript" src="js/world_map.js"></script>
+  <script type="text/javascript" src="js/debug.js"></script>
+  <script type="text/javascript" src="js/init.js"></script>
+</head>
+<body>
+
+<div id="world">
+  <div id="view">
+    <div id="player"></div>
+  </div>
+</div>
+
+<div id="debug">
+  <ul class="menu">
+    <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
+    <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
+  </ul>
+
+  <section class="world-map curve all">
+    <label>Tile Set:</label>
+    <select id="tileSetX" class="input"></select>
+    <select id="tileSetY" class="input"></select>
+    <button id="loadTileSet">Load</button>
+    <label for="toggleMapGridlines">Show gridlines <input type="checkbox" id="toggleMapGridlines" /></label>
+    <div class="map"></div>
+    <img src="images/red_border.png" class="hidden border" />
+    
+    <div class="tile properties hidden">
+      <div class="container">
+        <p class="tileset index"><label>Tileset:</label><span></span>
+        <p class="tile index"><label>Tile:</label><span></span>
+        <p class="data"><label>Data:</label><span></span></p>
+        <p class="cssClasses"><label>CSS classes:</label><span></span></p>
+        <p class="corners"><label>Has corners:</label><span></span></p>
+        <p class="sides"><label>Has sides:</label><span></span></p>
+      </div>
+      <div class="surrounding">
+        <p class="top"></p>
+        <p class="left"></p>
+        <p class="right"></p>
+        <p class="bottom"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="movement curve all">
+    <div class="directions">
+      <a href="#" class="left">Left</a>
+      <a href="#" class="right">Right</a>
+      <a href="#" class="down">Down</a>
+      <a href="#" class="up">Up</a>
+    </div>
+  </section>
+</div>
+</body>
+</html>
