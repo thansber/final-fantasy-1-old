@@ -28,11 +28,11 @@ var Debug = (function() {
       var tilesetX = parseInt($tilesetX.val());
       var tilesetY = parseInt($tilesetY.val());
       var tilePos = tileLookup($tile);
-      var tileset = currentTileset();
-      var tile = WorldMap.getTile(tileset, tilePos.x, tilePos.y);
+      var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:tilePos.x, tileY:tilePos.y};
+      var tile = WorldMap.getTile(coords);
       var tileMapping = WorldMap.getTileMapping(tile);
-      var surroundingTiles = WorldMap.getSurroundingTiles(tilesetX, tilesetY, tilePos.x, tilePos.y);
-      var cssClasses = WorldMap.getTileClasses(tilesetX, tilesetY, tilePos.x, tilePos.y);
+      var surroundingTiles = WorldMap.getSurroundingTiles(coords);
+      var cssClasses = WorldMap.getTileClasses(coords);
       
       var $props = $(".tile.properties", $section);
       $(".tileset.index span", $props).html(tilesetX + "," + tilesetY);
@@ -84,7 +84,8 @@ var Debug = (function() {
       for (var y = 0; y < WorldMap.TILESET_SIZE; y++) {
         var $row = $("<div/>").addClass("row");
         for (var x = 0; x < WorldMap.TILESET_SIZE; x++) {
-          var tileClasses = WorldMap.getTileClasses(tilesetX, tilesetY, x, y);
+          var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:x, tileY:y};
+          var tileClasses = WorldMap.getTileClasses(coords);
           var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
           $row.append($tile);
         }

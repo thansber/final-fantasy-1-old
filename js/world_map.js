@@ -24,7 +24,8 @@ var WorldMap = (function() {
                    ,"wwwwwwwwwwwwwx  "
                    ,"wwwwwwwwwwwwx   "
                    ,"wwwwwwwwwwww    "];
-  tilesets[0][1] = ["xwwwwwwwwwwwww  "
+  
+  tilesets[1][0] = ["xwwwwwwwwwwwww  "
                    ," wwwwwwwwwwwww m"
                    ,"xwwwwwwwwwwwwx m"
                    ,"wwwwwwwwwwwwx   "
@@ -38,9 +39,10 @@ var WorldMap = (function() {
                    ,"    ffffffffffxw"
                    ,"   ffffffffffffx"
                    ,"  fffff CC fffff"
-                   ,"  ffff WCCW ffff"
-                   ,"  fff WWCCWW fff"];
-  tilesets[1][0] = ["wwwwwwwwwwwwx   "
+                   ,"  ffff <CC> ffff"
+                   ,"  fff (<CC>) fff"];
+  
+  tilesets[0][1] = ["wwwwwwwwwwwwx   "
                    ,"wwwwwwwwwwwwwx  "
                    ,"wwwwwwwwwwwwwwwx"
                    ,"wwwwwwwwwwwwwwww"
@@ -56,10 +58,11 @@ var WorldMap = (function() {
                    ,"wwwwwwwwwwwwwwww"
                    ,"wwwwwwwwwwwwwwww"
                    ,"wwwwwwwwwwwwwwww"];
-  tilesets[1][1] = ["  fff WTttTW fff"
-                   ,"  fff WTttTW fff"
-                   ,"  fff WTttTW fff"
-                   ,"  ffffWWttWWffff"
+  
+  tilesets[1][1] = ["  fff (TttT) fff"
+                   ,"  fff (TttT) fff"
+                   ,"  fff (TttT) fff"
+                   ,"  ffff(-tt-)ffff"
                    ,"x fffff    fffff"
                    ,"w  ffff    ffff "
                    ,"wx  fff    fff  "
@@ -79,19 +82,27 @@ var WorldMap = (function() {
    ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"m"}
    ,"w" : {cssClass:"water", hasSides:true, borderTile:"wx"}
    ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wx"}
+   
+   ,"t" : {cssClass:"town empty"}
+   ,"T" : {cssClass:"town"}
+   ,"(" : {cssClass:"wall left", block:{width:1,height:5}}
+   ,")" : {cssClass:"wall right", block:{width:1,height:5}}
+   ,"<" : {cssClass:"wall top left", block:{width:1, height:2}}
+   ,">" : {cssClass:"wall top right", block:{width:1, height:2}}
   };
   
   var getTileset = function(x, y) { return tilesets[y] ? tilesets[y][x] : null; };
   
-  var getTile = function(tileset, x, y) { 
+  var getTile = function(coords) {
+    var tileset = getTileset(coords.tilesetX, coords.tilesetY);
     if (!tileset) {
       return null;
     }
-    var row = tileset[y];
+    var row = tileset[coords.tileY];
     if (!row) {
       return null;
     }
-    return row.charAt(x); 
+    return row.charAt(coords.tileX); 
   };
   
   var getTileClass = function(tile) {
@@ -105,11 +116,10 @@ var WorldMap = (function() {
   
   var getTileMapping = function(tile) { return tileMapping[tile]; };
   
-  var getTileClasses = function(tilesetX, tilesetY, tileX, tileY) {
-    var tileset = getTileset(tilesetX, tilesetY);
-    var tile = getTile(tileset, tileX, tileY);
+  var getTileClasses = function(coords) {
+    var tile = getTile(coords);
     var mapping = getTileMapping(tile);
-    var surrounding = getSurroundingTiles(tilesetX, tilesetY, tileX, tileY);
+    var surrounding = getSurroundingTiles(coords);
     
     var cssClasses = [];
     cssClasses.push(getTileClass(tile));
@@ -120,6 +130,9 @@ var WorldMap = (function() {
       }
       if (mapping.hasSides) {
         cssClasses.push(determineSideClass(surrounding, mapping.borderTile));
+      }
+      if (mapping.block) {
+        cssClasses.push(determineBlockClass(coords, tile, mapping));
       }
     }
     
@@ -163,6 +176,39 @@ var WorldMap = (function() {
     return "";
   };
   
+  var determineBlockClass = function(coords, tile, mapping) {
+    var x = 0;
+    if (mapping.block.width > 1) {
+      
+    }
+    
+    var y = 0;
+    if (mapping.block.height > 1) {
+      var tileAbove = getTile(getCoordsAbove(coords));
+      var tileBelow = getTile(getCoordsBelow(coords));
+      if (tileAbove != tile) {
+        y = 0;
+      } else if (tileBelow != tile) {
+        y = mapping.block.height - 1;
+      } else {
+        // figure out how many of the same tile are above the current one
+        var numTiles = -1;
+        var currentTile = tile;
+        var newCoords = getCoordsAbove(coords);
+        while (currentTile == tile) {
+          currentTile = getTile(newCoords);
+          newCoords = getCoordsAbove(newCoords);
+          numTiles++;
+        }
+        y = numTiles;
+      }
+    }
+    
+    var x = String.fromCharCode("A".charCodeAt(0) + x);
+    var y = String.fromCharCode("A".charCodeAt(0) + y);
+    return x + y;
+  };
+  
   var countSurroundingForType = function(surrounding, tile) {
     var count = 0;
     for (var s in surrounding) {
@@ -173,34 +219,53 @@ var WorldMap = (function() {
     return count;
   }
   
-  var getSurroundingTiles = function(tilesetX, tilesetY, tileX, tileY) {
-    var tileset = getTileset(tilesetX, tilesetY);
-    
-    var leftTile, topTile, rightTile, bottomTile;
-    
-    // Left edge of current tileset, get tileset to the left 
-    // and right-most tile in same row
-    leftTile = (tileX > 0) 
-      ? getTile(tileset, tileX - 1, tileY)
-      : getTile(getTileset(tilesetX - 1, tilesetY), TILESET_SIZE - 1, tileY);
-    
-    // Right edge of current tileset, get tileset to the right 
-    // and left-most tile in same row
-    rightTile = (tileX < TILESET_SIZE - 1)
-      ? getTile(tileset, tileX + 1, tileY)
-      : getTile(getTileset(tilesetX + 1, tilesetY), 0, tileY);
-    
-    // Top edge of current tileset, get tileset above
-    // and bottom-most tile in same column
-    topTile = (tileY > 0)
-      ? getTile(tileset, tileX, tileY - 1)
-      : getTile(getTileset(tilesetX, tilesetY - 1), tileX, TILESET_SIZE - 1);
-    
-    bottomTile = (tileY < TILESET_SIZE - 1)
-      ? getTile(tileset, tileX, tileY + 1)
-      : getTile(getTileset(tilesetX, tilesetY + 1), tileX, 0);
-      
-    return {left:leftTile, top:topTile, right:rightTile, bottom:bottomTile};
+  var getSurroundingTiles = function(coords) {
+    return {
+      top: getTile(getCoordsAbove(coords))
+     ,left: getTile(getCoordsToLeft(coords))
+     ,right: getTile(getCoordsToRight(coords))
+     ,bottom: getTile(getCoordsBelow(coords))
+    };
+  };
+  
+  // If at left edge of current tileset, get tileset to the left 
+  // and right-most tile in same row
+  var getCoordsToLeft = function(coords) {
+    return (coords.tileX > 0) 
+      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY 
+        ,tileX: coords.tileX - 1, tileY: coords.tileY}
+      : {tilesetX: coords.tilesetX - 1, tilesetY: coords.tilesetY
+        ,tileX: TILESET_SIZE - 1, tileY: coords.tileY};
+  };
+
+  // If at right edge of current tileset, get tileset to the right 
+  // and left-most tile in same row
+  var getCoordsToRight = function(coords) {
+    return (coords.tileX < TILESET_SIZE - 1)
+      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
+        ,tileX: coords.tileX + 1, tileY: coords.tileY}
+      : {tilesetX: coords.tilesetX + 1, tilesetY: coords.tilesetY
+        ,tileX: 0, tileY: coords.tileY};
+  };
+  
+  // If at top edge of current tileset, get tileset above
+  // and bottom-most tile in same column
+  var getCoordsAbove = function(coords) {
+    return (coords.tileY > 0)
+      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
+        ,tileX: coords.tileX, tileY: coords.tileY - 1}
+      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY - 1
+        ,tileX: coords.tileX, tileY: TILESET_SIZE - 1};
+  };
+  
+  // If at bottom edge of current tileset, get tileset below
+  // and top-most tile in same column
+  var getCoordsBelow = function(coords) {
+    return (coords.tileY < TILESET_SIZE - 1)
+      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
+        ,tileX: coords.tileX, tileY: coords.tileY + 1}
+      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY + 1
+        ,tileX: coords.tileX, tileY: 0};
   };
   
   var isTileOfType = function(tile, type) { 

@@ -38,3 +38,20 @@
 .map.world .tile.mountain.tr { background-position:-32px -80px; }
 .map.world .tile.mountain.bl { background-position:-0px -112px; }
 .map.world .tile.mountain.br { background-position:-32px -112px; }
+
+.map.world .tile.town { background-position:-144px -32px; }
+.map.world .tile.town.empty { background-color:#BDBDBD; background-image:none; }
+.map.world .wall.left.AA { background-position:-160px -48px; }
+.map.world .wall.left.AB { background-position:-160px -64px; }
+.map.world .wall.left.AC { background-position:-160px -80px; }
+.map.world .wall.left.AD { background-position:-160px -96px; }
+.map.world .wall.left.AE { background-position:-160px -112px; }
+.map.world .wall.right.AA { background-position:-208px -48px; }
+.map.world .wall.right.AB { background-position:-208px -64px; }
+.map.world .wall.right.AC { background-position:-208px -80px; }
+.map.world .wall.right.AD { background-position:-208px -96px; }
+.map.world .wall.right.AE { background-position:-208px -112px; }
+.map.world .wall.top.left.AA { background-position:-176px -32px; }
+.map.world .wall.top.left.AB { background-position:-176px -48px; }
+.map.world .wall.top.right.AA { background-position:-192px -32px; }
+.map.world .wall.top.right.AB { background-position:-192px -48px; }
