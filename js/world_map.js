@@ -1,332 +1,178 @@
 var WorldMap = (function() {
   
-  var TILESET_SIZE = 16;
-  var rows = 2, cols = 2;
-  var tilesets = [];
+  var Config = new Map.Config({
+    size:16
+   ,mapping:{
+      " " : {cssClass:"none"}
+     ,"b" : {cssClass:"water bottom"}
+     ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
+     ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"mUQ"}
+     ,"r" : {cssClass:"river"}
+     ,"s" : {cssClass:"swamp", hasCorners:true, borderTile:"s"}
+     ,"t" : {cssClass:"town empty"}
+     ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxbHP"}
+     ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wxb"}
+     
+     ,"C" : {cssClass:"castle", block:{width:2,height:3}}
+     ,"D" : {cssClass:"docks", hasCorners:true, hasSides:true, borderTile:"DH"}
+     ,"H" : {cssClass:"water"}
+     ,"L" : {cssClass:"river", hasCorners:true, borderTile:"L"}
+     ,"P" : {cssClass:"coastline br"}
+     ,"Q" : {cssClass:"mountain tr"}
+     ,"T" : {cssClass:"town"}
+     ,"U" : {cssClass:"mountain br"}
+
+     ,"(" : {cssClass:"wall left", block:{width:1,height:5}}
+     ,")" : {cssClass:"wall right", block:{width:1,height:5}}
+     ,"<" : {cssClass:"wall top left", block:{width:1, height:2}}
+     ,">" : {cssClass:"wall top right", block:{width:1, height:2}}
+     ,"}" : {cssClass:"wall gate left"}
+     ,"{" : {cssClass:"wall gate right"}
+    }
+  });
   
-  for (var i = 0; i < cols; i++) {
-    tilesets[i] = [];
-  }
+  Config.addTileset(0, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwxfffxwwwwww"
+                       ,"wwwxffffffwwwwww"
+                       ,"wwxfffffffwwwwww"
+                       ,"xfffffffffwwwwww"
+                       ,"fffffffff wwwwww"
+                       ,"ffffffff  wwx xw"
+                       ,"fffffmmmm xw mmx"
+                       ,"mm  mmmmm  Pmmmm"
+                       ,"mm mmmmmm   mmmm"
+                       ,"m  mmmmmDDD mmmm"
+                       ,"ff  mmm DHD mmmm"
+                       ,"ff       Hxwxmmm"
+                       ,"ff    xwwwwwwxmm"
+                       ,"LL  xwwwwwwwwwww"
+                       ,"LL xwwwwwwwwwwww"]);
   
-  tilesets[0][0] = ["wwwx  ffffffffff"
-                   ,"wwwwx ffffffffff"
-                   ,"wwwwwx ffffffff "
-                   ,"wwwwww   ffff   "
-                   ,"wwwwwwx         "
-                   ,"wwwwwwwx        "
-                   ,"wwwwwwwwx       "
-                   ,"wwwwwwwwwx      "
-                   ,"wwwwwwwwwwwx    "
-                   ,"wwwwwwwwwwwwwwx "
-                   ,"wwwwwwwwwwwwwwwx"
-                   ,"wwwwwwwwwwwwwwwx"
-                   ,"wwwwwwwwwwwwwwx "
-                   ,"wwwwwwwwwwwwwx  "
-                   ,"wwwwwwwwwwwwx   "
-                   ,"wwwwwwwwwwww    "];
+  Config.addTileset(0, ["wwxfffffxwwwwwww"
+                       ,"wwwxfffffwwwwwww"
+                       ,"wwwwxffffwwwwwww"
+                       ,"wwwww fffwwwwwww"
+                       ,"wwwww    xwwwwww"
+                       ,"wwwwx ss  wwwwww"
+                       ,"wwww ssss wwwwww"
+                       ,"wwwxsssssswwwwww"
+                       ,"mmmmsssssswwwwww"
+                       ,"mmmUsssssswwwwxm"
+                       ,"mmmQssssssxwwxmm"
+                       ,"mmmmmm sss   mmm"
+                       ,"mmmmmmmm   ffmmm"
+                       ,"mmmmmmmm fffffmm"
+                       ,"wx     fffffff  "
+                       ,"wwx   ffffffffff"]);
   
-  tilesets[0][1] = ["xwwwwwwwwwwwww  "
-                   ," wwwwwwwwwwwww m"
-                   ,"xwwwwwwwwwwwwx m"
-                   ,"wwwwwwwwwwwwx   "
-                   ,"wwwwwwwwwwx     "
-                   ,"wwwwwwwwwx      "
-                   ,"xwwwwwwx    xwww"
-                   ,"  xwwwx    xwwww"
-                   ,"   xwwbbbbwwwwww"
-                   ,"    xx    xwwwww"
-                   ,"     ffffffffxww"
-                   ,"    ffffffffffxw"
-                   ,"   ffffffffffffx"
-                   ,"  fffff CC fffff"
-                   ,"  ffff <CC> ffff"
-                   ,"  fff (<CC>) fff"];
+  Config.addTileset(0, ["wwwwwwwxffffffff"
+                       ,"wwwwwwxfffffffff"
+                       ,"wwwwwxffffffffff"
+                       ,"wwwwxfffffffffff"
+                       ,"wwwxffffffrrrrrr"
+                       ,"wwwfffffffffffff"
+                       ,"wwwfffffffffffff"
+                       ,"wwxmmmmmmmmmmmmf"
+                       ,"wxmmmmmmmmmmmmm "
+                       ,"mmmmmmmmmmmmmmm "
+                       ,"mmmmmmmmmmmmmmm "
+                       ,"mmmmmmmmmmmmmmm "
+                       ,"mmxxmmmmmmm     "
+                       ,"mxwwwxmmmm  DDDD"
+                       ,"xwwwwwwwwwwwHHHD"
+                       ,"wwwwwwwwwwwwwx  "]);
   
-  tilesets[1][0] = ["wwwwwwwwwwwwx   "
-                   ,"wwwwwwwwwwwwwx  "
-                   ,"wwwwwwwwwwwwwwwx"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"];
+  Config.addTileset(1, ["fffwwwwwwwwwwwww"
+                       ,"fffwwwwwwwwwwwww"
+                       ,"ffxwwwwwwwwwwwww"
+                       ,"f wwwwwwwwwwwwww"
+                       ,"  wwwwwwwwwwwwww"
+                       ,"  wwwwwwwwwwwwww"
+                       ,"  xwwwwwwwwwwwww"
+                       ,"   wwwwwwwwwwwww"
+                       ,"   wwwwwwwwwwwww"
+                       ,"   wwwwwwwwwwwww"
+                       ,"  xwwwwwwwwwwwww"
+                       ," xwwwwwwwwwwwwww"
+                       ," wwwwwwwwwwwwwww"
+                       ,"xwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
   
-  tilesets[1][1] = ["  fff (TttT) fff"
-                   ,"  fff (TttT) fff"
-                   ,"  fff (TttT) fff"
-                   ,"  ffff(}tt{)ffff"
-                   ,"x fffff    fffff"
-                   ,"w  ffff    ffff "
-                   ,"wx  fff    fff  "
-                   ,"ww            xw"
-                   ,"wwx    DDD  xwww"
-                   ,"www    DwD xwwww"
-                   ,"wwwx   Dwxwwwwww"
-                   ,"wwww    wwwwwwww"
-                   ,"wwww   xwwwwwwww"
-                   ,"wwww  xwwwwwwwww"
-                   ,"wwwwxxwwwwwwwwww"
-                   ,"wwwwwwwwwwwwwwww"];
-  
-  var tileMapping = {
-    " " : {cssClass:"none"}
-   ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
-   ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"m"}
-   ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxb"}
-   ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wxb"}
-   ,"b" : {cssClass:"water bottom"}
+  Config.addTileset(1, ["wwwx  ffffffffff"
+                       ,"wwwwx ffffffffff"
+                       ,"wwwwwx ffffffff "
+                       ,"wwwwww   ffff   "
+                       ,"wwwwwwx         "
+                       ,"wwwwwwwx        "
+                       ,"wwwwwwwwx       "
+                       ,"wwwwwwwwwx      "
+                       ,"wwwwwwwwwwwx    "
+                       ,"wwwwwwwwwwwwwwx "
+                       ,"wwwwwwwwwwwwwww "
+                       ,"wwwwwwwwwwwwwww "
+                       ,"wwwwwwwwwwwwwwx "
+                       ,"wwwwwwwwwwwwwx  "
+                       ,"wwwwwwwwwwwwx   "
+                       ,"wwwwwwwwwwww    "]);
    
-   ,"t" : {cssClass:"town empty"}
-   ,"T" : {cssClass:"town"}
-   ,"(" : {cssClass:"wall left", block:{width:1,height:5}}
-   ,")" : {cssClass:"wall right", block:{width:1,height:5}}
-   ,"<" : {cssClass:"wall top left", block:{width:1, height:2}}
-   ,">" : {cssClass:"wall top right", block:{width:1, height:2}}
-   ,"}" : {cssClass:"wall gate left"}
-   ,"{" : {cssClass:"wall gate right"}
-   ,"C" : {cssClass:"castle", block:{width:2,height:3}}
-  };
+   Config.addTileset(1, ["xwwwwwwwwwwwww  "
+                        ," wwwwwwwwwwwww m"
+                        ,"xwwwwwwwwwwwwx m"
+                        ,"wwwwwwwwwwwwx   "
+                        ,"wwwwwwwwwwx     "
+                        ,"wwwwwwwwwx      "
+                        ,"xwwwwwwx    xwww"
+                        ,"  xwwwx    xwwww"
+                        ,"   xwwbbbbwwwwww"
+                        ,"    xx    xwwwww"
+                        ,"     ffffffffxww"
+                        ,"    ffffffffffxw"
+                        ,"   ffffffffffffx"
+                        ,"  fffff CC fffff"
+                        ,"  ffff <CC> ffff"
+                        ,"  fff (<CC>) fff"]);
+   
+   Config.addTileset(2, Map.ALL_WATER);
+   
+   
+   Config.addTileset(2, ["wwwwwwwwwwwwx   "
+                        ,"wwwwwwwwwwwwwx  "
+                        ,"wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+   
+   Config.addTileset(2, ["  fff (TttT) fff"
+                        ,"  fff (TttT) fff"
+                        ,"  fff (TttT) fff"
+                        ,"  ffff(}tt{)ffff"
+                        ,"x fffff    fffff"
+                        ,"w  ffff    ffff "
+                        ,"wx  fff    fff  "
+                        ,"ww            xw"
+                        ,"wwx    DDD  xwww"
+                        ,"www    DHD xwwww"
+                        ,"wwwx   DHxwwwwww"
+                        ,"wwww    Hwwwwwww"
+                        ,"wwww   xwwwwwwww"
+                        ,"wwww  xwwwwwwwww"
+                        ,"wwwwxxwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
   
-  var getTileset = function(x, y) { return tilesets[y] ? tilesets[y][x] : null; };
-  
-  var getTile = function(coords) {
-    var tileset = getTileset(coords.tilesetX, coords.tilesetY);
-    if (!tileset) {
-      return null;
-    }
-    var row = tileset[coords.tileY];
-    if (!row) {
-      return null;
-    }
-    return row.charAt(coords.tileX); 
-  };
-  
-  var getTileClass = function(tile) {
-    var mapping = getTileMapping(tile); 
-    if (!mapping) {
-      return "unknown";
-    }
-    
-    return mapping.cssClass;
-  };
-  
-  var getTileMapping = function(tile) { return tileMapping[tile]; };
-  
-  var getTileClasses = function(coords) {
-    var tile = getTile(coords);
-    var mapping = getTileMapping(tile);
-    var surrounding = getSurroundingTiles(coords);
-    
-    var cssClasses = [];
-    cssClasses.push(getTileClass(tile));
-    
-    if (mapping) {
-      if (mapping.hasCorners) {
-        cssClasses.push(determineCornerClass(surrounding, mapping.borderTile));
-      }
-      if (mapping.hasSides) {
-        cssClasses.push(determineSideClass(surrounding, mapping.borderTile));
-      }
-      if (mapping.block) {
-        cssClasses.push(determineBlockClass(coords, tile, mapping));
-      }
-    }
-    
-    return cssClasses.join(" ");
-  };
-  
-  var determineCornerClass = function(surrounding, borderTiles) {
-    var count = 0;
-    var tilesToCheck = "";
-    for (var i = 0; i < borderTiles.length; i++) {
-      count += countSurroundingForType(surrounding, borderTiles.charAt(i));
-      tilesToCheck += borderTiles.charAt(i);
-      if (count == 2) {
-        var leftMatch = isTileOfType(surrounding.left, tilesToCheck);
-        var topMatch = isTileOfType(surrounding.top, tilesToCheck);
-        var bottomMatch = isTileOfType(surrounding.bottom, tilesToCheck);
-        var rightMatch = isTileOfType(surrounding.right, tilesToCheck);
-
-        if (leftMatch && topMatch) { return "br"; }
-        else if (leftMatch && bottomMatch) { return "tr"; }
-        else if (rightMatch && topMatch) { return "bl"; }
-        else if (rightMatch & bottomMatch) { return "tl"; }
-      }
-    }
-    return "";
-  };
-  
-  var determineSideClass = function(surrounding, borderTiles) {
-    var count = countSurroundingForType(surrounding, borderTiles);
-    if (count == 3) {
-      var leftMatch = isTileOfType(surrounding.left, borderTiles);
-      var topMatch = isTileOfType(surrounding.top, borderTiles);
-      var bottomMatch = isTileOfType(surrounding.bottom, borderTiles);
-      var rightMatch = isTileOfType(surrounding.right, borderTiles);
-      
-      if (!leftMatch) { return "left"; }
-      else if (!topMatch) { return "top"; }
-      else if (!bottomMatch) { return "bottom"; }
-      else if (!rightMatch) { return "right"; }
-    }
-    return "";
-  };
-  
-  var determineBlockClass = function(coords, tile, mapping) {
-    var x = 0;
-    if (mapping.block.width > 1) {
-      var coordsLeft = getCoordsToLeft(coords);
-      var tileLeft = getTile(coordsLeft);
-      var tileRight = getTile(getCoordsToRight(coords));
-      if (tileLeft != tile) {
-        x = 0;
-      } else if (tileRight != tile) {
-        x = mapping.block.width - 1;
-      } else {
-        var numTiles = 0;
-        var newCoords = coordsLeft;
-        var currentTile = getTile(newCoords);
-        while (currentTile == tile) {
-          newCoords = getCoordsToLeft(newCoords);
-          numTiles++;
-          currentTile = getTile(newCoords);
-        }
-        x = numTiles;
-      }
-    }
-    
-    var y = 0;
-    if (mapping.block.height > 1) {
-      var tileAbove = getTile(getCoordsAbove(coords));
-      var tileBelow = getTile(getCoordsBelow(coords));
-      if (tileAbove != tile) {
-        y = 0;
-      } else if (tileBelow != tile) {
-        y = mapping.block.height - 1;
-      } else {
-        // figure out how many of the same tile are above the current one
-        var numTiles = 0;
-        var newCoords = getCoordsAbove(coords);
-        var currentTile = getTile(newCoords);
-        while (currentTile == tile) {
-          newCoords = getCoordsAbove(newCoords);
-          numTiles++;
-          currentTile = getTile(newCoords);
-        }
-        y = numTiles;
-      }
-    }
-    
-    var x = String.fromCharCode("A".charCodeAt(0) + x);
-    var y = String.fromCharCode("A".charCodeAt(0) + y);
-    return x + y;
-  };
-  
-  var countSurroundingForType = function(surrounding, tile) {
-    var count = 0;
-    for (var s in surrounding) {
-      if (isTileOfType(surrounding[s], tile)) {
-        count++;
-      }
-    }
-    return count;
-  }
-  
-  var getSurroundingTiles = function(coords) {
-    return {
-      top: getTile(getCoordsAbove(coords))
-     ,left: getTile(getCoordsToLeft(coords))
-     ,right: getTile(getCoordsToRight(coords))
-     ,bottom: getTile(getCoordsBelow(coords))
-    };
-  };
-  
-  // If at left edge of current tileset, get tileset to the left 
-  // and right-most tile in same row
-  var getCoordsToLeft = function(coords) {
-    return (coords.tileX > 0) 
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY 
-        ,tileX: coords.tileX - 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX - 1, tilesetY: coords.tilesetY
-        ,tileX: TILESET_SIZE - 1, tileY: coords.tileY};
-  };
-
-  // If at right edge of current tileset, get tileset to the right 
-  // and left-most tile in same row
-  var getCoordsToRight = function(coords) {
-    return (coords.tileX < TILESET_SIZE - 1)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX + 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX + 1, tilesetY: coords.tilesetY
-        ,tileX: 0, tileY: coords.tileY};
-  };
-  
-  // If at top edge of current tileset, get tileset above
-  // and bottom-most tile in same column
-  var getCoordsAbove = function(coords) {
-    return (coords.tileY > 0)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX, tileY: coords.tileY - 1}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY - 1
-        ,tileX: coords.tileX, tileY: TILESET_SIZE - 1};
-  };
-  
-  // If at bottom edge of current tileset, get tileset below
-  // and top-most tile in same column
-  var getCoordsBelow = function(coords) {
-    return (coords.tileY < TILESET_SIZE - 1)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX, tileY: coords.tileY + 1}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY + 1
-        ,tileX: coords.tileX, tileY: 0};
-  };
-  
-  var isTileOfType = function(tile, type) { 
-    return !tile || type.indexOf(tile) > -1; 
-  };  
-  var maxTilesetX = function() { 
-    return tilesets[0].length; 
-  };
-  var maxTilesetY = function() { 
-    return tilesets.length; 
-  };
-  
-  var validateTileSet = function(tileset, x, y) {
-    if (tileset.length != TILESET_SIZE) {
-      alert("Tileset[" + x + "][" + y + "] has " + tileset.length + " rows, it should have " + TILESET_SIZE);
-      return false;
-    }
-    
-    for (var i = 0; i < TILESET_SIZE; i++) {
-      if (tileset[i].length != TILESET_SIZE) {
-        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + TILESET_SIZE);
-        return false;
-      }
-    }
-    
-    return true;
-  }
   
   return {
-    getSurroundingTiles: getSurroundingTiles
-   ,getTileClass: getTileClass
-   ,getTileClasses: getTileClasses
-   ,getTileMapping: getTileMapping
-   ,getTileset: getTileset
-   ,getTile: getTile
-   ,maxTilesetX: maxTilesetX
-   ,maxTilesetY: maxTilesetY
-   ,validateTileSet: validateTileSet
-   
-   ,TILESET_SIZE: TILESET_SIZE
+    Config: Config
   };
   
 })();
