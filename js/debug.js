@@ -6,9 +6,9 @@ var Debug = (function() {
     var $tilesetX, $tilesetY;
 
     var currentTileset = function() {
-      var tilesetX = $tilesetX.val();
-      var tilesetY = $tilesetY.val();
-      return WorldMap.getTileset(tilesetX, tilesetY);
+      var tilesetX = parseInt($tilesetX.val());
+      var tilesetY = parseInt($tilesetY.val());
+      return WorldMap.Config.getTileset(tilesetX, tilesetY);
     };
     
     var event = function($target) {
@@ -29,10 +29,10 @@ var Debug = (function() {
       var tilesetY = parseInt($tilesetY.val());
       var tilePos = tileLookup($tile);
       var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:tilePos.x, tileY:tilePos.y};
-      var tile = WorldMap.getTile(coords);
-      var tileMapping = WorldMap.getTileMapping(tile);
-      var surroundingTiles = WorldMap.getSurroundingTiles(coords);
-      var cssClasses = WorldMap.getTileClasses(coords);
+      var tile = WorldMap.Config.getTile(coords);
+      var tileMapping = WorldMap.Config.getTileMapping(tile);
+      var surroundingTiles = WorldMap.Config.getSurroundingTiles(coords);
+      var cssClasses = WorldMap.Config.getTileClasses(coords);
       
       var $props = $(".tile.properties", $section);
       $(".tileset.index span", $props).html(tilesetX + "," + tilesetY);
@@ -53,8 +53,8 @@ var Debug = (function() {
     var init = function(opt) {
       $tilesetX = $(opt.tilesetX);
       $tilesetY = $(opt.tilesetY);
-      initDropDown($tilesetX, WorldMap.maxTilesetX());
-      initDropDown($tilesetY, WorldMap.maxTilesetY());
+      initDropDown($tilesetX, WorldMap.Config.maxTilesetX());
+      initDropDown($tilesetY, WorldMap.Config.maxTilesetY());
     };
     
     var initDropDown = function($select, maxValue) {
@@ -74,18 +74,18 @@ var Debug = (function() {
 
       $("img.border", $section).addClass("hidden");
       
-      if (!WorldMap.validateTileSet(tileset, tilesetX, tilesetY)) {
+      if (!WorldMap.Config.validateTileSet(tileset, tilesetX, tilesetY)) {
         return false;
       }
       
       $map.attr("className", "");
       $map.addClass("map world");
       $map.empty();
-      for (var y = 0; y < WorldMap.TILESET_SIZE; y++) {
+      for (var y = 0; y < WorldMap.Config.size; y++) {
         var $row = $("<div/>").addClass("row");
-        for (var x = 0; x < WorldMap.TILESET_SIZE; x++) {
+        for (var x = 0; x < WorldMap.Config.size; x++) {
           var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:x, tileY:y};
-          var tileClasses = WorldMap.getTileClasses(coords);
+          var tileClasses = WorldMap.Config.getTileClasses(coords);
           var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
           $row.append($tile);
         }
