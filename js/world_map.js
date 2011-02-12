@@ -33,7 +33,7 @@ var WorldMap = (function() {
                    ,"wwwwwwwwwx      "
                    ,"xwwwwwwx    xwww"
                    ,"  xwwwx    xwwww"
-                   ,"   xwwwwwwwwwwww"
+                   ,"   xwwbbbbwwwwww"
                    ,"    xx    xwwwww"
                    ,"     ffffffffxww"
                    ,"    ffffffffffxw"
@@ -62,7 +62,7 @@ var WorldMap = (function() {
   tilesets[1][1] = ["  fff (TttT) fff"
                    ,"  fff (TttT) fff"
                    ,"  fff (TttT) fff"
-                   ,"  ffff(-tt-)ffff"
+                   ,"  ffff(}tt{)ffff"
                    ,"x fffff    fffff"
                    ,"w  ffff    ffff "
                    ,"wx  fff    fff  "
@@ -80,8 +80,9 @@ var WorldMap = (function() {
     " " : {cssClass:"none"}
    ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
    ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"m"}
-   ,"w" : {cssClass:"water", hasSides:true, borderTile:"wx"}
-   ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wx"}
+   ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxb"}
+   ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wxb"}
+   ,"b" : {cssClass:"water bottom"}
    
    ,"t" : {cssClass:"town empty"}
    ,"T" : {cssClass:"town"}
@@ -89,6 +90,9 @@ var WorldMap = (function() {
    ,")" : {cssClass:"wall right", block:{width:1,height:5}}
    ,"<" : {cssClass:"wall top left", block:{width:1, height:2}}
    ,">" : {cssClass:"wall top right", block:{width:1, height:2}}
+   ,"}" : {cssClass:"wall gate left"}
+   ,"{" : {cssClass:"wall gate right"}
+   ,"C" : {cssClass:"castle", block:{width:2,height:3}}
   };
   
   var getTileset = function(x, y) { return tilesets[y] ? tilesets[y][x] : null; };
@@ -143,8 +147,8 @@ var WorldMap = (function() {
     var count = 0;
     var tilesToCheck = "";
     for (var i = 0; i < borderTiles.length; i++) {
-      count += countSurroundingForType(surrounding, borderTiles[i]);
-      tilesToCheck += borderTiles[i];
+      count += countSurroundingForType(surrounding, borderTiles.charAt(i));
+      tilesToCheck += borderTiles.charAt(i);
       if (count == 2) {
         var leftMatch = isTileOfType(surrounding.left, tilesToCheck);
         var topMatch = isTileOfType(surrounding.top, tilesToCheck);
@@ -179,7 +183,24 @@ var WorldMap = (function() {
   var determineBlockClass = function(coords, tile, mapping) {
     var x = 0;
     if (mapping.block.width > 1) {
-      
+      var coordsLeft = getCoordsToLeft(coords);
+      var tileLeft = getTile(coordsLeft);
+      var tileRight = getTile(getCoordsToRight(coords));
+      if (tileLeft != tile) {
+        x = 0;
+      } else if (tileRight != tile) {
+        x = mapping.block.width - 1;
+      } else {
+        var numTiles = 0;
+        var newCoords = coordsLeft;
+        var currentTile = getTile(newCoords);
+        while (currentTile == tile) {
+          newCoords = getCoordsToLeft(newCoords);
+          numTiles++;
+          currentTile = getTile(newCoords);
+        }
+        x = numTiles;
+      }
     }
     
     var y = 0;

@@ -55,3 +55,12 @@
 .map.world .wall.top.left.AB { background-position:-176px -48px; }
 .map.world .wall.top.right.AA { background-position:-192px -32px; }
 .map.world .wall.top.right.AB { background-position:-192px -48px; }
+.map.world .wall.gate.left { background-position:-176px -112px; }
+.map.world .wall.gate.right { background-position:-192px -112px; }
+
+.map.world .castle.AA { background-position:-176px -64px; }
+.map.world .castle.AB { background-position:-176px -80px; }
+.map.world .castle.AC { background-position:-176px -96px; }
+.map.world .castle.BA { background-position:-192px -64px; }
+.map.world .castle.BB { background-position:-192px -80px; }
+.map.world .castle.BC { background-position:-192px -96px; }
