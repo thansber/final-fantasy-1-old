@@ -25,7 +25,7 @@ var WorldMap = (function() {
                    ,"wwwwwwwwwwwwx   "
                    ,"wwwwwwwwwwww    "];
   
-  tilesets[1][0] = ["xwwwwwwwwwwwww  "
+  tilesets[0][1] = ["xwwwwwwwwwwwww  "
                    ," wwwwwwwwwwwww m"
                    ,"xwwwwwwwwwwwwx m"
                    ,"wwwwwwwwwwwwx   "
@@ -42,7 +42,7 @@ var WorldMap = (function() {
                    ,"  ffff <CC> ffff"
                    ,"  fff (<CC>) fff"];
   
-  tilesets[0][1] = ["wwwwwwwwwwwwx   "
+  tilesets[1][0] = ["wwwwwwwwwwwwx   "
                    ,"wwwwwwwwwwwwwx  "
                    ,"wwwwwwwwwwwwwwwx"
                    ,"wwwwwwwwwwwwwwww"
@@ -192,13 +192,13 @@ var WorldMap = (function() {
         y = mapping.block.height - 1;
       } else {
         // figure out how many of the same tile are above the current one
-        var numTiles = -1;
-        var currentTile = tile;
+        var numTiles = 0;
         var newCoords = getCoordsAbove(coords);
+        var currentTile = getTile(newCoords);
         while (currentTile == tile) {
-          currentTile = getTile(newCoords);
           newCoords = getCoordsAbove(newCoords);
           numTiles++;
+          currentTile = getTile(newCoords);
         }
         y = numTiles;
       }
