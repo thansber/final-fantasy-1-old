@@ -18,6 +18,12 @@
 .map.world .tile.forest.bl { background-position:-112px -112px; }
 .map.world .tile.forest.br { background-position:-144px -112px; }
 
+.map.world .tile.swamp { background-position:-80px -32px; }
+.map.world .tile.swamp.tl { background-position:-48px -32px; }
+.map.world .tile.swamp.tr { background-position:-64px -32px; }
+.map.world .tile.swamp.bl { background-position:-48px -48px; }
+.map.world .tile.swamp.br { background-position:-64px -48px; }
+
 .map.world .tile.water { background-position:-16px -16px; }
 .map.world .tile.water.top { background-position:-16px 0px; }
 .map.world .tile.water.left { background-position:0px -16px; }
@@ -28,6 +34,20 @@
 .map.world .tile.coastline.tr { background-position:-32px 0; }
 .map.world .tile.coastline.bl { background-position:0 -32px; }
 .map.world .tile.coastline.br { background-position:-32px -32px; }
+
+.map.world .tile.river { background-position:-128px -32px; }
+.map.world .tile.river.tl { background-position:-128px 0px; }
+.map.world .tile.river.tr { background-position:-144px 0px; }
+.map.world .tile.river.bl { background-position:-128px -16px; }
+.map.world .tile.river.br { background-position:-144px -16px; }
+
+.map.world .tile.docks.top { background-position:-16px -208px; }
+.map.world .tile.docks.left { background-position:0px -224px; }
+.map.world .tile.docks.right { background-position:-32px -224px; }
+.map.world .tile.docks.tl { background-position:0px -208px; }
+.map.world .tile.docks.tr { background-position:-32px -208px; }
+.map.world .tile.docks.bl { background-position:0px -224px; }
+.map.world .tile.docks.br { background-position:-32px -224px; }
 
 .map.world .tile.mountain { background-position:-16px -96px; }
 .map.world .tile.mountain.top { background-position:-16px -80px; }
