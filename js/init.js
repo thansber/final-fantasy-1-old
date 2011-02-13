@@ -20,8 +20,8 @@ $(document).ready(function() {
   });
   
   $("#debug .menu a:first").click();
-  $("#tileSetX").val("2");
-  $("#tileSetY").val("2");
+  $("#tileSetY").val("1");
+  $("#tileSetX").val("3");
   $("#debug #loadTileSet").click();  
   
 });

@@ -8,7 +8,7 @@ var Debug = (function() {
     var currentTileset = function() {
       var tilesetX = parseInt($tilesetX.val());
       var tilesetY = parseInt($tilesetY.val());
-      return WorldMap.Config.getTileset(tilesetX, tilesetY);
+      return WorldMap.Config.getTileset(tilesetY, tilesetX);
     };
     
     var event = function($target) {

@@ -30,7 +30,7 @@ var Map = (function() {
   Config.prototype.getTileset = function(y, x) { return this.tilesets[y] ? this.tilesets[y][x] : null; };
   
   Config.prototype.getTile = function(coords) {
-    var tileset = this.getTileset(coords.tilesetX, coords.tilesetY);
+    var tileset = this.getTileset(coords.tilesetY, coords.tilesetX);
     if (!tileset) {
       return null;
     }
@@ -187,7 +187,7 @@ var Map = (function() {
     return (coords.tileX > 0) 
       ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY 
         ,tileX: coords.tileX - 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY - 1
+      : {tilesetX: coords.tilesetX - 1, tilesetY: coords.tilesetY
         ,tileX: this.size - 1, tileY: coords.tileY};
   };
 
@@ -197,7 +197,7 @@ var Map = (function() {
     return (coords.tileX < this.size - 1)
       ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
         ,tileX: coords.tileX + 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY + 1
+      : {tilesetX: coords.tilesetX + 1, tilesetY: coords.tilesetY
         ,tileX: 0, tileY: coords.tileY};
   };
   
@@ -207,7 +207,7 @@ var Map = (function() {
     return (coords.tileY > 0)
       ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
         ,tileX: coords.tileX, tileY: coords.tileY - 1}
-      : {tilesetX: coords.tilesetX - 1, tilesetY: coords.tilesetY
+      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY - 1
         ,tileX: coords.tileX, tileY: this.size - 1};
   };
   
@@ -217,7 +217,7 @@ var Map = (function() {
     return (coords.tileY < this.size - 1)
       ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
         ,tileX: coords.tileX, tileY: coords.tileY + 1}
-      : {tilesetX: coords.tilesetX + 1, tilesetY: coords.tilesetY
+      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY + 1
         ,tileX: coords.tileX, tileY: 0};
   };
   

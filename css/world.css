@@ -18,6 +18,14 @@
 .map.world .tile.forest.bl { background-position:-112px -112px; }
 .map.world .tile.forest.br { background-position:-144px -112px; }
 
+.map.world .tile.grass { background-position:-48px -16px; }
+.map.world .tile.grass.left { background-position:-64px 0px; }
+.map.world .tile.grass.right { background-position:-80px -16px; }
+.map.world .tile.grass.tl { background-position:-64px 0px; }
+.map.world .tile.grass.tr { background-position:-80px 0px; }
+.map.world .tile.grass.bl { background-position:-64px -16px; }
+.map.world .tile.grass.br { background-position:-80px -16px; }
+
 .map.world .tile.swamp { background-position:-80px -32px; }
 .map.world .tile.swamp.tl { background-position:-48px -32px; }
 .map.world .tile.swamp.tr { background-position:-64px -32px; }
@@ -40,6 +48,8 @@
 .map.world .tile.river.tr { background-position:-144px 0px; }
 .map.world .tile.river.bl { background-position:-128px -16px; }
 .map.world .tile.river.br { background-position:-144px -16px; }
+
+.map.world .tile.waterfall { background-position:-16px -224px; }
 
 .map.world .tile.docks.top { background-position:-16px -208px; }
 .map.world .tile.docks.left { background-position:0px -224px; }
