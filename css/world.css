@@ -69,8 +69,16 @@
 .map.world .tile.mountain.bl { background-position:-0px -112px; }
 .map.world .tile.mountain.br { background-position:-32px -112px; }
 
+.map.world .tile.desert { background-position:-32px -48px; }
+.map.world .tile.desert.tl { background-position:0px -48px; }
+.map.world .tile.desert.tr { background-position:-16px -48px; }
+.map.world .tile.desert.bl { background-position:-0px -64px; }
+.map.world .tile.desert.br { background-position:-16px -64px; }
+
 .map.world .tile.town { background-position:-144px -32px; }
 .map.world .tile.town.empty { background-color:#BDBDBD; background-image:none; }
+.map.world .tile.village { background-position:-48px 0px; }
+
 .map.world .wall.left.AA { background-position:-160px -48px; }
 .map.world .wall.left.AB { background-position:-160px -64px; }
 .map.world .wall.left.AC { background-position:-160px -80px; }

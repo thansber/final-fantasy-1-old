@@ -21,7 +21,7 @@ $(document).ready(function() {
   
   $("#debug .menu a:first").click();
   $("#tileSetY").val("1");
-  $("#tileSetX").val("3");
+  $("#tileSetX").val("13");
   $("#debug #loadTileSet").click();  
   
 });
