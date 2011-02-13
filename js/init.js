@@ -3,7 +3,7 @@ $(document).ready(function() {
   Movement.init({view:"#view"});
   Debug.init({
     debug:"#debug"
-   ,worldMap:{tilesetX:"#tileSetX", tilesetY:"#tileSetY"}
+   ,worldMap:{tilesets:"#debug .world-map .tilesets"}
   });
   
   $("#debug .menu a").click(function() { Debug.menuChange($(this)); });
@@ -20,8 +20,6 @@ $(document).ready(function() {
   });
   
   $("#debug .menu a:first").click();
-  $("#tileSetY").val("1");
-  $("#tileSetX").val("13");
   $("#debug #loadTileSet").click();  
-  
+  Debug.WorldMapHelper.loadByCoords(1, 14);
 });

@@ -13,7 +13,7 @@ var WorldMap = (function() {
      ,"s" : {cssClass:"swamp", hasCorners:true, borderTile:"s"}
      ,"t" : {cssClass:"town empty"}
      ,"v" : {cssClass:"village"}
-     ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxbHP"}
+     ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxbHPYX"}
      ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wxb"}
      
      ,"C" : {cssClass:"castle", block:{width:2,height:3}}
@@ -27,6 +27,8 @@ var WorldMap = (function() {
      ,"Q" : {cssClass:"mountain tr"}
      ,"T" : {cssClass:"town"}
      ,"U" : {cssClass:"mountain br"}
+     ,"X" : {cssClass:"coastline tr"}
+     ,"Y" : {cssClass:"water left"}
      ,"Z" : {cssClass:"coastline tr"}
 
      ,"(" : {cssClass:"wall left", block:{width:1,height:5}}
@@ -323,7 +325,7 @@ var WorldMap = (function() {
                        ,"xmmmmmm    xwwww"
                        ,"mmmmmmm   xwwwww"
                        ,"mmmmmm  xwwwwwww"
-                       ,"mmmmm  xwwwwxwww"
+                       ,"mmmmm  xwwwwPYww"
                        ,"mmmxwwwwwwwxxwww"
                        ,"mmxwwwx xx xwwww"
                        ,"mxwwx     xwwwww"
@@ -338,7 +340,7 @@ var WorldMap = (function() {
                        ,"    wwwwwwwwwwww"
                        ,"wwx xwwwwwwwwwww"
                        ,"wwwx wwwwwwwwwww"
-                       ,"wwwwxwwwwwwwwwww"
+                       ,"wwwwXYwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"

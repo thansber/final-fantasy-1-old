@@ -233,7 +233,8 @@ var Map = (function() {
     return this.tilesets.length; 
   };
   
-  Config.prototype.validateTileSet = function(tileset, x, y) {
+  Config.prototype.validateTileSet = function(y, x) {
+    var tileset = this.getTileset(y, x);
     if (tileset.length != this.size) {
       alert("Tileset[" + x + "][" + y + "] has " + tileset.length + " rows, it should have " + this.size);
       return false;
