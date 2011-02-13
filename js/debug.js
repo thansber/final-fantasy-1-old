@@ -3,18 +3,18 @@ var Debug = (function() {
   var $debug = null;
   
   var WorldMapHelper = (function() {
-    var $tilesetX, $tilesetY;
-
+    var selectedTilesetX = -1, selectedTilesetY = -1;
+    var $tilesets = null;
+    
     var currentTileset = function() {
-      var tilesetX = parseInt($tilesetX.val());
-      var tilesetY = parseInt($tilesetY.val());
-      return WorldMap.Config.getTileset(tilesetY, tilesetX);
+      return WorldMap.Config.getTileset(selectedTilesetY, selectedTilesetX);
     };
     
     var event = function($target) {
       if ($target.is("#loadTileSet")) { load($target); }
       if ($target.is("#toggleMapGridlines")) { toggleGridlines($target); }
       if ($target.is(".tile")) { highlightTile($target); }
+      if ($target.is("p") && $target.closest(".tilesets").length > 0) { load($target); };
     };
     
     var highlightTile = function($tile) {
@@ -25,17 +25,15 @@ var Debug = (function() {
       var borderOffset = {top:tileOffset.top - 2, left:tileOffset.left - 2};
       $border.offset(borderOffset);
       
-      var tilesetX = parseInt($tilesetX.val());
-      var tilesetY = parseInt($tilesetY.val());
       var tilePos = tileLookup($tile);
-      var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:tilePos.x, tileY:tilePos.y};
+      var coords = {tilesetX:selectedTilesetX, tilesetY:selectedTilesetY, tileX:tilePos.x, tileY:tilePos.y};
       var tile = WorldMap.Config.getTile(coords);
       var tileMapping = WorldMap.Config.getTileMapping(tile);
       var surroundingTiles = WorldMap.Config.getSurroundingTiles(coords);
       var cssClasses = WorldMap.Config.getTileClasses(coords);
       
       var $props = $(".tile.properties", $section);
-      $(".tileset.index span", $props).html(tilesetX + "," + tilesetY);
+      $(".tileset.index span", $props).html(selectedTilesetY + "," + selectedTilesetX);
       $(".tile.index span", $props).html(tilePos.x + "," + tilePos.y);
       $(".data span", $props).html(tile);
       $(".cssClasses span", $props).html(cssClasses);
@@ -51,30 +49,30 @@ var Debug = (function() {
     };
     
     var init = function(opt) {
-      $tilesetX = $(opt.tilesetX);
-      $tilesetY = $(opt.tilesetY);
-      initDropDown($tilesetX, WorldMap.Config.maxTilesetX());
-      initDropDown($tilesetY, WorldMap.Config.maxTilesetY());
-    };
-    
-    var initDropDown = function($select, maxValue) {
-      $select.empty();
-      for (var i = 0; i < maxValue; i++) {
-        var $option = $("<option/>").val(i).html("" + i);
-        $select.append($option);
+      $tilesets = $(opt.tilesets);
+      for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
+        var $tilesetRow = $("<div/>").addClass("row");
+        for (var x = 0; x < WorldMap.Config.maxTilesetX(); x++) {
+          var $tileset = $("<p/>").addClass("tileset").html(y + "," + x);
+          $tilesetRow.append($tileset);
+        }
+        $tilesets.append($tilesetRow);
       }
     };
     
     var load = function($target) {
       var $section = $target.closest("section");
       var $map = $(".map", $section);
-      var tilesetX = parseInt($tilesetX.val());
-      var tilesetY = parseInt($tilesetY.val());
-      var tileset = currentTileset();
-
+      
+      $("p", $tilesets).removeClass("selected");
+      $target.addClass("selected");
       $("img.border", $section).addClass("hidden");
       
-      if (!WorldMap.Config.validateTileSet(tileset, tilesetX, tilesetY)) {
+      selectedTilesetX = $target.index();
+      selectedTilesetY = $target.parent().index();
+      var tileset = currentTileset();
+      
+      if (!WorldMap.Config.validateTileSet(selectedTilesetY, selectedTilesetX)) {
         return false;
       }
       
@@ -84,7 +82,7 @@ var Debug = (function() {
       for (var y = 0; y < WorldMap.Config.size; y++) {
         var $row = $("<div/>").addClass("row");
         for (var x = 0; x < WorldMap.Config.size; x++) {
-          var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:x, tileY:y};
+          var coords = {tilesetX:selectedTilesetX, tilesetY:selectedTilesetY, tileX:x, tileY:y};
           var tileClasses = WorldMap.Config.getTileClasses(coords);
           var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
           $row.append($tile);
@@ -94,6 +92,12 @@ var Debug = (function() {
 
       toggleGridlines($("#toggleMapGridlines"));
       $map.addClass("loaded");
+    };
+    
+    var loadByCoords = function(y, x) {
+      var $row = $(".row", $tilesets).eq(y);
+      var $tileset = $(".tileset", $row).eq(x);
+      load($tileset);
     };
     
     var surroundingToChar = function(surroundingTile) {
@@ -112,6 +116,7 @@ var Debug = (function() {
     return {
       event: event
      ,init: init
+     ,loadByCoords: loadByCoords
     } 
   })();
   
