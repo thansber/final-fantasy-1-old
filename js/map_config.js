@@ -163,7 +163,7 @@ var Map = (function() {
     
     var x = String.fromCharCode("A".charCodeAt(0) + x);
     var y = String.fromCharCode("A".charCodeAt(0) + y);
-    return x + y;
+    return y + x;
   };
   
   Config.prototype.countSurroundingForType = function(surrounding, tile) {

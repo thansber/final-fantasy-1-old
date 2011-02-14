@@ -1,0 +1,27 @@
+<html>
+<head>
+  <title>Final Fantasy I</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link type="text/css" rel="stylesheet" href="css/global.css"/>
+  <link type="text/css" rel="stylesheet" href="css/world.css"/>
+  <style>
+  #world { width:100%; }
+  </style>
+  <script type="text/javascript" src="js/lib/jquery-1.4.4.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.backgroundPosition-7.js"></script>
+  <script type="text/javascript" src="js/map_config.js"></script>
+  <script type="text/javascript" src="js/world_map.js"></script>
+  <script type="text/javascript" src="js/map_builder.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    MapBuilder.build(WorldMap.Config, $("#world .map"), function($tileset, y, x) {
+      MapBuilder.buildTileset($tileset, y, x);
+    });
+  });
+  </script>
+</head>
+<body>
+
+<div id="world">
+  <div class="world map"></div>
+</div>

@@ -4,7 +4,6 @@ var WorldMap = (function() {
     size:16
   });
   
-  // Row 0
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,0
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,1
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,2
@@ -48,7 +47,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"ssxwwwwwwwwwwwww"
                        ,"ssssxwwwwwwwwwww"]);
-  
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,11
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,12
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,13
@@ -157,7 +155,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"]);
-  
   Config.addTileset(1, Map.ALL_SAME, "w"); // 1,6
   // 1,7
   Config.addTileset(1, ["wwwwwwwwwwwwwwww"
@@ -414,7 +411,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwww4wwwwwww"
                        ,"wwwwwwww6 ffxwww"]);
-  
   Config.addTileset(2, Map.ALL_SAME, "w"); // 2,6
   // 2,7
   Config.addTileset(2, ["wwwwwwwwxffffxww"
@@ -553,7 +549,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"]);
-  
   Config.addTileset(2, Map.ALL_SAME, "w"); // 2,15
   // 3,0
   Config.addTileset(3, ["wwx     xwwwwwww"
@@ -827,7 +822,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"xwwwwwwwwwwwwwww"]);
-  
   Config.addTileset(4, Map.ALL_SAME, "w"); // 4,0
   // 4,1
   Config.addTileset(4, ["wwwxfffffddddddd"
@@ -897,7 +891,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"]);
-  
   Config.addTileset(4, Map.ALL_SAME, "w"); // 4,5
   // 4,6
   Config.addTileset(4, ["wwwwwwwww4wwwwww"
@@ -933,7 +926,6 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"]);
-  
   Config.addTileset(4, Map.ALL_SAME, "w"); // 4,8
   Config.addTileset(4, Map.ALL_SAME, "w"); // 4,9
   // 4,10
@@ -970,7 +962,6 @@ var WorldMap = (function() {
                        ,"dddddddddddddddd"
                        ,"dddddddddddddddd"
                        ,"mmmmmmmmmddddddd"]);
-  
   Config.addTileset(4, Map.ALL_SAME, "d"); // 4,12
   // 4,13
   Config.addTileset(4, ["ddmmmmmmffffffxw"
@@ -1023,68 +1014,431 @@ var WorldMap = (function() {
                        ,"sssssxwwwwwwwwww"
                        ,"sssssxwwwwwwwwww"
                        ,"sssxwwwwwwwwwwww"]);
-
-  Config.setMapping({
-      " " : {cssClass:"none"}
-     ,"d" : {cssClass:"desert", hasCorners:true, borderTile:"d"}
-     ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
-     ,"g" : {cssClass:"grass", hasCorners:true, hasSides:true, borderTile:"goG&*~`"}
-     ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^m"}
-     ,"o" : {cssClass:"hole"}
-     ,"r" : {cssClass:"river", hasCorners:true, borderTile:"r"}
-     ,"s" : {cssClass:"swamp", hasCorners:true, borderTile:"so:;,."}
-     ,"t" : {cssClass:"town empty"}
-     ,"v" : {cssClass:"village"}
-     ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxH12345678"}
-     ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wx12345678"}
-     
-     ,"C" : {cssClass:"castle", block:{width:2,height:2}}
-     ,"D" : {cssClass:"docks", hasCorners:true, hasSides:true, borderTile:"DH"}
-     ,"G" : {cssClass:"grass"}
-     ,"F" : {cssClass:"waterfall"}
-     ,"H" : {cssClass:"water"}
-     ,"K" : {cssClass:"coneria", block:{width:2,height:3}}
-     ,"M" : {cssClass:"mirage tower", block:{width:2, height:2}}
-     ,"T" : {cssClass:"town"}
-     ,"V" : {cssClass:"desert caravan", hasCorners:true, borderTile:"V"}
-     
-     ,"1" : {cssClass:"water top"}
-     ,"2" : {cssClass:"water left"}
-     ,"3" : {cssClass:"water right"}
-     ,"4" : {cssClass:"water bottom"}
-     ,"5" : {cssClass:"coastline tl"}
-     ,"6" : {cssClass:"coastline tr"}
-     ,"7" : {cssClass:"coastline bl"}
-     ,"8" : {cssClass:"coastline br"}
-     ,"9" : {cssClass:"mountain top"}
-     ,"0" : {cssClass:"mountain left"}
-     ,"!" : {cssClass:"mountain right"}
-     ,"@" : {cssClass:"mountain bottom"}
-     ,"#" : {cssClass:"mountain tl"}
-     ,"$" : {cssClass:"mountain tr"}
-     ,"%" : {cssClass:"mountain bl"}
-     ,"^" : {cssClass:"mountain br"}
-     ,"&" : {cssClass:"grass tl"}
-     ,"*" : {cssClass:"grass tr"}
-     ,"~" : {cssClass:"grass bl"}
-     ,"`" : {cssClass:"grass br"}
-     ,":" : {cssClass:"swamp tl"}
-     ,";" : {cssClass:"swamp tr"}
-     ,"," : {cssClass:"swamp bl"}
-     ,"." : {cssClass:"swamp br"}
-     ,"+" : {cssClass:"desert tl"}
-     ,"=" : {cssClass:"desert tr"}
-
-     ,"(" : {cssClass:"wall left", block:{width:1,height:5}}
-     ,")" : {cssClass:"wall right", block:{width:1,height:5}}
-     ,"<" : {cssClass:"wall top left", block:{width:1, height:2}}
-     ,">" : {cssClass:"wall top right", block:{width:1, height:2}}
-     ,"}" : {cssClass:"wall gate left"}
-     ,"{" : {cssClass:"wall gate right"}
-    });
-  
-  /*
-  Config.addTileset(0, ["wwwwwwwwwwwwwwww"
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,0
+  // 5,1
+  Config.addTileset(5, ["wwwwwwwwwww ffff"
+                       ,"wwwwwwwwwww  ggg"
+                       ,"wwwwwwwwwwwggggg"
+                       ,"wwwwwwwwwwwggggg"
+                       ,"wwwwwwwwwwwggggg"
+                       ,"wwwwwwwwwwxggggg"
+                       ,"wwwwwwwwwxmmmmmm"
+                       ,"wwwwwwwwxmmmmmmm"
+                       ,"wwwwwwww mmmmmmm"
+                       ,"wwwwwwwwxmmmmmmm"
+                       ,"wwwwwwwwwxmmmmmm"
+                       ,"wwwwwwwwwwxmmmmm"
+                       ,"wwwwwwwwwwwxmmmm"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 5,2
+  Config.addTileset(5, ["f ssssssmmmmmmmx"
+                       ,"gggggg mmmmmmmxw"
+                       ,"ggggggmmmmmmmmww"
+                       ,"gggggmmmmmmmmmww"
+                       ,"ggmmmmmmmmmmmmww"
+                       ,"gmmmmmmmmmmmmmww"
+                       ,"mmmmmmmmmmmmmmww"
+                       ,"mmmmmmmmmmmmmmww"
+                       ,"mmmmmmmmmmmmmmww"
+                       ,"mmmmmmmmmmmmmmxw"
+                       ,"mmmmmmmmmmmmmmmx"
+                       ,"mmmmmmmmmmmmmmmm"
+                       ,"mmmmmmmmmmmmmmmm"
+                       ,"xmmmmmmmmmmmmmmm"
+                       ,"wwwwxmmmmmmmmmmm"
+                       ,"wwwwwwwwwxmmmmmm"]);
+  // 5,3
+  Config.addTileset(5, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"xwwwwwwwwwwwwwww"
+                       ,"mmxwwwwwwwwwwwww"
+                       ,"mmmxwwwwwwwwwwww"
+                       ,"mmmmmmxwwwwwwwww"
+                       ,"mmmmmmmmmmmmxwww"]);
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,4
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,5
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,6
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,7
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,8
+  Config.addTileset(5, Map.ALL_SAME, "w"); // 5,9
+  // 5,10
+  Config.addTileset(5, ["wwwwwwwwwwwwxmmm"
+                       ,"wwwwwwwwwwwwwxmm"
+                       ,"wwwwwwwwwwwwwwxm"
+                       ,"wwwwwwwwwwwwwwwx"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 5,11
+  Config.addTileset(5, ["mmmmmmmmmmmmdddd"
+                       ,"mmm^ mmmmmmmmddd"
+                       ,"mmm$ xwxmmmmmmdd"
+                       ,"mmmmmwwwwwxmmmmd"
+                       ,"xmmmmwwwwwwmmmmm"
+                       ,"wxmmmwwwwwwmmmmm"
+                       ,"wwmmmwwwwwwxmmmm"
+                       ,"wwxmmxwwwwwwx  m"
+                       ,"wwwx  xwwwwwwwwx"
+                       ,"wwwwx  xwwwwwwww"
+                       ,"wwwwwx  wwwwwwww"
+                       ,"wwwwwww67wwwwwww"
+                       ,"wwwwwwww62wwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwww4wwx"
+                       ,"wwwwwwwwwwww6   "]);
+  // 5,12
+  Config.addTileset(5, ["dddddddddddddddd"
+                       ,"dddddddddddddddd"
+                       ,"dddddddddddddddd"
+                       ,"dddddddddddddddd"
+                       ,"mmmmmmmm/ddddddd"
+                       ,"mmmmmmmm+ddddddd"
+                       ,"mmmmdddddddddddd"
+                       ,"mmmddddddddddddd"
+                       ,"mmmddddddddddddd"
+                       ,"mmmdddddddddddmm"
+                       ,"mmmmmddddddddmmm"
+                       ,"mmmmmmddddddmmmx"
+                       ,"xmmmmmmmmmmmmmmw"
+                       ,"xmmmmmmmmmmmmmmw"
+                       ,"mmmmmmmmmmmmmmmw"
+                       ,"mmmxwwxmmmmmmmxw"]);
+  // 5,13
+  Config.addTileset(5, ["ddddddmmmmxwwwww"
+                       ,"ddddddmmmxwwwwww"
+                       ,"ddddddmmmwwwwwww"
+                       ,"ddddddmmmwwwwwww"
+                       ,"ddddddmmmwwwwwww"
+                       ,"dddddmmmmwwwwwww"
+                       ,"dddddmmmxwwwwwww"
+                       ,"dd mmmmmwwwwwwww"
+                       ,"dmmmmmmmwwwwwwww"
+                       ," mmmmmm xwwwwwww"
+                       ,"         xwwwwww"
+                       ,"wwwwwwx   xwwwww"
+                       ,"wwwwwww65w62wwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 5,14
+  Config.addTileset(5, ["wwwwwwxfffssssss"
+                       ,"wwwwwwxffffssssx"
+                       ,"wwwwwxfffffssxww"
+                       ,"wwwwwffffffsxwww"
+                       ,"wwwwxffffffxwwww"
+                       ,"wwwwfffffffwwwww"
+                       ,"wwwwfffffffxwwww"
+                       ,"wwwwffffffffwwww"
+                       ,"wwwxffffffffwwww"
+                       ,"wwwfffffffffwwww"
+                       ,"wwwfffffffffwwww"
+                       ,"wwwxffffffffxwww"
+                       ,"wwwwwxfffffffxww"
+                       ,"www87wwwxfffffff"
+                       ,"wwwffxwwwxffffff"
+                       ,"wwwfffxwwwxfffff"]);
+  // 5,15
+  Config.addTileset(5, ["xwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"xwwwwwwwwwwwwwww"
+                       ,"fxwwwwwwwwwwwwww"
+                       ,"ffwwwwwwwwwwwwww"]);
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,0
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,1
+  // 6,2
+  Config.addTileset(6, ["wwwwwwwwwwwwwwwx"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 6,3
+  Config.addTileset(6, ["mmmmmmmmmmmmxwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,4
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,5
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,6
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,7
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,8
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,9
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,10
+  Config.addTileset(6, Map.ALL_SAME, "w"); // 6,11
+  // 6,12
+  Config.addTileset(6, ["wwwwwwwwxmmmmmww"
+                       ,"wwwwwwwwwwwx xww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 6,13
+  Config.addTileset(6, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwwx"]);
+  // 6,14
+  Config.addTileset(6, ["wwwxfffxwwxfffff"
+                       ,"wwwwffffxx___fff"
+                       ,"wwwwxffff[___]ff"
+                       ,"wwwwwxfff[TTT]ff"
+                       ,"wwwwwwfff[}t{]ff"
+                       ,"wwwwwwffffffffff"
+                       ,"wwwwwwffffffffff"
+                       ,"wwwwwwxfffffffff"
+                       ,"wwwwwwwfffffffff"
+                       ,"wwwwwwxfffffffff"
+                       ,"wwwwwxffffffffff"
+                       ,"wwwwxffffffxxfff"
+                       ,"wwwxffffffxwwwxf"
+                       ,"wwwffffffxwwwwww"
+                       ,"wwxfffffxwwwwwww"
+                       ,"ffffffffwwwwwwww"]);
+  // 6,15
+  Config.addTileset(6, ["ffwwwwwwwwwwwwww"
+                       ,"ffwwwwwwwwwwwwww"
+                       ,"ffwwwwwwwwwwwwww"
+                       ,"ffwwwwwwwwwwwwww"
+                       ,"fxwwwwwwwwwwwwww"
+                       ,"xwwwwwwwwwwwwwww"
+                       ,"8ffxwwwwwwwwwwww"
+                       ,"ffffxwwwwwwwwwww"
+                       ,"fffffwwwwwwwwwww"
+                       ,"fffffwwwwwwwwwww"
+                       ,"fffffwwwwwwwwwww"
+                       ,"fffffwwwwwwwwwww"
+                       ,"ffffxwwwwwwwwwww"
+                       ,"wxffwwwwwwwwwwww"
+                       ,"wwffwwwwwwwwwwww"
+                       ,"ww65wwwwwwwwwwww"]);
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,0
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,1
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,2
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,3
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,4
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,5
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,6
+  // 7,7
+  Config.addTileset(7, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwx   "
+                       ,"wwwwwwwwwwwx    "
+                       ,"wwwwwwwwwww     "
+                       ,"wwwwwwwwwwwx    "
+                       ,"wwwwwwwwwwwwx ff"
+                       ,"wwwwwwwwwwwwwxff"
+                       ,"wwwwwwwwwwwwwwxf"
+                       ,"wwwwwwwwwwwwwwwx"]);
+  // 7,8
+  Config.addTileset(7, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ," xwwwwwwwwwwwwww"
+                       ,"  xwwwwwwwwwwwww"
+                       ,"uuuuwwwwwwwwwwww"
+                       ,"uuuu   xwwwwwwww"
+                       ,"ffffffff  7wwwww"
+                       ,"fffffffff 5wwwww"
+                       ,"fffffffffxwwwwww"
+                       ,"ffffffffxwwwwwww"]);
+  // 7,9
+  Config.addTileset(7, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwwx"
+                       ,"wwwwwwwwwwwwwx  "
+                       ,"wwwwwwwwwwwwx ff"
+                       ,"wwwwwwwwwwwx fff"
+                       ,"wwwwwwwwwwxfffff"]);
+  // 7,10
+  Config.addTileset(7, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwx  xwwww"
+                       ,"wwwwwwxmmmm wwww"
+                       ,"wwwwwxmmmmm wwww"
+                       ,"wwwwx mmcmm wwww"
+                       ,"wwx        xwwww"
+                       ,"wx         wwwww"
+                       ,"w fffff   xwwwww"
+                       ,"w ffffff xwwwwww"
+                       ,"xfffffffxwwwwwww"
+                       ,"ffffffffwwwwwwww"
+                       ,"ffffffffwwwwwwww"
+                       ,"ffffffffwwwwwwww"
+                       ,"ffffffffwwwwwwww"
+                       ,"fffffffxwwwwwwww"]);
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,11
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,12
+  // 7,13
+  Config.addTileset(7, ["wwwwwwwwwwwwwwwx"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 7,14
+  Config.addTileset(7, ["ffffffffwwwwwwww"
+                       ,"wxffffffwwwwwwww"
+                       ,"wwxfffffwwwwwwww"
+                       ,"wwwxfffxwwwwwwww"
+                       ,"wwwwfffwwwwwwwww"
+                       ,"wwwwfffwwwwwwwww"
+                       ,"wwwwxffwwwwwwwww"
+                       ,"wwwwwffwwwwwwwww"
+                       ,"wwwwwffwwwwwwwww"
+                       ,"wwwww65wwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwww87wwwwwwww"
+                       ,"wwwwww  wwwwwwww"]);  
+  Config.addTileset(7, Map.ALL_SAME, "w"); // 7,15  
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,0
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,1
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,2
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,3
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,4
+  // 8,5
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwx x"
+                       ,"wwwwwwwwwwwxmmmm"
+                       ,"wwwwwwwwwxmmmmmm"
+                       ,"wwwwwwwwx mmmmmm"
+                       ,"wwwwwwxsssssmmmx"
+                       ,"wwwxsssssssssssx"
+                       ,"wwwsssssssssssss"
+                       ,"wwwsssssssmmssss"
+                       ,"wwwssssssmmmssss"
+                       ,"wwwxssssmmmmssss"
+                       ,"wwwwxsssmmmmmsss"
+                       ,"wwwwwsssmmmmmmmm"
+                       ,"wwwwwsssmmmmmmmm"]);
+  // 8,6
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwxggg  f"
+                       ,"wwwwwwxgggggG` f"
+                       ,"wwwwxgggggggmmmm"
+                       ,"wwwxgggggg`mmmmm"
+                       ,"xwxggggggg*mmmmm"
+                       ,"s gggggggggmmmmm"
+                       ,"ssgggggggg   fff"
+                       ,"ss ~ggggg   ffff"
+                       ,"mmm&ggggxwxfffff"
+                       ,"mmmggggxwwwffffr"
+                       ,"mmm   xwwwxffffr"]);
+  // 8,7
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
                        ,"wwwwwxfffxwwwwww"
                        ,"wwwxffffffwwwwww"
                        ,"wwxfffffffwwwwww"
@@ -1092,7 +1446,7 @@ var WorldMap = (function() {
                        ,"fffffffff wwwwww"
                        ,"ffffffff  wwx xw"
                        ,"fffffmmmm xw mmx"
-                       ,"mm  mmmmm  Pmmmm"
+                       ,"mm  mmmmm  8mmmm"
                        ,"mm mmmmmm   mmmm"
                        ,"m  mmmmmDDD mmmm"
                        ,"ff  mmm DHD mmmm"
@@ -1100,8 +1454,8 @@ var WorldMap = (function() {
                        ,"ff    xwwwwwwxmm"
                        ,"rr  xwwwwwwwwwww"
                        ,"rr xwwwwwwwwwwww"]);
-  
-  Config.addTileset(0, ["wwxfffffxwwwwwww"
+  // 8,8
+  Config.addTileset(8, ["wwxfffffxwwwwwww"
                        ,"wwwxfffffwwwwwww"
                        ,"wwwwxffffwwwwwww"
                        ,"wwwww fffwwwwwww"
@@ -1110,15 +1464,15 @@ var WorldMap = (function() {
                        ,"wwww ssss wwwwww"
                        ,"wwwxsssssswwwwww"
                        ,"mmmmsssssswwwwww"
-                       ,"mmm3sssssswwwwxm"
-                       ,"mmmQssssssxwwxmm"
+                       ,"mmm^sssssswwwwxm"
+                       ,"mmm$ssssssxwwxmm"
                        ,"mmmmmm sss   mmm"
                        ,"mmmmmmmm   ffmmm"
                        ,"mmmmmmmm fffffmm"
                        ,"wx     fffffff  "
                        ,"wwx   ffffffffff"]);
-  
-  Config.addTileset(0, ["wwwwwwwxffffffff"
+  // 8,9
+  Config.addTileset(8, ["wwwwwwwxffffffff"
                        ,"wwwwwwxfffffffff"
                        ,"wwwwwxffffffffff"
                        ,"wwwwxfffffffffff"
@@ -1134,8 +1488,181 @@ var WorldMap = (function() {
                        ,"mxwwwxmmmm  DDDD"
                        ,"xwwwwwwwwwwwHHHD"
                        ,"wwwwwwwwwwwwwx  "]);
-  
-  Config.addTileset(1, ["fffwwwwwwwwwwwww"
+  // 8,10
+  Config.addTileset(8, ["rrrrrrrwwwwwwwww"
+                       ,"fffrfffwwwww4www"
+                       ,"fffrfffxwwww6 xw"
+                       ,"fffrffffxwwwx  x"
+                       ,"rrrrffffff      "
+                       ,"ffffffffffdddd  "
+                       ,"ffffffffffdddddd"
+                       ,"fffffffff dddddd"
+                       ,"ffffffffmmmddddd"
+                       ,"  fffffmmmmddddd"
+                       ,"mmmmmmmmmmm  fff"
+                       ,"mmmmmmmmmmsssfff"
+                       ,"mmmmmmmmmsssssff"
+                       ,"mmmmmmmsssssss f"
+                       ," mmmmmsssssssssf"
+                       ," mmmmssssxwwxssf"]);
+  // 8,11
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"xwwwwwwwwwwwwwww"
+                       ," wwwwwwwwwwwwwww"
+                       ,"dxwwwwwwwwwwwwww"
+                       ,"ddxwwwwwwwwwwwww"
+                       ,"dddwwwwwwwwx  xw"
+                       ,"dddxwwwwwwx     "
+                       ,"fffffxwwwx      "
+                       ,"ffffffffffffffff"
+                       ,"ffffffffffffffff"
+                       ,"ffffffffffffffff"
+                       ,"ffffffffffffffff"
+                       ,"ffffffffffffffff"]);
+  // 8,12
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwx  "
+                       ,"wwwwwwwwwx      "
+                       ,"wwwwwwwwx ffffff"
+                       ,"wwwwwwwx fffffff"
+                       ,"xwwwwx  ffffffff"
+                       ,"  xwx ffffffffff"
+                       ,"f     ffffffffff"
+                       ,"ff          ffff"
+                       ,"fff     xwwx fff"
+                       ,"fff    xwwww  ff"
+                       ,"fff   xwwwwwx  f"]);
+  // 8,13
+  Config.addTileset(8, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwx    7w"
+                       ,"wwwwwwwwx     5w"
+                       ,"x            xww"
+                       ,"      xwwwwwwwww"
+                       ,"  xwwwwwwwwwwwww"
+                       ,"  wwwwwwwwwwwwww"
+                       ,"f xwwwwwwwwwwwww"
+                       ,"ff wwwwwwwwwwwww"
+                       ,"ff xwwwwwwwwwwww"
+                       ,"fff xwwwwwwwwwww"
+                       ,"ffff  xwwwwwwwww"
+                       ,"ffffff xwwwwwwww"
+                       ,"fffffff xwwwwwww"
+                       ,"ffffffff wwwwwww"]);
+  // 8,14
+  Config.addTileset(8, ["wwwwww  wwwwwwww"
+                       ,"wwwwwx  wwwwwwww"
+                       ,"wwwxffffwwwwwwww"
+                       ,"wwxfffffwwwwwwww"
+                       ,"wxffffffwwwwwwww"
+                       ,"xfffffffxwwwwwww"
+                       ," ffffffmmmxwwwww"
+                       ," ffffffmmmmxwwww"
+                       ,"xfffffmmmmmmxwww"
+                       ,"wxffffmmmmmmmmm7"
+                       ,"wwxfffmmmmmmmmm5"
+                       ,"wwwx  mmmmmmmmxw"
+                       ,"wwww   mmmmmmxww"
+                       ,"wwww   mmmmmmwww"
+                       ,"wwwwx    mmmmwww"
+                       ,"wwwwwx    mmmwww"]);
+  Config.addTileset(8, Map.ALL_SAME, "w"); // 8,15
+  Config.addTileset(9, Map.ALL_SAME, "w"); // 9,0
+  Config.addTileset(9, Map.ALL_SAME, "w"); // 9,1
+  // 9,2
+  Config.addTileset(9, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwww8  xwwwwwwx"
+                       ,"wwwww1x    xwwxs"
+                       ,"wwwwwwwwx  sssss"
+                       ,"wwwwwwwwwwxssmmm"
+                       ,"wwwwwwwwwwwssmmm"
+                       ,"wwwwwwwwwwwxsssm"
+                       ,"wwwwwwwwwwwwxsss"
+                       ,"wwwwwwwwwwwwwxss"]);
+  // 9,3
+  Config.addTileset(9, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"ssxwwwwwwwwwwwww"
+                       ,"sssmmmmmxwwwwwww"
+                       ,"sssmmmmmmmxwwwww"
+                       ,"mssssmmmmmmxwwww"
+                       ,"mmssssmmmmmmxwww"
+                       ,"mmssssssmmmmmxwx"
+                       ,"mmssssssssmmmsss"
+                       ,"ssssssssssssssss"]);
+  // 9,4
+  Config.addTileset(9, ["wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwwx"
+                       ,"wwwwwwwwwwwwwxmm"
+                       ,"wwwwwwwwwwwx  mm"
+                       ,"wwwxssssssssssmm"
+                       ,"wwxssssssssssssm"
+                       ,"wxssssssssssssss"
+                       ,"xsssssssssssssss"
+                       ,"ssssssssssssssss"
+                       ,"ssssssssssssssss"
+                       ,"ssssssfffsssssss"
+                       ,"ssssssffffssssss"
+                       ,"sssssssfffssssDE"]);
+  // 9,5
+  Config.addTileset(9, ["wwwwwssssmmmmmmm"
+                       ,"wwwwwsssssmmmmmm"
+                       ,"wwwwwsssssssssss"
+                       ,"wwwwxssssssssssx"
+                       ,"mmmmmmmsssssssxw"
+                       ,"mmmmmmmssssxwwww"
+                       ,"mmmmmmxwwwwwwwww"
+                       ,"mmmmmxwwwwwwwwww"
+                       ,"mmmxwwwwwwwwwwww"
+                       ,"mmmwwwwwwwwwwwww"
+                       ,"ssxwwwwwwwwwwwww"
+                       ,"sswwwwwwwwwwwwww"
+                       ,"sswwwwwwwwwwwwww"
+                       ,"ssxwwwwwwwwwwwww"
+                       ,"   xwwwwwwwwwwww"
+                       ," v  xwwwwwwwwwww"]);
+  // 9,6
+  Config.addTileset(9, ["mmm  xwwwwffffff"
+                       ,"m   xwwwwxffffff"
+                       ,"  xwwwwwx  fffff"
+                       ,"wwwwwx     fffff"
+                       ,"wwwx   mmm fffff"
+                       ,"wwxmmmmmmm  ffff"
+                       ,"wxmmmmmmmmm   ff"
+                       ,"wmmmmmmmmmmmm   "
+                       ,"wmmmmmmfffmmmm  "
+                       ,"wmmmmm ffffmmm  "
+                       ,"wmmmmmmfffff    "
+                       ,"wxmmcmmfffffmmm "
+                       ,"wwxfffffffmmmmmm"
+                       ,"wwwffffffmmmmmmm"
+                       ,"wwwxffmmmmmm xww"
+                       ,"wwww  mmmmmxwwww"]);
+  // 9,7
+  Config.addTileset(9, ["fffwwwwwwwwwwwww"
                        ,"fffwwwwwwwwwwwww"
                        ,"ffxwwwwwwwwwwwww"
                        ,"f wwwwwwwwwwwwww"
@@ -1151,8 +1678,8 @@ var WorldMap = (function() {
                        ,"xwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"
                        ,"wwwwwwwwwwwwwwww"]);
-  
-  Config.addTileset(1, ["wwwx  ffffffffff"
+  // 9,8
+  Config.addTileset(9, ["wwwx  ffffffffff"
                        ,"wwwwx ffffffffff"
                        ,"wwwwwx ffffffff "
                        ,"wwwwww   ffff   "
@@ -1168,28 +1695,215 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwx  "
                        ,"wwwwwwwwwwwwx   "
                        ,"wwwwwwwwwwww    "]);
-   
-   Config.addTileset(1, ["xwwwwwwwwwwwww  "
-                        ," wwwwwwwwwwwww m"
-                        ,"xwwwwwwwwwwwwx m"
-                        ,"wwwwwwwwwwwwx   "
-                        ,"wwwwwwwwwwx     "
-                        ,"wwwwwwwwwx      "
-                        ,"xwwwwwwx    xwww"
-                        ,"  xwwwx    xwwww"
-                        ,"   xww4444wwwwww"
-                        ,"    xx    xwwwww"
-                        ,"     ffffffffxww"
-                        ,"    ffffffffffxw"
-                        ,"   ffffffffffffx"
-                        ,"  fffff KK fffff"
-                        ,"  ffff <KK> ffff"
-                        ,"  fff (<KK>) fff"]);
-   
-   Config.addTileset(2, Map.ALL_SAME, "w");
-   
-   
-   Config.addTileset(2, ["wwwwwwwwwwwwx   "
+  // 9,9
+  Config.addTileset(9, ["xwwwwwwwwwwwww  "
+                       ," wwwwwwwwwwwww m"
+                       ,"xwwwwwwwwwwwwx m"
+                       ,"wwwwwwwwwwwwx   "
+                       ,"wwwwwwwwwwx     "
+                       ,"wwwwwwwwwx      "
+                       ,"xwwwwwwx    xwww"
+                       ,"  xwwwx    xwwww"
+                       ,"   xww4444wwwwww"
+                       ,"    xx    xwwwww"
+                       ,"     ffffffffxww"
+                       ,"    ffffffffffxw"
+                       ,"   ffffffffffffx"
+                       ,"  fffff KK fffff"
+                       ,"  ffffLLLLLLffff"
+                       ,"  fff LLLLLL fff"]);
+  // 9,10
+  Config.addTileset(9, ["mmmmmssxwwwww ss"
+                       ,"mmmmssxwwwwwwxss"
+                       ,"mmsssxwwwwwwwxs "
+                       ,"   xwwwwwwwwxfff"
+                       ," xwwwwwwwwwxffff"
+                       ,"xwwwwwwwwww ffff"
+                       ,"wwwwwwwwwww ffff"
+                       ,"wwwwwwwwwwwx    "
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"]);
+  // 9,11
+  Config.addTileset(9, ["ffffffffffffffff"
+                       ," fffffffffffffff"
+                       ,"fffffffffffffff "
+                       ,"fffff   xwwwwwx "
+                       ,"ffff  xwwwwwwwww"
+                       ,"ffff xwwwwwwwwww"
+                       ,"fff xwwwwwwwwwww"
+                       ,"   xwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwwww"
+                       ,"wwwwwwwwwwwwwx  "
+                       ,"wwwwwwwwwwx    m"
+                       ,"wwwwwwwwwx mmmmm"
+                       ,"wwwwwwwww  mmmmm"
+                       ,"wwwwwwwww mmmmmf"
+                       ,"wwwwwwwww mmmm f"]);
+  // 9,12
+  Config.addTileset(9, ["ff    wwwwwwwx f"
+                       ,"f    xwwwwwwwwff"
+                       ,"    xwwwwwwwwwff"
+                       ,"   xwwwwwwwwwxff"
+                       ,"wwwwwwwwwwwwxfff"
+                       ,"wwwwwwwwwwxfffff"
+                       ,"wwwwwwwwwwfffff "
+                       ,"wwwwwwwww8ffff  "
+                       ,"wwwwwwwww6      "
+                       ,"x     7wwwwwwwx "
+                       ,"      5wwwwwwww "
+                       ,"mmmmm wwwwwwwww "
+                       ,"mmmmm xwwwwwwwww"
+                       ,"mmmmm  xwwwwwww "
+                       ,"fffff   xwwwwwxf"
+                       ,"fffffffff      f"]);
+  // 9,13
+  Config.addTileset(9, ["fffffffffxwwwwww"
+                       ,"ffffffffffxwwwww"
+                       ,"fffffffffffwwwww"
+                       ,"fffffffffffwwwww"
+                       ,"f---fffffffwwwww"
+                       ,"[---]fffffxwwwww"
+                       ,"[UtU]   xwwwwwww"
+                       ,"[}t{]   wwwwwwww"
+                       ," EDD    wwwwwwww"
+                       ," HHD    xwwwwwww"
+                       ," H   ff mmmmmxww"
+                       ," H   ffmmmmmmmmm"
+                       ,"HH  fffmmmmmmmmm"
+                       ," ffffffmmmmmmmmm"
+                       ,"ffffff       mmm"
+                       ,"fffff         mm"]);
+  // 9,14
+  Config.addTileset(9, ["wwwwwwx      www"
+                       ,"wwwwwwwx     www"
+                       ,"wwwwwwwwx    www"
+                       ,"wwwwwwwww   xwww"
+                       ,"wwwwwwwwx   wwww"
+                       ,"wwwwwwwx    wwww"
+                       ,"wwwwwww     wwww"
+                       ,"wwwwwwx    xwwww"
+                       ,"wwwxHD    xwwwww"
+                       ,"wwx HD mmxwwwwww"
+                       ,"x   7I mmwwwwwww"
+                       ,"mm    mmmwwwwwww"
+                       ,"mm    mmmxwwwwww"
+                       ,"mm    mmmmmmxwww"
+                       ,"mm      mmmmmxww"
+                       ,"mm  mmm  mmmm ww"]);
+  Config.addTileset(9, Map.ALL_SAME, "w"); // 9,15
+  Config.addTileset(10, Map.ALL_SAME, "w"); // 10,0
+  // 10,1
+  Config.addTileset(10, ["wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwxmm"
+                        ,"wwwwwwwwwwwwxmmm"
+                        ,"wwwwwwwwwwwxmmmm"
+                        ,"wwwwwwwwww mmmcm"]);
+  // 10,2
+  Config.addTileset(10, ["wwwwwwwwwwwwwwss"
+                        ,"wwwwwwwwwwwwwwxs"
+                        ,"wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwww "
+                        ,"wwwwwwwwwwwwwwx "
+                        ,"wwwwwwwwwwwwwx  "
+                        ,"wwwwwwwwwwwwxfff"
+                        ,"wwwwwwwwwwwxffff"
+                        ,"wwwwwwwwwwx ffff"
+                        ,"mmmmmmmmmmmmmfff"
+                        ,"mmmmmmmmmmmmmm  "
+                        ,"mmmmmmmmmmmmmm  "
+                        ,"mmmmmmmmmmcmm   "
+                        ,"mmmmmmmmmm     x"]);
+  // 10,3
+  Config.addTileset(10, ["sssssssffffffsss"
+                        ,"smmssssffffffsss"
+                        ,"smmmsssfffffssss"
+                        ," mmmssssfffsssss"
+                        ," mmmmsssssssssss"
+                        ,"mmmmmssssssss   "
+                        ,"mmmmmsssssss xww"
+                        ,"mmmmm sssss xwww"
+                        ,"fmmm   sss  wwww"
+                        ,"ff   mmm   xwwww"
+                        ,"ffmmmmmm  xwwwww"
+                        ,"fmmmmmmm  wwwwww"
+                        ," mmmmmm   wwwwww"
+                        ," mmmmm    wwwwww"
+                        ,"xwwwwx    wwwwww"
+                        ,"wwwwwwx   wwwwww"]);
+  // 10,4
+  Config.addTileset(10, ["ssssssssssssssDH"
+                        ,"ssssssssssssssDH"
+                        ,"ssssss xwwwwwwww"
+                        ,"sss   xwwwwwwwww"
+                        ,"s    xwwwwwwwwww"
+                        ,"   xwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwww87wwwwwww"
+                        ,"wwwwwwx  wwwwwww"
+                        ,"wwwwwx   wwwwwww"
+                        ,"wwwwx    wwwwwww"
+                        ,"wwwx mm  wwwwwww"]);
+  // 10,5
+  Config.addTileset(10, [" vv  wwwwwwwwwww"
+                        ,"    xwwwwwwwwwww"
+                        ,"wwwwwww8 xwwwwww"
+                        ,"wwwwwww6   xwwww"
+                        ,"wwwwwwwwx     xw"
+                        ,"wwwwwwwwwwx    7"
+                        ,"wwwwwwwwwwwwwx 5"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 10,6
+  Config.addTileset(10, ["wwww   mmmxwwwww"
+                        ,"wwww   mmxwwwwww"
+                        ,"wwwwx   xwwwwwww"
+                        ,"wwwwwx xwwwwwwww"
+                        ,"wwwwwwHwwwwwwwww"
+                        ,"wwwwwx wwwwwwwww"
+                        ,"wwwww  xwwwwwwww"
+                        ,"wwwww   wwwwwwww"
+                        ,"wwwww   xwwwwwww"
+                        ,"wwwwwx   wwwwwww"
+                        ,"wwwwwwrr xwwwwww"
+                        ,"wwwwww rrrwwwwww"
+                        ,"wwwwwx r  wwwwww"
+                        ,"wwwww rr  xwwwww"
+                        ,"wwwwx r    wwwww"
+                        ,"wwwx  r rrrwwwww"]);
+  Config.addTileset(10, Map.ALL_SAME, "w"); // 10,7
+  // 10,8
+  Config.addTileset(10, ["wwwwwwwwwwwwx   "
                         ,"wwwwwwwwwwwwwx  "
                         ,"wwwwwwwwwwwwwwwx"
                         ,"wwwwwwwwwwwwwwww"
@@ -1205,11 +1919,11 @@ var WorldMap = (function() {
                         ,"wwwwwwwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"]);
-   
-   Config.addTileset(2, ["  fff (TttT) fff"
-                        ,"  fff (TttT) fff"
-                        ,"  fff (TttT) fff"
-                        ,"  ffff(}tt{)ffff"
+  // 10,9
+  Config.addTileset(10, ["  fff LLLLLL fff"
+                        ,"  fff LLLLLL fff"
+                        ,"  fff LLLLLL fff"
+                        ,"  ffffLLLLLLffff"
                         ,"x fffff    fffff"
                         ,"w  ffff    ffff "
                         ,"wx  fff    fff  "
@@ -1222,7 +1936,163 @@ var WorldMap = (function() {
                         ,"wwww  xwwwwwwwww"
                         ,"wwwwxxwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"]);
-  */
+  Config.addTileset(10, Map.ALL_SAME, "w"); // 10,10
+  // 10,11
+  Config.addTileset(10, ["wwwwwwwww  mmmmf"
+                        ,"wwwwwwwwwx  mmm "
+                        ,"wwwwwwwwww  mmmm"
+                        ,"wwwwwwwwww  mmmm"
+                        ,"wwwwwwwwwx  mmmm"
+                        ,"wwwwwwwx   mmmmm"
+                        ,"wwwwxmmm mmmmmmm"
+                        ,"wwwxmmmmmmmmmmmm"
+                        ,"wwwmmmmmmmmmmmmm"
+                        ,"wwwmmmmmmmmmmmmg"
+                        ,"wwwmmmmmmmmmmmm&"
+                        ,"wwwmmmmmmmmmmmmg"
+                        ,"wwwxmmmmmmmmmmmm"
+                        ,"wwwwxmmmmmmmmmmm"
+                        ,"wwwwwxmmmmmmmmmm"
+                        ,"wwwwwwxmmmmmmmmm"]);
+  // 10,12
+  Config.addTileset(10, ["fffffffffffff   "
+                        ,"ffffffffffffff  "
+                        ,"ffffffffffffff  "
+                        ,"mffffffffffff mm"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"mmmmmmmgGGGrrrrr"
+                        ,"mmgggggggggmmmmm"
+                        ,"ggggggggggmmmmmm"
+                        ,"ggggggmmmmmmmmrr"
+                        ,"ggggmmmmmmmmmmrm"
+                        ,"gggmmmmmmmmmmmrm"
+                        ,"~g*mmmmmmmmmmmrm"
+                        ,"~gggmmmrrrrrrrrm"
+                        ,"~gggmmmrmmmmmmrm"
+                        ,"gggmmmmrmmmmmmrm"]);
+  // 10,13
+  Config.addTileset(10, ["   mmmmmmmmm    "
+                        ," mmmmmmmmmmmm   "
+                        ,"mmmmmmmmmmmmmm  "
+                        ,"mmmmmmmmmmmmmm  "
+                        ,"mmmmmmmmmmmmmmm "
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"rrrrrrrrrmmmmmmm"
+                        ,"mmmmmmmmrmmmmmmm"
+                        ,"mmmmmmmmrmmmmmmm"
+                        ,"rrrrrrrrrrrrrrrr"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"mmrrrrmmmmmmmmmm"
+                        ,"mmmmmrmmmmmmmmmm"
+                        ,"mmmmmrmmmmmmmmmm"
+                        ,"mmmmmrrrrrrmmmmm"]);
+  // 10,14
+  Config.addTileset(10, ["   mmmmm  mmmmxw"
+                        ,"  mmmmmm  mmmmmx"
+                        ,"  mmmmmm  mmmmmm"
+                        ,"  mmmmmm   mmmmm"
+                        ,"            mmmm"
+                        ,"m    mmmmmm  mmm"
+                        ,"mm  mmmmmmmm  mm"
+                        ,"mmmmmmmmmmmmm   "
+                        ,"mmmmmm   mmmmm  "
+                        ,"rmmmm     mmmm  "
+                        ,"rmmmmm     mmm  "
+                        ,"rmmmmmmmssssssss"
+                        ,"rmmmmmmmssssssss"
+                        ,"rmmmmsssssssssss"
+                        ,"rmmmssssssssssss"
+                        ,"rmmmssssssssssss"]);
+  // 10,15
+  Config.addTileset(10, ["wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"xwwwwwwwwwwwwwww"
+                        ,"mmxwwwwwwwwwwwww"
+                        ,"mmmxwwwwwwwwwwww"
+                        ,"mmmmmmxwwwwwwwww"
+                        ,"mmmmmmmxwwwwwwww"
+                        ,"   %mmmmwwwwwwww"
+                        ,"   #mmmmwwwwwwww"
+                        ,"mmmmmmmmwwwwwwww"
+                        ,"mmmmmmmxwwwwwwww"
+                        ,"mmmmmmxwwwwwwwww"
+                        ,"s  mmmwwwwwwwwww"
+                        ,"s     xwwwwwwwww"
+                        ,"s      xwwwwwwww"
+                        ,"sDDD     xwwwwww"]);
+
+  Config.setMapping({
+    " " : {cssClass:"none"}
+   ,"c" : {cssClass:"cave"}
+   ,"d" : {cssClass:"desert", hasCorners:true, borderTile:"d"}
+   ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
+   ,"g" : {cssClass:"grass", hasCorners:true, borderTile:"goG&*~`"}
+   ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"}
+   ,"o" : {cssClass:"hole"}
+   ,"r" : {cssClass:"river", hasCorners:true, borderTile:"r"}
+   ,"s" : {cssClass:"swamp", hasCorners:true, borderTile:"so:;,."}
+   ,"t" : {cssClass:"town empty"}
+   ,"u" : {cssClass:"ruins", block:{width:4, height:2}}
+   ,"v" : {cssClass:"village"}
+   ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxH12345678"}
+   ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wx12345678"}
+   
+   ,"C" : {cssClass:"castle", block:{width:2,height:2}}
+   ,"D" : {cssClass:"docks", hasCorners:true, hasSides:true, borderTile:"DEFH"}
+   ,"E" : {cssClass:"docks top"}
+   ,"F" : {cssClass:"waterfall"}
+   ,"G" : {cssClass:"grass"}
+   ,"H" : {cssClass:"water"}
+   ,"I" : {cssClass:"docks right"}
+   ,"K" : {cssClass:"coneria castle top", block:{width:2, height:1}}
+   ,"L" : {cssClass:"coneria", block:{width:6, height:6}}
+   ,"M" : {cssClass:"mirage tower", block:{width:2, height:2}}
+   ,"T" : {cssClass:"town"}
+   ,"U" : {cssClass:"pravoka"}
+   ,"V" : {cssClass:"desert caravan", hasCorners:true, borderTile:"V"}
+   
+   ,"1" : {cssClass:"water top"}
+   ,"2" : {cssClass:"water left"}
+   ,"3" : {cssClass:"water right"}
+   ,"4" : {cssClass:"water bottom"}
+   ,"5" : {cssClass:"coastline tl"}
+   ,"6" : {cssClass:"coastline tr"}
+   ,"7" : {cssClass:"coastline bl"}
+   ,"8" : {cssClass:"coastline br"}
+   ,"9" : {cssClass:"mountain top"}
+   ,"0" : {cssClass:"mountain left"}
+   ,"!" : {cssClass:"mountain right"}
+   ,"@" : {cssClass:"mountain bottom"}
+   ,"#" : {cssClass:"mountain tl"}
+   ,"$" : {cssClass:"mountain tr"}
+   ,"%" : {cssClass:"mountain bl"}
+   ,"^" : {cssClass:"mountain br"}
+   ,"&" : {cssClass:"grass tl"}
+   ,"*" : {cssClass:"grass tr"}
+   ,"~" : {cssClass:"grass bl"}
+   ,"`" : {cssClass:"grass br"}
+   ,":" : {cssClass:"swamp tl"}
+   ,";" : {cssClass:"swamp tr"}
+   ,"," : {cssClass:"swamp bl"}
+   ,"." : {cssClass:"swamp br"}
+   ,"+" : {cssClass:"desert tl"}
+   ,"=" : {cssClass:"desert tr"}
+   ,"/" : {cssClass:"desert bl"}
+   ,"|" : {cssClass:"desert br"}
+
+   ,"-" : {cssClass:"town wall top pravoka", block:{width:3, height:2}}
+   ,"_" : {cssClass:"town wall top", block:{width:3, height:2}}
+   ,"[" : {cssClass:"town wall left", block:{width:1, height:3}}
+   ,"]" : {cssClass:"town wall right", block:{width:1, height:3}}
+   ,"}" : {cssClass:"town wall gate left"}
+   ,"{" : {cssClass:"town wall gate right"}
+   ,")" : {}
+   ,")" : {}
+   ,">" : {}
+   ,"<" : {}
+  });
   
   var build = function($container) {
     for (var y = 0; y < this.Config.maxTilesetY(); y++) {

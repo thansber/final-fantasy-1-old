@@ -11,12 +11,6 @@ var Debug = (function() {
     };
     
     var event = function($target) {
-      if ($target.is("#buildWorldMap")) { 
-        $target.attr("disabled", true);
-        MapBuilder.build(WorldMap.Config, $("#world .map"), function($tileset, y, x) {
-          MapBuilder.buildTileset($tileset, y, x);
-        });
-      };
       if ($target.is("#toggleMapGridlines")) { toggleGridlines($target); }
       if ($target.is(".tile")) { highlightTile($target); }
       if ($target.closest(".tilesets").length > 0) {
@@ -71,8 +65,9 @@ var Debug = (function() {
       $target.addClass("selected");
       $("img.border", $section).addClass("hidden");
       
-      selectedTilesetX = $target.index();
-      selectedTilesetY = $target.parent().index();
+      var coords = $("span", $target).html().split(",");
+      selectedTilesetY = parseInt(coords[0]);
+      selectedTilesetX = parseInt(coords[1]);
       var tileset = currentTileset();
       
       if (!WorldMap.Config.validateTileSet(selectedTilesetY, selectedTilesetX)) {
@@ -84,18 +79,6 @@ var Debug = (function() {
       $map.empty();
       
       MapBuilder.buildTileset($map, selectedTilesetY, selectedTilesetX);
-      /*
-      for (var y = 0; y < WorldMap.Config.size; y++) {
-        var $row = $("<div/>").addClass("row");
-        for (var x = 0; x < WorldMap.Config.size; x++) {
-          var coords = {tilesetX:selectedTilesetX, tilesetY:selectedTilesetY, tileX:x, tileY:y};
-          var tileClasses = WorldMap.Config.getTileClasses(coords);
-          var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
-          $row.append($tile);
-        }
-        $map.append($row);
-      }
-      */
 
       toggleGridlines($("#toggleMapGridlines"));
       $map.addClass("loaded");
@@ -105,6 +88,21 @@ var Debug = (function() {
       var $row = $(".row", $tilesets).eq(y);
       var $tileset = $(".tileset", $row).eq(x);
       load($tileset);
+    };
+    
+    var loadLastTileset = function() {
+      var $lastRow = $(".row:last", $tilesets);
+      var $lastTileset;
+      $(".tileset", $lastRow).each(function(i) {
+        var coords = $("span", $(this)).html().split(",");
+        var tileset = WorldMap.Config.getTileset(coords[0], coords[1]);
+        if (!tileset) {
+          return false;
+        } else {
+          $lastTileset = $(this);
+        }
+      });
+      load($lastTileset);
     };
     
     var surroundingToChar = function(surroundingTile) {
@@ -124,6 +122,7 @@ var Debug = (function() {
       event: event
      ,init: init
      ,loadByCoords: loadByCoords
+     ,loadLastTileset: loadLastTileset
     } 
   })();
   
