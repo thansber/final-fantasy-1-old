@@ -1,4 +1,7 @@
-#world { width:50%; height:100%; float:left; }
+#world { width:50%; height:100%; float:left; overflow:auto; }
+#world .map { width:4096px; height:4096px; }
+#world .map .tileset.row { clear:both; }
+#world .map .tileset.row .tileset { width:256px; height:256px; color:white; float:left; } 
 #view { margin:2em; width:112px; height:112px; border:1px solid black; overflow:hidden; background-image:url(../images/grass_test.png); background-position:-64px -64px; }
 #player { width:16px; height:16px; background-color:red; margin-top:48px; margin-left:48px;}
 
@@ -79,6 +82,11 @@
 .map.world .tile.town.empty { background-color:#BDBDBD; background-image:none; }
 .map.world .tile.village { background-position:-48px 0px; }
 
+.map.world .castle.AA { background-position:-96px -32px; }
+.map.world .castle.BA { background-position:-112px -32px; }
+.map.world .castle.AB { background-position:-96px -48px; }
+.map.world .castle.BB { background-position:-112px -48px; }
+
 .map.world .wall.left.AA { background-position:-160px -48px; }
 .map.world .wall.left.AB { background-position:-160px -64px; }
 .map.world .wall.left.AC { background-position:-160px -80px; }
@@ -96,9 +104,15 @@
 .map.world .wall.gate.left { background-position:-176px -112px; }
 .map.world .wall.gate.right { background-position:-192px -112px; }
 
-.map.world .castle.AA { background-position:-176px -64px; }
-.map.world .castle.AB { background-position:-176px -80px; }
-.map.world .castle.AC { background-position:-176px -96px; }
-.map.world .castle.BA { background-position:-192px -64px; }
-.map.world .castle.BB { background-position:-192px -80px; }
-.map.world .castle.BC { background-position:-192px -96px; }
+.map.world .coneria.AA { background-position:-176px -64px; }
+.map.world .coneria.AB { background-position:-176px -80px; }
+.map.world .coneria.AC { background-position:-176px -96px; }
+.map.world .coneria.BA { background-position:-192px -64px; }
+.map.world .coneria.BB { background-position:-192px -80px; }
+.map.world .coneria.BC { background-position:-192px -96px; }
+
+.map.world .hole { background-position:-80px -48px; }
+.map.world .mirage.tower.AA { background-position:-128px -48px; }
+.map.world .mirage.tower.BA { background-position:-144px -48px; }
+.map.world .mirage.tower.AB { background-position:-128px -64px; }
+.map.world .mirage.tower.BB { background-position:-144px -64px; }

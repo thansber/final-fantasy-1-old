@@ -1,24 +1,28 @@
 var Map = (function() {
   
-  var ALL_WATER = "WATER";
+  var ALL_SAME = "ALL";
   
   Config = function(opt) {
     this.size = opt.size;
     this.tilesets = [];
-    this.mapping = opt.mapping;
+    this.mapping = $.extend(true, {}, opt.mapping);
   };
   
-  Config.prototype.addTileset = function(row, tileset) {
+  Config.prototype.setMapping = function(mapping) {
+    this.mapping = $.extend(true, {}, mapping); 
+  };
+  
+  Config.prototype.addTileset = function(row, tileset, allTileType) {
     if (!this.tilesets[row]) {
       this.tilesets[row] = [];
     }
     
-    if (tileset == ALL_WATER) {
+    if (tileset == ALL_SAME) {
       tileset = [];
       for (var i = 0; i < this.size; i++) {
         var tileRow = "";
         for (var j = 0; j < this.size; j++) {
-          tileRow += "w";
+          tileRow += allTileType;
         }
         tileset.push(tileRow);
       }
@@ -235,8 +239,12 @@ var Map = (function() {
   
   Config.prototype.validateTileSet = function(y, x) {
     var tileset = this.getTileset(y, x);
+    if (!tileset) {
+      alert("No tileset exists at [" + y + "][" + x + "]");
+      return false;
+    }
     if (tileset.length != this.size) {
-      alert("Tileset[" + x + "][" + y + "] has " + tileset.length + " rows, it should have " + this.size);
+      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + this.size);
       return false;
     }
     
@@ -252,7 +260,7 @@ var Map = (function() {
   
   return {
     Config : Config
-   ,ALL_WATER: ALL_WATER
+   ,ALL_SAME: ALL_SAME
   };
   
 })();

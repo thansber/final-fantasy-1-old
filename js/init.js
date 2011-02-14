@@ -19,7 +19,18 @@ $(document).ready(function() {
     }
   });
   
-  $("#debug .menu a:first").click();
-  $("#debug #loadTileSet").click();  
-  Debug.WorldMapHelper.loadByCoords(1, 14);
+  $("#debug .menu a:first").click();  
+  
+  var lastTilesetX = -1;
+  var lastTilesetY = WorldMap.Config.maxTilesetY() - 1;
+  for (var x = 0; x < WorldMap.Config.size; x++) {
+    var tileset = WorldMap.Config.getTileset(lastTilesetY, x);
+    if (tileset) {
+      lastTilesetX = x;
+    } else {
+      break;
+    }
+  };
+  
+  Debug.WorldMapHelper.loadByCoords(lastTilesetY, lastTilesetX);
 });

@@ -10,15 +10,19 @@
   <script type="text/javascript" src="js/movement.js"></script>
   <script type="text/javascript" src="js/map_config.js"></script>
   <script type="text/javascript" src="js/world_map.js"></script>
+  <script type="text/javascript" src="js/map_builder.js"></script>
   <script type="text/javascript" src="js/debug.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
 <body>
 
 <div id="world">
+  <div class="world map"></div>
+<!--  
   <div id="view">
     <div id="player"></div>
   </div>
+-->
 </div>
 
 <div id="debug">
@@ -28,6 +32,7 @@
   </ul>
 
   <section class="world-map curve all">
+    <button id="buildWorldMap">Build entire world map</button>
     <label>Tile Sets:</label>
     <div class="tilesets"></div>
     <label for="toggleMapGridlines">Show gridlines <input type="checkbox" id="toggleMapGridlines" /></label>

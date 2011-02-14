@@ -11,10 +11,17 @@ var Debug = (function() {
     };
     
     var event = function($target) {
-      if ($target.is("#loadTileSet")) { load($target); }
+      if ($target.is("#buildWorldMap")) { 
+        $target.attr("disabled", true);
+        MapBuilder.build(WorldMap.Config, $("#world .map"), function($tileset, y, x) {
+          MapBuilder.buildTileset($tileset, y, x);
+        });
+      };
       if ($target.is("#toggleMapGridlines")) { toggleGridlines($target); }
       if ($target.is(".tile")) { highlightTile($target); }
-      if ($target.is("p") && $target.closest(".tilesets").length > 0) { load($target); };
+      if ($target.closest(".tilesets").length > 0) {
+        load($target.is(".tileset") ? $target : $target.closest(".tileset")); 
+      };
     };
     
     var highlightTile = function($tile) {
@@ -50,21 +57,17 @@ var Debug = (function() {
     
     var init = function(opt) {
       $tilesets = $(opt.tilesets);
-      for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
-        var $tilesetRow = $("<div/>").addClass("row");
-        for (var x = 0; x < WorldMap.Config.maxTilesetX(); x++) {
-          var $tileset = $("<p/>").addClass("tileset").html(y + "," + x);
-          $tilesetRow.append($tileset);
-        }
-        $tilesets.append($tilesetRow);
-      }
+      var showCoords = function($tileset, y, x) { 
+        return $("<span/>").html(y + "," + x); 
+      };
+      MapBuilder.build(WorldMap.Config, $tilesets, showCoords);
     };
     
     var load = function($target) {
       var $section = $target.closest("section");
       var $map = $(".map", $section);
       
-      $("p", $tilesets).removeClass("selected");
+      $(".tileset", $tilesets).removeClass("selected");
       $target.addClass("selected");
       $("img.border", $section).addClass("hidden");
       
@@ -79,6 +82,9 @@ var Debug = (function() {
       $map.attr("className", "");
       $map.addClass("map world");
       $map.empty();
+      
+      MapBuilder.buildTileset($map, selectedTilesetY, selectedTilesetX);
+      /*
       for (var y = 0; y < WorldMap.Config.size; y++) {
         var $row = $("<div/>").addClass("row");
         for (var x = 0; x < WorldMap.Config.size; x++) {
@@ -89,6 +95,7 @@ var Debug = (function() {
         }
         $map.append($row);
       }
+      */
 
       toggleGridlines($("#toggleMapGridlines"));
       $map.addClass("loaded");
