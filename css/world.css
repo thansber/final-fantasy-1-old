@@ -82,6 +82,7 @@
 .map.world .tile.town.empty { background-color:#BDBDBD; background-image:none; }
 .map.world .tile.village { background-position:-48px 0px; }
 .map.world .tile.pravoka { background-position:-80px -96px; }
+.map.world .tile.elfland { background-position:-112px -64px; }
 
 .map.world .castle.AA { background-position:-96px -32px; }
 .map.world .castle.AB { background-position:-112px -32px; }
@@ -120,7 +121,6 @@
 .map.world .town.wall.gate.right { background-position:-80px -112px; }
 
 .map.world .town.wall.top.pravoka.BB { background-position:-80px -96px; }
-
 
 .map.world .coneria.AA { background-image:none; background-color:#008D00; }
 .map.world .coneria.AB { background-position:-176px -32px; }
@@ -161,8 +161,8 @@
 .map.world .coneria.castle.top.AA { background-position:-176px -64px; }
 .map.world .coneria.castle.top.AB { background-position:-192px -64px; }
 
-
 .map.world .hole { background-position:-80px -48px; }
+
 .map.world .mirage.tower.AA { background-position:-128px -48px; }
 .map.world .mirage.tower.AB { background-position:-144px -48px; }
 .map.world .mirage.tower.BA { background-position:-128px -64px; }
