@@ -19,7 +19,7 @@ var MapBuilder = (function() {
     for (var y = 0; y < WorldMap.Config.size; y++) {
       var $row = $("<div/>").addClass("row");
       for (var x = 0; x < WorldMap.Config.size; x++) {
-        var coords = {tilesetX:tilesetX, tilesetY:tilesetY, tileX:x, tileY:y};
+        var coords = new Map.Coords(tilesetY, tilesetX, y, x);
         var tileClasses = WorldMap.Config.getTileClasses(coords);
         var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
         $row.append($tile);

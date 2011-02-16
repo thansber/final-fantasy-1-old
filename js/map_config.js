@@ -4,6 +4,7 @@ var Map = (function() {
   
   Config = function(opt) {
     this.size = opt.size;
+    this.maxIndex = this.size * this.size;
     this.tilesets = [];
     this.mapping = $.extend(true, {}, opt.mapping);
   };
@@ -34,15 +35,19 @@ var Map = (function() {
   Config.prototype.getTileset = function(y, x) { return this.tilesets[y] ? this.tilesets[y][x] : null; };
   
   Config.prototype.getTile = function(coords) {
-    var tileset = this.getTileset(coords.tilesetY, coords.tilesetX);
+    var tileset = this.getTileset(coords.tilesetY(), coords.tilesetX());
     if (!tileset) {
       return null;
     }
-    var row = tileset[coords.tileY];
+    var row = tileset[coords.tileY()];
     if (!row) {
       return null;
     }
-    return row.charAt(coords.tileX); 
+    return row.charAt(coords.tileX()); 
+  };
+  
+  Config.prototype.getTileAbsolute = function(absoluteCoords) {
+    return this.getTile(absoluteToCoords(absoluteCoords));
   };
   
   Config.prototype.getTileClass = function(tile) {
@@ -117,52 +122,30 @@ var Map = (function() {
   };
   
   Config.prototype.determineBlockClass = function(coords, tile, mapping) {
-    var x = 0;
-    if (mapping.block.width > 1) {
-      var coordsLeft = this.getCoordsToLeft(coords);
-      var tileLeft = this.getTile(coordsLeft);
-      var tileRight = this.getTile(this.getCoordsToRight(coords));
-      if (tileLeft != tile) {
-        x = 0;
-      } else if (tileRight != tile) {
-        x = mapping.block.width - 1;
-      } else {
-        var numTiles = 0;
-        var newCoords = coordsLeft;
-        var currentTile = this.getTile(newCoords);
-        while (currentTile == tile) {
-          newCoords = this.getCoordsToLeft(newCoords);
-          numTiles++;
-          currentTile = this.getTile(newCoords);
+    var absoluteCoords = coords.toAbsolute();
+    absoluteCoords.y -= (mapping.block.height - 1);
+    absoluteCoords.x -= (mapping.block.width - 1);
+    
+    var topBlock = this.maxIndex + 1;
+    var leftBlock = this.maxIndex + 1;
+    
+    var minY = absoluteCoords.y, maxY = absoluteCoords.y + (mapping.block.height * 2);
+    var minX = absoluteCoords.x, maxX = absoluteCoords.x + (mapping.block.width * 2);
+    
+    for (var y = minY; y < maxY; y++) {
+      for (var x = minX; x < maxX; x++) {
+        var currentTile = this.getTileAbsolute({y:y, x:x});
+        if (tile == currentTile) {
+          topBlock = Math.min(topBlock, y);
+          leftBlock = Math.min(leftBlock, x);
         }
-        x = numTiles;
       }
     }
     
-    var y = 0;
-    if (mapping.block.height > 1) {
-      var tileAbove = this.getTile(this.getCoordsAbove(coords));
-      var tileBelow = this.getTile(this.getCoordsBelow(coords));
-      if (tileAbove != tile) {
-        y = 0;
-      } else if (tileBelow != tile) {
-        y = mapping.block.height - 1;
-      } else {
-        // figure out how many of the same tile are above the current one
-        var numTiles = 0;
-        var newCoords = this.getCoordsAbove(coords);
-        var currentTile = this.getTile(newCoords);
-        while (currentTile == tile) {
-          newCoords = this.getCoordsAbove(newCoords);
-          numTiles++;
-          currentTile = this.getTile(newCoords);
-        }
-        y = numTiles;
-      }
-    }
+    var abs = coords.toAbsolute();
+    var y = String.fromCharCode("A".charCodeAt(0) + (abs.y - topBlock));
+    var x = String.fromCharCode("A".charCodeAt(0) + (abs.x - leftBlock));
     
-    var x = String.fromCharCode("A".charCodeAt(0) + x);
-    var y = String.fromCharCode("A".charCodeAt(0) + y);
     return y + x;
   };
   
@@ -188,41 +171,43 @@ var Map = (function() {
   // If at left edge of current tileset, get tileset to the left 
   // and right-most tile in same row
   Config.prototype.getCoordsToLeft = function(coords) {
-    return (coords.tileX > 0) 
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY 
-        ,tileX: coords.tileX - 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX - 1, tilesetY: coords.tilesetY
-        ,tileX: this.size - 1, tileY: coords.tileY};
+    var absolute = coords.toAbsolute();
+    absolute.x--;
+    var left = absoluteToCoords(absolute);
+    if (left.x < 0) {
+      return null;
+    }
+    return left;
   };
 
-  // If at right edge of current tileset, get tileset to the right 
-  // and left-most tile in same row
   Config.prototype.getCoordsToRight = function(coords) {
-    return (coords.tileX < this.size - 1)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX + 1, tileY: coords.tileY}
-      : {tilesetX: coords.tilesetX + 1, tilesetY: coords.tilesetY
-        ,tileX: 0, tileY: coords.tileY};
+    var absolute = coords.toAbsolute();
+    absolute.x++;
+    var right = absoluteToCoords(absolute);
+    if (right.x > this.maxIndex) {
+      return null;
+    }
+    return right;
   };
   
-  // If at top edge of current tileset, get tileset above
-  // and bottom-most tile in same column
   Config.prototype.getCoordsAbove = function(coords) {
-    return (coords.tileY > 0)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX, tileY: coords.tileY - 1}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY - 1
-        ,tileX: coords.tileX, tileY: this.size - 1};
+    var absolute = coords.toAbsolute();
+    absolute.y--;
+    var above = absoluteToCoords(absolute);
+    if (above.y < 0) {
+      return null;
+    }
+    return above;
   };
   
-  // If at bottom edge of current tileset, get tileset below
-  // and top-most tile in same column
   Config.prototype.getCoordsBelow = function(coords) {
-    return (coords.tileY < this.size - 1)
-      ? {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY
-        ,tileX: coords.tileX, tileY: coords.tileY + 1}
-      : {tilesetX: coords.tilesetX, tilesetY: coords.tilesetY + 1
-        ,tileX: coords.tileX, tileY: 0};
+    var absolute = coords.toAbsolute();
+    absolute.y++;
+    var below = absoluteToCoords(absolute);
+    if (below.y > this.maxIndex) {
+      return null;
+    }
+    return below;
   };
   
   Config.prototype.isTileOfType = function(tile, type) { 
@@ -258,9 +243,48 @@ var Map = (function() {
     return true;
   }
   
+  // Parameters can either be an object or the 4 coordinates
+  // TilesetY, TilesetX, TileY, TileX
+  Coords = function() {
+    if (arguments.length > 1) {
+      this.coords = {
+        tilesetY: arguments[0]
+       ,tilesetX: arguments[1]
+       ,tileY: arguments[2]
+       ,tileX: arguments[3]
+      };
+    } else {
+      this.coords = $.extend({}, arguments[0]);
+    }
+  };
+  
+  Coords.prototype.tilesetY = function() { return this.coords.tilesetY; };
+  Coords.prototype.tilesetX = function() { return this.coords.tilesetX; };
+  Coords.prototype.tileY = function() { return this.coords.tileY; };
+  Coords.prototype.tileX = function() { return this.coords.tileX; };
+
+  Coords.prototype.toAbsolute = function() {
+    // TODO: should the 16 be hard-coded?
+    return {
+      y : this.tilesetY() * 16 + this.tileY()
+     ,x: this.tilesetX() * 16 + this.tileX()
+    };
+  };
+  
+  Coords.prototype.toString = function() {
+    return "tileset[" + this.tilesetY() + "," + this.tilesetX() + "], tile[" + this.tileY() + "," + this.tileX() + "]";
+  };
+
+  var absoluteToCoords = function(absolute) {
+    return new Coords(Math.floor(absolute.y / 16), Math.floor(absolute.x / 16), absolute.y % 16, absolute.x % 16);
+  };
+
+  
   return {
-    Config : Config
+    Config: Config
+   ,Coords: Coords
    ,ALL_SAME: ALL_SAME
+   ,absoluteToCoords: absoluteToCoords
   };
   
 })();

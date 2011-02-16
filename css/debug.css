@@ -14,9 +14,9 @@
 #debug .movement .directions a.down { left:4em; top:4em; }
 #debug .movement .directions a.up { left:4em; }
 
-#debug .world-map .tilesets { font-size:0.6em; border-left:1px solid black; border-top:1px solid black; height:auto; width:560px; height:208px; margin-top:1em; margin-bottom:1em;}
+#debug .world-map .tilesets { font-size:0.5em; border-left:1px solid black; border-top:1px solid black; height:auto; width:416px; height:208px; margin-top:1em; margin-bottom:1em;}
 #debug .world-map .tilesets .row { clear:both; }
-#debug .world-map .tilesets .row .tileset { float:left; width:34px; height:2em; border-right:1px solid black; border-bottom:1px solid black; text-align:center; padding-top:0.6em; cursor:pointer; }
+#debug .world-map .tilesets .row .tileset { float:left; width:25px; height:2em; border-right:1px solid black; border-bottom:1px solid black; text-align:center; padding-top:0.4em; cursor:pointer; }
 #debug .world-map .tilesets .row .tileset.selected { background-color:blue; color:white; }
 #debug .world-map .tilesets .row p:hover { background-color:black; color:white; }
 
@@ -26,14 +26,13 @@
 #debug .world-map .map .row p { width:16px; height:16px; float:left; text-align:center; border-right:1px solid black; border-bottom:1px solid black; cursor:default; }
 #debug .world-map .map.no-border { border:none; }
 #debug .world-map .map.no-border .row p { border:none; }
-#debug .world-map .map .tile.selected { border:2px solid red !important; }
-#debug .world-map img { position:absolute; }
+#debug .world-map .map .tile.selected { opacity:0.4; }
 
 #debug .world-map .tile.properties .container { float:left; }
 #debug .world-map .tile.properties p { clear:both; }
 #debug .world-map .tile.properties label { float:left; display:block; width:7em; text-align:right; }
 #debug .world-map .tile.properties span { float:left; display:block; margin-left:0.6em; }
-#debug .world-map .tile.properties .surrounding { float:right; position:relative; width:10em; }
+#debug .world-map .tile.properties .surrounding { float:right; position:relative; width:6em; }
 #debug .world-map .tile.properties .surrounding p { border:1px solid black; padding:0.2em; text-align:center; position:absolute; width:1em;}
 #debug .world-map .tile.properties .surrounding p.top { left:1.5em; top:2px; border-bottom:none; }
 #debug .world-map .tile.properties .surrounding p.left { top:1.6em; left:2px; border-right:none; }

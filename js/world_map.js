@@ -2602,12 +2602,12 @@ var WorldMap = (function() {
                         ,"mmmmffffrffffffr"
                         ,"mmmmffffrffffff "
                         ,"mmmmffffrrrrrrrr"
-                        ,"mmmmfffff eee   "
-                        ,"mmmmfffffeeeee  "
-                        ,"mmmffffffeeeee  "
-                        ,"mmffffff eeeee  "
-                        ,"mmfffr   eeeee r"
-                        ,"mmfffrr  eeeee r"
+                        ,"mmmmfffff LLL   "
+                        ,"mmmmfffffLLLLL  "
+                        ,"mmmffffffLeeeL  "
+                        ,"mmffffff LeeeL  "
+                        ,"mmfffr   LeeeL r"
+                        ,"mmfffrr  LeeeL r"
                         ,"mmffffrr     rrr"
                         ,"mmfffffrrrrrrrrr"
                         ,"mmmfffffrrrrrrrr"
@@ -2674,7 +2674,8 @@ var WorldMap = (function() {
    ,"I" : {cssClass:"docks right"}
    ,"J" : {cssClass:"river br"}
    ,"K" : {cssClass:"coneria castle top", block:{width:2, height:1}}
-   ,"L" : {cssClass:"coneria", block:{width:6, height:6}}
+   //,"L" : {cssClass:"coneria", block:{width:6, height:6}}
+   ,"L" : {cssClass:"crescent lake wall", block:{width:5, height:6}}
    ,"M" : {cssClass:"mirage tower", block:{width:2, height:2}}
    ,"T" : {cssClass:"town"}
    ,"U" : {cssClass:"pravoka"}

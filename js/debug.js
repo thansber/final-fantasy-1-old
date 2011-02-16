@@ -20,14 +20,11 @@ var Debug = (function() {
     
     var highlightTile = function($tile) {
       var $section = $tile.closest("section");
-      var $border = $("img.border", $section);
-      $border.removeClass("hidden");
-      var tileOffset = $tile.offset();
-      var borderOffset = {top:tileOffset.top - 2, left:tileOffset.left - 2};
-      $border.offset(borderOffset);
+      $tile.closest(".map").find(".tile.selected").removeClass("selected");
+      $tile.addClass("selected");
       
       var tilePos = tileLookup($tile);
-      var coords = {tilesetX:selectedTilesetX, tilesetY:selectedTilesetY, tileX:tilePos.x, tileY:tilePos.y};
+      var coords = new Map.Coords(selectedTilesetY, selectedTilesetX, tilePos.y, tilePos.x);
       var tile = WorldMap.Config.getTile(coords);
       var tileMapping = WorldMap.Config.getTileMapping(tile);
       var surroundingTiles = WorldMap.Config.getSurroundingTiles(coords);
@@ -63,7 +60,6 @@ var Debug = (function() {
       
       $(".tileset", $tilesets).removeClass("selected");
       $target.addClass("selected");
-      $("img.border", $section).addClass("hidden");
       
       var coords = $("span", $target).html().split(",");
       selectedTilesetY = parseInt(coords[0]);
