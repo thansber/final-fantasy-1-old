@@ -99,6 +99,11 @@
 
 .map.world .cave { background-position:-32px -64px; }
 
+.map.world .volcano.AA { background-position:-96px 0px; }
+.map.world .volcano.AB { background-position:-112px 0px; }
+.map.world .volcano.BA { background-position:-96px -16px; }
+.map.world .volcano.BB { background-position:-112px -16px; }
+
 .map.world .town.wall.top.AA { background-position:-176px -32px; }
 .map.world .town.wall.top.AB { background-position:-64px -64px; }
 .map.world .town.wall.top.AC { background-position:-192px -32px; }
