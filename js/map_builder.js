@@ -2,7 +2,7 @@ var MapBuilder = (function() {
   
   var build = function(config, $container, htmlCallback) {
     // Start at 7 temporarily while debugging lower half to avoid loading the entire map
-    for (var y = 7; y < WorldMap.Config.maxTilesetY(); y++) {
+    for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
       var $tilesetRow = $("<div/>").addClass("tileset row");
       for (var x = 0; x < WorldMap.Config.maxTilesetX(); x++) {
         var $tileset = $("<div/>").addClass("tileset");

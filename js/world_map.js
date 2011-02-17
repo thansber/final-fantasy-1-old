@@ -1254,10 +1254,10 @@ var WorldMap = (function() {
                        ,"wwwwwwwwwwwwwwwx"]);
   // 6,14
   Config.addTileset(6, ["wwwxfffxwwxfffff"
-                       ,"wwwwffffxx___fff"
-                       ,"wwwwxffff[___]ff"
-                       ,"wwwwwxfff[TTT]ff"
-                       ,"wwwwwwfff[}t{]ff"
+                       ,"wwwwffffxxWWWfff"
+                       ,"wwwwxffffWWTWWff"
+                       ,"wwwwwxfffWTTTWff"
+                       ,"wwwwwwfffW>t<Wff"
                        ,"wwwwwwffffffffff"
                        ,"wwwwwwffffffffff"
                        ,"wwwwwwxfffffffff"
@@ -1710,8 +1710,8 @@ var WorldMap = (function() {
                        ,"    ffffffffffxw"
                        ,"   ffffffffffffx"
                        ,"  fffff KK fffff"
-                       ,"  ffffLLLLLLffff"
-                       ,"  fff LLLLLL fff"]);
+                       ,"  ffff kKKk ffff"
+                       ,"  fff kkKKkk fff"]);
   // 9,10
   Config.addTileset(9, ["mmmmmssxwwwww ss"
                        ,"mmmmssxwwwwwwxss"
@@ -1768,10 +1768,10 @@ var WorldMap = (function() {
                        ,"ffffffffffxwwwww"
                        ,"fffffffffffwwwww"
                        ,"fffffffffffwwwww"
-                       ,"f---fffffffwwwww"
-                       ,"[---]fffffxwwwww"
-                       ,"[UtU]   xwwwwwww"
-                       ,"[}t{]   wwwwwwww"
+                       ,"fWWWfffffffwwwww"
+                       ,"WWPWWfffffxwwwww"
+                       ,"WPtPW   xwwwwwww"
+                       ,"W>t<W   wwwwwwww"
                        ," EDD    wwwwwwww"
                        ," HHD    xwwwwwww"
                        ," H   ff mmmmmxww"
@@ -1920,10 +1920,10 @@ var WorldMap = (function() {
                         ,"wwwwwwwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"]);
   // 10,9
-  Config.addTileset(10, ["  fff LLLLLL fff"
-                        ,"  fff LLLLLL fff"
-                        ,"  fff LLLLLL fff"
-                        ,"  ffffLLLLLLffff"
+  Config.addTileset(10, ["  fff kTttTk fff"
+                        ,"  fff kTttTk fff"
+                        ,"  fff kTttTk fff"
+                        ,"  ffffk>tt<kffff"
                         ,"x fffff    fffff"
                         ,"w  ffff    ffff "
                         ,"wx  fff    fff  "
@@ -2603,11 +2603,11 @@ var WorldMap = (function() {
                         ,"mmmmffffrffffff "
                         ,"mmmmffffrrrrrrrr"
                         ,"mmmmfffff LLL   "
-                        ,"mmmmfffffLLLLL  "
-                        ,"mmmffffffLeeeL  "
-                        ,"mmffffff LeeeL  "
-                        ,"mmfffr   LeeeL r"
-                        ,"mmfffrr  LeeeL r"
+                        ,"mmmmfffffLLtLL  "
+                        ,"mmmffffffLtllL  "
+                        ,"mmffffff LltlL  "
+                        ,"mmfffr   LlttL r"
+                        ,"mmfffrr  L>t<L r"
                         ,"mmffffrr     rrr"
                         ,"mmfffffrrrrrrrrr"
                         ,"mmmfffffrrrrrrrr"
@@ -2654,6 +2654,8 @@ var WorldMap = (function() {
    ,"e" : {cssClass:"elfland"}
    ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
    ,"g" : {cssClass:"grass", hasCorners:true, borderTile:"goG&*~`"}
+   ,"k" : {cssClass:"coneria wall", block:{width:6, height:6}}
+   ,"l" : {cssClass:"crescent lake town"}
    ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"}
    ,"n" : {cssClass:"volcano", block:{width:2, height:2}}
    ,"o" : {cssClass:"hole"}
@@ -2673,13 +2675,13 @@ var WorldMap = (function() {
    ,"H" : {cssClass:"water"}
    ,"I" : {cssClass:"docks right"}
    ,"J" : {cssClass:"river br"}
-   ,"K" : {cssClass:"coneria castle top", block:{width:2, height:1}}
-   //,"L" : {cssClass:"coneria", block:{width:6, height:6}}
+   ,"K" : {cssClass:"coneria castle", block:{width:2, height:3}}
    ,"L" : {cssClass:"crescent lake wall", block:{width:5, height:6}}
    ,"M" : {cssClass:"mirage tower", block:{width:2, height:2}}
+   ,"P" : {cssClass:"pravoka"}
    ,"T" : {cssClass:"town"}
-   ,"U" : {cssClass:"pravoka"}
    ,"V" : {cssClass:"desert caravan", hasCorners:true, borderTile:"V"}
+   ,"W" : {cssClass:"town wall", block:{width:5, height:4}}
    
    ,"1" : {cssClass:"water top"}
    ,"2" : {cssClass:"water left"}
@@ -2710,16 +2712,14 @@ var WorldMap = (function() {
    ,"/" : {cssClass:"desert bl"}
    ,"|" : {cssClass:"desert br"}
 
-   ,"-" : {cssClass:"town wall top pravoka", block:{width:3, height:2}}
-   ,"_" : {cssClass:"town wall top", block:{width:3, height:2}}
-   ,"[" : {cssClass:"town wall left", block:{width:1, height:3}}
-   ,"]" : {cssClass:"town wall right", block:{width:1, height:3}}
-   ,"}" : {cssClass:"town wall gate left"}
-   ,"{" : {cssClass:"town wall gate right"}
+   ,"-" : {}
+   ,"_" : {}
+   ,"}" : {}
+   ,"{" : {}
+   ,"(" : {}
    ,")" : {}
-   ,")" : {}
-   ,">" : {}
-   ,"<" : {}
+   ,">" : {cssClass:"town wall gate left"}
+   ,"<" : {cssClass:"town wall gate right"}
   });
   
   var build = function($container) {

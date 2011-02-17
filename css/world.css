@@ -99,71 +99,68 @@
 .map.world .ruins.BD { background-position:-208px -16px; }
 
 .map.world .cave { background-position:-32px -64px; }
-
-.map.world .volcano.AA { background-position:-96px 0px; }
-.map.world .volcano.AB { background-position:-112px 0px; }
-.map.world .volcano.BA { background-position:-96px -16px; }
-.map.world .volcano.BB { background-position:-112px -16px; }
-
-.map.world .town.wall.top.AA { background-position:-176px -32px; }
-.map.world .town.wall.top.AB { background-position:-64px -64px; }
-.map.world .town.wall.top.AC { background-position:-192px -32px; }
-.map.world .town.wall.top.BA { background-position:-64px -80px; }
-.map.world .town.wall.top.BB { background-position:-144px -32px; }
-.map.world .town.wall.top.BC { background-position:-80px -80px; }
-.map.world .town.wall.left.AA { background-position:-48px -80px; }
-.map.world .town.wall.left.BA { background-position:-48px -96px; }
-.map.world .town.wall.left.CA { background-position:-48px -112px; }
-.map.world .town.wall.right.AA { background-position:-96px -80px; }
-.map.world .town.wall.right.BA { background-position:-96px -96px; }
-.map.world .town.wall.right.CA { background-position:-96px -112px; }
-.map.world .town.wall.gate.left { background-position:-64px -112px; }
-.map.world .town.wall.gate.right { background-position:-80px -112px; }
-
-.map.world .town.wall.top.pravoka.BB { background-position:-80px -96px; }
-
-.map.world .coneria.AA { background-image:none; background-color:#008D00; }
-.map.world .coneria.AB { background-position:-176px -32px; }
-.map.world .coneria.AC { background-position:-176px -80px; }
-.map.world .coneria.AD { background-position:-192px -80px; }
-.map.world .coneria.AE { background-position:-192px -32px; }
-.map.world .coneria.AF { background-image:none; background-color:#008D00; }
-.map.world .coneria.BA { background-position:-160px -48px; }
-.map.world .coneria.BB { background-position:-176px -48px; }
-.map.world .coneria.BC { background-position:-176px -96px; }
-.map.world .coneria.BD { background-position:-192px -96px; }
-.map.world .coneria.BE { background-position:-192px -48px; }
-.map.world .coneria.BF { background-position:-208px -48px; }
-.map.world .coneria.CA { background-position:-160px -64px; }
-.map.world .coneria.CB { background-position:-144px -32px; }
-.map.world .coneria.CC { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.CD { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.CE { background-position:-144px -32px; }
-.map.world .coneria.CF { background-position:-208px -64px; }
-.map.world .coneria.DA { background-position:-160px -80px; }
-.map.world .coneria.DB { background-position:-144px -32px; }
-.map.world .coneria.DC { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.DD { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.DE { background-position:-144px -32px; }
-.map.world .coneria.DF { background-position:-208px -80px; }
-.map.world .coneria.EA { background-position:-160px -96px; }
-.map.world .coneria.EB { background-position:-144px -32px; }
-.map.world .coneria.EC { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.ED { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.EE { background-position:-144px -32px; }
-.map.world .coneria.EF { background-position:-208px -96px; }
-.map.world .coneria.FA { background-position:-160px -112px; }
-.map.world .coneria.FB { background-position:-176px -112px; }
-.map.world .coneria.FC { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.FD { background-color:#BDBDBD; background-image:none; }
-.map.world .coneria.FE { background-position:-192px -112px; }
-.map.world .coneria.FF { background-position:-208px -112px; }
-.map.world .coneria.castle.top.AA { background-position:-176px -64px; }
-.map.world .coneria.castle.top.AB { background-position:-192px -64px; }
-
 .map.world .hole { background-position:-80px -48px; }
 
 .map.world .mirage.tower.AA { background-position:-128px -48px; }
 .map.world .mirage.tower.AB { background-position:-144px -48px; }
 .map.world .mirage.tower.BA { background-position:-128px -64px; }
 .map.world .mirage.tower.BB { background-position:-144px -64px; }
+
+.map.world .volcano.AA { background-position:-96px 0px; }
+.map.world .volcano.AB { background-position:-112px 0px; }
+.map.world .volcano.BA { background-position:-96px -16px; }
+.map.world .volcano.BB { background-position:-112px -16px; }
+
+.map.world .town.wall.AB { background-position:-48px -64px; }
+.map.world .town.wall.AC { background-position:-64px -64px; }
+.map.world .town.wall.AD { background-position:-80px -64px; }
+.map.world .town.wall.BA { background-position:-48px -80px; }
+.map.world .town.wall.BB { background-position:-64px -80px; }
+.map.world .town.wall.BD { background-position:-80px -80px; }
+.map.world .town.wall.BE { background-position:-96px -80px; }
+.map.world .town.wall.CA { background-position:-48px -96px; }
+.map.world .town.wall.CE { background-position:-96px -96px; }
+.map.world .town.wall.DA { background-position:-48px -112px; }
+.map.world .town.wall.DE { background-position:-96px -112px; }
+.map.world .town.wall.gate.left { background-position:-64px -112px; }
+.map.world .town.wall.gate.right { background-position:-80px -112px; }
+
+.map.world .coneria.wall.AB { background-position:-176px -32px; }
+.map.world .coneria.wall.AE { background-position:-192px -32px; }
+.map.world .coneria.wall.BA { background-position:-160px -48px; }
+.map.world .coneria.wall.BB { background-position:-176px -48px; }
+.map.world .coneria.wall.BE { background-position:-192px -48px; }
+.map.world .coneria.wall.BF { background-position:-208px -48px; }
+.map.world .coneria.wall.CA { background-position:-160px -64px; }
+.map.world .coneria.wall.CF { background-position:-208px -64px; }
+.map.world .coneria.wall.DA { background-position:-160px -80px; }
+.map.world .coneria.wall.DF { background-position:-208px -80px; }
+.map.world .coneria.wall.EA { background-position:-160px -96px; }
+.map.world .coneria.wall.EF { background-position:-208px -96px; }
+.map.world .coneria.wall.FA { background-position:-160px -112px; }
+.map.world .coneria.wall.FF { background-position:-208px -112px; }
+
+.map.world .coneria.castle.AA { background-position:-176px -64px; }
+.map.world .coneria.castle.AB { background-position:-192px -64px; }
+.map.world .coneria.castle.BA { background-position:-176px -80px; }
+.map.world .coneria.castle.BB { background-position:-192px -80px; }
+.map.world .coneria.castle.CA { background-position:-176px -96px; }
+.map.world .coneria.castle.CB { background-position:-192px -96px; }
+
+.map.world .crescent.lake.town { background-position:-48px -208px; }
+.map.world .crescent.lake.wall.AB { background-position:-48px -64px; }
+.map.world .crescent.lake.wall.AC { background-position:-64px -64px; }
+.map.world .crescent.lake.wall.AD { background-position:-80px -64px; }
+.map.world .crescent.lake.wall.BA { background-position:-48px -80px; }
+.map.world .crescent.lake.wall.BB { background-position:-64px -80px; }
+.map.world .crescent.lake.wall.BC { background-color:#BDBDBD; background-image:none; }
+.map.world .crescent.lake.wall.BD { background-position:-80px -80px; }
+.map.world .crescent.lake.wall.BE { background-position:-96px -80px; }
+.map.world .crescent.lake.wall.CA { background-position:-160px -64px; }
+.map.world .crescent.lake.wall.CE { background-position:-208px -64px; }
+.map.world .crescent.lake.wall.DA { background-position:-160px -80px; }
+.map.world .crescent.lake.wall.DE { background-position:-208px -80px; }
+.map.world .crescent.lake.wall.EA { background-position:-160px -96px; }
+.map.world .crescent.lake.wall.EE { background-position:-208px -96px; }
+.map.world .crescent.lake.wall.FA { background-position:-160px -112px; }
+.map.world .crescent.lake.wall.FE { background-position:-208px -112px; }
