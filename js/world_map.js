@@ -2646,7 +2646,231 @@ var WorldMap = (function() {
                         ,"wwwwwwwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"
                         ,"wwwwwwwwwwwwwwww"]);
-  
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,0
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,1
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,2
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,3
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,4
+  // 14,5
+  Config.addTileset(14, ["wwwwwwwwwwwwx  m"
+                        ,"wwwwwwwwwwwwwsss"
+                        ,"wwwwwwwwwwwwwsss"
+                        ,"wwwwwwwwwwwwwxss"
+                        ,"wwwwwwwwwwwwwwss"
+                        ,"wwwwwwwwwwwwwwss"
+                        ,"wwwwwwwwwwwwwwxs"
+                        ,"wwwwwwwwwwwwwwws"
+                        ,"wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,6
+  Config.addTileset(14, ["msssssmmmmmmssmm"
+                        ,"ssssssmmmmmmsssm"
+                        ,"mmmmssmmmmmssssm"
+                        ,"mmmmmsssssssxwxm"
+                        ,"mmmmmmsssssswwwx"
+                        ,"mmmmmmmssssswwww"
+                        ,"smmmmmmsssssxwww"
+                        ,"smmmmmmssssssxww"
+                        ,"sssssssssssss ww"
+                        ,"xssssssssssssxww"
+                        ,"wwxssssssssxwwww"
+                        ,"wwwxsssssxwwwwww"
+                        ,"wwwwssosxwwwwwww"
+                        ,"wwwwxssxwwwwwwww"
+                        ,"wwwww xwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,7
+  Config.addTileset(14, ["mmmm fffffffffff"
+                        ,"mmmm fffffffffff"
+                        ,"mmmm fffffffffff"
+                        ,"mmmm  ffffffffff"
+                        ,"mmmm   fffffffff"
+                        ,"wwx       fffff "
+                        ,"wwwwwx     fff  "
+                        ,"wwwwwwx         "
+                        ,"wwwwwwwwx       "
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,8
+  Config.addTileset(14, ["fffffggggggffffw"
+                        ,"ffffff    ffff w"
+                        ,"ffffffffEEfff xw"
+                        ,"ffffffffHHHHwwww"
+                        ,"ffffffff  xwwwww"
+                        ," fffffffxwwwwwww"
+                        ,"  xwwwwwwwwwwwww"
+                        ,"  wwwwwwwwwwwwww"
+                        ," xwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,9
+  Config.addTileset(14, ["wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,10
+  Config.addTileset(14, [" mmmmmmmrmmmssss"
+                        ,"xmmmmmmmrmmmssss"
+                        ,"wmmmmmmmrmmsssss"
+                        ,"wxmmmmmmrmmsssss"
+                        ,"wwxmmmmmrmmsssss"
+                        ,"wwwxmmmmrxwxssss"
+                        ,"wwwwxmmmHwwwssss"
+                        ,"wwwwwx xwwwwssss"
+                        ,"wwwwwwwwwwwwxsss"
+                        ,"wwwwwwwwwwwwwxss"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,11
+  Config.addTileset(14, ["sssssfffffssssss"
+                        ,"sssssfffffssssss"
+                        ,"ssssffffffssssss"
+                        ,"ssssfffffsssssss"
+                        ,"sssssfffssssssss"
+                        ,"ssssssssssssssss"
+                        ,"ssssssssffffssss"
+                        ,"ssssssffffffssss"
+                        ,"sssfffffffffssss"
+                        ,"sssfffffffssssss"
+                        ,"wxssssssssssssss"
+                        ,"wwxsssssssssssss"
+                        ,"wwwwwwxsssssssss"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,12
+  Config.addTileset(14, ["sssmmmmmmmmmmmrm"
+                        ,"ssssmmmmmmmmmmrm"
+                        ,"sssssmmmmmmmmmrm"
+                        ,"sssssssmmmmmmmrm"
+                        ,"sssssssssmmmmmrr"
+                        ,"sssssssssssmmmmm"
+                        ,"ssssssssssssmmmm"
+                        ,"sssssssssssssmmm"
+                        ,"ssssssssssssss m"
+                        ,"ssssssssxwwwwx  "
+                        ,"sssssxwwwwwwwwx "
+                        ,"ssssxwwwwwwwwww "
+                        ,"xwwwwwwwwwwwwww "
+                        ,"wwwwwwwwwwwwwww "
+                        ,"wwwwwwwwwwwwwwwx"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 14,13
+  Config.addTileset(14, ["mmmfffffffffffff"
+                        ,"mmmfffffffffffff"
+                        ,"mmmmffffffffffff"
+                        ,"mmmmffffffffffff"
+                        ,"rmmmffffffffffff"
+                        ,"rrrrrfffffffffff"
+                        ,"mmmmrrrrrrrrrrrf"
+                        ,"mmmmmmmmmmmmmmrr"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ,"mmmmmmmmmmmmmmmm"
+                        ," mmmmmmdddddmmmm"
+                        ," mmmmmdddddddddm"
+                        ," mmmmmdddddddddd"
+                        ," mmmmmdddddddddd"
+                        ,"  mmmmdddddddddd"
+                        ,"x  mmmmddddddddd"]);
+  // 14,14
+  Config.addTileset(14, ["fffffffxwwwwwwww"
+                        ,"fffffffwwwwwwwww"
+                        ,"fffffffwwwwwwwww"
+                        ,"ffffffxwwwwwwwww"
+                        ,"ffff xwwwwwwwwww"
+                        ,"ffff wwwwwwwwwww"
+                        ,"fff  xwwwwwwwwww"
+                        ,"rrrrrrHwwwwwwwww"
+                        ,"mrmmmm7wwwwwwwww"
+                        ,"mrmmmmmwwwwwwwww"
+                        ,"mrrrmmmwwwwwwwww"
+                        ,"mmmrmmmwwwwwwwww"
+                        ,"mmmrmmmwwwwwwwww"
+                        ,"mmmrmmmwwwwwwwww"
+                        ,"mmmrmmxwwwwwwwww"
+                        ,"mmmr xwwwwwwwwww"]);
+  Config.addTileset(14, Map.ALL_SAME, "w"); // 14,15
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,0
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,1
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,2
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,3
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,4
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,5
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,6
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,7
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,8
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,9
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,10
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,11
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,12
+  // 15,13
+  Config.addTileset(15, ["wx  mmmmddddddmm"
+                        ,"wwx  mmmmmm mmmm"
+                        ,"wwwx  mmmmm mmmm"
+                        ,"wwwwx           "
+                        ,"wwwwwx      xwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  // 15,14
+  Config.addTileset(15, ["mm r wwwwwwwwwww"
+                        ,"m  rxwwwwwwwwwww"
+                        ,"  5Hwwwwwwwwwwww"
+                        ," xwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"
+                        ,"wwwwwwwwwwwwwwww"]);
+  Config.addTileset(15, Map.ALL_SAME, "w"); // 15,15  
+
   Config.setMapping({
     " " : {cssClass:"none"}
    ,"c" : {cssClass:"cave"}
@@ -2722,18 +2946,7 @@ var WorldMap = (function() {
    ,"<" : {cssClass:"town wall gate right"}
   });
   
-  var build = function($container) {
-    for (var y = 0; y < this.Config.maxTilesetY(); y++) {
-      var $row = $("<div/>").addClass("row");
-      for (var x = 0; x < this.Config.maxTilesetX(); x++) {
-        
-      }
-    }
-  };
-  
   return {
     Config: Config
-   ,build: build
   };
-  
 })();
