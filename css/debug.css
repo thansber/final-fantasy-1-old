@@ -37,4 +37,8 @@
 #debug .world-map .tile.properties .surrounding p.top { left:1.5em; top:2px; border-bottom:none; }
 #debug .world-map .tile.properties .surrounding p.left { top:1.6em; left:2px; border-right:none; }
 #debug .world-map .tile.properties .surrounding p.right { top:1.6em; left:3em; border-left:none; } 
-#debug .world-map .tile.properties .surrounding p.bottom { top:3.2em; left:1.5em; border-top:none; } 
+#debug .world-map .tile.properties .surrounding p.bottom { top:3.2em; left:1.5em; border-top:none; }
+
+#debug .coords .row { clear:both; height:1.6em; }
+#debug .coords label { width:6em; display:block; float:left; text-align:right; }
+#debug .coords input { width:2em; display:block; float:left; margin-left:1em; }

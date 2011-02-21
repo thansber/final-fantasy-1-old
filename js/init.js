@@ -1,25 +1,28 @@
 $(document).ready(function() {
   
   Movement.init({view:"#view"});
+  Map.init();
+  Party.init({player:"#player"});
+  
   Debug.init({
     debug:"#debug"
    ,worldMap:{tilesets:"#debug .world-map .tilesets"}
   });
   
   $("#debug .menu a").click(function() { Debug.menuChange($(this)); });
-  $("#debug .movement").click(function(event) { Debug.move($(event.target)); });
+  $("#debug .movement").click(function(event) { Debug.MovementHelper.event($(event.target)); });
   $("#debug .world-map").click(function(event) { Debug.WorldMapHelper.event($(event.target)); });
+  $("#debug .coords button").click(function(event) { Debug.CoordsHelper.event($(event.target)); });
   
   $(window).keydown(function(event) {
-    switch (event.keyCode) {
-      case 37: Movement.left(); break;
-      case 38: Movement.up(); break;
-      case 39: Movement.right(); break;
-      case 40: Movement.down(); break;
-    }
+    Movement.keyPressChange(event.keyCode, true);
   });
   
-  $("#debug .menu a:first").click();  
+  $(window).keyup(function(event) {
+    Movement.keyPressChange(event.keyCode, false);
+  });
+  
+  $("#debug .menu a.movement").click();  
   
   Debug.WorldMapHelper.loadLastTileset();
 });

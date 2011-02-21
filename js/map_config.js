@@ -1,12 +1,20 @@
 var Map = (function() {
   
   var ALL_SAME = "ALL";
+  var SIZE = 16;
+  var MAX_INDEX = SIZE * SIZE - 1;
+  
+  var allMaps = {};
+  
+  var init = function(opt) {};
+  var getMap = function(id) { return allMaps[id]; };
   
   Config = function(opt) {
-    this.size = opt.size;
-    this.maxIndex = this.size * this.size;
+    opt = opt || {};
+    this.id = opt.id;
     this.tilesets = [];
     this.mapping = $.extend(true, {}, opt.mapping);
+    allMaps[this.id] = this;
   };
   
   Config.prototype.setMapping = function(mapping) {
@@ -20,9 +28,9 @@ var Map = (function() {
     
     if (tileset == ALL_SAME) {
       tileset = [];
-      for (var i = 0; i < this.size; i++) {
+      for (var i = 0; i < SIZE; i++) {
         var tileRow = "";
-        for (var j = 0; j < this.size; j++) {
+        for (var j = 0; j < SIZE; j++) {
           tileRow += allTileType;
         }
         tileset.push(tileRow);
@@ -46,8 +54,8 @@ var Map = (function() {
     return row.charAt(coords.tileX()); 
   };
   
-  Config.prototype.getTileAbsolute = function(absoluteCoords) {
-    return this.getTile(absoluteToCoords(absoluteCoords));
+  Config.prototype.getTileAbsolute = function(absolute) {
+    return this.getTile(absolute.toCoords());
   };
   
   Config.prototype.getTileClass = function(tile) {
@@ -126,15 +134,15 @@ var Map = (function() {
     absoluteCoords.y -= (mapping.block.height - 1);
     absoluteCoords.x -= (mapping.block.width - 1);
     
-    var topBlock = this.maxIndex + 1;
-    var leftBlock = this.maxIndex + 1;
+    var topBlock = MAX_INDEX + 1;
+    var leftBlock = MAX_INDEX + 1;
     
     var minY = absoluteCoords.y, maxY = absoluteCoords.y + (mapping.block.height * 2);
     var minX = absoluteCoords.x, maxX = absoluteCoords.x + (mapping.block.width * 2);
     
     for (var y = minY; y < maxY; y++) {
       for (var x = minX; x < maxX; x++) {
-        var currentTile = this.getTileAbsolute({y:y, x:x});
+        var currentTile = this.getTileAbsolute(new AbsoluteCoords(y, x));
         if (tile == currentTile) {
           topBlock = Math.min(topBlock, y);
           leftBlock = Math.min(leftBlock, x);
@@ -168,46 +176,20 @@ var Map = (function() {
     };
   };
   
-  // If at left edge of current tileset, get tileset to the left 
-  // and right-most tile in same row
   Config.prototype.getCoordsToLeft = function(coords) {
-    var absolute = coords.toAbsolute();
-    absolute.x--;
-    var left = absoluteToCoords(absolute);
-    if (left.x < 0) {
-      return null;
-    }
-    return left;
+    return coords.toAbsolute().adjust(0, -1).toCoords();
   };
 
   Config.prototype.getCoordsToRight = function(coords) {
-    var absolute = coords.toAbsolute();
-    absolute.x++;
-    var right = absoluteToCoords(absolute);
-    if (right.x > this.maxIndex) {
-      return null;
-    }
-    return right;
+    return coords.toAbsolute().adjust(0, 1).toCoords();
   };
   
   Config.prototype.getCoordsAbove = function(coords) {
-    var absolute = coords.toAbsolute();
-    absolute.y--;
-    var above = absoluteToCoords(absolute);
-    if (above.y < 0) {
-      return null;
-    }
-    return above;
+    return coords.toAbsolute().adjust(-1, 0).toCoords();
   };
   
   Config.prototype.getCoordsBelow = function(coords) {
-    var absolute = coords.toAbsolute();
-    absolute.y++;
-    var below = absoluteToCoords(absolute);
-    if (below.y > this.maxIndex) {
-      return null;
-    }
-    return below;
+    return coords.toAbsolute().adjust(1, 0).toCoords();
   };
   
   Config.prototype.isTileOfType = function(tile, type) { 
@@ -228,14 +210,14 @@ var Map = (function() {
       alert("No tileset exists at [" + y + "][" + x + "]");
       return false;
     }
-    if (tileset.length != this.size) {
-      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + this.size);
+    if (tileset.length != SIZE) {
+      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + SIZE);
       return false;
     }
     
-    for (var i = 0; i < this.size; i++) {
-      if (tileset[i].length != this.size) {
-        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + this.size);
+    for (var i = 0; i < SIZE; i++) {
+      if (tileset[i].length != SIZE) {
+        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + SIZE);
         return false;
       }
     }
@@ -264,27 +246,59 @@ var Map = (function() {
   Coords.prototype.tileX = function() { return this.coords.tileX; };
 
   Coords.prototype.toAbsolute = function() {
-    // TODO: should the 16 be hard-coded?
-    return {
-      y : this.tilesetY() * 16 + this.tileY()
-     ,x: this.tilesetX() * 16 + this.tileX()
-    };
+    return new AbsoluteCoords({
+      y : this.tilesetY() * Map.SIZE + this.tileY()
+     ,x: this.tilesetX() * Map.SIZE + this.tileX()
+    });
   };
   
   Coords.prototype.toString = function() {
     return "tileset[" + this.tilesetY() + "," + this.tilesetX() + "], tile[" + this.tileY() + "," + this.tileX() + "]";
   };
 
-  var absoluteToCoords = function(absolute) {
-    return new Coords(Math.floor(absolute.y / 16), Math.floor(absolute.x / 16), absolute.y % 16, absolute.x % 16);
+  
+  AbsoluteCoords = function() {
+    if (arguments.length == 2) {
+      this.y = arguments[0];
+      this.x = arguments[1];
+    } else {
+      var opt = arguments[0] || {x:0, y:0};
+      this.y = opt.y;
+      this.x = opt.x;
+    }
+  };
+  AbsoluteCoords.prototype.adjust = function(yChange, xChange) {
+    this.y += yChange;
+    this.x += xChange;
+    if (this.y < 0) { this.y = MAX_INDEX; }
+    if (this.x < 0) { this.x = MAX_INDEX; }
+    if (this.y > MAX_INDEX) { this.y = 0; }
+    if (this.x > MAX_INDEX) { this.x = 0; }
+    return this;
+  };
+  AbsoluteCoords.prototype.toCoords = function() {
+    return new Coords(Math.floor(this.y / Map.SIZE), 
+                      Math.floor(this.x / Map.SIZE), 
+                      this.y % Map.SIZE, 
+                      this.x % Map.SIZE);
+  };
+  AbsoluteCoords.prototype.toString = function() {
+    return "[" + this.y + "," + this.x + "]";
   };
 
   
   return {
-    Config: Config
+    init: init
+   ,getMap: getMap
+    
+   ,Config: Config
    ,Coords: Coords
+   ,AbsoluteCoords: AbsoluteCoords
+   
+   ,WORLD_MAP: "world-map"
+   
    ,ALL_SAME: ALL_SAME
-   ,absoluteToCoords: absoluteToCoords
+   ,SIZE: SIZE
   };
   
 })();
