@@ -1,9 +1,6 @@
 #world { width:50%; height:100%; float:left; overflow:auto; }
-#world .map { width:4096px; height:4096px; }
-#world .map .tileset.row { clear:both; }
-#world .map .tileset.row .tileset { width:256px; height:256px; color:white; float:left; } 
-#view { margin:2em; width:112px; height:112px; border:1px solid black; overflow:hidden; background-image:url(../images/grass_test.png); background-position:-64px -64px; }
-#player { width:16px; height:16px; background-color:red; margin-top:48px; margin-left:48px;}
+#view { background-color:blue; margin:2em; width:238px; height:238px; overflow:hidden; background-image:url(../images/ff_entire_map.png); }
+#player { width:16px; height:16px; background-color:red; margin-top:112px; margin-left:112px;}
 
 .map .row { clear:both; }
 .map .tile { width:16px; height:16px; float:left; background-repeat:no-repeat; overflow:hidden; }

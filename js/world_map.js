@@ -1,8 +1,6 @@
 var WorldMap = (function() {
   
-  var Config = new Map.Config({
-    size:16
-  });
+  var Config = new Map.Config({id:Map.WORLD_MAP});
   
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,0
   Config.addTileset(0, Map.ALL_SAME, "w"); // 0,1

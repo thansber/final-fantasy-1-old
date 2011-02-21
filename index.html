@@ -7,8 +7,11 @@
   <link type="text/css" rel="stylesheet" href="css/world.css"/>
   <script type="text/javascript" src="js/lib/jquery-1.4.4.js"></script>
   <script type="text/javascript" src="js/lib/jquery.backgroundPosition-7.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+  <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/movement.js"></script>
   <script type="text/javascript" src="js/map_config.js"></script>
+  <script type="text/javascript" src="js/party.js"></script>
   <script type="text/javascript" src="js/world_map.js"></script>
   <script type="text/javascript" src="js/map_builder.js"></script>
   <script type="text/javascript" src="js/debug.js"></script>
@@ -17,18 +20,16 @@
 <body>
 
 <div id="world">
-  <div class="world map"></div>
-<!--  
   <div id="view">
     <div id="player"></div>
   </div>
--->
 </div>
 
 <div id="debug">
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
     <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
+    <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -61,6 +62,22 @@
       <a href="#" class="right">Right</a>
       <a href="#" class="down">Down</a>
       <a href="#" class="up">Up</a>
+    </div>
+    <button class="start listening">Start listening</button>
+    <button class="stop listening">Stop listening</button>
+  </section>
+  
+  <section class="coords curve all">
+    <div class="container">
+      <div class="row"><label>Tileset Y</label><input type="text" class="tileset y" value="0" /></div>
+      <div class="row"><label>Tileset X</label><input type="text" class="tileset x" value="0" /></div>
+      <div class="row"><label>Tile Y</label><input type="text" class="tile y" value="0" /></div>
+      <div class="row"><label>Tile X</label><input type="text" class="tile x" value="0" /></div>
+      <button class="button go">Go there</button>
+      <button class="button absolute">Absolute</button>
+      <div class="absolute container hidden">
+        <span class="absolute y"></span>,<span class="absolute x"></span>
+      </div>
     </div>
   </section>
 </div>
