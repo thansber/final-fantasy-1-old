@@ -1,5 +1,8 @@
 var Map = (function() {
   
+  /* ======== */
+  /* MAP BASE */
+  /* ======== */
   var ALL_SAME = "ALL";
   var SIZE = 16;
   var MAX_INDEX = SIZE * SIZE - 1;
@@ -9,6 +12,9 @@ var Map = (function() {
   var init = function(opt) {};
   var getMap = function(id) { return allMaps[id]; };
   
+  /* ========== */
+  /* MAP CONFIG */
+  /* ========== */
   Config = function(opt) {
     opt = opt || {};
     this.id = opt.id;
@@ -16,6 +22,8 @@ var Map = (function() {
     this.mapping = $.extend(true, {}, opt.mapping);
     allMaps[this.id] = this;
   };
+
+  Config.prototype.is = function(id) { return this.id == id; };
   
   Config.prototype.setMapping = function(mapping) {
     this.mapping = $.extend(true, {}, mapping); 
@@ -64,10 +72,17 @@ var Map = (function() {
       return "unknown";
     }
     
-    return mapping.cssClass;
+    return mapping.cssClasses;
   };
   
   Config.prototype.getTileMapping = function(tile) { return this.mapping[tile]; };
+  Config.prototype.getParentTileMapping = function(tile) {
+    var mapping = this.getTileMapping(tile);
+    while (mapping.inheritsFrom) {
+      mapping = this.getParentTileMapping(mapping.inheritsFrom);
+    }
+    return mapping;
+  };
   
   Config.prototype.getTileClasses = function(coords) {
     var tile = this.getTile(coords);
@@ -225,6 +240,37 @@ var Map = (function() {
     return true;
   }
   
+  Tile = function(opt) {
+    opt = opt || {
+      cssClasses: ""
+     ,hasCorners: false
+     ,hasSides: false
+     ,block: {}
+     ,passableUsing: []
+     ,borderTile: null
+     ,inheritsFrom: null
+    };
+    this.cssClasses = opt.cssClasses;
+    this.hasCorners = opt.hasCorners;
+    this.hasSides = opt.hasSides;
+    this.block = opt.block;
+    this.passableUsing = opt.passableUsing;
+    this.borderTile = opt.borderTile;
+    this.inheritsFrom = opt.inheritsFrom; 
+  };
+  
+  Tile.prototype.isPassableUsing = function(transportation) {
+    for (var t in this.passableUsing) {
+      if (this.passableUsing[t] == transportation) {
+        return true;
+      }
+    }
+    return false;
+  };
+  
+  /* =============== */
+  /* MAP COORDINATES */
+  /* =============== */
   // Parameters can either be an object or the 4 coordinates
   // TilesetY, TilesetX, TileY, TileX
   Coords = function() {
@@ -256,7 +302,14 @@ var Map = (function() {
     return "tileset[" + this.tilesetY() + "," + this.tilesetX() + "], tile[" + this.tileY() + "," + this.tileX() + "]";
   };
 
+  /* ======================== */
+  /* MAP ABSOLUTE COORDINATES */
+  /* ======================== */
   
+  /**
+   * Args can be 2 params - y, x
+   * or a object containing y and x
+   */
   AbsoluteCoords = function() {
     if (arguments.length == 2) {
       this.y = arguments[0];
@@ -292,6 +345,7 @@ var Map = (function() {
    ,getMap: getMap
     
    ,Config: Config
+   ,Tile: Tile
    ,Coords: Coords
    ,AbsoluteCoords: AbsoluteCoords
    

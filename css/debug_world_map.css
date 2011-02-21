@@ -1,0 +1,159 @@
+.map .row { clear:both; }
+.map .tile { width:16px; height:16px; float:left; background-repeat:no-repeat; overflow:hidden; }
+.map.world .tile { background-image:url(../images/ff_tiles.png); background-position:16px 16px; }
+.map.world .tile.none { background-image:none; background-color:#008D00; }
+.map.world .tile.unknown { background-image:none; background-color:black; }
+
+.map.world .tile.forest { background-position:-128px -96px; }
+.map.world .tile.forest.top { background-position:-128px -80px; }
+.map.world .tile.forest.left { background-position:-112px -96px; }
+.map.world .tile.forest.right { background-position:-144px -96px; }
+.map.world .tile.forest.bottom { background-position:-128px -112px; }
+.map.world .tile.forest.tl { background-position:-112px -80px; }
+.map.world .tile.forest.tr { background-position:-144px -80px; }
+.map.world .tile.forest.bl { background-position:-112px -112px; }
+.map.world .tile.forest.br { background-position:-144px -112px; }
+
+.map.world .tile.grass { background-position:-48px -16px; }
+.map.world .tile.grass.left { background-position:-64px 0px; }
+.map.world .tile.grass.right { background-position:-80px -16px; }
+.map.world .tile.grass.tl { background-position:-64px 0px; }
+.map.world .tile.grass.tr { background-position:-80px 0px; }
+.map.world .tile.grass.bl { background-position:-64px -16px; }
+.map.world .tile.grass.br { background-position:-80px -16px; }
+
+.map.world .tile.swamp { background-position:-80px -32px; }
+.map.world .tile.swamp.tl { background-position:-48px -32px; }
+.map.world .tile.swamp.tr { background-position:-64px -32px; }
+.map.world .tile.swamp.bl { background-position:-48px -48px; }
+.map.world .tile.swamp.br { background-position:-64px -48px; }
+
+.map.world .tile.water { background-position:-16px -16px; }
+.map.world .tile.water.top { background-position:-16px 0px; }
+.map.world .tile.water.left { background-position:0px -16px; }
+.map.world .tile.water.right { background-position:-32px -16px; }
+.map.world .tile.water.bottom { background-position:-16px -32px; }
+
+.map.world .tile.coastline.tl { background-position:0 0; }
+.map.world .tile.coastline.tr { background-position:-32px 0; }
+.map.world .tile.coastline.bl { background-position:0 -32px; }
+.map.world .tile.coastline.br { background-position:-32px -32px; }
+
+.map.world .tile.river { background-position:-128px -32px; }
+.map.world .tile.river.tl { background-position:-128px 0px; }
+.map.world .tile.river.tr { background-position:-144px 0px; }
+.map.world .tile.river.bl { background-position:-128px -16px; }
+.map.world .tile.river.br { background-position:-144px -16px; }
+
+.map.world .tile.waterfall { background-position:-16px -224px; }
+
+.map.world .tile.docks.top { background-position:-16px -208px; }
+.map.world .tile.docks.left { background-position:0px -224px; }
+.map.world .tile.docks.right { background-position:-32px -224px; }
+.map.world .tile.docks.tl { background-position:0px -208px; }
+.map.world .tile.docks.tr { background-position:-32px -208px; }
+.map.world .tile.docks.bl { background-position:0px -224px; }
+.map.world .tile.docks.br { background-position:-32px -224px; }
+
+.map.world .tile.mountain { background-position:-16px -96px; }
+.map.world .tile.mountain.top { background-position:-16px -80px; }
+.map.world .tile.mountain.left { background-position:0px -96px; }
+.map.world .tile.mountain.right { background-position:-32px -96px; }
+.map.world .tile.mountain.bottom { background-position:-16px -112px; }
+.map.world .tile.mountain.tl { background-position:0px -80px; }
+.map.world .tile.mountain.tr { background-position:-32px -80px; }
+.map.world .tile.mountain.bl { background-position:-0px -112px; }
+.map.world .tile.mountain.br { background-position:-32px -112px; }
+
+.map.world .tile.desert { background-position:-32px -48px; }
+.map.world .tile.desert.tl { background-position:0px -48px; }
+.map.world .tile.desert.tr { background-position:-16px -48px; }
+.map.world .tile.desert.bl { background-position:-0px -64px; }
+.map.world .tile.desert.br { background-position:-16px -64px; }
+
+.map.world .tile.town { background-position:-144px -32px; }
+.map.world .tile.town.empty { background-color:#BDBDBD; background-image:none; }
+.map.world .tile.village { background-position:-48px 0px; }
+.map.world .tile.pravoka { background-position:-80px -96px; }
+.map.world .tile.elfland { background-position:-112px -64px; }
+
+.map.world .castle.AA { background-position:-96px -32px; }
+.map.world .castle.AB { background-position:-112px -32px; }
+.map.world .castle.BA { background-position:-96px -48px; }
+.map.world .castle.BB { background-position:-112px -48px; }
+
+.map.world .ruins.AA { background-position:-160px 0px; }
+.map.world .ruins.AB { background-position:-176px 0px; }
+.map.world .ruins.AC { background-position:-192px 0px; }
+.map.world .ruins.AD { background-position:0px -32px; }
+.map.world .ruins.BA { background-position:-160px -16px; }
+.map.world .ruins.BB { background-position:-176px -16px; }
+.map.world .ruins.BC { background-position:-192px -16px; }
+.map.world .ruins.BD { background-position:-208px -16px; }
+
+.map.world .cave { background-position:-32px -64px; }
+.map.world .hole { background-position:-80px -48px; }
+
+.map.world .mirage.tower.AA { background-position:-128px -48px; }
+.map.world .mirage.tower.AB { background-position:-144px -48px; }
+.map.world .mirage.tower.BA { background-position:-128px -64px; }
+.map.world .mirage.tower.BB { background-position:-144px -64px; }
+
+.map.world .volcano.AA { background-position:-96px 0px; }
+.map.world .volcano.AB { background-position:-112px 0px; }
+.map.world .volcano.BA { background-position:-96px -16px; }
+.map.world .volcano.BB { background-position:-112px -16px; }
+
+.map.world .town.wall.AB { background-position:-48px -64px; }
+.map.world .town.wall.AC { background-position:-64px -64px; }
+.map.world .town.wall.AD { background-position:-80px -64px; }
+.map.world .town.wall.BA { background-position:-48px -80px; }
+.map.world .town.wall.BB { background-position:-64px -80px; }
+.map.world .town.wall.BD { background-position:-80px -80px; }
+.map.world .town.wall.BE { background-position:-96px -80px; }
+.map.world .town.wall.CA { background-position:-48px -96px; }
+.map.world .town.wall.CE { background-position:-96px -96px; }
+.map.world .town.wall.DA { background-position:-48px -112px; }
+.map.world .town.wall.DE { background-position:-96px -112px; }
+.map.world .town.wall.gate.left { background-position:-64px -112px; }
+.map.world .town.wall.gate.right { background-position:-80px -112px; }
+
+.map.world .coneria.wall.AB { background-position:-176px -32px; }
+.map.world .coneria.wall.AE { background-position:-192px -32px; }
+.map.world .coneria.wall.BA { background-position:-160px -48px; }
+.map.world .coneria.wall.BB { background-position:-176px -48px; }
+.map.world .coneria.wall.BE { background-position:-192px -48px; }
+.map.world .coneria.wall.BF { background-position:-208px -48px; }
+.map.world .coneria.wall.CA { background-position:-160px -64px; }
+.map.world .coneria.wall.CF { background-position:-208px -64px; }
+.map.world .coneria.wall.DA { background-position:-160px -80px; }
+.map.world .coneria.wall.DF { background-position:-208px -80px; }
+.map.world .coneria.wall.EA { background-position:-160px -96px; }
+.map.world .coneria.wall.EF { background-position:-208px -96px; }
+.map.world .coneria.wall.FA { background-position:-160px -112px; }
+.map.world .coneria.wall.FF { background-position:-208px -112px; }
+
+.map.world .coneria.castle.AA { background-position:-176px -64px; }
+.map.world .coneria.castle.AB { background-position:-192px -64px; }
+.map.world .coneria.castle.BA { background-position:-176px -80px; }
+.map.world .coneria.castle.BB { background-position:-192px -80px; }
+.map.world .coneria.castle.entrance.AA { background-position:-176px -96px; }
+.map.world .coneria.castle.entrance.AB { background-position:-192px -96px; }
+
+.map.world .crescent.lake.town { background-position:-48px -208px; }
+.map.world .crescent.lake.wall.AB { background-position:-48px -64px; }
+.map.world .crescent.lake.wall.AC { background-position:-64px -64px; }
+.map.world .crescent.lake.wall.AD { background-position:-80px -64px; }
+.map.world .crescent.lake.wall.BA { background-position:-48px -80px; }
+.map.world .crescent.lake.wall.BB { background-position:-64px -80px; }
+.map.world .crescent.lake.wall.BC { background-color:#BDBDBD; background-image:none; }
+.map.world .crescent.lake.wall.BD { background-position:-80px -80px; }
+.map.world .crescent.lake.wall.BE { background-position:-96px -80px; }
+.map.world .crescent.lake.wall.CA { background-position:-160px -64px; }
+.map.world .crescent.lake.wall.CE { background-position:-208px -64px; }
+.map.world .crescent.lake.wall.DA { background-position:-160px -80px; }
+.map.world .crescent.lake.wall.DE { background-position:-208px -80px; }
+.map.world .crescent.lake.wall.EA { background-position:-160px -96px; }
+.map.world .crescent.lake.wall.EE { background-position:-208px -96px; }
+.map.world .crescent.lake.wall.FA { background-position:-160px -112px; }
+.map.world .crescent.lake.wall.FE { background-position:-208px -112px; }

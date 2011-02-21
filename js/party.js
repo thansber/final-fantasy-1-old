@@ -3,6 +3,16 @@ var Party = (function() {
   var chars = [];
   var worldMapPosition = null;
   var currentMap = null;
+  var currentTransportation = null;
+  
+  var Transportation = (function() {
+    return {
+      FOOT: "foot"
+     ,SHIP: "ship"
+     ,CANOE: "canoe"
+     ,AIRSHIP: "airship"
+    }
+  })();
   
   /* =========== */
   /* INIT METHOD */
@@ -10,6 +20,7 @@ var Party = (function() {
   var init = function(opt) {
     $player = $(opt.player);
     currentMap = Map.WORLD_MAP;
+    currentTransportation = Transportation.FOOT;
     worldMapPosition = new Map.Coords(10, 9, 4, 8).toAbsolute();
     jumpTo(worldMapPosition);
   };
@@ -20,12 +31,23 @@ var Party = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var getDestination = function(yChange, xChange) {
-    var mapConfig = Map.getMap(currentMap);
-    
+  var isDestinationPassable = function(yChange, xChange) {
+    var map = Map.getMap(currentMap);
+    if (map.is(Map.WORLD_MAP)) {
+      var oldPos = new Map.AbsoluteCoords(worldMapPosition);
+      worldMapPosition.adjust(yChange, xChange);
+      var tile = WorldMap.Config.getTileAbsolute(worldMapPosition);
+      var mapping = WorldMap.Config.getParentTileMapping(tile);
+      var passable = mapping.isPassableUsing(currentTransportation);
+      if (!passable) {
+        worldMapPosition = oldPos;
+      }
+      return passable;
+    }
   };
   
   var jumpTo = function(absoluteCoords) {
+    worldMapPosition = absoluteCoords;
     var playerTop = Util.cssNumericValue($player.css("marginTop"));
     var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
     var top = (absoluteCoords.y * Map.SIZE) - playerTop;
@@ -38,7 +60,9 @@ var Party = (function() {
   return {
     init: init
    
-   ,getDestination: getDestination
+   ,isDestinationPassable: isDestinationPassable
    ,jumpTo: jumpTo
+   
+   ,Transportation: Transportation
   };
 })();

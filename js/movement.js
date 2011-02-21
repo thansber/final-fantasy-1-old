@@ -25,19 +25,22 @@ var Movement = (function() {
     if (isMoving) {
       return;
     }
-    var destination = Party.getDestination(yChange, xChange);
+    var moveValid = Party.isDestinationPassable(yChange, xChange);
+    if (!moveValid) {
+      return;
+    }
     isMoving = true;
     var oldPos = $view.css("backgroundPosition").split(" ");
     var oldX = parseInt(oldPos[0].replace("px", ""));
     var oldY = parseInt(oldPos[1].replace("px", ""));
-    var newPos = (oldX + xChange) + "px " + (oldY + yChange) + "px";
+    var newPos = (oldX + (xChange * moveDistance * -1)) + "px " + (oldY + (yChange * moveDistance * -1)) + "px";
     $view.stop().animate({backgroundPosition:newPos}, 250, "linear", function() { isMoving = false; });
   };
   
-  var left = function() { move(moveDistance, 0); };
-  var right = function() { move(-1 * moveDistance, 0); };
-  var up = function() { move(0, moveDistance); };
-  var down = function() { move(0, -1 * moveDistance); };
+  var left = function() { move(-1, 0); };
+  var right = function() { move(1, 0); };
+  var up = function() { move(0, -1); };
+  var down = function() { move(0, 1); };
   var moving = function() { return isMoving; };
   
   var keyPressChange = function(key, isPressed) {
@@ -65,6 +68,9 @@ var Movement = (function() {
   
   var stopListening = function() {
     $(document).stopTime(TIMER_LABEL);
+    for (var k in keysPressed) {
+      keysPressed[k] = false;
+    }
   };
   
   return {

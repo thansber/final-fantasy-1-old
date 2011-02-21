@@ -1709,7 +1709,7 @@ var WorldMap = (function() {
                        ,"   ffffffffffffx"
                        ,"  fffff KK fffff"
                        ,"  ffff kKKk ffff"
-                       ,"  fff kkKKkk fff"]);
+                       ,"  fff kkAAkk fff"]);
   // 9,10
   Config.addTileset(9, ["mmmmmssxwwwww ss"
                        ,"mmmmssxwwwwwwxss"
@@ -2870,78 +2870,79 @@ var WorldMap = (function() {
   Config.addTileset(15, Map.ALL_SAME, "w"); // 15,15  
 
   Config.setMapping({
-    " " : {cssClass:"none"}
-   ,"c" : {cssClass:"cave"}
-   ,"d" : {cssClass:"desert", hasCorners:true, borderTile:"d"}
-   ,"e" : {cssClass:"elfland"}
-   ,"f" : {cssClass:"forest", hasCorners:true, hasSides:true, borderTile:"f"}
-   ,"g" : {cssClass:"grass", hasCorners:true, borderTile:"goG&*~`"}
-   ,"k" : {cssClass:"coneria wall", block:{width:6, height:6}}
-   ,"l" : {cssClass:"crescent lake town"}
-   ,"m" : {cssClass:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"}
-   ,"n" : {cssClass:"volcano", block:{width:2, height:2}}
-   ,"o" : {cssClass:"hole"}
-   ,"r" : {cssClass:"river", hasCorners:true, borderTile:"rJ"}
-   ,"s" : {cssClass:"swamp", hasCorners:true, borderTile:"so:;,."}
-   ,"t" : {cssClass:"town empty"}
-   ,"u" : {cssClass:"ruins", block:{width:4, height:2}}
-   ,"v" : {cssClass:"village"}
-   ,"w" : {cssClass:"water", hasSides:true, borderTile:"wxH12345678"}
-   ,"x" : {cssClass:"coastline", hasCorners:true, borderTile:"wx12345678"}
+    " " : new Map.Tile({cssClasses:"none", passableUsing:[Party.Transportation.FOOT]})
+   ,"c" : new Map.Tile({cssClasses:"cave", passableUsing:[Party.Transportation.FOOT]})
+   ,"d" : new Map.Tile({cssClasses:"desert", passableUsing:[Party.Transportation.FOOT], hasCorners:true, borderTile:"d"})
+   ,"e" : new Map.Tile({cssClasses:"elfland", passableUsing:[Party.Transportation.FOOT]})
+   ,"f" : new Map.Tile({cssClasses:"forest", passableUsing:[Party.Transportation.FOOT], hasCorners:true, hasSides:true, borderTile:"f"})
+   ,"g" : new Map.Tile({cssClasses:"grass", passableUsing:[Party.Transportation.FOOT], hasCorners:true, borderTile:"goG&*~`"})
+   ,"k" : new Map.Tile({cssClasses:"coneria wall", block:{width:6, height:6}})
+   ,"l" : new Map.Tile({cssClasses:"crescent lake town", passableUsing:[Party.Transportation.FOOT], inheritsFrom:"T"})
+   ,"m" : new Map.Tile({cssClasses:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"})
+   ,"n" : new Map.Tile({cssClasses:"volcano", passableUsing:[Party.Transportation.FOOT], block:{width:2, height:2}})
+   ,"o" : new Map.Tile({cssClasses:"hole", passableUsing:[Party.Transportation.FOOT]})
+   ,"r" : new Map.Tile({cssClasses:"river", passableUsing:[Party.Transportation.CANOE], hasCorners:true, borderTile:"rJ"})
+   ,"s" : new Map.Tile({cssClasses:"swamp", passableUsing:[Party.Transportation.FOOT], hasCorners:true, borderTile:"so:;,."})
+   ,"t" : new Map.Tile({cssClasses:"town empty", passableUsing:[Party.Transportation.FOOT]})
+   ,"u" : new Map.Tile({cssClasses:"ruins", passableUsing:[Party.Transportation.FOOT], block:{width:4, height:2}})
+   ,"v" : new Map.Tile({cssClasses:"village", passableUsing:[Party.Transportation.FOOT]})
+   ,"w" : new Map.Tile({cssClasses:"water", passableUsing:[Party.Transportation.SHIP], hasSides:true, borderTile:"wxH12345678"})
+   ,"x" : new Map.Tile({cssClasses:"coastline", passableUsing:[Party.Transportation.FOOT], hasCorners:true, borderTile:"wx12345678"})
    
-   ,"C" : {cssClass:"castle", block:{width:2,height:2}}
-   ,"D" : {cssClass:"docks", hasCorners:true, hasSides:true, borderTile:"DEFH"}
-   ,"E" : {cssClass:"docks top"}
-   ,"F" : {cssClass:"waterfall"}
-   ,"G" : {cssClass:"grass"}
-   ,"H" : {cssClass:"water"}
-   ,"I" : {cssClass:"docks right"}
-   ,"J" : {cssClass:"river br"}
-   ,"K" : {cssClass:"coneria castle", block:{width:2, height:3}}
-   ,"L" : {cssClass:"crescent lake wall", block:{width:5, height:6}}
-   ,"M" : {cssClass:"mirage tower", block:{width:2, height:2}}
-   ,"P" : {cssClass:"pravoka"}
-   ,"T" : {cssClass:"town"}
-   ,"V" : {cssClass:"desert caravan", hasCorners:true, borderTile:"V"}
-   ,"W" : {cssClass:"town wall", block:{width:5, height:4}}
+   ,"A" : new Map.Tile({cssClasses:"coneria castle entrance", passableUsing:[Party.Transportation.FOOT], block:{width:2, height:1}})
+   ,"C" : new Map.Tile({cssClasses:"castle", passableUsing:[Party.Transportation.FOOT], block:{width:2,height:2}})
+   ,"D" : new Map.Tile({cssClasses:"docks", passableUsing:[Party.Transportation.FOOT], hasCorners:true, hasSides:true, borderTile:"DEFH"})
+   ,"E" : new Map.Tile({cssClasses:"docks top", inheritsFrom:"D"})
+   ,"F" : new Map.Tile({cssClasses:"waterfall", passableUsing:[Party.Transportation.FOOT]})
+   ,"G" : new Map.Tile({cssClasses:"grass", inheritsFrom:"g"})
+   ,"H" : new Map.Tile({cssClasses:"water", inheritsFrom:"w"})
+   ,"I" : new Map.Tile({cssClasses:"docks right", inheritsFrom:"D"})
+   ,"J" : new Map.Tile({cssClasses:"river br", inheritsFrom:"r"})
+   ,"K" : new Map.Tile({cssClasses:"coneria castle", block:{width:2, height:2}})
+   ,"L" : new Map.Tile({cssClasses:"crescent lake wall", block:{width:5, height:6}})
+   ,"M" : new Map.Tile({cssClasses:"mirage tower", passableUsing:[Party.Transportation.FOOT], block:{width:2, height:2}})
+   ,"P" : new Map.Tile({cssClasses:"pravoka", passableUsing:[Party.Transportation.FOOT]})
+   ,"T" : new Map.Tile({cssClasses:"town", passableUsing:[Party.Transportation.FOOT]})
+   ,"V" : new Map.Tile({cssClasses:"desert caravan", passableUsing:[Party.Transportation.FOOT], hasCorners:true, borderTile:"V"})
+   ,"W" : new Map.Tile({cssClasses:"town wall", block:{width:5, height:4}})
    
-   ,"1" : {cssClass:"water top"}
-   ,"2" : {cssClass:"water left"}
-   ,"3" : {cssClass:"water right"}
-   ,"4" : {cssClass:"water bottom"}
-   ,"5" : {cssClass:"coastline tl"}
-   ,"6" : {cssClass:"coastline tr"}
-   ,"7" : {cssClass:"coastline bl"}
-   ,"8" : {cssClass:"coastline br"}
-   ,"9" : {cssClass:"mountain top"}
-   ,"0" : {cssClass:"mountain left"}
-   ,"!" : {cssClass:"mountain right"}
-   ,"@" : {cssClass:"mountain bottom"}
-   ,"#" : {cssClass:"mountain tl"}
-   ,"$" : {cssClass:"mountain tr"}
-   ,"%" : {cssClass:"mountain bl"}
-   ,"^" : {cssClass:"mountain br"}
-   ,"&" : {cssClass:"grass tl"}
-   ,"*" : {cssClass:"grass tr"}
-   ,"~" : {cssClass:"grass bl"}
-   ,"`" : {cssClass:"grass br"}
-   ,":" : {cssClass:"swamp tl"}
-   ,";" : {cssClass:"swamp tr"}
-   ,"," : {cssClass:"swamp bl"}
-   ,"." : {cssClass:"swamp br"}
-   ,"+" : {cssClass:"desert tl"}
-   ,"=" : {cssClass:"desert tr"}
-   ,"/" : {cssClass:"desert bl"}
-   ,"|" : {cssClass:"desert br"}
+   ,"1" : new Map.Tile({cssClasses:"water top", inheritsFrom:"w"})
+   ,"2" : new Map.Tile({cssClasses:"water left", inheritsFrom:"w"})
+   ,"3" : new Map.Tile({cssClasses:"water right", inheritsFrom:"w"})
+   ,"4" : new Map.Tile({cssClasses:"water bottom", inheritsFrom:"w"})
+   ,"5" : new Map.Tile({cssClasses:"coastline tl", inheritsFrom:"x"})
+   ,"6" : new Map.Tile({cssClasses:"coastline tr", inheritsFrom:"x"})
+   ,"7" : new Map.Tile({cssClasses:"coastline bl", inheritsFrom:"x"})
+   ,"8" : new Map.Tile({cssClasses:"coastline br", inheritsFrom:"x"})
+   ,"9" : new Map.Tile({cssClasses:"mountain top", inheritsFrom:"m"})
+   ,"0" : new Map.Tile({cssClasses:"mountain left", inheritsFrom:"m"})
+   ,"!" : new Map.Tile({cssClasses:"mountain right", inheritsFrom:"m"})
+   ,"@" : new Map.Tile({cssClasses:"mountain bottom", inheritsFrom:"m"})
+   ,"#" : new Map.Tile({cssClasses:"mountain tl", inheritsFrom:"m"})
+   ,"$" : new Map.Tile({cssClasses:"mountain tr", inheritsFrom:"m"})
+   ,"%" : new Map.Tile({cssClasses:"mountain bl", inheritsFrom:"m"})
+   ,"^" : new Map.Tile({cssClasses:"mountain br", inheritsFrom:"m"})
+   ,"&" : new Map.Tile({cssClasses:"grass tl", inheritsFrom:"g"})
+   ,"*" : new Map.Tile({cssClasses:"grass tr", inheritsFrom:"g"})
+   ,"~" : new Map.Tile({cssClasses:"grass bl", inheritsFrom:"g"})
+   ,"`" : new Map.Tile({cssClasses:"grass br", inheritsFrom:"g"})
+   ,":" : new Map.Tile({cssClasses:"swamp tl", inheritsFrom:"s"})
+   ,";" : new Map.Tile({cssClasses:"swamp tr", inheritsFrom:"s"})
+   ,"," : new Map.Tile({cssClasses:"swamp bl", inheritsFrom:"s"})
+   ,"." : new Map.Tile({cssClasses:"swamp br", inheritsFrom:"s"})
+   ,"+" : new Map.Tile({cssClasses:"desert tl", inheritsFrom:"d"})
+   ,"=" : new Map.Tile({cssClasses:"desert tr", inheritsFrom:"d"})
+   ,"/" : new Map.Tile({cssClasses:"desert bl", inheritsFrom:"d"})
+   ,"|" : new Map.Tile({cssClasses:"desert br", inheritsFrom:"d"})
 
-   ,"-" : {}
-   ,"_" : {}
-   ,"}" : {}
-   ,"{" : {}
-   ,"(" : {}
-   ,")" : {}
-   ,">" : {cssClass:"town wall gate left"}
-   ,"<" : {cssClass:"town wall gate right"}
+   ,"-" : new Map.Tile({})
+   ,"_" : new Map.Tile({})
+   ,"}" : new Map.Tile({})
+   ,"{" : new Map.Tile({})
+   ,"(" : new Map.Tile({})
+   ,")" : new Map.Tile({})
+   ,">" : new Map.Tile({cssClasses:"town wall gate left"})
+   ,"<" : new Map.Tile({cssClasses:"town wall gate right"})
   });
   
   return {
