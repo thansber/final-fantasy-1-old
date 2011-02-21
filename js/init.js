@@ -23,6 +23,6 @@ $(document).ready(function() {
   });
   
   $("#debug .menu a.movement").click();  
-  
-  Debug.WorldMapHelper.loadLastTileset();
+
+  Movement.startListening();
 });
