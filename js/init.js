@@ -2,6 +2,7 @@ $(document).ready(function() {
   
   Movement.init({view:"#view"});
   Map.init();
+  Message.init();
   Party.init({player:"#player"});
   
   Debug.init({
@@ -22,7 +23,7 @@ $(document).ready(function() {
     Movement.keyPressChange(event.keyCode, false);
   });
   
-  $("#debug .menu a.movement").click();  
+  $("#debug .menu a.messages").click();  
 
   Movement.startListening();
 });

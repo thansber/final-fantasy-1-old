@@ -42,3 +42,5 @@
 #debug .coords .row { clear:both; height:1.6em; }
 #debug .coords label { width:6em; display:block; float:left; text-align:right; }
 #debug .coords input { width:2em; display:block; float:left; margin-left:1em; }
+
+#debug .messages .message { background-color:navy; padding:0.4em; margin-bottom:0.2em; overflow:auto; }
