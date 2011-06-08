@@ -1,3 +1,4 @@
 #world { width:50%; height:100%; float:left; overflow:auto; }
 #view { background-color:blue; margin:2em; width:302px; height:302px; overflow:hidden; background-image:url(../images/ff_entire_map.png); }
+#view { background:none; } /* remove this to show the world map */
 #player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px;}

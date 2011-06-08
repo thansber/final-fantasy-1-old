@@ -1,0 +1,33 @@
+#battleView { width:48%; height:100%; float:left; margin:1%; }
+
+#battle { height:400px; }
+#battle .border { -moz-border-image:url(../images/border.png) 7 repeat; background-color:black; }
+
+#battle .enemies { float:left; padding:1px 4px; height:280px; }
+#battle .party { width:96px; height:280px; float:left; margin-left:3px; padding:1px 4px; }
+#battle .party .background { width:96px; }
+#battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
+#battle .input .enemy.list { float:left; width:140px; height:116px; }
+#battle .input .commands { float:left; width:176px; height:100px; margin-left:4px; padding-left:20px; padding-top:16px; }
+#battle .input .commands .column { float:left; }
+#battle .input .commands .second.column { margin-left:30px; }
+#battle .input .commands .message { height:24px; }
+
+#battle .background { background-image:url(../images/battle_backgrounds.png); overflow:hidden; height:64px; width:224px; background-repeat:no-repeat; background-position:200px 200px; }
+#battle .background.castle { background-position:0 0; }
+#battle .background.desert { background-position:0 -64px; }
+#battle .background.earth.cave { background-position:0 -128px; }
+#battle .background.forest { background-position:0 -192px; }
+#battle .background.gurgu { background-position:0 -256px; }
+#battle .background.ice.cave { background-position:0 -320px; }
+#battle .background.marsh.cave { background-position:0 -384px; }
+#battle .background.plains { background-position:0 -448px; }
+#battle .background.river { background-position:0 -512px; }
+#battle .background.sea { background-position:0 -576px; }
+#battle .background.sea.shrine { background-position:0 -640px; }
+#battle .background.sky.castle { background-position:0 -704px; }
+#battle .background.swamp { background-position:0 -768px; }
+#battle .background.tof { background-position:0 -832px; }
+#battle .background.titan { background-position:0 -896px; }
+#battle .background.waterfall { background-position:0 -960px; }
+

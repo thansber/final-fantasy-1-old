@@ -7,6 +7,7 @@
   <link type="text/css" rel="stylesheet" href="css/debug.css"/>
   <link type="text/css" rel="stylesheet" href="css/debug_world_map.css"/>
   <link type="text/css" rel="stylesheet" href="css/world.css"/>
+  <link type="text/css" rel="stylesheet" href="css/battle.css"/>
   <script type="text/javascript" src="js/lib/jquery-1.4.4.js"></script>
   <script type="text/javascript" src="js/lib/jquery.backgroundPosition-7.js"></script>
   <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
@@ -17,14 +18,39 @@
   <script type="text/javascript" src="js/party.js"></script>
   <script type="text/javascript" src="js/world_map.js"></script>
   <script type="text/javascript" src="js/map_builder.js"></script>
-  <script type="text/javascript" src="js/debug.js"></script>
+  <script type="text/javascript" src="js/battle.js"></script>
+  <script type="text/javascript" src="js/debug/util.js"></script>
+  <script type="text/javascript" src="js/debug/worldMap.js"></script>
+  <script type="text/javascript" src="js/debug/movement.js"></script>
+  <script type="text/javascript" src="js/debug/coordinates.js"></script>
+  <script type="text/javascript" src="js/debug/messages.js"></script>
+  <script type="text/javascript" src="js/debug/battleBackground.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
 <body>
 
-<div id="world">
+<div id="world" class="main">
   <div id="view">
     <div id="player"></div>
+  </div>
+</div>
+
+<div id="battleView" class="main">
+  <div id="battle">
+    <div class="enemies border">
+      <div class="background"></div>
+    </div>
+    <div class="party border">          
+      <div class="background"></div>
+    </div>
+    <div class="stats"></div>
+    <div class="input">
+      <div class="enemy list border"></div>
+      <div class="commands border">
+        <div class="first column"></div>
+        <div class="second column"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -34,6 +60,7 @@
     <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
     <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
+    <li class="curve tl bl big"><a href="#" class="battle background">Battle Backgrounds</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -86,7 +113,13 @@
   </section>
   
   <section class="messages curve all">
+    <div class="container"></div>
+  </section>
+  
+  <section class="battle background curve all">
     <div class="container">
+      <label for="battleBackgroundSelector">Select a background:</label>
+      <select id="battleBackgroundSelector"></select>
     </div>
   </section>
 </div>

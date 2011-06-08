@@ -4,16 +4,17 @@ $(document).ready(function() {
   Map.init();
   Message.init();
   Party.init({player:"#player"});
+  Battle.init();
   
-  Debug.init({
-    debug:"#debug"
-   ,worldMap:{tilesets:"#debug .world-map .tilesets"}
-  });
+  WorldMapHelper.init({tilesets:"#debug .world-map .tilesets"});
+  MessageHelper.init();
+  BattleBackgroundHelper.init();
   
-  $("#debug .menu a").click(function() { Debug.menuChange($(this)); });
-  $("#debug .movement").click(function(event) { Debug.MovementHelper.event($(event.target)); });
-  $("#debug .world-map").click(function(event) { Debug.WorldMapHelper.event($(event.target)); });
-  $("#debug .coords button").click(function(event) { Debug.CoordsHelper.event($(event.target)); });
+  $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); });
+  $("#debug .movement").click(function(event) { MovementHelper.event($(event.target)); });
+  $("#debug .world-map").click(function(event) { WorldMapHelper.event($(event.target)); });
+  $("#debug .coords button").click(function(event) { CoordsHelper.event($(event.target)); });
+  $("#debug .battle.background select").change(function(event) { BattleBackgroundHelper.event($(event.target)); });
   
   $(window).keydown(function(event) {
     Movement.keyPressChange(event.keyCode, true);
@@ -23,7 +24,7 @@ $(document).ready(function() {
     Movement.keyPressChange(event.keyCode, false);
   });
   
-  $("#debug .menu a.messages").click();  
+  $("#debug .menu a.battle.background").click();  
 
   Movement.startListening();
 });

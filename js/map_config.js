@@ -240,6 +240,9 @@ var Map = (function() {
     return true;
   }
   
+  /* =========== */
+  /* TILE object */
+  /* =========== */
   Tile = function(opt) {
     opt = opt || {
       cssClasses: ""
@@ -340,6 +343,28 @@ var Map = (function() {
   };
 
   
+  /* ================== */
+  /* BATTLE BACKGROUNDS */
+  /* ================== */
+  var BattleBackgrounds = {
+    Castle:{cssClass:"castle"}
+   ,Desert:{cssClass:"desert"}
+   ,EarthCave:{cssClass:"earth cave"}
+   ,Forest:{cssClass:"forest"}
+   ,GurguVolcano:{cssClass:"gurgu"}
+   ,IceCave:{cssClass:"ice cave"}
+   ,MarshCave:{cssClass:"marsh cave"}
+   ,Plains:{cssClass:"plains"}
+   ,River:{cssClass:"river"}
+   ,Sea:{cssClass:"sea"}
+   ,SeaShrine:{cssClass:"sea shrine"}
+   ,SkyCastle:{cssClass:"sky castle"}
+   ,Swamp:{cssClass:"swamp"}
+   ,TempleofFiends:{cssClass:"tof"}
+   ,TitansTunnel:{cssClass:"titan"}
+   ,Waterfall:{cssClass:"waterfall"}
+  };
+
   return {
     init: init
    ,getMap: getMap
@@ -348,6 +373,7 @@ var Map = (function() {
    ,Tile: Tile
    ,Coords: Coords
    ,AbsoluteCoords: AbsoluteCoords
+   ,BattleBackgrounds: BattleBackgrounds
    
    ,WORLD_MAP: "world-map"
    
