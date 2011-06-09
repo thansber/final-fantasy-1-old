@@ -1,0 +1,140 @@
+.enemy { background-repeat:no-repeat; background-position:1000em 1000em; }
+.small .enemy { background-image:url(../images/enemies_small.png); width:66px; height:66px; }
+.large .enemy { background-image:url(../images/enemies_large.png); width:100px; height:100px; }
+.fiend .enemy { background-image:url(../images/enemies_fiends.png); width:132px; height:132px; }
+
+
+/* ============= */
+/* Small enemies */
+/* ============= */
+.enemy.imp { background-position:0 0; }
+.enemy.greatImp { background-position:-66px 0; }
+.enemy.pirate { background-position:-132px 0; }
+.enemy.kyzoku { background-position:-198px 0; }
+.enemy.wolf { background-position:0 -66px; }
+.enemy.greatWolf { background-position:-66px -66px; }
+.enemy.werewolf { background-position:-132px -66px; }
+.enemy.frostWolf { background-position:-198px -66px; }
+.enemy.badman { background-position:0 -132px; }
+.enemy.evilman { background-position:-66px -132px; }
+.enemy.spider { background-position:-132px -132px; }
+.enemy.arachnid { background-position:-198px -132px; }
+.enemy.mage { background-position:0 -198px; }
+.enemy.fighter { background-position:-66px -198px; }
+.enemy.astos { background-position:-132px -198px; }
+.enemy.garland { background-position:-198px -198px; }
+.enemy.asp { background-position:0 -264px; }
+.enemy.cobra { background-position:-66px -264px; }
+.enemy.seasnake { background-position:-132px -264px; }
+.enemy.caribe { background-position:0 -330px; }
+.enemy.redCaribe { background-position:-66px -330px; }
+.enemy.coctrice { background-position:-132px -330px; }
+.enemy.perilisk { background-position:-198px -330px; }
+.enemy.scorpion { background-position:0 -396px; }
+.enemy.lobster { background-position:-66px -396px; }
+.enemy.gator { background-position:-132px -396px; }
+.enemy.frostGator { background-position:-198px -396px; }
+.enemy.catman { background-position:0 -462px; }
+.enemy.mancat { background-position:-66px -462px; }
+.enemy.gargoyle { background-position:-132px -462px; }
+.enemy.redGargoyle { background-position:-198px -462px; }
+.enemy.sahag { background-position:0 -528px; }
+.enemy.redSahag { background-position:-66px -528px; }
+.enemy.wizardSahag { background-position:-132px -528px; }
+.enemy.medusa { background-position:0 -594px; }
+.enemy.greenMedusa { background-position:-66px -594px; }
+.enemy.guard { background-position:-132px -594px; }
+.enemy.sentry { background-position:-198px -594px; }
+.enemy.shadow { background-position:0 -660px; }
+.enemy.image { background-position:-66px -660px; }
+.enemy.wraith { background-position:-132px -660px; }
+.enemy.ghost { background-position:-198px -660px; }
+.enemy.bone { background-position:0 -726px; }
+.enemy.redBone { background-position:-66px -726px; }
+.enemy.wizard { background-position:-132px -726px; }
+.enemy.sorceror { background-position:-198px -726px; }
+.enemy.muck { background-position:0 -792px; }
+.enemy.scum { background-position:-66px -792px; }
+.enemy.ooze { background-position:-132px -792px; }
+.enemy.slime { background-position:-198px -792px; }
+.enemy.zombie { background-position:0 -858px; }
+.enemy.ghoul { background-position:-66px -858px; }
+.enemy.specter { background-position:-132px -858px; }
+.enemy.geist { background-position:-198px -858px; }
+.enemy.creep { background-position:0 -924px; }
+.enemy.crawl { background-position:-66px -924px; }
+.enemy.water { background-position:-132px -924px; }
+.enemy.air { background-position:-198px -924px; }
+.enemy.mummy { background-position:0 -990px; }
+.enemy.wizardMummy { background-position:-66px -990px; }
+.enemy.vampire { background-position:-132px -990px; }
+.enemy.wizardVampire { background-position:-198px -990px; }
+
+/* ============= */
+/* Large enemies */
+/* ============= */
+.enemy.madpony { background-position:0 0; }
+.enemy.nitemare { background-position:-100px 0; }
+.enemy.naga { background-position:-200px 0; }
+.enemy.greyNaga { background-position:-300px 0; }
+.enemy.earth { background-position:0 -100px; }
+.enemy.fire { background-position:-100px -100px; }
+.enemy.chimera { background-position:-200px -100px; }
+.enemy.jimera { background-position:-300px -100px; }
+.enemy.ogre { background-position:0 -200px; }
+.enemy.greenOgre { background-position:-100px -200px; }
+.enemy.wizardOgre { background-position:-200px -200px; }
+.enemy.giant { background-position:0 -300px; }
+.enemy.redGiant { background-position:-100px -300px; }
+.enemy.frostGiant { background-position:-200px -300px; }
+.enemy.iguana { background-position:0 -400px; }
+.enemy.agama { background-position:-100px -400px; }
+.enemy.sauria { background-position:-200px -400px; }
+.enemy.hyena { background-position:0 -500px; }
+.enemy.cerberus { background-position:-100px -500px; }
+.enemy.oddeye { background-position:-200px -500px; }
+.enemy.bigeye { background-position:-300px -500px; }
+.enemy.ankylo { background-position:0 -600px; }
+.enemy.redAnkylo { background-position:-100px -600px; }
+.enemy.trex { background-position:-200px -600px; }
+.enemy.tyro { background-position:-300px -600px; }
+.enemy.tiger { background-position:0 -700px; }
+.enemy.saberT { background-position:-100px -700px; }
+.enemy.manticore { background-position:-200px -700px; }
+.enemy.sphinx { background-position:-300px -700px; }
+.enemy.greyWorm { background-position:0 -800px; }
+.enemy.sandWorm { background-position:-100px -800px; }
+.enemy.worm { background-position:-200px -800px; }
+.enemy.ocho { background-position:0 -900px; }
+.enemy.naocho { background-position:-100px -900px; }
+.enemy.pede { background-position:-200px -900px; }
+.enemy.greatPede { background-position:-300px -900px; }
+.enemy.shark { background-position:0 -1000px; }
+.enemy.greyShark { background-position:-100px -1000px; }
+.enemy.troll { background-position:-200px -1000px; }
+.enemy.seaTroll { background-position:-300px -1000px; }
+.enemy.zombieDragon { background-position:0 -1100px; }
+.enemy.redDragon { background-position:-100px -1100px; }
+.enemy.frostDragon { background-position:-200px -1100px; }
+.enemy.blueDragon { background-position:0 -1200px; }
+.enemy.gasDragon { background-position:-100px -1200px; }
+.enemy.wyvern { background-position:-200px -1200px; }
+.enemy.wyrm { background-position:-300px -1200px; }
+.enemy.hydra { background-position:0 -1300px; }
+.enemy.redHydra { background-position:-100px -1300px; }
+.enemy.bull { background-position:-200px -1300px; }
+.enemy.zombull { background-position:-300px -1300px; }
+.enemy.mudGol { background-position:0 -1400px; }
+.enemy.rockGol { background-position:-100px -1400px; }
+.enemy.ironGol { background-position:-200px -1400px; }
+.enemy.eye { background-position:0 -1500px; }
+.enemy.phantom { background-position:-100px -1500px; }
+.enemy.warmech { background-position:-200px -1500px; }
+
+/* ============ */
+/* The 4 fiends */
+/* ============ */
+.enemy.lich { background-position:0 0; }
+.enemy.kary { background-position:-132px 0; }
+.enemy.kraken { background-position:0 -132px; }
+.enemy.tiamat { background-position:-132px -132px; }

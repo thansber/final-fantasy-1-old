@@ -44,3 +44,22 @@
 #debug .coords input { width:2em; display:block; float:left; margin-left:1em; }
 
 #debug .messages .message { background-color:navy; padding:0.4em; margin-bottom:0.2em; overflow:auto; }
+
+#debug .battleBackground .container { height:12em; }
+
+#debug .enemies label { float:left; }
+#debug .enemies select { float:left; margin-left:1em; }
+#debug .enemies .monster { float:left; margin-left:2em; }
+
+#debug .battleSetup .row { clear:both; height:2em;}
+#debug .battleSetup .row label { float:left; width:8em; text-align:right;}
+#debug .battleSetup .row .selector { float:left; margin-left:1em; width:12em; }
+#debug .battleSetup .row .selectors { float:left; }
+#debug .battleSetup .row .selectors div { height:1.6em; }
+#debug .battleSetup .row .selectors .selector { float:none; }
+#debug .battleSetup .row .qty { width:2em; margin-left:1em; }
+
+#debug .battleSetup .small.row { height:4em; }
+#debug .battleSetup .small.row .selectors { float:left; }
+#debug .battleSetup .small.row .selectors div { height:1.6em; }
+#debug .battleSetup .small.row .selectors .selector { float:none; }

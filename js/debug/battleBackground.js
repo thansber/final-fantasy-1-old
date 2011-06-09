@@ -2,7 +2,6 @@ var BattleBackgroundHelper = (function() {
   
   var init = function(opt) {
     initializeSelector();
-    DebugHelper.loadMainView("battleView");
   };
   
   var initializeSelector = function() {

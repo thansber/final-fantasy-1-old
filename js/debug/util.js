@@ -1,6 +1,12 @@
 var DebugHelper = (function() {
   
+  var HELPERS = {
+    battleBackground: "battleView"
+   ,battleSetup: "battleView"
+  };
+  
   var loadMainView = function(mainView) {
+    mainView = mainView || "world";
     $("body > .main").hide();
     $("#" + mainView).show();
   };
@@ -10,8 +16,10 @@ var DebugHelper = (function() {
     $menuOption.parent().addClass("selected");
     
     $("#debug section").hide();
-    var section = ($menuOption.attr("className").split(" ")[0]);
+    var section = $menuOption.attr("class").split(" ")[0];
     $("#debug section." + section).show();
+    
+    loadMainView(HELPERS[section]);
   };
   
   return {

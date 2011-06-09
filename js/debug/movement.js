@@ -12,7 +12,7 @@ var MovementHelper = (function() {
     else if ($target.hasClass("down")) { Movement.down(); }
     else if ($target.hasClass("up")) { Movement.up(); }
   };
-  
+
   return {
     event: event
    ,move: move

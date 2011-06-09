@@ -8,23 +8,32 @@
   <link type="text/css" rel="stylesheet" href="css/debug_world_map.css"/>
   <link type="text/css" rel="stylesheet" href="css/world.css"/>
   <link type="text/css" rel="stylesheet" href="css/battle.css"/>
-  <script type="text/javascript" src="js/lib/jquery-1.4.4.js"></script>
-  <script type="text/javascript" src="js/lib/jquery.backgroundPosition-7.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
+  <script type="text/javascript" src="js/lib/jquery-1.6.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
   <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/movement.js"></script>
-  <script type="text/javascript" src="js/map_config.js"></script>
   <script type="text/javascript" src="js/messages.js"></script>
-  <script type="text/javascript" src="js/party.js"></script>
-  <script type="text/javascript" src="js/world_map.js"></script>
-  <script type="text/javascript" src="js/map_builder.js"></script>
   <script type="text/javascript" src="js/battle.js"></script>
-  <script type="text/javascript" src="js/debug/util.js"></script>
+  <script type="text/javascript" src="js/elements-statuses.js"></script>
+  <script type="text/javascript" src="js/spells.js"></script>
+  <script type="text/javascript" src="js/monster.js"></script>
+  <script type="text/javascript" src="js/map/map-config.js"></script>
+  <script type="text/javascript" src="js/map/map-builder.js"></script>
+  <script type="text/javascript" src="js/chars/characterClass.js"></script>
+  <script type="text/javascript" src="js/chars/party.js"></script>
+  <script type="text/javascript" src="js/data/spells.js"></script>
+  <script type="text/javascript" src="js/data/monsters.js"></script>
+  <script type="text/javascript" src="js/data/world-map.js"></script>
   <script type="text/javascript" src="js/debug/worldMap.js"></script>
   <script type="text/javascript" src="js/debug/movement.js"></script>
   <script type="text/javascript" src="js/debug/coordinates.js"></script>
   <script type="text/javascript" src="js/debug/messages.js"></script>
   <script type="text/javascript" src="js/debug/battleBackground.js"></script>
+  <script type="text/javascript" src="js/debug/enemies.js"></script>
+  <script type="text/javascript" src="js/debug/battleSetup.js"></script>
+  <script type="text/javascript" src="js/debug/util.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
 <body>
@@ -60,7 +69,9 @@
     <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
     <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
-    <li class="curve tl bl big"><a href="#" class="battle background">Battle Backgrounds</a></li>
+    <li class="curve tl bl big"><a href="#" class="battleBackground">Battle Backgrounds</a></li>
+    <li class="curve tl bl big"><a href="#" class="enemies">Enemies</a></li>
+    <li class="curve tl bl big"><a href="#" class="battleSetup">Battle Setup</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -116,10 +127,45 @@
     <div class="container"></div>
   </section>
   
-  <section class="battle background curve all">
+  <section class="battleBackground curve all">
     <div class="container">
       <label for="battleBackgroundSelector">Select a background:</label>
       <select id="battleBackgroundSelector"></select>
+    </div>
+  </section>
+  
+  <section class="enemies curve all">
+    <div class="container">
+      <label for="enemySelector">Select an enemy:</label>
+      <select id="enemySelector" size="25"></select>
+      <div class="small monster"></div>
+      <div class="large monster"></div>
+      <div class="fiend monster"></div>
+      <div class="huge monster"></div>
+    </div>
+  </section>
+  
+  <section class="battleSetup curve all">
+    <div class="container">
+      <div class="small row">
+        <label>Small enemies:</label>
+        <div class="selectors">
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+        </div>
+      </div>
+      <div class="large row">
+        <label>Large enemies:</label>
+        <div class="selectors">
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+        </div>
+      </div>
+      <div class="fiend row">
+        <label>Fiends:</label>
+        <select class="selector"></select><input type="text" class="qty" value="0" />
+      </div>
+      <button class="button setup">Setup battle</button>
     </div>
   </section>
 </div>
