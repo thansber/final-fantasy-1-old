@@ -4,10 +4,16 @@ var BattleSetupHelper = (function() {
   
   var init = function() {
     $debug = $("#debug section.battleSetup");
-    initializeSelectors();
+    initializeBackgroundSelector();
+    initializeEnemySelectors();
   };
   
   var event = function($target) {
+    var background = $(".background.row .selector").val();
+    if (background.length > 0) {
+      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[background].cssClass);
+    }
+    
     var enemies = [];
     $(".small.row .selectors div", $debug).each(function() {
       var enemyQty = readEnemyQty($(this));
@@ -28,7 +34,7 @@ var BattleSetupHelper = (function() {
       enemies.push(fiendQty);
     }
     
-    Battle.setup(enemies);
+    Battle.setup({enemies:enemies});
   };
   
   var readEnemyQty = function($parent) {
@@ -40,7 +46,16 @@ var BattleSetupHelper = (function() {
     return null;
   };
   
-  var initializeSelectors = function() {
+  var initializeBackgroundSelector = function() {
+    var $selector = $(".background .selector", $debug);
+    $selector.append($("<option/>", {text:"-- Select a background --", value:""}));
+    for (var b in Map.BattleBackgrounds) {
+      var background = Map.BattleBackgrounds[b]; 
+      $selector.append($("<option/>", {text:b,value:b}));
+    }
+  };
+  
+  var initializeEnemySelectors = function() {
     var $smallSelectors = $(".small .selector", $debug);
     var $largeSelectors = $(".large .selector", $debug);
     var $fiendSelectors = $(".fiend .selector", $debug);

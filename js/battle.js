@@ -1,7 +1,7 @@
 var Battle = (function() {
   
   var $battle = null;
-  var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0}};
+  var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0, chaos:0}};
   var ENEMIES_PER_COLUMN = {small:3, large:2, fiend:1};
   
   // One-time initialization
@@ -60,20 +60,8 @@ var Battle = (function() {
     return true;
   };
   
-  /* ======================================================== */
-  /* PUBLIC METHODS ----------------------------------------- */
-  /* ======================================================== */
-  
-  // Expects a Monster object
-  var createEnemyUI = function(monster) {
-    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
-  };
-  
-  // Called for each new battle
-  // Input definition:
-  // - enemies: array of {name,qty}
-  var setup = function(opt) {
-    var sizeCounts = calculateEnemySizeCounts(opt);
+  var setupEnemies = function(enemies) {
+    var sizeCounts = calculateEnemySizeCounts(enemies);
     if (!isSetupValid(sizeCounts)) {
       return false;
     }
@@ -81,6 +69,7 @@ var Battle = (function() {
     var $enemies = $(".enemies", $battle); 
     var $column = null;
     var mixed = isMixedSize(sizeCounts);
+    var restrictions = mixed ? RESTRICTIONS.mixed : RESTRICTIONS;
     
     $enemies.find(".column").remove();
     
@@ -98,11 +87,29 @@ var Battle = (function() {
         
         $column.append(createEnemyUI(Monster.lookup(name)));
       });
+      
+      if (size == "small" && enemies.length % ENEMIES_PER_COLUMN[size] == 1) {
+        $column.addClass("single");
+      }
     }
     
-    console.log(jQuery.map(sizeCounts, function(obj, size) { 
-      return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]";
-    }).join(","));
+    //console.log(jQuery.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
+  };
+  
+  /* ======================================================== */
+  /* PUBLIC METHODS ----------------------------------------- */
+  /* ======================================================== */
+  
+  // Expects a Monster object
+  var createEnemyUI = function(monster) {
+    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
+  };
+  
+  // Called for each new battle
+  // Input definition:
+  // - enemies: array of {name,qty}
+  var setup = function(opt) {
+    setupEnemies(opt.enemies);
   };
   
   
