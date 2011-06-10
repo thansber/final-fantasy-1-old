@@ -1,8 +1,8 @@
 .enemy { background-repeat:no-repeat; background-position:1000em 1000em; }
 .small .enemy { background-image:url(../images/enemies_small.png); width:66px; height:66px; }
 .large .enemy { background-image:url(../images/enemies_large.png); width:100px; height:100px; }
+.large.mixed .enemy { width:92px; }
 .fiend .enemy { background-image:url(../images/enemies_fiends.png); width:132px; height:132px; }
-
 
 /* ============= */
 /* Small enemies */

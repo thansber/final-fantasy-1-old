@@ -3,8 +3,11 @@
 #battle { height:400px; }
 #battle .border { -moz-border-image:url(../images/border.png) 7 repeat; background-color:black; }
 
-#battle .enemies { float:left; padding:1px 4px; height:280px; }
-#battle .party { width:96px; height:280px; float:left; margin-left:3px; padding:1px 4px; }
+#battle .enemies { float:left; padding:1px 4px; height:268px; }
+#battle .enemies .column { float:left; }
+#battle .enemies .column.large:last-child { float:right; }
+
+#battle .party { width:96px; height:268px; float:left; margin-left:3px; padding:1px 4px; }
 #battle .party .background { width:96px; }
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
 #battle .input .enemy.list { float:left; width:140px; height:116px; }
