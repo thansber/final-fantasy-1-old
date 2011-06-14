@@ -14,3 +14,5 @@ h1,h2,h3,h4,h5,h6,p,ul,li { margin:0; padding:0; font-size:1em; font-weight:norm
 .curve.bl.big { border-bottom-left-radius:16px; -moz-border-radius-bottomleft:16px; }
 .curve.br.big { border-bottom-right-radius:16px; -moz-border-radius-bottomright:16px; }
 .curve.all.big { border-radius:16px; -moz-border-radius:16px; }
+
+.cursor { width:32px; height:32px; background-image:url(../images/cursor.png); position:relative; left:-32px; }

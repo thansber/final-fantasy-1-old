@@ -75,7 +75,7 @@
 .message p.dash { background-position:-240px -32px; }
 .message p.ellipsis { background-position:-256px -32px; }
 
-.message p.sword { background-position:0 -48px; }
+.message p.dagger { background-position:0 -48px; }
 .message p.hammer { background-position:-16px -48px; }
 .message p.armor { background-position:-32px -48px; }
 .message p.axe { background-position:-48px -48px; }
@@ -86,3 +86,4 @@
 .message p.shirt { background-position:-128px -48px; }
 .message p.staff { background-position:-144px -48px; }
 .message p.nunchucks { background-position:-160px -48px; }
+.message p.shield { background-position:-176px -48px; }

@@ -56,10 +56,17 @@
 #debug .battleSetup .row .selectors div { height:1.6em; }
 #debug .battleSetup .row .selectors .selector { float:none; }
 #debug .battleSetup .row .qty { width:2em; margin-left:1em; }
-
 #debug .battleSetup .background.row .selector { width:13em; }
-
 #debug .battleSetup .small.row { height:4em; }
 #debug .battleSetup .small.row .selectors { float:left; }
 #debug .battleSetup .small.row .selectors div { height:1.6em; }
 #debug .battleSetup .small.row .selectors .selector { float:none; }
+
+#debug .partySetup .row { font-size:0.8em; clear:both; margin-bottom:1.5em; overflow:auto; }
+#debug .partySetup .row label { float:left; margin-top:0.1em; }
+#debug .partySetup .row .classes { float:left; margin-left:1em; }
+#debug .partySetup .row .charClass { font-size:0.8em; }
+
+#debug .spellEffects .container { background-color:black; padding:0.8em; overflow:auto; }
+#debug .spellEffects .effect { float:left; margin-right:0.6em; margin-bottom:0.6em; text-align:center; }
+#debug .spellEffects label { color:white; font-size:0.75em;}

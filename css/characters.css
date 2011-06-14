@@ -1,0 +1,7 @@
+#battle .char { background-image:url(../images/char-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; width:36px; height:50px;}
+#battle .char.fighter { background-position:-108px 0; }
+#battle .char.thief { background-position:-108px -52px; }
+#battle .char.blackbelt { background-position:-108px -104px; }
+#battle .char.redmage { background-position:-108px -156px; }
+#battle .char.whitemage { background-position:-108px -208px; }
+#battle .char.blackmage { background-position:-108px -260px; }

@@ -24,7 +24,7 @@ var Message = (function() {
   };
   
   var items = {
-    "^": "sword"
+    "^": "dagger"
    ,"$": "hammer"
    ,"#": "armor"
    ,"%": "axe"
@@ -39,8 +39,11 @@ var Message = (function() {
   
   var init = function(opt) {};
   
-  var create = function(text) {
+  var create = function(text, cssClasses) {
     var $msg = $("<div/>").addClass("message");
+    if (cssClasses) {
+      $msg.addClass(jQuery.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
+    }
     var newline = false;
     for (var i = 0; i < text.length; i++) {
       var currentChar = text.charAt(i);

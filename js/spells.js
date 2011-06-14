@@ -196,6 +196,17 @@ var Spell = (function() {
    }
   };
   
+  var Effect = {
+    Beam : "beam"
+   ,Death : "death"
+   ,Flame : "flame"
+   ,Heal : "healing"
+   ,Poof : "poof"
+   ,Protect : "protect"
+   ,Star : "star"
+   ,Status : "status"
+  };
+  
   var spellSuccess = function(spell, caster, target) {
     var baseChance = 148;
     if (spell.element) {
@@ -236,6 +247,7 @@ var Spell = (function() {
     var base = opt.base || {};
     var stats = opt.stats || {};
     var allowedClasses = opt.allowedClasses || [];
+    var ui = opt.ui || {effect:"", backgroundColor:"black", splash:""};
     
     this.spellLevel = base.level;
     this.spellId = base.name.toUpperCase();
@@ -257,6 +269,10 @@ var Spell = (function() {
     this.result = {};
     this.result.success = [];
     
+    this.effect = ui.effect;
+    this.backgroundColor = ui.backgroundColor;
+    this.splash = ui.splash;
+    
     ALL[this.spellId] = this;
   };
   
@@ -272,6 +288,7 @@ var Spell = (function() {
     ,TargetType : TargetType
     ,TargetGroup : TargetGroup
     ,SpellType : SpellType
+    ,Effect : Effect
     ,Spell : Spell
     
     ,create : create

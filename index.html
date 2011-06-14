@@ -9,29 +9,38 @@
   <link type="text/css" rel="stylesheet" href="css/world.css"/>
   <link type="text/css" rel="stylesheet" href="css/battle.css"/>
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
+  <link type="text/css" rel="stylesheet" href="css/characters.css"/>
   <script type="text/javascript" src="js/lib/jquery-1.6.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
   <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
+  <script type="text/javascript" src="js/key-press-notifier.js"></script>
   <script type="text/javascript" src="js/movement.js"></script>
   <script type="text/javascript" src="js/messages.js"></script>
+  <script type="text/javascript" src="js/cursor.js"></script>
   <script type="text/javascript" src="js/battle.js"></script>
   <script type="text/javascript" src="js/elements-statuses.js"></script>
   <script type="text/javascript" src="js/spells.js"></script>
   <script type="text/javascript" src="js/monster.js"></script>
   <script type="text/javascript" src="js/map/map-config.js"></script>
   <script type="text/javascript" src="js/map/map-builder.js"></script>
-  <script type="text/javascript" src="js/chars/characterClass.js"></script>
+  <script type="text/javascript" src="js/chars/character-class.js"></script>
+  <script type="text/javascript" src="js/chars/character.js"></script>
+  <script type="text/javascript" src="js/chars/growth.js"></script>
   <script type="text/javascript" src="js/chars/party.js"></script>
+  <script type="text/javascript" src="js/cursor/battle-menu.js"></script>
+  <script type="text/javascript" src="js/cursor/battle-enemies.js"></script>
   <script type="text/javascript" src="js/data/spells.js"></script>
   <script type="text/javascript" src="js/data/monsters.js"></script>
   <script type="text/javascript" src="js/data/world-map.js"></script>
-  <script type="text/javascript" src="js/debug/worldMap.js"></script>
+  <script type="text/javascript" src="js/debug/world-map.js"></script>
   <script type="text/javascript" src="js/debug/movement.js"></script>
   <script type="text/javascript" src="js/debug/coordinates.js"></script>
   <script type="text/javascript" src="js/debug/messages.js"></script>
   <script type="text/javascript" src="js/debug/enemies.js"></script>
-  <script type="text/javascript" src="js/debug/battleSetup.js"></script>
+  <script type="text/javascript" src="js/debug/battle-setup.js"></script>
+  <script type="text/javascript" src="js/debug/party-setup.js"></script>
+  <script type="text/javascript" src="js/debug/spell-effects.js"></script>
   <script type="text/javascript" src="js/debug/util.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
@@ -70,6 +79,8 @@
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="enemies">Enemies</a></li>
     <li class="curve tl bl big"><a href="#" class="battleSetup">Battle Setup</a></li>
+    <li class="curve tl bl big"><a href="#" class="partySetup">Party Setup</a></li>
+    <li class="curve tl bl big"><a href="#" class="spellEffects">Spell Effects</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -162,6 +173,92 @@
       </div>
       <button class="button setup">Setup battle</button>
     </div>
+  </section>
+  
+  <section class="partySetup curve all">
+    <div class="container">
+      <div class="row">
+        <label>Character 1</label>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char1" value="fighter" />Fighter</p>
+          <p class="charClass"><input type="radio" name="char1" value="thief" />Thief</p>
+          <p class="charClass"><input type="radio" name="char1" value="blackbelt" />Blackbelt</p>
+          <p class="charClass"><input type="radio" name="char1" value="redmage" />Red Mage</p>
+          <p class="charClass"><input type="radio" name="char1" value="whitemage" />White Mage</p>
+          <p class="charClass"><input type="radio" name="char1" value="blackmage" />Black Mage</p>
+        </div>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char1" value="knight" />Knight</p>
+          <p class="charClass"><input type="radio" name="char1" value="ninja" />Ninja</p>
+          <p class="charClass"><input type="radio" name="char1" value="master" />Master</p>
+          <p class="charClass"><input type="radio" name="char1" value="redwizard" />Red Wizard</p>
+          <p class="charClass"><input type="radio" name="char1" value="whitewizard" />White Wizard</p>
+          <p class="charClass"><input type="radio" name="char1" value="blackwizard" />Black Wizard</p>
+        </div>
+      </div>
+      <div class="row">
+        <label>Character 2</label>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char2" value="fighter" />Fighter</p>
+          <p class="charClass"><input type="radio" name="char2" value="thief" />Thief</p>
+          <p class="charClass"><input type="radio" name="char2" value="blackbelt" />Blackbelt</p>
+          <p class="charClass"><input type="radio" name="char2" value="redmage" />Red Mage</p>
+          <p class="charClass"><input type="radio" name="char2" value="whitemage" />White Mage</p>
+          <p class="charClass"><input type="radio" name="char2" value="blackmage" />Black Mage</p>
+        </div>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char2" value="knight" />Knight</p>
+          <p class="charClass"><input type="radio" name="char2" value="ninja" />Ninja</p>
+          <p class="charClass"><input type="radio" name="char2" value="master" />Master</p>
+          <p class="charClass"><input type="radio" name="char2" value="redwizard" />Red Wizard</p>
+          <p class="charClass"><input type="radio" name="char2" value="whitewizard" />White Wizard</p>
+          <p class="charClass"><input type="radio" name="char2" value="blackwizard" />Black Wizard</p>
+        </div>
+      </div>
+      <div class="row">
+        <label>Character 3</label>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char3" value="fighter" />Fighter</p>
+          <p class="charClass"><input type="radio" name="char3" value="thief" />Thief</p>
+          <p class="charClass"><input type="radio" name="char3" value="blackbelt" />Blackbelt</p>
+          <p class="charClass"><input type="radio" name="char3" value="redmage" />Red Mage</p>
+          <p class="charClass"><input type="radio" name="char3" value="whitemage" />White Mage</p>
+          <p class="charClass"><input type="radio" name="char3" value="blackmage" />Black Mage</p>
+        </div>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char3" value="knight" />Knight</p>
+          <p class="charClass"><input type="radio" name="char3" value="ninja" />Ninja</p>
+          <p class="charClass"><input type="radio" name="char3" value="master" />Master</p>
+          <p class="charClass"><input type="radio" name="char3" value="redwizard" />Red Wizard</p>
+          <p class="charClass"><input type="radio" name="char3" value="whitewizard" />White Wizard</p>
+          <p class="charClass"><input type="radio" name="char3" value="blackwizard" />Black Wizard</p>
+        </div>
+      </div>
+      <div class="row">
+        <label>Character 4</label>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char4" value="fighter" />Fighter</p>
+          <p class="charClass"><input type="radio" name="char4" value="thief" />Thief</p>
+          <p class="charClass"><input type="radio" name="char4" value="blackbelt" />Blackbelt</p>
+          <p class="charClass"><input type="radio" name="char4" value="redmage" />Red Mage</p>
+          <p class="charClass"><input type="radio" name="char4" value="whitemage" />White Mage</p>
+          <p class="charClass"><input type="radio" name="char4" value="blackmage" />Black Mage</p>
+        </div>
+        <div class="classes">
+          <p class="charClass"><input type="radio" name="char4" value="knight" />Knight</p>
+          <p class="charClass"><input type="radio" name="char4" value="ninja" />Ninja</p>
+          <p class="charClass"><input type="radio" name="char4" value="master" />Master</p>
+          <p class="charClass"><input type="radio" name="char4" value="redwizard" />Red Wizard</p>
+          <p class="charClass"><input type="radio" name="char4" value="whitewizard" />White Wizard</p>
+          <p class="charClass"><input type="radio" name="char4" value="blackwizard" />Black Wizard</p>
+        </div>
+      </div>
+      <button class="button setup">Setup party</button>
+    </div>
+  </section>
+  
+  <section class="spellEffects curve all">
+    <div class="container"></div>
   </section>
 </div>
 </body>

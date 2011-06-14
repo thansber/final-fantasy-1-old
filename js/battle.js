@@ -8,18 +8,17 @@ var Battle = (function() {
   var init = function() {
     $battle = $("#battle");
     $battle.find(".commands .column").eq(0)
-      .append(Message.create("FIGHT"))
-      .append(Message.create("MAGIC"))
-      .append(Message.create("DRINK"))
-      .append(Message.create("ITEM"));
+      .append(Message.create("FIGHT", "fight"))
+      .append(Message.create("MAGIC", "magic"))
+      .append(Message.create("DRINK", "drink"))
+      .append(Message.create("ITEM", "item"));
     $battle.find(".commands .column").eq(1)
-      .append(Message.create("RUN"));
+      .append(Message.create("RUN", "run"));
   };
   
   /* ======================================================== */
   /* PRIVATE METHODS ----------------------------------------- */
   /* ======================================================== */
-  
   var calculateEnemySizeCounts = function(enemies) {
     var sizeCounts = {chaos:{enemies:[]}, fiend:{enemies:[]}, large:{enemies:[]}, small:{enemies:[]}};
     jQuery.each(enemies, function(index, enemyObj) {
@@ -29,6 +28,15 @@ var Battle = (function() {
       }
     });
     return sizeCounts;
+  };
+
+  var createCharUI = function(char) {
+    return $("<p/>").addClass("char").addClass(char.currentClass.name);
+  };
+  
+  // Expects a Monster object
+  var createEnemyUI = function(monster) {
+    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
   };
   
   var isMixedSize = function(sizeCounts) {
@@ -96,27 +104,29 @@ var Battle = (function() {
     //console.log(jQuery.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
   };
   
+  var setupParty = function(party) {
+    var $party = $(".party", $battle);
+    
+    jQuery.each(party, function(i, char) {
+      $party.append(createCharUI(char));
+    });
+  };
+  
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  
-  // Expects a Monster object
-  var createEnemyUI = function(monster) {
-    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
-  };
-  
   // Called for each new battle
   // Input definition:
   // - enemies: array of {name,qty}
   var setup = function(opt) {
-    setupEnemies(opt.enemies);
+    var enemies = (opt && opt.enemies) || {};
+    setupEnemies(enemies);
+    setupParty(Party.getChars());
+    BattleMenuCursor.startListening();
   };
-  
   
   return {
     init: init
    ,setup: setup
-   ,createEnemyUI: createEnemyUI
-  }
-  
+  }  
 })();

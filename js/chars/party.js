@@ -1,18 +1,10 @@
 var Party = (function() {
-  var $player = null;
   var chars = [];
+  
+  var $player = null;
   var worldMapPosition = null;
   var currentMap = null;
   var currentTransportation = null;
-  
-  var Transportation = (function() {
-    return {
-      FOOT: "foot"
-     ,SHIP: "ship"
-     ,CANOE: "canoe"
-     ,AIRSHIP: "airship"
-    }
-  })();
   
   /* =========== */
   /* INIT METHOD */
@@ -20,7 +12,7 @@ var Party = (function() {
   var init = function(opt) {
     $player = $(opt.player);
     currentMap = Map.WORLD_MAP;
-    currentTransportation = Transportation.FOOT;
+    currentTransportation = Movement.Transportation.FOOT;
     worldMapPosition = new Map.Coords(10, 9, 4, 8).toAbsolute();
     jumpTo(worldMapPosition);
   };
@@ -31,6 +23,31 @@ var Party = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
+  var addChar = function(c) {
+    chars.push(c);
+  };
+  
+  var createNewChar = function(name, charClass) {
+    var startingStats = CharacterGrowth.startingStats[charClass];
+    var char = Character.create().name(name).charClass(charClass);
+    char.stats(startingStats).hp(startingStats.hp);
+    CharacterGrowth.addMaxChargesToChar(char);
+    char.refillSpellCharges();
+    return char;
+  };
+  
+  var getChar = function(index) {
+    return chars[i];
+  };
+  
+  var getChars = function() {
+    return chars;
+  };
+  
+  var getTransportation = function() {
+    return currentTransportation;
+  };
+  
   var isDestinationPassable = function(yChange, xChange) {
     var map = Map.getMap(currentMap);
     if (map.is(Map.WORLD_MAP)) {
@@ -60,9 +77,12 @@ var Party = (function() {
   return {
     init: init
    
+   ,addChar: addChar
+   ,createNewChar: createNewChar
+   ,getChar: getChar
+   ,getChars: getChars
+   ,getTransportation: getTransportation
    ,isDestinationPassable: isDestinationPassable
    ,jumpTo: jumpTo
-   
-   ,Transportation: Transportation
   };
 })();

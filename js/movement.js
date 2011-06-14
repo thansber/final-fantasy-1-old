@@ -6,13 +6,23 @@ var Movement = (function() {
   var nextMove = null;
   var keysPressed = {};
   
+  var Transportation = {
+    FOOT: "foot"
+   ,SHIP: "ship"
+   ,CANOE: "canoe"
+   ,AIRSHIP: "airship"
+  };
+
   var TIMER_LABEL = "movement";
+  var MOVE_SCROLL_SPEEDS = {};
+  MOVE_SCROLL_SPEEDS[Transportation.Foot] = 250;
+
   
   /* =========== */
   /* INIT METHOD */
   /* =========== */
   var init = function(opt) {
-    $view = $(opt.view);
+    $view = $("#view");
   };
 
   /* =============== */
@@ -34,7 +44,8 @@ var Movement = (function() {
     var oldX = parseInt(oldPos[0].replace("px", ""));
     var oldY = parseInt(oldPos[1].replace("px", ""));
     var newPos = (oldX + (xChange * moveDistance * -1)) + "px " + (oldY + (yChange * moveDistance * -1)) + "px";
-    $view.stop().animate({backgroundPosition:newPos}, 250, "linear", function() { isMoving = false; });
+    var speed = MOVE_SCROLL_SPEEDS[Party.getTransportation()];
+    $view.stop().animate({backgroundPosition:newPos}, speed, "linear", function() { isMoving = false; });
   };
   
   var left = function() { move(-1, 0); };
@@ -51,16 +62,17 @@ var Movement = (function() {
     for (var k in keysPressed) {
       if (keysPressed[k]) {
         switch (k) {
-          case "37": left(); return false;
-          case "38": up(); return false;
-          case "39": right(); return false;
-          case "40": down(); return false;
+          case KeyPressNotifier.Left: left(); return false;
+          case KeyPressNotifier.Up: up(); return false;
+          case KeyPressNotifier.Right: right(); return false;
+          case KeyPressNotifier.Down: down(); return false;
         }
       }
     }
   };
   
   var startListening = function() {
+    KeyPressNotifier.setListener(Movement);
     $(document).everyTime("30ms", TIMER_LABEL, function() {
       Movement.refresh();
     });
@@ -86,6 +98,8 @@ var Movement = (function() {
    ,startListening: startListening
    ,stopListening: stopListening
    ,refresh: refresh
+   
+   ,Transportation: Transportation
   };
   
 })();

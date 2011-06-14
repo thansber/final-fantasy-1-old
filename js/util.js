@@ -7,5 +7,4 @@ var Util = (function() {
   return {
     cssNumericValue: cssNumericValue
   };
-  
 })();

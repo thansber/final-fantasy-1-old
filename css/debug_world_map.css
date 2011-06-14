@@ -1,7 +1,7 @@
 .map .row { clear:both; }
 .map .tile { width:16px; height:16px; float:left; background-repeat:no-repeat; overflow:hidden; }
 .map.world .tile { background-image:url(../images/ff_tiles.png); background-position:16px 16px; }
-.map.world .tile.none { background-image:none; background-color:#008D00; }
+.map.world .tile.none { background-image:none; background-color:#008D00; } 
 .map.world .tile.unknown { background-image:none; background-color:black; }
 
 .map.world .tile.forest { background-position:-128px -96px; }

@@ -1,6 +1,8 @@
 $(document).ready(function() {
   
-  Movement.init({view:"#view"});
+  KeyPressNotifier.init();
+  Movement.init();
+  Cursor.init();
   Map.init();
   Message.init();
   Party.init({player:"#player"});
@@ -10,6 +12,10 @@ $(document).ready(function() {
   MessageHelper.init();
   EnemyHelper.init();
   BattleSetupHelper.init();
+  PartySetupHelper.init();
+  SpellEffectHelper.init();
+  
+  Cursor.initCursors();
   
   $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); });
   
@@ -18,16 +24,7 @@ $(document).ready(function() {
   $("#debug .coords button").click(function(event) { CoordsHelper.event($(event.target)); });
   $("#debug .enemies select").change(function(event) { EnemyHelper.event($(event.target)); });
   $("#debug .battleSetup button").click(function(event) { BattleSetupHelper.event($(event.target)); });
+  $("#debug .partySetup button").click(function(event) { PartySetupHelper.event($(event.target)); });
   
-  $(window).keydown(function(event) {
-    Movement.keyPressChange(event.keyCode, true);
-  });
-  
-  $(window).keyup(function(event) {
-    Movement.keyPressChange(event.keyCode, false);
-  });
-  
-  $("#debug .menu a.battleSetup").click();  
-
-  Movement.startListening();
+  $("#debug .menu a.partySetup").click();  
 });

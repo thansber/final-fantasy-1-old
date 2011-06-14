@@ -1,14 +1,25 @@
 var DebugHelper = (function() {
   
   var HELPERS = {
-    battleBackground: "battleView"
-   ,battleSetup: "battleView"
+    battleSetup : "battleView"
+   ,partySetup : "battleView" 
   };
   
   var loadMainView = function(mainView) {
     mainView = mainView || "world";
     $("body > .main").hide();
     $("#" + mainView).show();
+    
+    KeyPressNotifier.clearListener();
+    
+    switch (mainView) {
+      case "world":
+        Movement.startListening();
+        break;
+      case "battleView":
+        BattleMenuCursor.startListening();
+        break;
+    };
   };
   
   var menuChange = function($menuOption) {
@@ -26,5 +37,4 @@ var DebugHelper = (function() {
     loadMainView: loadMainView
    ,menuChange: menuChange
   }
-  
 })();
