@@ -59,6 +59,7 @@ var CharacterClass = (function() {
   CharClass.prototype.critical = function(char) { 
     return (char.equippedWeapon == null ? 0 : char.equippedWeapon.criticalPercent); 
   };
+  CharClass.prototype.isMartialArtist = function() { return false; }
   
   function FighterClass() {}; 
   FighterClass.prototype = new CharClass(FIGHTER);
@@ -89,6 +90,7 @@ var CharacterClass = (function() {
   BlackBeltClass.prototype.critical = function(char) { 
     return (char.equippedWeapon == null ? char.charLevel * 2 : char.equippedWeapon.criticalPercent); 
   };
+  BlackBeltClass.prototype.isMartialArtist = function() { return true; }
 
   function MasterClass() { 
     this.name = MASTER; 
@@ -156,6 +158,7 @@ var CharacterClass = (function() {
    ,BLACK_MAGE : BLACK_MAGE 
    ,BLACK_WIZARD : BLACK_WIZARD
     
+   ,All : ALL
    ,fullClassNames : fullClassNames
   };
 })();

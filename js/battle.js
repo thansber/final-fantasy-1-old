@@ -1,12 +1,18 @@
 var Battle = (function() {
   
   var $battle = null;
+  var $party = null;
+  
   var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0, chaos:0}};
   var ENEMIES_PER_COLUMN = {small:3, large:2, fiend:1};
+  
+  var CHAR_ANIMATION_CLASSES = ["swing", "forward", "back", "arms", "up"];
   
   // One-time initialization
   var init = function() {
     $battle = $("#battle");
+    $party = $(".party", $battle);
+    
     $battle.find(".commands .column").eq(0)
       .append(Message.create("FIGHT", "fight"))
       .append(Message.create("MAGIC", "magic"))
@@ -17,7 +23,7 @@ var Battle = (function() {
   };
   
   /* ======================================================== */
-  /* PRIVATE METHODS ----------------------------------------- */
+  /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
   var calculateEnemySizeCounts = function(enemies) {
     var sizeCounts = {chaos:{enemies:[]}, fiend:{enemies:[]}, large:{enemies:[]}, small:{enemies:[]}};
@@ -30,10 +36,6 @@ var Battle = (function() {
     return sizeCounts;
   };
 
-  var createCharUI = function(char) {
-    return $("<p/>").addClass("char").addClass(char.currentClass.name);
-  };
-  
   // Expects a Monster object
   var createEnemyUI = function(monster) {
     return $("<p/>").addClass("enemy").addClass(monster.cssClass);
@@ -105,7 +107,7 @@ var Battle = (function() {
   };
   
   var setupParty = function(party) {
-    var $party = $(".party", $battle);
+    $party.find(".char").remove();
     
     jQuery.each(party, function(i, char) {
       $party.append(createCharUI(char));
@@ -115,6 +117,29 @@ var Battle = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
+  var createCharUI = function(char) {
+    var $char = $("<p/>").addClass("char").addClass(char.currentClass.name);
+    var $weapon = $("<span/>").addClass("weapon hidden").appendTo($char);
+    if (char.equippedWeapon) {
+      $weapon.addClass(char.equippedWeapon.cssClasses);
+    } else if (char.currentClass.isMartialArtist()) {
+      $weapon.addClass("punch");
+    }
+    resetCharUI(char, $char);
+    return $char;
+  };
+  
+  var getCharUI = function(char) {
+    return $party.find(".char").eq(char.charIndex);
+  };
+  
+  var resetCharUI = function(char, $char) {
+    $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
+    if (char.isCritical()) { $char.addClass("critical"); }
+    if (char.isDead()) { $char.addClass("dead"); }
+    if (char.hasStatus(Status.Stone)) { $char.addClass("stone"); }
+  };
+  
   // Called for each new battle
   // Input definition:
   // - enemies: array of {name,qty}
@@ -127,6 +152,9 @@ var Battle = (function() {
   
   return {
     init: init
+   ,createCharUI: createCharUI
+   ,getCharUI: getCharUI
+   ,resetCharUI: resetCharUI
    ,setup: setup
   }  
 })();

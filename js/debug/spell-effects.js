@@ -13,13 +13,21 @@ var SpellEffectHelper = (function() {
         var $spell = buildSpell(s);
         var $label = $("<label/>").html(s);
         $container.append($("<div/>").addClass("effect").append($spell).append($label));
-        startAnimation($spell, s);
+        //startAnimation($spell, s);
       }
     }
   };
   
+  var event = function($target) {
+    jQuery.each($(".spell", $debug), function(i, spell) {
+      var $spell = $(spell);
+      var spellId = $spell.attr("class").split(" ").slice(-1)[0];
+      startAnimation($spell, spellId);
+    });
+  };
+  
   var startAnimation = function($spell, spellId) {
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 20; i++) {
       $spell.delay(100, spellId).queue(spellId, function(next) {
         $spell.toggleClass("animate");
         next();
@@ -36,5 +44,6 @@ var SpellEffectHelper = (function() {
   
   return {
     init: init
+   ,event: event
   };
 })();

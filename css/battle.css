@@ -3,15 +3,15 @@
 #battle { height:400px; }
 #battle .border { -moz-border-image:url(../images/border.png) 7 repeat; background-color:black; }
 
-#battle .enemies { float:left; padding:1px 4px; height:268px; }
+#battle .enemies { float:left; padding:1px 4px; height:272px; }
 #battle .enemies .column { float:left; }
 #battle .enemies .column.small.single { margin-top:66px; }
 #battle .enemies .column.large:nth-child(odd) { float:right; }
 #battle .enemies .column.fiend { position:relative; margin-top:32px; margin-left:40px; }
 
-#battle .party { width:96px; height:268px; float:left; margin-left:3px; padding:1px 4px; }
+#battle .party { width:96px; height:272px; float:left; margin-left:3px; padding:1px 4px; }
 #battle .party .background { width:96px; }
-#battle .party .char { float:right; }
+#battle .party .char { float:right; clear:right; }
 
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
 #battle .input .enemy.list { float:left; width:140px; height:116px; }
@@ -115,3 +115,59 @@
 .spell.status.slo2 { background-position:-320px -238px; }
 .spell.status.stop { background-position:-352px -238px; }
 .spell.status.stun { background-position:-384px -238px; }
+
+.party .weapon { width:32px; height:32px; background-repeat:no-repeat; background-position:1000em 1000em; position:relative; }
+.party .forward .weapon { background-image:url(../images/weapon-sheet.png); display:block; right:30px; }
+.party .forward.fighter .weapon { top:2px; }
+.party .forward.blackbelt .weapon { top:-4px; }
+.party .forward.blackbelt .weapon.punch { top:-6px; right:29px;}
+.party .forward.knight .weapon { top:-2px; }
+.party .forward.ninja .weapon { top:-3px; }
+.party .forward.master .weapon { top:-4px; }
+.party .forward.master .weapon.punch { top:-5px; right:29px; }
+
+.party .back .weapon { background-image:url(../images/weapon-sheet-back.png); display:block; left:30px; top:-29px; }
+.party .back .weapon.hammer { top:-22px; left:28px; }
+
+.party .weapon.bane.sword { background-position:0 0; }
+.party .weapon.coral.sword { background-position:-32px 0; }
+.party .weapon.dragon.sword { background-position:-64px 0; }
+.party .weapon.rapier { background-position:-96px 0; }
+.party .weapon.saber { background-position:-96px 0; }
+.party .weapon.giant.sword { background-position:0 -32px; }
+.party .weapon.were.sword { background-position:-32px -32px; }
+.party .weapon.defense { background-position:-64px -32px; }
+.party .weapon.short.sword { background-position:-96px -32px; }
+.party .weapon.ice.sword { background-position:0 -64px; }
+.party .weapon.sun.sword { background-position:-32px -64px; }
+.party .weapon.silver.sword { background-position:-64px -64px; }
+.party .weapon.long.sword { background-position:-96px -64px; }
+.party .weapon.excalibur { background-position:-128px -64px; }
+.party .weapon.vorpal { background-position:0px -96px; }
+.party .weapon.rune.sword { background-position:-32px -96px; }
+.party .weapon.flame.sword { background-position:-64px -96px; }
+.party .weapon.falchion { background-position:-96px -96px; }
+.party .weapon.masamune { background-position:0px -128px; }
+.party .weapon.scimitar { background-position:-32px -128px; }
+.party .weapon.catclaw { background-position:0 -160px; }
+.party .weapon.silver.dagger { background-position:0 -160px; }
+.party .weapon.katana { background-position:-32px -160px; }
+.party .weapon.large.dagger { background-position:-64px -160px; }
+.party .weapon.small.dagger { background-position:-64px -160px; }
+.party .weapon.silver.axe { background-position:0px -192px; }
+.party .weapon.light.axe { background-position:-32px -192px; }
+.party .weapon.great.axe { background-position:-64px -192px; }
+.party .weapon.hand.axe { background-position:-96px -192px; }
+.party .weapon.silver.hammer { background-position:0px -224px; }
+.party .weapon.thor.hammer { background-position:-32px -224px; }
+.party .weapon.iron.hammer { background-position:-64px -224px; }
+.party .weapon.wooden.staff { background-position:0px -256px; }
+.party .weapon.power.staff { background-position:-32px -288px; }
+.party .weapon.wizard.staff { background-position:0px -288px; }
+.party .weapon.heal.staff { background-position:-32px -288px; }
+.party .weapon.mage.staff { background-position:-64px -288px; }
+.party .weapon.iron.staff { background-position:-96px -288px; }
+.party .weapon.wooden.nunchucks { background-position:0px -320px; }
+.party .weapon.iron.nunchucks { background-position:-32px -320px; }
+.party .weapon.punch { background-position:-64px -320px; }
+

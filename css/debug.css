@@ -64,9 +64,26 @@
 
 #debug .partySetup .row { font-size:0.8em; clear:both; margin-bottom:1.5em; overflow:auto; }
 #debug .partySetup .row label { float:left; margin-top:0.1em; }
+#debug .partySetup .row p { font-size:0.8em; }
+#debug .partySetup .row p input { position:relative; top:2px; }
 #debug .partySetup .row .classes { float:left; margin-left:1em; }
-#debug .partySetup .row .charClass { font-size:0.8em; }
+#debug .partySetup .row label.status { margin-left:3em; }
+#debug .partySetup .row .statuses { float:left; margin-left:1em; }
 
-#debug .spellEffects .container { background-color:black; padding:0.8em; overflow:auto; }
+#debug section.spellEffects { background-color:black; }
+#debug .spellEffects .container { padding:0.8em; overflow:auto; }
+#debug .spellEffects .row { margin-bottom:2em; }
 #debug .spellEffects .effect { float:left; margin-right:0.6em; margin-bottom:0.6em; text-align:center; }
 #debug .spellEffects label { color:white; font-size:0.75em;}
+
+#debug section.weapons { background-color:black; }
+#debug .weapons .container { overflow:auto; padding:2em 0 0 2em; }
+#debug .weapons .container .row { margin-bottom:1em; }
+#debug .weapons .container label { color:white; }
+#debug .weapons .stances .char { float:left; margin-right:2.5em; margin-bottom:1em; }
+
+#debug section.weaponAnimations { background-color:black; }
+#debug .weaponAnimations .container { overflow:auto; padding:2em 0 0 2em; }
+#debug .weaponAnimations .container .row { margin-bottom:1em; }
+#debug .weaponAnimations .container label { color:white; }
+#debug .weaponAnimations .stances .char { float:left; margin-right:2.5em; margin-bottom:1em; }

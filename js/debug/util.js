@@ -3,6 +3,7 @@ var DebugHelper = (function() {
   var HELPERS = {
     battleSetup : "battleView"
    ,partySetup : "battleView" 
+   ,animations : "battleView" 
   };
   
   var loadMainView = function(mainView) {

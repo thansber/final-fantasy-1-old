@@ -27,9 +27,13 @@ var Party = (function() {
     chars.push(c);
   };
   
-  var createNewChar = function(name, charClass) {
+  var clearChars = function() {
+    chars = [];
+  };
+  
+  var createNewChar = function(name, charClass, index) {
     var startingStats = CharacterGrowth.startingStats[charClass];
-    var char = Character.create().name(name).charClass(charClass);
+    var char = Character.create().name(name).charClass(charClass).index(index);
     char.stats(startingStats).hp(startingStats.hp);
     CharacterGrowth.addMaxChargesToChar(char);
     char.refillSpellCharges();
@@ -78,6 +82,7 @@ var Party = (function() {
     init: init
    
    ,addChar: addChar
+   ,clearChars: clearChars
    ,createNewChar: createNewChar
    ,getChar: getChar
    ,getChars: getChars

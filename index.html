@@ -11,6 +11,8 @@
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
   <link type="text/css" rel="stylesheet" href="css/characters.css"/>
   <script type="text/javascript" src="js/lib/jquery-1.6.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.ui.core.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.effects.core.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
   <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
@@ -21,7 +23,9 @@
   <script type="text/javascript" src="js/battle.js"></script>
   <script type="text/javascript" src="js/elements-statuses.js"></script>
   <script type="text/javascript" src="js/spells.js"></script>
+  <script type="text/javascript" src="js/equipment.js"></script>
   <script type="text/javascript" src="js/monster.js"></script>
+  <script type="text/javascript" src="js/animations.js"></script>
   <script type="text/javascript" src="js/map/map-config.js"></script>
   <script type="text/javascript" src="js/map/map-builder.js"></script>
   <script type="text/javascript" src="js/chars/character-class.js"></script>
@@ -41,6 +45,9 @@
   <script type="text/javascript" src="js/debug/battle-setup.js"></script>
   <script type="text/javascript" src="js/debug/party-setup.js"></script>
   <script type="text/javascript" src="js/debug/spell-effects.js"></script>
+  <script type="text/javascript" src="js/debug/weapons.js"></script>
+  <script type="text/javascript" src="js/debug/weaponAnimations.js"></script>
+  <script type="text/javascript" src="js/debug/animations.js"></script>
   <script type="text/javascript" src="js/debug/util.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
@@ -81,6 +88,9 @@
     <li class="curve tl bl big"><a href="#" class="battleSetup">Battle Setup</a></li>
     <li class="curve tl bl big"><a href="#" class="partySetup">Party Setup</a></li>
     <li class="curve tl bl big"><a href="#" class="spellEffects">Spell Effects</a></li>
+    <li class="curve tl bl big"><a href="#" class="weapons">Weapon Frames</a></li>
+    <li class="curve tl bl big"><a href="#" class="weaponAnimations">Weapon Animations</a></li>
+    <li class="curve tl bl big"><a href="#" class="animations">Animations</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -195,6 +205,13 @@
           <p class="charClass"><input type="radio" name="char1" value="whitewizard" />White Wizard</p>
           <p class="charClass"><input type="radio" name="char1" value="blackwizard" />Black Wizard</p>
         </div>
+        <label class="status">Status</label>
+        <div class="statuses">
+          <p class="status"><input type="radio" name="status1" value="ok" />OK</p>
+          <p class="status"><input type="radio" name="status1" value="dead" />Dead</p>
+          <p class="status"><input type="radio" name="status1" value="stone" />Petrified</p>
+          <p class="status"><input type="radio" name="status1" value="critical" />Critical</p>
+        </div>
       </div>
       <div class="row">
         <label>Character 2</label>
@@ -213,6 +230,13 @@
           <p class="charClass"><input type="radio" name="char2" value="redwizard" />Red Wizard</p>
           <p class="charClass"><input type="radio" name="char2" value="whitewizard" />White Wizard</p>
           <p class="charClass"><input type="radio" name="char2" value="blackwizard" />Black Wizard</p>
+        </div>
+        <label class="status">Status</label>
+        <div class="statuses">
+          <p class="status"><input type="radio" name="status2" value="ok" />OK</p>
+          <p class="status"><input type="radio" name="status2" value="dead" />Dead</p>
+          <p class="status"><input type="radio" name="status2" value="stone" />Petrified</p>
+          <p class="status"><input type="radio" name="status2" value="critical" />Critical</p>
         </div>
       </div>
       <div class="row">
@@ -233,6 +257,13 @@
           <p class="charClass"><input type="radio" name="char3" value="whitewizard" />White Wizard</p>
           <p class="charClass"><input type="radio" name="char3" value="blackwizard" />Black Wizard</p>
         </div>
+        <label class="status">Status</label>
+        <div class="statuses">
+          <p class="status"><input type="radio" name="status3" value="ok" />OK</p>
+          <p class="status"><input type="radio" name="status3" value="dead" />Dead</p>
+          <p class="status"><input type="radio" name="status3" value="stone" />Petrified</p>
+          <p class="status"><input type="radio" name="status3" value="critical" />Critical</p>
+        </div>
       </div>
       <div class="row">
         <label>Character 4</label>
@@ -252,13 +283,58 @@
           <p class="charClass"><input type="radio" name="char4" value="whitewizard" />White Wizard</p>
           <p class="charClass"><input type="radio" name="char4" value="blackwizard" />Black Wizard</p>
         </div>
+        <label class="status">Status</label>
+        <div class="statuses">
+          <p class="status"><input type="radio" name="status4" value="ok" />OK</p>
+          <p class="status"><input type="radio" name="status4" value="dead" />Dead</p>
+          <p class="status"><input type="radio" name="status4" value="stone" />Petrified</p>
+          <p class="status"><input type="radio" name="status4" value="critical" />Critical</p>
+        </div>
       </div>
       <button class="button setup">Setup party</button>
     </div>
   </section>
   
   <section class="spellEffects curve all">
-    <div class="container"></div>
+    <div class="container">
+      <div class="row">
+        <button class="start">Start Animation</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="weapons curve all">
+    <div class="party container">
+      <div class="row">
+        <label>Character Class</label>
+        <select class="selector">
+          <option value="">-- Select a class --</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  
+  <section class="weaponAnimations curve all">
+    <div class="party container">
+      <div class="row">
+        <label>Character Class</label>
+        <select class="selector">
+          <option value="">-- Select a class --</option>
+        </select>
+        <button class="start">Start swinging</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="animations curve all">
+    <div class="container">
+      <button class="walk animation">Walk</button>
+      <button class="slide forward animation">Slide Forward</button>
+      <button class="slide backward animation">Slide Backward</button>
+      <button class="walk slide forward animation">Walk & Slide Forward</button>
+      <button class="walk slide backward animation">Walk & Slide Backward</button>
+      <button class="swing weapon animation">Swing Weapon</button>
+    </div>
   </section>
 </div>
 </body>

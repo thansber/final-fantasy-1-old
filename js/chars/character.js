@@ -28,6 +28,7 @@ var Character = (function() {
     this.weakElements = {};
     this.currentStatuses = {};
     this.experience = 0;
+    this.charIndex = -1;
   };
   
   var setStats = function(currentChar, stats) {
@@ -75,11 +76,6 @@ var Character = (function() {
   
   Char.prototype.spellCharges = function(c) { 
     this.charges = c;
-    return this;
-  };
-  
-  Char.prototype.refillSpellCharges = function() {
-    this.charges = jQuery.merge([], this.maxCharges);
     return this;
   };
   
@@ -131,6 +127,11 @@ var Character = (function() {
     return this;
   };
   
+  Char.prototype.index = function(i) {
+    this.charIndex = i;
+    return this;
+  };
+  
   // --------------
   // GETTER methods
   // --------------
@@ -177,7 +178,7 @@ var Character = (function() {
   };
   
   Char.prototype.hasStatus = function(status) { 
-    return this.currentStatuses[status]; 
+    return this.currentStatuses[status.id]; 
   };
   
   Char.prototype.isDead = function() { 
@@ -235,6 +236,10 @@ var Character = (function() {
     return null; 
   };
   
+  Char.prototype.isCritical = function() {
+    return this.hitPoints > 0 && (this.hitPoints / this.maxHitPoints) <= 0.25;
+  };
+  
   // -----------------------------------------------
   // Methods that change the state of this character
   // -----------------------------------------------
@@ -248,18 +253,18 @@ var Character = (function() {
   };
   
   Char.prototype.addStatus = function(status) { 
-    if (status == Status.Dead) {
+    if (status.id == Status.Dead.id) {
       this.hitPoints = 0;
       for (var s in this.currentStatuses) {
         this.currentStatuses[s] = false;
       }
     }
-    this.currentStatuses[status] = true;
+    this.currentStatuses[status.id] = true;
     return this; 
   };
 
   Char.prototype.removeStatus = function(status) { 
-    this.currentStatuses[status] = false; 
+    this.currentStatuses[status.id] = false; 
   };
 
   Char.prototype.protectFrom = function(element) { 
@@ -277,6 +282,11 @@ var Character = (function() {
     if (this.hasSpellCharge(spellLevel)) {
       this.charges[spellLevel - 1]--;
     }
+  };
+  
+  Char.prototype.refillSpellCharges = function() {
+    this.charges = jQuery.merge([], this.maxCharges);
+    return this;
   };
   
   Char.prototype.applyChanges = function(changes) {
@@ -325,16 +335,16 @@ var Character = (function() {
     s += "Equipped armor: " + (this.equippedArmor.length > 0 ? equippedToString(this.equippedArmor) : "none") + "\n";
     s += "Other weapons: " + (this.weapons.length > 0 ? equippedToString(this.weapons) : "none") + ", ";
     s += "Other armor: " + (this.otherArmor.length > 0 ? equippedToString(this.otherArmor) : "none") + "\n";
-    s += "Elements protected from: " + this.elementsProtectedFrom().join(", ") + "\n"
+    s += "Elements protected from: " + (this.elementsProtectedFrom().length > 0 ? this.elementsProtectedFrom().join(", ") : "none") + "\n"
     return s;
   };
   
   Char.prototype.spellChargesToString = function(ch) {
     var c = "";
-    if (ch.length == 0) { return "None"; }
+    if (ch.length == 0) { return "none"; }
     var n = 0;
     jQuery(ch).each(function() { n += this; });
-    if (n == 0) { return "None"; }
+    if (n == 0) { return "none"; }
     return ch.join("/");
   };
   
