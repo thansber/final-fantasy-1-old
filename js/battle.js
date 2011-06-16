@@ -36,11 +36,6 @@ var Battle = (function() {
     return sizeCounts;
   };
 
-  // Expects a Monster object
-  var createEnemyUI = function(monster) {
-    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
-  };
-  
   var isMixedSize = function(sizeCounts) {
     var numSizes = 0;
     if (sizeCounts.small.enemies.length > 0) { numSizes++; } 
@@ -129,6 +124,11 @@ var Battle = (function() {
     return $char;
   };
   
+  // Expects a Monster object
+  var createEnemyUI = function(monster) {
+    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
+  };
+  
   var getCharUI = function(char) {
     return $party.find(".char").eq(char.charIndex);
   };
@@ -153,6 +153,7 @@ var Battle = (function() {
   return {
     init: init
    ,createCharUI: createCharUI
+   ,createEnemyUI: createEnemyUI
    ,getCharUI: getCharUI
    ,resetCharUI: resetCharUI
    ,setup: setup

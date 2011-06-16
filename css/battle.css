@@ -20,7 +20,7 @@
 #battle .input .commands .second.column { margin-left:36px; }
 #battle .input .commands .message { height:24px; }
 
-#battle .background { background-image:url(../images/battle_backgrounds.png); overflow:hidden; height:64px; width:224px; background-repeat:no-repeat; background-position:200px 200px; }
+#battle .background { background-image:url(../images/battle-backgrounds.png); overflow:hidden; height:64px; width:224px; background-repeat:no-repeat; background-position:200px 200px; }
 #battle .background.castle { background-position:0 0; }
 #battle .background.desert { background-position:0 -64px; }
 #battle .background.earth.cave { background-position:0 -128px; }
