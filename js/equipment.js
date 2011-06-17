@@ -3,8 +3,6 @@ var Equipment = (function() {
   var ALL_WEAPONS = {};
   var ALL_ARMOR = {};
   
-  var WEAPONS_BY_INDEX = [null];
-  
   // ==============================================================
   // WEAPON -------------------------------------------------------
   // ==============================================================
@@ -22,7 +20,6 @@ var Equipment = (function() {
       this.hasSpell = (this.spell != null);
       this.cssClasses = cssClasses;
       ALL_WEAPONS[name] = this;
-      WEAPONS_BY_INDEX.push(this);
     };
     
     new Weapon("Wooden[N]", "wooden nunchucks", {attack:12,hit:0,crit:10,index:1});
@@ -68,8 +65,6 @@ var Equipment = (function() {
     
     return {
       lookup : function(id) { return ALL_WEAPONS[id]; }
-     ,lookupByIndex : function(index) { return WEAPONS_BY_INDEX[index]; }
-     ,numWeapons : WEAPONS_BY_INDEX.length
      ,All : ALL_WEAPONS
     };
   })();
