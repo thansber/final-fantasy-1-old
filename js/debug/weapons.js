@@ -25,10 +25,10 @@ var WeaponHelper = (function() {
   
   var createCharWithAllWeapons = function(charClass) {
     var char = Party.createNewChar("AAAA", charClass, 0);
-    var $stances = $("<div/>").addClass("stances").addClass(charClass);
+    var $stances = $("<div/>").addClass("attack stances").addClass(charClass);
     
     jQuery.each(Equipment.Weapon.All, function(i, weapon) {
-      char.equippedWeapon = null;
+      char.unequipWeapon();
       char.weapon(weapon.name, true);
 
       $stances.append(Battle.createCharUI(char).addClass("swing back"));
@@ -38,7 +38,7 @@ var WeaponHelper = (function() {
     });
     
     if (CharacterClass.lookup(charClass).isMartialArtist()) {
-      char.equippedWeapon = null;
+      char.unequipWeapon();
       $stances.append(Battle.createCharUI(char).addClass("swing back"));
       $stances.append(Battle.createCharUI(char).addClass("swing forward"));
       $(".weapon", $stances).removeClass("hidden");

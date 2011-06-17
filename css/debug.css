@@ -73,7 +73,8 @@
 #debug section.spellEffects { background-color:black; }
 #debug .spellEffects .container { padding:0.8em; overflow:auto; }
 #debug .spellEffects .row { margin-bottom:2em; }
-#debug .spellEffects .effect { float:left; margin-right:0.6em; margin-bottom:0.6em; text-align:center; }
+#debug .spellEffects .effect { float:left; margin-right:0.6em; margin-bottom:0.6em; text-align:center;  }
+#debug .spellEffects .party .spell { right:0; }
 #debug .spellEffects label { color:white; font-size:0.75em;}
 
 #debug section.weapons { background-color:black; }
@@ -87,3 +88,5 @@
 #debug .weaponAnimations .container .row { margin-bottom:1em; }
 #debug .weaponAnimations .container label { color:white; }
 #debug .weaponAnimations .stances .char { float:left; margin-right:2.5em; margin-bottom:1em; }
+
+#debug .animations button { display:block; margin-bottom:1em; }

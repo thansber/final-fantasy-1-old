@@ -33,6 +33,8 @@ var PartySetupHelper = (function() {
       var char = Party.createNewChar(name, charClass, i);
       Party.addChar(char);
       
+      equipRandomWeapon(char);
+      
       var status = $this.closest(".row").find(".statuses input[type='radio']:checked").val();
       switch (status) {
         case "dead":
@@ -47,9 +49,22 @@ var PartySetupHelper = (function() {
       }
     });
     
-    jQuery.each(Party.getChars(), function(i, char) { console.log(char.toString()); });
+    //jQuery.each(Party.getChars(), function(i, char) { console.log(char.toString()); });
     
     Battle.setup();
+  };
+  
+  var equipRandomWeapon = function(char) {
+    var weaponArray = jQuery.map(Equipment.Weapon.All, function(weapon, name) {
+      return weapon;
+    });
+    weaponArray.unshift(null);
+    var weapon = RNG.randomArrayElement(weaponArray);
+    if (weapon) {
+      char.weapon(weapon.name, true);
+    } else {
+      char.unequipWeapon();
+    }
   };
   
   return {

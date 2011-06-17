@@ -1,6 +1,6 @@
 .party .char { background-image:url(../images/char-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; width:36px; height:50px; margin-right:0px; }
 .party .char.dead { width:52px; }
-.party .char.advance { margin-right:40px; }
+.party .char.advance { margin-right:28px; }
 
 .party .char.fighter.swing.back { background-position:0px 0; }
 .party .char.fighter.swing.forward { background-position:-36px 0; }

@@ -19,7 +19,7 @@ $(document).ready(function() {
   
   Cursor.initCursors();
   
-  $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); });
+  $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
   
   $("#debug .movement").click(function(event) { MovementHelper.event($(event.target)); });
   $("#debug .world-map").click(function(event) { WorldMapHelper.event($(event.target)); });
@@ -33,5 +33,5 @@ $(document).ready(function() {
   $("#debug .weaponAnimations button").click(function(event) { WeaponAnimationHelper.event($(event.target)); });
   $("#debug .animations button").click(function(event) { AnimationHelper.event($(event.target)); });
   
-  $("#debug .menu a.weaponAnimations").click();  
+  $("#debug .menu a.partySetup").click();  
 });

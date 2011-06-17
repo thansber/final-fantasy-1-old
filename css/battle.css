@@ -3,6 +3,8 @@
 #battle { height:400px; }
 #battle .border { -moz-border-image:url(../images/border.png) 7 repeat; background-color:black; }
 
+#battle .main { float:left; }
+
 #battle .enemies { float:left; padding:1px 4px; height:272px; }
 #battle .enemies .column { float:left; }
 #battle .enemies .column.small.single { margin-top:66px; }
@@ -12,6 +14,16 @@
 #battle .party { width:96px; height:272px; float:left; margin-left:3px; padding:1px 4px; }
 #battle .party .background { width:96px; }
 #battle .party .char { float:right; clear:right; }
+
+#battle .stats { width:114px; float:left; margin-left:2px; margin-top:34px; }
+#battle .stats .charStats { position:relative; z-index:1; padding-bottom:1px; position:relative; z-index:1; background-color:black; }
+#battle .stats .charStats.first { z-index:4; }
+#battle .stats .charStats.second { z-index:3; }
+#battle .stats .charStats.third { z-index:2; }
+#battle .stats .charStats .border { width:64px; padding:12px 8px 8px 8px; position:relative; top:-3px; overflow:auto; }
+#battle .stats .charStats .name { margin-bottom:1em; height:16px; }
+#battle .stats .charStats label.hp { display:block; clear:left; }
+#battle .stats .charStats div.hp { display:block; clear:left; float:right; }
 
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
 #battle .input .enemy.list { float:left; width:140px; height:116px; }
@@ -38,86 +50,88 @@
 #battle .background.titan { background-position:0 -896px; }
 #battle .background.waterfall { background-position:0 -960px; }
 
-.spell { height:34px; overflow:hidden; background-image:url(../images/spell-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; }
-.spell.animate { background-image:url(../images/spell-sheet2.png); }
+.party .spell { height:34px; overflow:hidden; background-image:url(../images/spell-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; position:relative; right:30px; }
+.party .casting .spell { display:block; }
+.party .spell.animate { background-image:url(../images/spell-sheet2.png); }
 
-.spell.beam { width:32px; }
-.spell.beam.brak { background-position:0 0; }
-.spell.beam.fade { background-position:-32px 0; }
-.spell.beam.harm { background-position:-64px 0; }
-.spell.beam.hrm2 { background-position:-96px 0; }
-.spell.beam.hrm3 { background-position:-128px 0; }
-.spell.beam.hrm4 { background-position:-160px 0; }
-.spell.beam.lit { background-position:-192px 0; }
-.spell.beam.lit2 { background-position:-224px 0; }
-.spell.beam.lit3 { background-position:-256px 0; }
+.party .spell.beam { width:32px; }
+.party .spell.beam.brak { background-position:0 0; }
+.party .spell.beam.fade { background-position:-32px 0; }
+.party .spell.beam.harm { background-position:-64px 0; }
+.party .spell.beam.hrm2 { background-position:-96px 0; }
+.party .spell.beam.hrm3 { background-position:-128px 0; }
+.party .spell.beam.hrm4 { background-position:-160px 0; }
+.party .spell.beam.lit { background-position:-192px 0; }
+.party .spell.beam.lit2 { background-position:-224px 0; }
+.party .spell.beam.lit3 { background-position:-256px 0; }
 
-.spell.death { width:32px; }
-.spell.death.rub { background-position:0 -34px; }
-.spell.death.xxxx { background-position:-32px -34px; }
-.spell.death.zap { background-position:-64px -34px; }
+.party .spell.death { width:32px; }
+.party .spell.death.rub { background-position:0 -34px; }
+.party .spell.death.xxxx { background-position:-32px -34px; }
+.party .spell.death.zap { background-position:-64px -34px; }
 
-.spell.flame { width:32px; }
-.spell.flame.fire { background-position:0 -68px; }
-.spell.flame.fir2 { background-position:-32px -68px; }
-.spell.flame.fir3 { background-position:-64px -68px; }
-.spell.flame.ice { background-position:-96px -68px; }
-.spell.flame.ice2 { background-position:-128px -68px; }
-.spell.flame.ice3 { background-position:-160px -68px; }
-.spell.flame.nuke { background-position:-192px -68px; }
+.party .spell.flame { width:32px; }
+.party .spell.flame.fire { background-position:0 -68px; }
+.party .spell.flame.fir2 { background-position:-32px -68px; }
+.party .spell.flame.fir3 { background-position:-64px -68px; }
+.party .spell.flame.ice { background-position:-96px -68px; }
+.party .spell.flame.ice2 { background-position:-128px -68px; }
+.party .spell.flame.ice3 { background-position:-160px -68px; }
+.party .spell.flame.nuke { background-position:-192px -68px; }
 
-.spell.healing { width:30px; }
-.spell.healing.cure { background-position:0 -102px; }
-.spell.healing.cur2 { background-position:-30px -102px; }
-.spell.healing.cur3 { background-position:-60px -102px; }
-.spell.healing.cur4 { background-position:-90px -102px; }
-.spell.healing.heal { background-position:-120px -102px; }
-.spell.healing.hel2 { background-position:-150px -102px; }
-.spell.healing.hel3 { background-position:-180px -102px; }
+.party .spell.healing { width:30px; }
+.party .spell.healing.cure { background-position:0 -102px; }
+.party .spell.healing.cur2 { background-position:-30px -102px; }
+.party .spell.healing.cur3 { background-position:-60px -102px; }
+.party .spell.healing.cur4 { background-position:-90px -102px; }
+.party .spell.healing.heal { background-position:-120px -102px; }
+.party .spell.healing.hel2 { background-position:-150px -102px; }
+.party .spell.healing.hel3 { background-position:-180px -102px; }
 
-.spell.poof { width:32px; }
-.spell.poof.amut { background-position:0 -136px; }
-.spell.poof.lamp { background-position:-32px -136px; }
-.spell.poof.pure { background-position:-64px -136px; }
+.party .spell.poof { width:32px; }
+.party .spell.poof.amut { background-position:0 -136px; }
+.party .spell.poof.lamp { background-position:-32px -136px; }
+.party .spell.poof.pure { background-position:-64px -136px; }
 
-.spell.protect { width:18px; }
-.spell.protect.afir { background-position:0 -170px; }
-.spell.protect.aice { background-position:-18px -170px; }
-.spell.protect.alit { background-position:-36px -170px; }
-.spell.protect.arub { background-position:-54px -170px; }
-.spell.protect.fog { background-position:-72px -170px; }
-.spell.protect.fog2 { background-position:-90px -170px; }
-.spell.protect.invs { background-position:-108px -170px; }
-.spell.protect.inv2 { background-position:-126px -170px; }
-.spell.protect.ruse { background-position:-144px -170px; }
-.spell.protect.sabr { background-position:-162px -170px; }
-.spell.protect.wall { background-position:-162px -170px; }
+.party .spell.protect { width:18px; }
+.party .spell.protect.afir { background-position:0 -170px; }
+.party .spell.protect.aice { background-position:-18px -170px; }
+.party .spell.protect.alit { background-position:-36px -170px; }
+.party .spell.protect.arub { background-position:-54px -170px; }
+.party .spell.protect.fog { background-position:-72px -170px; }
+.party .spell.protect.fog2 { background-position:-90px -170px; }
+.party .spell.protect.invs { background-position:-108px -170px; }
+.party .spell.protect.inv2 { background-position:-126px -170px; }
+.party .spell.protect.ruse { background-position:-144px -170px; }
+.party .spell.protect.sabr { background-position:-162px -170px; }
+.party .spell.protect.wall { background-position:-162px -170px; }
 
-.spell.star { width:28px; }
-.spell.star.fast { background-position:0 -204px; }
-.spell.star.lock { background-position:-28px -204px; }
-.spell.star.lok2 { background-position:-56px -204px; }
-.spell.star.qake { background-position:-84px -204px; }
-.spell.star.tmpr { background-position:-112px -204px; }
-.spell.star.xfer { background-position:-140px -204px; }
+.party .spell.star { width:28px; }
+.party .spell.star.fast { background-position:0 -204px; }
+.party .spell.star.lock { background-position:-28px -204px; }
+.party .spell.star.lok2 { background-position:-56px -204px; }
+.party .spell.star.qake { background-position:-84px -204px; }
+.party .spell.star.tmpr { background-position:-112px -204px; }
+.party .spell.star.xfer { background-position:-140px -204px; }
 
-.spell.status { width:32px; }
-.spell.status.bane { background-position:0 -238px; }
-.spell.status.blnd { background-position:-32px -238px; }
-.spell.status.conf { background-position:-64px -238px; }
-.spell.status.dark { background-position:-96px -238px; }
-.spell.status.fear { background-position:-128px -238px; }
-.spell.status.hold { background-position:-160px -238px; }
-.spell.status.mute { background-position:-192px -238px; }
-.spell.status.slep { background-position:-224px -238px; }
-.spell.status.slp2 { background-position:-256px -238px; }
-.spell.status.slow { background-position:-288px -238px; }
-.spell.status.slo2 { background-position:-320px -238px; }
-.spell.status.stop { background-position:-352px -238px; }
-.spell.status.stun { background-position:-384px -238px; }
+.party .spell.status { width:32px; }
+.party .spell.status.bane { background-position:0 -238px; }
+.party .spell.status.blnd { background-position:-32px -238px; }
+.party .spell.status.conf { background-position:-64px -238px; }
+.party .spell.status.dark { background-position:-96px -238px; }
+.party .spell.status.fear { background-position:-128px -238px; }
+.party .spell.status.hold { background-position:-160px -238px; }
+.party .spell.status.mute { background-position:-192px -238px; }
+.party .spell.status.slep { background-position:-224px -238px; }
+.party .spell.status.slp2 { background-position:-256px -238px; }
+.party .spell.status.slow { background-position:-288px -238px; }
+.party .spell.status.slo2 { background-position:-320px -238px; }
+.party .spell.status.stop { background-position:-352px -238px; }
+.party .spell.status.stun { background-position:-384px -238px; }
 
 .party .weapon { width:32px; height:32px; background-repeat:no-repeat; background-position:1000em 1000em; position:relative; }
-.party .forward .weapon { background-image:url(../images/weapon-sheet.png); display:block; right:30px; }
+.party .attack .weapon { display:block; }
+.party .forward .weapon { background-image:url(../images/weapon-sheet.png); right:30px; }
 .party .forward.fighter .weapon { top:2px; }
 .party .forward.blackbelt .weapon { top:-4px; }
 .party .forward.blackbelt .weapon.punch { top:-6px; right:29px;}
@@ -126,7 +140,7 @@
 .party .forward.master .weapon { top:-4px; }
 .party .forward.master .weapon.punch { top:-5px; right:29px; }
 
-.party .back .weapon { background-image:url(../images/weapon-sheet-back.png); display:block; left:30px; top:-29px; }
+.party .back .weapon { background-image:url(../images/weapon-sheet-back.png); left:30px; top:-29px; }
 .party .back .weapon.hammer { top:-22px; left:28px; }
 
 .party .weapon.bane.sword { background-position:0 0; }

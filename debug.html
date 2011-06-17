@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Final Fantasy I</title>
+  <title>Final Fantasy I - Debug Room</title>
   <meta http-equiv="X-UA-Compatible" content="IE=8" />
   <link type="text/css" rel="stylesheet" href="css/global.css"/>
   <link type="text/css" rel="stylesheet" href="css/messages.css"/>
@@ -15,6 +15,7 @@
   <script type="text/javascript" src="js/lib/jquery.effects.core.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
   <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+  <script type="text/javascript" src="js/rng.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/key-press-notifier.js"></script>
   <script type="text/javascript" src="js/movement.js"></script>
@@ -61,20 +62,22 @@
 
 <div id="battleView" class="main">
   <div id="battle">
-    <div class="enemies border">
-      <div class="background"></div>
-    </div>
-    <div class="party border">          
-      <div class="background"></div>
-    </div>
-    <div class="stats"></div>
-    <div class="input">
-      <div class="enemy list border"></div>
-      <div class="commands border">
-        <div class="first column"></div>
-        <div class="second column"></div>
+    <div class="main">
+      <div class="enemies border">
+        <div class="background"></div>
+      </div>
+      <div class="party border">          
+        <div class="background"></div>
+      </div>
+      <div class="input">
+        <div class="enemy list border"></div>
+        <div class="commands border">
+          <div class="first column"></div>
+          <div class="second column"></div>
+        </div>
       </div>
     </div>
+    <div class="stats"></div>
   </div>
 </div>
 
@@ -296,7 +299,7 @@
   </section>
   
   <section class="spellEffects curve all">
-    <div class="container">
+    <div class="party container">
       <div class="row">
         <button class="start">Start Animation</button>
       </div>
@@ -334,6 +337,9 @@
       <button class="walk slide forward animation">Walk & Slide Forward</button>
       <button class="walk slide backward animation">Walk & Slide Backward</button>
       <button class="swing weapon animation">Swing Weapon</button>
+      <button class="spell effect animation">Spell Effect</button>
+      <button class="attack animation">Attack</button>
+      <button class="cast spell animation">Cast Spell</button>
     </div>
   </section>
 </div>

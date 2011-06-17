@@ -122,6 +122,10 @@ var Character = (function() {
     return this;
   };
   
+  Char.prototype.unequipWeapon = function() {
+    this.equippedWeapon = null;
+  };
+  
   Char.prototype.addExperience = function(exp) {
     this.experience += exp;
     return this;

@@ -2,6 +2,8 @@ var Battle = (function() {
   
   var $battle = null;
   var $party = null;
+  var $stats = null;
+  var ordinals = ["first", "second", "third", "fourth"];
   
   var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0, chaos:0}};
   var ENEMIES_PER_COLUMN = {small:3, large:2, fiend:1};
@@ -12,6 +14,7 @@ var Battle = (function() {
   var init = function() {
     $battle = $("#battle");
     $party = $(".party", $battle);
+    $stats = $(".stats", $battle);
     
     $battle.find(".commands .column").eq(0)
       .append(Message.create("FIGHT", "fight"))
@@ -36,6 +39,19 @@ var Battle = (function() {
     return sizeCounts;
   };
 
+  var createCharStatsUI = function(char) {
+    var $charStats = $("<div/>").addClass("charStats").addClass(ordinals[char.charIndex]);
+    var $border = $("<div/>").addClass("border");
+    var $name = $("<div/>").addClass("name").append(Message.create(char.charName));
+    var $hpLabel = $("<label/>").addClass("hp").append(Message.create("HP"));
+    var $hp = $("<div/>").addClass("hp").append(Message.create(char.hitPoints + ""));
+    
+    $border.append($name).append($hpLabel).append($hp);
+    $charStats.append($border);
+    
+    return $charStats;
+  };
+  
   var isMixedSize = function(sizeCounts) {
     var numSizes = 0;
     if (sizeCounts.small.enemies.length > 0) { numSizes++; } 
@@ -103,9 +119,11 @@ var Battle = (function() {
   
   var setupParty = function(party) {
     $party.find(".char").remove();
+    $stats.empty();
     
     jQuery.each(party, function(i, char) {
       $party.append(createCharUI(char));
+      $stats.append(createCharStatsUI(char));
     });
   };
   
@@ -127,6 +145,10 @@ var Battle = (function() {
   // Expects a Monster object
   var createEnemyUI = function(monster) {
     return $("<p/>").addClass("enemy").addClass(monster.cssClass);
+  };
+  
+  var createSpellUI = function(spell) {
+    return $("<span/>").addClass("spell").addClass(spell.effect).addClass(spell.spellId.toLowerCase().replace("!", ""));
   };
   
   var getCharUI = function(char) {
@@ -154,6 +176,7 @@ var Battle = (function() {
     init: init
    ,createCharUI: createCharUI
    ,createEnemyUI: createEnemyUI
+   ,createSpellUI: createSpellUI
    ,getCharUI: getCharUI
    ,resetCharUI: resetCharUI
    ,setup: setup

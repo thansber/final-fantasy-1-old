@@ -38,7 +38,7 @@ var BattleEnemyCursor = (function() {
       }
 
       // If the cursor is moving left from the small to large and is on the last enemy, go to the bottom large enemy
-      if ($cursor.parent().is(".mixed.small") && enemyNum > 1 && enemyIndex == 0) {
+      if ($cursor.parent().is(".mixed.small") && enemyNum > 1 && enemyIndex == 0 && columnIndex == 0) {
         enemyIndex = 1;
       }
     }
