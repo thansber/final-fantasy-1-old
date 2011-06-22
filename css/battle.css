@@ -26,11 +26,23 @@
 #battle .stats .charStats div.hp { display:block; clear:left; float:right; }
 
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
-#battle .input .enemy.list { float:left; width:140px; height:116px; }
+#battle .input .enemy.list { float:left; width:128px; height:100px; padding:16px 0 0 12px; }
+#battle .input .enemy.list .text { clear:left; height:28px; }
 #battle .input .commands { float:left; width:168px; height:100px; margin-left:4px; padding-left:28px; padding-top:16px; }
 #battle .input .commands .column { float:left; }
 #battle .input .commands .second.column { margin-left:36px; }
-#battle .input .commands .message { height:24px; }
+#battle .input .commands .text { height:24px; }
+
+#battle .messages { width:350px; padding-top:8px; clear:both; }
+#battle .messages .message { padding-top:16px; height:24px; padding-left:8px; }
+#battle .messages .overlap { position:relative; top:-7px; padding-top:4px; background-color:black; }
+#battle .messages .overlap.target { width:146px; clear:left; }
+#battle .messages .overlap.damage { padding-right:4px; float:left; width:164px; padding-left:4px; }
+#battle .messages .overlap.desc { top:-14px; clear:both; }
+#battle .messages .source { float:left; width:132px; }
+#battle .messages .target { float:left; width:132px; }
+#battle .messages .action { float:right; width:162px; margin-right:24px;}
+#battle .messages .damage { width:152px; }
 
 #battle .background { background-image:url(../images/battle-backgrounds.png); overflow:hidden; height:64px; width:224px; background-repeat:no-repeat; background-position:200px 200px; }
 #battle .background.castle { background-position:0 0; }

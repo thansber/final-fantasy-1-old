@@ -45,9 +45,10 @@
 
 #debug .messages .message { background-color:navy; padding:0.4em; margin-bottom:0.2em; overflow:auto; }
 
-#debug .enemies label { float:left; }
-#debug .enemies select { float:left; margin-left:1em; }
-#debug .enemies .monster { float:left; margin-left:2em; }
+#debug .enemiesSplash .row { clear:both; margin-bottom:1em; overflow:auto; }
+#debug .enemiesSplash label { float:left; width:9em; text-align:right; margin-right:0.4em; }
+#debug .enemiesSplash select { float:left; margin-left:1em; }
+#debug .enemiesSplash .monster { float:left; margin-left:1.6em; }
 
 #debug .battleSetup .row { clear:both; height:2em;}
 #debug .battleSetup .row label { float:left; width:8em; text-align:right;}
@@ -90,3 +91,7 @@
 #debug .weaponAnimations .stances .char { float:left; margin-right:2.5em; margin-bottom:1em; }
 
 #debug .animations button { display:block; margin-bottom:1em; }
+
+#debug .battleMessages p { height:30px; clear:both; }
+#debug .battleMessages p label { width:6em; float:left; text-align:right; margin-right:1em; }
+#debug .battleMessages p input { width:150px; float:left; }

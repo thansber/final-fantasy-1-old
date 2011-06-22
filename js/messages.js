@@ -37,10 +37,35 @@ var Message = (function() {
    ,"~": "nunchucks"
   };
   
-  var init = function(opt) {};
+  var $messages = null;
   
+  var init = function(opt) {
+    $messages = $(opt.messages);
+  };
+  
+  /* ======================================================== */
+  /* PRIVATE METHODS ---------------------------------------- */
+  /* ======================================================== */
+  var battleMessage = function($message, showing, text) {
+    if (showing) {
+      $message.append(create(text));
+    } else {
+      $message.empty();
+    }
+    
+    $message.toggleClass("hidden", !showing);
+    $message.parent(".overlap").toggleClass("hidden", !showing);
+  };
+  
+  var parseOptions = function(opt) {
+    return typeof opt === "string" ? {text:opt, show:true} : opt || {};
+  };
+  
+  /* ======================================================== */
+  /* PUBLIC METHODS ----------------------------------------- */
+  /* ======================================================== */
   var create = function(text, cssClasses) {
-    var $msg = $("<div/>").addClass("message");
+    var $msg = $("<div/>").addClass("text");
     if (cssClasses) {
       $msg.addClass(jQuery.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
     }
@@ -80,8 +105,47 @@ var Message = (function() {
     return $msg;
   };
   
+  var source = function(opt) {
+    opt = parseOptions(opt);
+    battleMessage($(".source.message", $messages), opt.show, opt.text);
+  };
+  
+  var action = function(opt) {
+    opt = parseOptions(opt);
+    battleMessage($(".action.message", $messages), opt.show, opt.text);
+  };
+  
+  var target = function(opt) {
+    opt = parseOptions(opt);
+    battleMessage($(".target.message", $messages), opt.show, opt.text);
+  };
+  
+  var damage = function(opt) {
+    opt = parseOptions(opt);
+    battleMessage($(".damage.message", $messages), opt.show, opt.text);
+  };
+  
+  var desc = function(opt) {
+    opt = parseOptions(opt);
+    battleMessage($(".desc.message", $messages), opt.show, opt.text);
+  };
+  
+  var hideAllBattleMessages = function() {
+    source({show:false});
+    target({show:false});
+    action({show:false});
+    damage({show:false});
+    desc({show:false});
+  };
+  
   return {
     init: init
    ,create: create
+   ,source: source
+   ,action: action
+   ,target: target
+   ,damage: damage
+   ,desc: desc
+   ,hideAllBattleMessages: hideAllBattleMessages
   };
 })();

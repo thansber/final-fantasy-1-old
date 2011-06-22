@@ -6,10 +6,12 @@ var Animation = (function() {
    ,CastSpell : "castSpell"
    ,SlideChar : "slideChar"
    ,SpellEffect : "spellEffect"
+   ,ShowSplash : "showSplash"
    ,SwingWeapon : "swingWeapon"
   };
   
   var CHAR_AT_REST_CLASSES = ["critical"];
+  var SPLASH_ORDINALS = ["one", "two", "three"];
   
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
@@ -63,6 +65,49 @@ var Animation = (function() {
     slideChar(char, {autoStart:true, callback:casting});
   };
     
+  var splash = function($enemy, splashColors, opt) {
+    var settings = jQuery.extend({}, {pause:100, autoStart:false, callback:null}, opt);
+    if (!settings.numAnimations) {
+      var $parent = $enemy.parent();
+      
+      if ($parent.is(".small")) { settings.numAnimations = RNG.randomUpTo(5, 3); } 
+      else if ($parent.is(".large")) { settings.numAnimations = RNG.randomUpTo(6, 4); } 
+      else if ($parent.is(".fiend,.chaos")) { settings.numAnimations = RNG.randomUpTo(7, 5); } 
+    }
+    var q = createQueue(Queues.ShowSplash);
+    
+    for (var n = 0; n < settings.numAnimations; n++) {
+      addToQueue(q, function() { 
+        $("#battle .enemies .splash").each(function() {
+          var $splash = $(this);
+          var randomSplashIndex = RNG.randomArrayElement(SPLASH_ORDINALS);
+          $splash.removeClass().addClass("splash hidden").addClass(randomSplashIndex).addClass(splashColors);
+          
+          var splashX = RNG.randomUpTo($enemy.width() - 20, 0);
+          var splashY = RNG.randomUpTo(Math.floor($enemy.height() - ($enemy.height() * 0.33)), 0);
+          var enemyPos = $enemy.position();
+          
+          $splash.css({
+            left : enemyPos.left + splashX
+           ,top : enemyPos.top + splashY
+          });
+          
+          $splash.removeClass("hidden");
+        });
+      });
+      delay(q, settings.pause);
+      addToQueue(q, function() { $("#battle .enemies .splash").addClass("hidden"); });
+    }
+    
+    addToQueue(q, settings.callback);
+    
+    if (settings.autoStart) {
+      start(q);
+    }
+    
+    return q;
+  };
+  
   var spellEffect = function(char, spell, opt) {
     var settings = jQuery.extend({}, {numAnimations:4, pause:100, autoStart:false, callback:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
@@ -164,6 +209,7 @@ var Animation = (function() {
    ,castSpell: castSpell
    ,slideChar: slideChar
    ,spellEffect: spellEffect
+   ,splash: splash
    ,swingWeapon: swingWeapon
    ,walkInBattle: walkInBattle
    ,walkAndMoveInBattle: walkAndMoveInBattle

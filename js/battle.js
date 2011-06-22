@@ -52,12 +52,20 @@ var Battle = (function() {
     return $charStats;
   };
   
+  var hideInput = function() {
+    $(".input", $battle).hide();
+  };
+  
   var isMixedSize = function(sizeCounts) {
     var numSizes = 0;
     if (sizeCounts.small.enemies.length > 0) { numSizes++; } 
     if (sizeCounts.large.enemies.length > 0) { numSizes++; }
     if (sizeCounts.fiend.enemies.length > 0) { numSizes++; }
     return numSizes > 1;
+  };
+  
+  var isMessageValid = function(message) {
+    return message != null && message.length > 0;
   };
   
   var isSetupValid = function(sizeCounts) {
@@ -81,6 +89,13 @@ var Battle = (function() {
     return true;
   };
   
+  var populateEnemyList = function(enemies) {
+    var $enemyList = $(".enemy.list", $battle);
+    jQuery.each(enemies, function(i, enemy) {
+      $enemyList.append(Message.create(enemy.name));
+    });
+  };
+  
   var setupEnemies = function(enemies) {
     var sizeCounts = calculateEnemySizeCounts(enemies);
     if (!isSetupValid(sizeCounts)) {
@@ -96,8 +111,8 @@ var Battle = (function() {
     
     for (var s in sizeCounts) {
       var size = s;
-      var enemies = sizeCounts[s].enemies;
-      jQuery.each(enemies, function(i, name) {
+      var enemiesBySize = sizeCounts[s].enemies;
+      jQuery.each(enemiesBySize, function(i, name) {
         if (i % ENEMIES_PER_COLUMN[size] == 0) {
           $column = $("<div/>").addClass("column").addClass(size);
           if (mixed) {
@@ -109,11 +124,12 @@ var Battle = (function() {
         $column.append(createEnemyUI(Monster.lookup(name)));
       });
       
-      if (size == "small" && enemies.length % ENEMIES_PER_COLUMN[size] == 1) {
+      if (size == "small" && enemiesBySize.length % ENEMIES_PER_COLUMN[size] == 1) {
         $column.addClass("single");
       }
     }
     
+    populateEnemyList(enemies);
     //console.log(jQuery.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
   };
   
@@ -144,7 +160,7 @@ var Battle = (function() {
   
   // Expects a Monster object
   var createEnemyUI = function(monster) {
-    return $("<p/>").addClass("enemy").addClass(monster.cssClass);
+    return $("<div/>").addClass("enemy").addClass(monster.cssClass);
   };
   
   var createSpellUI = function(spell) {
@@ -153,6 +169,26 @@ var Battle = (function() {
   
   var getCharUI = function(char) {
     return $party.find(".char").eq(char.charIndex);
+  };
+  
+  var outputRoundResults = function(results) {
+    hideInput();
+    $(".messages", $battle).removeClass("hidden");
+    jQuery.each(results, function(i, result) {
+      Message.hideAllBattleMessages();
+      for (var m in result.messages) {
+        var message = result.messages[m];
+        if (isMessageValid(message)) {
+          switch (m) {
+            case "source": Message.source(message); break;
+            case "target": Message.target(message); break;
+            case "action": Message.action(message); break;
+            case "damage": Message.damage(message); break;
+            case "desc": Message.desc(message); break;
+          }
+        }        
+      }
+    });
   };
   
   var resetCharUI = function(char, $char) {
@@ -178,6 +214,7 @@ var Battle = (function() {
    ,createEnemyUI: createEnemyUI
    ,createSpellUI: createSpellUI
    ,getCharUI: getCharUI
+   ,outputRoundResults: outputRoundResults
    ,resetCharUI: resetCharUI
    ,setup: setup
   }  

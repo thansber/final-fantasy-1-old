@@ -1,24 +1,35 @@
 var DebugHelper = (function() {
   
   var HELPERS = {
-    battleSetup : "battleView"
-   ,partySetup : "battleView" 
-   ,animations : "battleView" 
+    enemiesSplash : {view:"battleView"}
+   ,battleSetup : {view:"battleView"}
+   ,partySetup : {view:"battleView"} 
+   ,animations : {view:"battleView"} 
+   ,battleMessages : {view:"battleView", disableKeyListener:true}
   };
   
-  var loadMainView = function(mainView) {
-    mainView = mainView || "world";
+  var addOption = function($selector, value, text) {
+    if (!text) {
+      text = value;
+    }
+    $selector.append($("<option/>").text(text).val(value));
+  };
+  
+  var loadMainView = function(helper) {
+    helper = jQuery.extend({view:"world", disableKeyListener:true}, helper);
     $("body > .main").hide();
-    $("#" + mainView).show();
+    $("#" + helper.view).show();
     
     KeyPressNotifier.clearListener();
     
-    switch (mainView) {
+    switch (helper.view) {
       case "world":
         Movement.startListening();
         break;
       case "battleView":
-        BattleMenuCursor.startListening();
+        if (!helper.disableKeyListener) {
+          BattleMenuCursor.startListening();
+        }
         break;
     };
   };
@@ -34,8 +45,11 @@ var DebugHelper = (function() {
     loadMainView(HELPERS[section]);
   };
   
+
+  
   return {
-    loadMainView: loadMainView
+    addOption: addOption
+   ,loadMainView: loadMainView
    ,menuChange: menuChange
   }
 })();

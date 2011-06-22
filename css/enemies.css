@@ -3,6 +3,7 @@
 .large .enemy { background-image:url(../images/enemies-large.png); width:100px; height:100px; }
 .large.mixed .enemy { width:92px; }
 .fiend .enemy { background-image:url(../images/enemies-fiends.png); width:132px; height:132px; }
+.chaos .enemy { background-image:url(../images/enemies-chaos.png); width:216px; height:190px; background-position:0 0; }
 
 /* ============= */
 /* Small enemies */
@@ -138,3 +139,54 @@
 .enemy.kary { background-position:-132px 0; }
 .enemy.kraken { background-position:0 -132px; }
 .enemy.tiamat { background-position:-132px -132px; }
+
+
+
+/* ===================================== */
+/* Splash images for when being attacked */
+/* ===================================== */
+.enemies .splash { background-image:url(../images/splash-sheet.png); background-repeat:no-repeat; width:32px; height:32px; background-position:1000em 1000em; position:absolute; }
+.enemies .splash.three { height:16px; }
+
+.enemies .splash.blue.one { background-position:-32px 0; }
+.enemies .splash.blue.two { background-position:-32px -32px; }
+.enemies .splash.blue.three { background-position:-32px -64px; }
+.enemies .splash.royal.blue.one { background-position:-64px 0; }
+.enemies .splash.royal.blue.two { background-position:-64px -32px; }
+.enemies .splash.royal.blue.three { background-position:-64px -64px; }
+.enemies .splash.gold.one { background-position:-96px 0; }
+.enemies .splash.gold.two { background-position:-96px -32px; }
+.enemies .splash.gold.three { background-position:-96px -64px; }
+.enemies .splash.light.green.one { background-position:-128px 0; }
+.enemies .splash.light.green.two { background-position:-128px -32px; }
+.enemies .splash.light.green.three { background-position:-128px -64px; }
+.enemies .splash.sea.green.one { background-position:-160px 0; }
+.enemies .splash.sea.green.two { background-position:-160px -32px; }
+.enemies .splash.sea.green.three { background-position:-160px -64px; }
+.enemies .splash.green.one { background-position:-192px 0; }
+.enemies .splash.green.two { background-position:-192px -32px; }
+.enemies .splash.green.three { background-position:-192px -64px; }
+.enemies .splash.grey.one { background-position:-224px 0; }
+.enemies .splash.grey.two { background-position:-224px -32px; }
+.enemies .splash.grey.three { background-position:-224px -64px; }
+.enemies .splash.magenta.one { background-position:-256px 0; }
+.enemies .splash.magenta.two { background-position:-256px -32px; }
+.enemies .splash.magenta.three { background-position:-256px -64px; }
+.enemies .splash.orange.one { background-position:-288px 0; }
+.enemies .splash.orange.two { background-position:-288px -32px; }
+.enemies .splash.orange.three { background-position:-288px -64px; }
+.enemies .splash.pink.one { background-position:-320px 0; }
+.enemies .splash.pink.two { background-position:-320px -32px; }
+.enemies .splash.pink.three { background-position:-320px -64px; }
+.enemies .splash.purple.one { background-position:-352px 0; }
+.enemies .splash.purple.two { background-position:-352px -32px; }
+.enemies .splash.purple.three { background-position:-352px -64px; }
+.enemies .splash.red.one { background-position:-384px 0; }
+.enemies .splash.red.two { background-position:-384px -32px; }
+.enemies .splash.red.three { background-position:-384px -64px; }
+.enemies .splash.turquoise.one { background-position:-416px 0; }
+.enemies .splash.turquoise.two { background-position:-416px -32px; }
+.enemies .splash.turquoise.three { background-position:-416px -64px; }
+.enemies .splash.white.one { background-position:-448px 0; }
+.enemies .splash.white.two { background-position:-448px -32px; }
+.enemies .splash.white.three { background-position:-448px -64px; }
