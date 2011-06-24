@@ -23,14 +23,19 @@ var BattleMenuCursor = (function() {
   
   var executeCommand = function($command) {
     if ($command.is(".fight")) {
+      BattleCommands.party({action:BattleCommands.Attack});
       BattleEnemyCursor.startListening();
     } else if ($command.is(".magic")) {
+      BattleCommands.party({action:BattleCommands.CastSpell});
       console.log("magic");
     } else if ($command.is(".drink")) {
+      BattleCommands.party({action:BattleCommands.Drink});
       console.log("drink");
     } else if ($command.is(".item")) {
+      BattleCommands.party({action:BattleCommands.UseItem});
       console.log("item");
     } else if ($command.is(".run")) {
+      BattleCommands.party({action:BattleCommands.Run});
       console.log("run");
     }
   }
@@ -40,9 +45,9 @@ var BattleMenuCursor = (function() {
     columnIndex = columnNum < 0 ? numColumns - 1 : columnNum % numColumns;
     var $column = $container.find(".column").eq(columnIndex);
 
-    var numMessages = $column.find(".message").size();
+    var numMessages = $column.find(".text").size();
     messageIndex = messageNum < 0 ? numMessages - 1 : messageNum % numMessages;
-    var $message = $column.find(".message").eq(messageIndex);
+    var $message = $column.find(".text").eq(messageIndex);
     
     return $message;
   };

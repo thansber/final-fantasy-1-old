@@ -4,7 +4,29 @@ var Util = (function() {
     return parseInt(s.replace("px", ""));
   };
   
+  var getCssClass = function($elem, where) {
+    
+    var cssClasses = $elem.attr("class").split(" ");
+    
+    var start = -1, end = -1, index = -1;
+    if (typeof where === "string") {
+      if (where == "last") {
+        return cssClasses[cssClasses.length - 1];
+      } else if (where.indexOf("-") > -1) {
+        var indeces = where.split("-");
+        start = indeces[0];
+        end = indeces[1];
+        return cssClasses.splice(start, end);
+      } else {
+        index = parseInt(where, 10);
+      }
+    }
+    
+    return cssClasses[index];
+  };
+  
   return {
-    cssNumericValue: cssNumericValue
+    cssNumericValue : cssNumericValue
+   ,getCssClass : getCssClass
   };
 })();

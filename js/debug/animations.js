@@ -19,6 +19,10 @@ var AnimationHelper = (function() {
       jQuery.each(Party.getChars(), function(i, char) { Animation.spellEffect(char, getRandomSpell(), {autoStart:true}); });
     } else if ($target.is(".cast.spell")) {
       jQuery.each(Party.getChars(), function(i, char) { Animation.castSpell(char, getRandomSpell(), {autoStart:true}); });
+    } else if ($target.is(".window.shake")) {
+      Animation.windowShake({autoStart:true});
+    } else if ($target.is(".char.flicker")) {
+      jQuery.each(Party.getChars(), function(i, char) { Animation.charFlicker(char, {autoStart:true}); });
     }
   };
 

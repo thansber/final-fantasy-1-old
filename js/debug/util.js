@@ -16,7 +16,7 @@ var DebugHelper = (function() {
   };
   
   var loadMainView = function(helper) {
-    helper = jQuery.extend({view:"world", disableKeyListener:true}, helper);
+    helper = jQuery.extend({view:"world", disableKeyListener:false}, helper);
     $("body > .main").hide();
     $("#" + helper.view).show();
     

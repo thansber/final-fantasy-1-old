@@ -3,7 +3,7 @@
 #debug .menu a { color:blue; text-decoration:none; font-size:0.8em; padding:0.2em 1em 0.4em 0; width:9em; display:block; }
 #debug .menu a:hover { text-decoration:underline; }
 #debug .menu .selected { background-color:black; color:white; }
-#debug .menu .selected a { color:white; font-weight:bold; }
+#debug .menu .selected a { color:white; font-weight:bold; padding-left:8px; }
 #debug .menu .selected a:hover { text-decoration:none; }
 #debug section { float:left; border:1px solid black; width:65%; margin-top:1em; padding:1em; }
 

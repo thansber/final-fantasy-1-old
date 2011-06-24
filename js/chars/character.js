@@ -31,6 +31,35 @@ var Character = (function() {
     this.charIndex = -1;
   };
   
+  // This is a sub-class of Target
+  Char.prototype = Target.create();
+  
+  // --------------------------------
+  // Overridden methods (from Target)
+  // --------------------------------
+  Char.prototype.addStatus = function(status) { 
+    if (status.id == Status.Dead.id) {
+      this.hitPoints = 0;
+      for (var s in this.currentStatuses) {
+        this.currentStatuses[s] = false;
+      }
+    }
+    this.currentStatuses[status.id] = true;
+    return this; 
+  };
+  Char.prototype.getName = function() { return this.charName; };
+  Char.prototype.hasStatus = function(status) { 
+    return this.currentStatuses[status.id]; 
+  };
+  Char.prototype.isDead = function() { 
+    var d = this.hasStatus(Status.Dead); 
+    return (d == null ? false : d); 
+  };
+  Char.prototype.removeStatus = function(status) { 
+    this.currentStatuses[status.id] = false;
+    return this;
+  };
+  
   var setStats = function(currentChar, stats) {
     if (!stats) {
       return;
@@ -181,15 +210,6 @@ var Character = (function() {
     return allStatuses;
   };
   
-  Char.prototype.hasStatus = function(status) { 
-    return this.currentStatuses[status.id]; 
-  };
-  
-  Char.prototype.isDead = function() { 
-    var d = this.hasStatus(Status.Dead); 
-    return (d == null ? false : d); 
-  };
-  
   Char.prototype.isProtectedFrom = function(element) { 
     return this.resistedElements[element]; 
   };
@@ -256,21 +276,6 @@ var Character = (function() {
     }
   };
   
-  Char.prototype.addStatus = function(status) { 
-    if (status.id == Status.Dead.id) {
-      this.hitPoints = 0;
-      for (var s in this.currentStatuses) {
-        this.currentStatuses[s] = false;
-      }
-    }
-    this.currentStatuses[status.id] = true;
-    return this; 
-  };
-
-  Char.prototype.removeStatus = function(status) { 
-    this.currentStatuses[status.id] = false; 
-  };
-
   Char.prototype.protectFrom = function(element) { 
     this.resistedElements[element] = true; 
   };

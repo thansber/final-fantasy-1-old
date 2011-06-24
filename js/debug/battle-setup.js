@@ -9,41 +9,18 @@ var BattleSetupHelper = (function() {
   };
   
   var event = function($target) {
-    var background = $(".background.row .selector").val();
-    if (background.length > 0) {
-      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[background].cssClass);
-    }
-    
-    var enemies = [];
-    $(".small.row .selectors div", $debug).each(function() {
-      var enemyQty = readEnemyQty($(this));
-      if (enemyQty) {
-        enemies.push(enemyQty);
-      }
-    });
-    
-    $(".large.row .selectors div", $debug).each(function() {
-      var enemyQty = readEnemyQty($(this));
-      if (enemyQty) {
-        enemies.push(enemyQty);
-      }
-    });
-    
-    var fiendQty = readEnemyQty($(".fiend.row"));
-    if (fiendQty) {
-      enemies.push(fiendQty);
-    }
-    
-    Battle.setup({enemies:enemies});
+    if ($target.is(".setup")) { setupBattle(); }
+    else if ($target.is(".commands")) { generateCommands(); }
   };
   
-  var readEnemyQty = function($parent) {
-    var enemy = $(".selector", $parent).val();
-    var qty = $(".qty", $parent).val();
-    if (enemy.length > 0 && qty.length > 0) {
-      return {name:enemy, qty:parseInt(qty)};
-    }
-    return null;
+  var generateCommands = function() {
+    BattleCommands.generateEnemyCommands();
+  };
+  
+  var getMonstersBySize = function(size) {
+    return jQuery.map(Monster.All, function(monster) {
+      return monster.size == size ? monster.name : null;
+    }).sort(sortByNameIgnoreCase);
   };
   
   var initializeBackgroundSelector = function() {
@@ -74,10 +51,42 @@ var BattleSetupHelper = (function() {
     jQuery.each(fiends, function(i, name) { $fiendSelectors.append($("<option/>", {value:name, text:name})); });
   };
   
-  var getMonstersBySize = function(size) {
-    return jQuery.map(Monster.All, function(monster) {
-      return monster.size == size ? monster.name : null;
-    }).sort(sortByNameIgnoreCase);
+  var readEnemyQty = function($parent) {
+    var enemy = $(".selector", $parent).val();
+    var qty = $(".qty", $parent).val();
+    if (enemy.length > 0 && qty.length > 0) {
+      return {name:enemy, qty:parseInt(qty)};
+    }
+    return null;
+  };
+  
+  var setupBattle = function() {
+    var background = $(".background.row .selector").val();
+    if (background.length > 0) {
+      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[background].cssClass);
+    }
+    
+    var enemies = [];
+    $(".small.row .selectors div", $debug).each(function() {
+      var enemyQty = readEnemyQty($(this));
+      if (enemyQty) {
+        enemies.push(enemyQty);
+      }
+    });
+    
+    $(".large.row .selectors div", $debug).each(function() {
+      var enemyQty = readEnemyQty($(this));
+      if (enemyQty) {
+        enemies.push(enemyQty);
+      }
+    });
+    
+    var fiendQty = readEnemyQty($(".fiend.row"));
+    if (fiendQty) {
+      enemies.push(fiendQty);
+    }
+    
+    Battle.setup({enemies:enemies});
   };
   
   var sortByNameIgnoreCase = function(a, b) {

@@ -35,5 +35,5 @@ $(document).ready(function() {
   $("#debug .animations button").click(function(event) { AnimationHelper.event($(event.target)); });
   $("#debug .battleMessages button").click(function(event) { BattleMessageHelper.event($(event.target)); });
   
-  $("#debug .menu a.enemiesSplash").click();  
+  $("#debug .menu a.battleSetup").click();  
 });

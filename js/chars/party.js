@@ -41,7 +41,7 @@ var Party = (function() {
   };
   
   var getChar = function(index) {
-    return chars[i];
+    return chars[index];
   };
   
   var getChars = function() {

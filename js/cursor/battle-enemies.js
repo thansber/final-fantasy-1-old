@@ -33,13 +33,15 @@ var BattleEnemyCursor = (function() {
     
     if ($cursor) { 
       // If the cursor is on a single enemy in a column, pressing left should go to the middle enemy, not the top
-      if ($cursor.parent().is(".single") && enemyIndex == 0) {
+      // but only if there are more than 1 enemy (i.e. multiple columns)
+      if (numEnemies > 1 && $cursor.parent().is(".single") && enemyIndex == 0) {
         enemyIndex = 1;
       }
 
       // If the cursor is moving left from the small to large and is on the last enemy, go to the bottom large enemy
+      // unless there is only 1 large enemy
       if ($cursor.parent().is(".mixed.small") && enemyNum > 1 && enemyIndex == 0 && columnIndex == 0) {
-        enemyIndex = 1;
+        enemyIndex = numEnemies - 1;
       }
     }
     var $enemy = $enemies.eq(enemyIndex);
@@ -53,11 +55,20 @@ var BattleEnemyCursor = (function() {
     $cursor.append(Cursor.createCursor());
   };
   
+  var selectEnemyAsTarget = function() {
+    var monsterCss = Util.getCssClass($cursor, "last");
+    var monster = Monster.lookupByCss(monsterCss);
+    var $enemies = $cursor.closest(".enemies").find("." + monsterCss);
+    var monsterIndex = $enemies.index($cursor);
+  
+    BattleCommands.party({source:Party.getChar(BattleCommands.getCharIndex()), target:{name:monster.name, index:monsterIndex}});
+  };
+  
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
   var keyPressChange = function(key, isPressed) {
-    if (!isPressed) { 
+    if (!isPressed) {
       return false; 
     }
     switch (key) {
@@ -75,7 +86,15 @@ var BattleEnemyCursor = (function() {
         return false;
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
-        //executeCommand($cursor);
+        selectEnemyAsTarget();
+        Battle.moveCurrentCharBackwardAndNextCharForward();
+        BattleCommands.changeCharIndex(1);
+        clearCursor();
+        if (BattleCommands.isAllPartyCommandsEntered()) {
+          BattleCommands.generateEnemyCommands();
+        } else {
+          KeyPressNotifier.setListener(BattleMenuCursor);
+        }
         return false;
       case KeyPressNotifier.Esc:
         clearCursor();

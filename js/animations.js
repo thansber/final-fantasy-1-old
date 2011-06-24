@@ -4,10 +4,12 @@ var Animation = (function() {
     Attack : "attack"
    ,BattleWalk : "walkInBattle"
    ,CastSpell : "castSpell"
+   ,CharFlicker : "charFlicker"
    ,SlideChar : "slideChar"
    ,SpellEffect : "spellEffect"
    ,ShowSplash : "showSplash"
    ,SwingWeapon : "swingWeapon"
+   ,WindowShake : "windowShake"
   };
   
   var CHAR_AT_REST_CLASSES = ["critical"];
@@ -31,6 +33,13 @@ var Animation = (function() {
   
   var delay = function(q, delayTime) {
     q.theQueue.delay(delayTime, q.queueName);
+  };
+  
+  var moveBattleWindow = function($battle, opt, left, top) {
+    $battle.animate({
+      marginLeft : "-=" + (left * opt.numPixels) + "px"
+     ,marginTop : "-=" + (top * opt.numPixels) + "px"
+    }, opt.speed);
   };
   
   var start = function(q) {
@@ -65,6 +74,29 @@ var Animation = (function() {
     slideChar(char, {autoStart:true, callback:casting});
   };
     
+  var charFlicker = function(char, opt) {
+    var settings = jQuery.extend({}, {numAnimations:3, flickerPause:60, initialPause:200, autoStart:false, callback:null, $char:null}, opt);
+    var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
+    var q = createQueue(Queues.CharFlicker);
+    
+    delay(q, settings.initialPause);
+    for (var i = 0; i < settings.numAnimations; i++) {
+      addToQueue(q, function() { $char.animate({opacity:0}, 0); });
+      delay(q, settings.flickerPause);
+      addToQueue(q, function() { $char.animate({opacity:1}, 0); });
+      delay(q, settings.flickerPause);
+    }
+    delay(q, settings.initialPause);
+    
+    addToQueue(q, settings.callback);
+    
+    if (settings.autoStart) {
+      start(q);
+    }
+    
+    return q;
+  };
+  
   var splash = function($enemy, splashColors, opt) {
     var settings = jQuery.extend({}, {pause:100, autoStart:false, callback:null}, opt);
     if (!settings.numAnimations) {
@@ -204,16 +236,37 @@ var Animation = (function() {
     slideChar(char, opt);
   };
   
-  return {
-    attack: attack
-   ,castSpell: castSpell
-   ,slideChar: slideChar
-   ,spellEffect: spellEffect
-   ,splash: splash
-   ,swingWeapon: swingWeapon
-   ,walkInBattle: walkInBattle
-   ,walkAndMoveInBattle: walkAndMoveInBattle
+  var windowShake = function(opt) {
+    var settings = jQuery.extend({}, {numPixels:3, speed:30, pause:50, autoStart:false, callback:null}, opt);
+    var $battle = $("#battle");
+    var q = createQueue(Queues.WindowShake);
     
-   ,Queues: Queues
+    addToQueue(q, function() { moveBattleWindow($battle, settings, RNG.randomUpTo(1, 0), 1); });
+    delay(q, settings.pause);
+    addToQueue(q, function() { moveBattleWindow($battle, settings, RNG.randomUpTo(1, -1), RNG.randomUpTo(1, 0)); });
+    delay(q, settings.pause);
+    addToQueue(q, function() { $battle.animate({marginLeft:0, marginTop:0}, 0); });
+    addToQueue(q, settings.callback);
+    
+    if (settings.autoStart) {
+      start(q);
+    }
+    
+    return q;
+  };
+  
+  return {
+    attack : attack
+   ,castSpell : castSpell
+   ,charFlicker : charFlicker
+   ,slideChar : slideChar
+   ,spellEffect : spellEffect
+   ,splash : splash
+   ,swingWeapon : swingWeapon
+   ,walkInBattle : walkInBattle
+   ,walkAndMoveInBattle : walkAndMoveInBattle
+   ,windowShake : windowShake
+    
+   ,Queues : Queues
   };
 })();

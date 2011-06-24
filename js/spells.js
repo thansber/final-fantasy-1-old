@@ -7,6 +7,7 @@ var Spell = (function() {
       apply : function(spell, caster, target) { 
         spell.applyToTarget(caster, target);   
       }
+     ,id:"single"
     }
    ,All:{
      apply : function(spell, caster, targets) {
@@ -22,11 +23,13 @@ var Spell = (function() {
          }
        });
      }
+    ,id:"all"
    }
    ,Self:{
      apply : function(spell, caster) {
        spell.applyToTarget(caster, caster);
      }
+    ,id:"self"
    }
   };
   
@@ -278,6 +281,9 @@ var Spell = (function() {
   
   Spell.prototype.cast = function(source, target) { this.targetType.apply(this, source, target); }
   Spell.prototype.applyToTarget = function(caster, target) { this.spellType.apply(this, caster, target); };
+  Spell.prototype.isSingleTarget = function() { return this.targetType.id == "single"; };
+  Spell.prototype.isAllTarget = function() { return this.targetType.id == "all"; };
+  Spell.prototype.isSelfTarget = function() { return this.targetType.id == "self"; };
   
   var create = function(opt) {
     return new Spell(opt);

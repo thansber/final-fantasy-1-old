@@ -3,11 +3,12 @@ var Battle = (function() {
   var $battle = null;
   var $party = null;
   var $stats = null;
-  var ordinals = ["first", "second", "third", "fourth"];
+
+  var enemies = {};
   
   var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0, chaos:0}};
   var ENEMIES_PER_COLUMN = {small:3, large:2, fiend:1};
-  
+  var ORDINALS = ["first", "second", "third", "fourth"];
   var CHAR_ANIMATION_CLASSES = ["swing", "forward", "back", "arms", "up"];
   
   // One-time initialization
@@ -28,6 +29,13 @@ var Battle = (function() {
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
+  var addEnemy = function(monster) {
+    if (!enemies[monster.name]) {
+      enemies[monster.name] = [];
+    }
+    enemies[monster.name].push(Monster.createForBattle(monster));
+  };
+  
   var calculateEnemySizeCounts = function(enemies) {
     var sizeCounts = {chaos:{enemies:[]}, fiend:{enemies:[]}, large:{enemies:[]}, small:{enemies:[]}};
     jQuery.each(enemies, function(index, enemyObj) {
@@ -40,7 +48,7 @@ var Battle = (function() {
   };
 
   var createCharStatsUI = function(char) {
-    var $charStats = $("<div/>").addClass("charStats").addClass(ordinals[char.charIndex]);
+    var $charStats = $("<div/>").addClass("charStats").addClass(ORDINALS[char.charIndex]);
     var $border = $("<div/>").addClass("border");
     var $name = $("<div/>").addClass("name").append(Message.create(char.charName));
     var $hpLabel = $("<label/>").addClass("hp").append(Message.create("HP"));
@@ -91,16 +99,21 @@ var Battle = (function() {
   
   var populateEnemyList = function(enemies) {
     var $enemyList = $(".enemy.list", $battle);
+    $enemyList.empty();
     jQuery.each(enemies, function(i, enemy) {
       $enemyList.append(Message.create(enemy.name));
     });
   };
   
-  var setupEnemies = function(enemies) {
-    var sizeCounts = calculateEnemySizeCounts(enemies);
+  var setupEnemies = function(enemyQuantities) {
+    if (!enemyQuantities || jQuery.isEmptyObject(enemyQuantities)) {
+      return false;
+    }
+    var sizeCounts = calculateEnemySizeCounts(enemyQuantities);
     if (!isSetupValid(sizeCounts)) {
       return false;
     }
+    
     
     var $enemies = $(".enemies", $battle); 
     var $column = null;
@@ -121,7 +134,9 @@ var Battle = (function() {
           $enemies.append($column);
         }
         
-        $column.append(createEnemyUI(Monster.lookup(name)));
+        var monster = Monster.lookup(name);
+        addEnemy(monster);
+        $column.append(createEnemyUI(monster));
       });
       
       if (size == "small" && enemiesBySize.length % ENEMIES_PER_COLUMN[size] == 1) {
@@ -129,7 +144,7 @@ var Battle = (function() {
       }
     }
     
-    populateEnemyList(enemies);
+    populateEnemyList(enemyQuantities);
     //console.log(jQuery.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
   };
   
@@ -168,7 +183,30 @@ var Battle = (function() {
   };
   
   var getCharUI = function(char) {
+    if (!char) {
+      return null;
+    }
     return $party.find(".char").eq(char.charIndex);
+  };
+  
+  var lookupEnemy = function(name, index) {
+    var enemiesByName = enemies[name];
+    if (enemiesByName) {
+      return enemiesByName[index];
+    }
+    return null;
+  };
+  
+  var moveCurrentCharBackwardAndNextCharForward = function() {
+    var char = Party.getChar(BattleCommands.getCharIndex());
+    if (char) {
+      var nextChar = Party.getChar(BattleCommands.getCharIndex() + 1);
+      var callback = null;
+      if (nextChar) {
+        callback = function() { Animation.walkAndMoveInBattle(nextChar); };
+      }
+      Animation.walkAndMoveInBattle(char, {direction:"backward", callback:callback});
+    }
   };
   
   var outputRoundResults = function(results) {
@@ -205,7 +243,16 @@ var Battle = (function() {
     var enemies = (opt && opt.enemies) || {};
     setupEnemies(enemies);
     setupParty(Party.getChars());
+    
+    // Clear all commands
+    BattleCommands.init();
+    // Start the cursor listener for the first character's action
     BattleMenuCursor.startListening();
+    // First character walks forward to indicate they are choosing an action
+    var firstChar = Party.getChar(0);
+    if (firstChar) {
+      Animation.walkAndMoveInBattle(firstChar);
+    }
   };
   
   return {
@@ -213,7 +260,10 @@ var Battle = (function() {
    ,createCharUI: createCharUI
    ,createEnemyUI: createEnemyUI
    ,createSpellUI: createSpellUI
+   ,getAllEnemies: function() { return enemies; }
    ,getCharUI: getCharUI
+   ,lookupEnemy: lookupEnemy
+   ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
    ,outputRoundResults: outputRoundResults
    ,resetCharUI: resetCharUI
    ,setup: setup
