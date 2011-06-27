@@ -34,12 +34,12 @@ var Monster = (function() {
     this.types = jQuery.merge([], jQuery.isArray(opt.type) ? opt.type : jQuery.makeArray(opt.type));
     this.hp = stats.hp;
     this.maxHp = stats.hp;
-    this.attack = stats.atk;
+    this.strength = stats.atk;
     this.accuracy = stats.acc;
-    this.numHits = stats.hits;
+    this.numAttacks = stats.hits;
     this.criticalRate = stats.crt;
-    this.defense = stats.def;
-    this.evasion = stats.eva;
+    this.defence = stats.def;
+    this.evade = stats.eva;
     this.magicDef = stats.md;
     this.morale = stats.mor;
     
@@ -74,7 +74,7 @@ var Monster = (function() {
     this.index = ++index;
     
     ALL[this.name] = this;
-    ALL_BY_CSS[this.cssClass] = this;
+    ALL_BY_CSS[Util.getCssClass(this.cssClass, "last")] = this;
   };
   
   MonsterBase.prototype = Target.create();
@@ -92,32 +92,42 @@ var Monster = (function() {
     this.currentStatuses[status.id] = true;
     return this; 
   };
-  MonsterBase.prototype.getName = function() { return this.name; };
-  MonsterBase.prototype.hasStatus = function(status) { 
-    return this.currentStatuses[status.id]; 
+  MonsterBase.prototype.applyDamage = function(dmg) {
+    this.hp -= dmg;
+    if (this.hp <= 0) {
+      this.addStatus(Status.Dead);
+    } else if (this.hp > this.maxHp) {
+      this.hp = this.maxHp;
+    }
   };
+  MonsterBase.prototype.attack = function() { return this.strength; };
+  MonsterBase.prototype.attacksWithElement = function(element) { return this.attackElement == element; };
+  MonsterBase.prototype.critical = function() { return this.criticalRate; };
+  MonsterBase.prototype.defense = function() { return this.defence; };
+  MonsterBase.prototype.evasion = function() { return this.evade; };
+  MonsterBase.prototype.getName = function() { return this.name; };
+  MonsterBase.prototype.getStatusAttack = function() { return this.attackStatus; };
+  MonsterBase.prototype.hasStatus = function(status) { return this.currentStatuses[status.id]; };
+  MonsterBase.prototype.hitPercent = function() { return this.accuracy; };
   MonsterBase.prototype.isDead = function() { 
     var d = this.hasStatus(Status.Dead); 
     return (d == null ? false : d); 
   };
+  MonsterBase.prototype.isMonsterType = function(type) { return (jQuery.inArray(type, this.types) > -1); };
+  MonsterBase.prototype.isProtectedFrom = function(element) { return this.elementsResisted[element]; };
+  MonsterBase.prototype.isStrongAgainstMonsterType = function(type) { return false; }; 
+  MonsterBase.prototype.isWeakToElement = function(element) { return this.elementsWeakTo[element]; };
+  MonsterBase.prototype.magicDefense = function() { return this.magicDef; };
+  MonsterBase.prototype.numHits = function() { return this.numAttacks; };
   MonsterBase.prototype.removeStatus = function(status) { 
     this.currentStatuses[status.id] = false;
     return this;
   };
+    
   
-  
-  MonsterBase.prototype.isType = function(type) {
-    return (jQuery.inArray(type, this.types) > -1);
-  };
-  
-  MonsterBase.prototype.isProtectedFrom = function(element) { 
-    return this.elementsResisted[element]; 
-  };
-  
-  MonsterBase.prototype.isWeakTo = function(element) { 
-    return this.elementsWeakTo[element]; 
-  };
-  
+  // --------------------------------
+  // AI methods (determining actions)
+  // --------------------------------
   MonsterBase.prototype.determineAction = function() {
     if (this.isRunningAway()) {
       return { source:this, action:BattleCommands.Run };
@@ -176,7 +186,7 @@ var Monster = (function() {
     var target = null;
     if (spell.isSingleTarget()) {
       target = this.determineSingleTarget();
-    } else if (spell.isMultiTarget()) {
+    } else if (spell.isAllTarget()) {
       target = Party.getChars();
     } else if (spell.isSelfTarget()) {
       target = this;
@@ -200,12 +210,17 @@ var Monster = (function() {
     return Party.getChar(charIndex);
   };
   
+  MonsterBase.prototype.toString = function() { return this.getName() + " - " + this.hp + "," + this.maxHp; };
+  
+  // ----------------
+  // Creation methods
+  // ----------------
   var create = function(opt) {
     new MonsterBase(opt);
   };
   
   var createForBattle = function(monster) {
-    return jQuery.extend({}, monster);
+    return jQuery.extend(true, {}, monster);
   };
   
   return {

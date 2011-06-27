@@ -116,7 +116,7 @@ var Battle = (function() {
     
     
     var $enemies = $(".enemies", $battle); 
-    var $column = null;
+    var $column = null, numColumns = 0;
     var mixed = isMixedSize(sizeCounts);
     var restrictions = mixed ? RESTRICTIONS.mixed : RESTRICTIONS;
     
@@ -127,7 +127,7 @@ var Battle = (function() {
       var enemiesBySize = sizeCounts[s].enemies;
       jQuery.each(enemiesBySize, function(i, name) {
         if (i % ENEMIES_PER_COLUMN[size] == 0) {
-          $column = $("<div/>").addClass("column").addClass(size);
+          $column = $("<div/>").addClass("column").addClass(size).addClass(ORDINALS[numColumns++]);
           if (mixed) {
             $column.addClass("mixed");
           }
@@ -161,6 +161,17 @@ var Battle = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
+  var areAllTargetsDead = function(targets) {
+    var allDead = true;
+    jQuery.each(targets, function(i, target) {
+      if (!target.isDead()) {
+        allDead = false;
+        return false;
+      }
+    });
+    return allDead;
+  }
+  
   var createCharUI = function(char) {
     var $char = $("<p/>").addClass("char").addClass(char.currentClass.name);
     var $weapon = $("<span/>").addClass("weapon hidden").appendTo($char);
@@ -209,11 +220,31 @@ var Battle = (function() {
     }
   };
   
-  var outputRoundResults = function(results) {
+  var moveCurrentCharBackwardAndPreviousCharForward = function() {
+    var char = Party.getChar(BattleCommands.getCharIndex());
+    if (char) {
+      var prevChar = Party.getChar(BattleCommands.getCharIndex() - 1);
+      var callback = null;
+      if (prevChar) {
+        callback = function() { Animation.walkAndMoveInBattle(prevChar); };
+      }
+      Animation.walkAndMoveInBattle(char, {direction:"backward", callback:callback});
+    }
+  };
+  
+  var animateRound = function(commands) {
     hideInput();
     $(".messages", $battle).removeClass("hidden");
-    jQuery.each(results, function(i, result) {
+    jQuery.each(commands, function(i, command) {
       Message.hideAllBattleMessages();
+      
+      if (command.source) {
+        Message.source(command.source.getName());
+      }
+      if (command.target) {
+        Message.target(command.target.getName());
+      }
+      
       for (var m in result.messages) {
         var message = result.messages[m];
         if (isMessageValid(message)) {
@@ -257,6 +288,7 @@ var Battle = (function() {
   
   return {
     init: init
+   ,areAllTargetsDead: areAllTargetsDead
    ,createCharUI: createCharUI
    ,createEnemyUI: createEnemyUI
    ,createSpellUI: createSpellUI
@@ -264,7 +296,7 @@ var Battle = (function() {
    ,getCharUI: getCharUI
    ,lookupEnemy: lookupEnemy
    ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
-   ,outputRoundResults: outputRoundResults
+   ,moveCurrentCharBackwardAndPreviousCharForward: moveCurrentCharBackwardAndPreviousCharForward
    ,resetCharUI: resetCharUI
    ,setup: setup
   }  

@@ -20,6 +20,8 @@ var Equipment = (function() {
       this.hasSpell = (this.spell != null);
       this.cssClasses = opt.ui.cssClasses;
       this.splash = opt.ui.splash;
+      this.elements = jQuery.merge([], opt.elements || []);
+      this.monsterTypes = jQuery.merge([], opt.monsterTypes || []);
       ALL_WEAPONS[this.name] = this;
     };
     
@@ -42,16 +44,16 @@ var Equipment = (function() {
     new Weapon({name:"Silver[S]", ui:{cssClasses:"silver sword", splash:"turquoise"}, stats:{attack:23,hit:15,crit:5,index:17}});
     new Weapon({name:"Silver[H]", ui:{cssClasses:"silver hammer", splash:"turquoise"}, stats:{attack:12,hit:5,crit:1,index:18}});
     new Weapon({name:"Silver[A]", ui:{cssClasses:"silver axe", splash:"turquoise"}, stats:{attack:25,hit:10,crit:4,index:19}});
-    new Weapon({name:"Flame[S]", ui:{cssClasses:"flame sword", splash:"red"}, stats:{attack:26,hit:20,crit:5,index:20}});
-    new Weapon({name:"Ice[S]", ui:{cssClasses:"ice sword", splash:"blue"}, stats:{attack:29,hit:25,crit:5,index:21}});
-    new Weapon({name:"Dragon[S]", ui:{cssClasses:"dragon sword", splash:"sea green"}, stats:{attack:19,hit:15,crit:10,index:22}});
-    new Weapon({name:"Giant[S]", ui:{cssClasses:"giant sword", splash:"royal blue"}, stats:{attack:21,hit:20,crit:5,index:23}});
-    new Weapon({name:"Sun[S]", ui:{cssClasses:"sun sword", splash:"orange"}, stats:{attack:32,hit:30,crit:5,index:24}});
-    new Weapon({name:"Coral[S]", ui:{cssClasses:"coral sword", splash:"pink"}, stats:{attack:19,hit:15,crit:10,index:25}});
-    new Weapon({name:"Were[S]", ui:{cssClasses:"were sword", splash:"magenta"}, stats:{attack:18,hit:15,crit:5,index:26}});
-    new Weapon({name:"Rune[S]", ui:{cssClasses:"rune sword", splash:"purple"}, stats:{attack:18,hit:15,crit:5,index:27}});
+    new Weapon({name:"Flame[S]", ui:{cssClasses:"flame sword", splash:"red"}, stats:{attack:26,hit:20,crit:5,index:20}, elements:[Element.Fire], monsterTypes:[Monster.Types.Undead, Monster.Types.Regenerative]});
+    new Weapon({name:"Ice[S]", ui:{cssClasses:"ice sword", splash:"blue"}, stats:{attack:29,hit:25,crit:5,index:21}, elements:[Element.Ice]});
+    new Weapon({name:"Dragon[S]", ui:{cssClasses:"dragon sword", splash:"sea green"}, stats:{attack:19,hit:15,crit:10,index:22}, monsterTypes:[Monster.Types.Dragon]});
+    new Weapon({name:"Giant[S]", ui:{cssClasses:"giant sword", splash:"royal blue"}, stats:{attack:21,hit:20,crit:5,index:23}, monsterTypes:[Monster.Types.Giant]});
+    new Weapon({name:"Sun[S]", ui:{cssClasses:"sun sword", splash:"orange"}, stats:{attack:32,hit:30,crit:5,index:24}, monsterTypes:[Monster.Types.Undead]});
+    new Weapon({name:"Coral[S]", ui:{cssClasses:"coral sword", splash:"pink"}, stats:{attack:19,hit:15,crit:10,index:25}, monsterTypes:[Monster.Types.Aquatic]});
+    new Weapon({name:"Were[S]", ui:{cssClasses:"were sword", splash:"magenta"}, stats:{attack:18,hit:15,crit:5,index:26}, monsterTypes:[Monster.Types.Were]});
+    new Weapon({name:"Rune[S]", ui:{cssClasses:"rune sword", splash:"purple"}, stats:{attack:18,hit:15,crit:5,index:27}, monsterTypes:[Monster.Types.Magical, Monster.Types.Mage]});
     new Weapon({name:"Power[R]", ui:{cssClasses:"power staff", splash:"light green"}, stats:{attack:12,hit:0,crit:1,index:28}});
-    new Weapon({name:"Light[A]", ui:{cssClasses:"light axe", splash:"purple"}, stats:{attack:28,hit:15,crit:3,index:29}, special:{spell:"HRM2"}});
+    new Weapon({name:"Light[A]", ui:{cssClasses:"light axe", splash:"purple"}, stats:{attack:28,hit:15,crit:3,index:29}, special:{spell:"HRM2"}, monsterTypes:[Monster.Types.Undead]});
     new Weapon({name:"Heal[R]", ui:{cssClasses:"heal staff", splash:"blue"}, stats:{attack:6,hit:0,crit:1,index:30}, special:{spell:"HEAL"}});
     new Weapon({name:"Mage[R]", ui:{cssClasses:"mage staff", splash:"pink"}, stats:{attack:12,hit:10,crit:1,index:31}, special:{spell:"FIR2"}});
     new Weapon({name:"Defense", ui:{cssClasses:"defense", splash:"orange"}, stats:{attack:30,hit:35,crit:5,index:32}, special:{spell:"RUSE"}});
@@ -61,7 +63,7 @@ var Equipment = (function() {
     new Weapon({name:"Thor[H]", ui:{cssClasses:"thor hammer", splash:"magenta"}, stats:{attack:18,hit:15,crit:1,index:36}, special:{spell:"LIT2"}});
     new Weapon({name:"Bane[S]", ui:{cssClasses:"bane sword", splash:"royal blue"}, stats:{attack:22,hit:20,crit:10,index:37}, special:{spell:"BANE"}});
     new Weapon({name:"Katana", ui:{cssClasses:"katana", splash:"orange"}, stats:{attack:33,hit:35,crit:30,index:38}});
-    new Weapon({name:"Xcalber", ui:{cssClasses:"excalibur", splash:"gold"}, stats:{attack:45,hit:35,crit:5,index:39}});
+    new Weapon({name:"Xcalber", ui:{cssClasses:"excalibur", splash:"gold"}, stats:{attack:45,hit:35,crit:5,index:39}, elements:[Element.Status, Element.PoisonStone, Element.Time, Element.Death, Element.Fire, Element.Ice, Element.Lightning, Element.Earth], monsterTypes:[Monster.Types.Magical, Monster.Types.Dragon, Monster.Types.Giant, Monster.Types.Undead, Monster.Types.Were, Monster.Types.Aquatic, Monster.Types.Mage, Monster.Types.Regenerative]});
     new Weapon({name:"Masmune", ui:{cssClasses:"masamune", splash:"grey"}, stats:{attack:56,hit:50,crit:10,index:40}});
     
     return {

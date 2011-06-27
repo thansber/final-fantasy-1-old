@@ -719,7 +719,7 @@ Monster.create({names : {original:"LICH2", other:{origins:"Lich"}}
                ,specialAttacks : {status:Status.Paralyze, element:Element.Status}
                ,elements : {resists:[Element.Status, Element.PoisonStone, Element.Death, Element.Ice]}
                ,magic : {chance:75,order:["NUKE","STOP","ZAP!","XXXX"]}
-               ,ui: {size:"fiend",cssClass:"lich",boss:true}});
+               ,ui: {size:"fiend",cssClass:"lich lich2",boss:true}});
 Monster.create({names : {original:"KARY", other:{origins:"Marilith"}}
                ,type : [Monster.Types.Magical, Monster.Types.Mage]
                ,stats : {hp:600,atk:40,acc:63,hits:6,crt:1,def:50,eva:48,md:183,mor:255}
@@ -733,7 +733,7 @@ Monster.create({names : {original:"KARY2", other:{origins:"Marilith"}}
                ,rewards : {gold:1,exp:2000}
                ,elements : {resists:[Element.PoisonStone, Element.Fire, Element.Ice, Element.Lightning]}
                ,magic : {chance:37.5,order:["FIR3","RUB","FIR3","RUB","FIR3","STUN","FIR3","STUN"]}
-               ,ui: {size:"fiend",cssClass:"kary",boss:true}});
+               ,ui: {size:"fiend",cssClass:"kary kary2",boss:true}});
 Monster.create({names : {original:"KRAKEN", other:{origins:"Kraken"}}
                ,type : Monster.Types.Water
                ,stats : {hp:800,atk:50,acc:90,hits:8,crt:1,def:60,eva:84,md:160,mor:255}
@@ -748,7 +748,7 @@ Monster.create({names : {original:"KRAKEN2", other:{origins:"Kraken"}}
                ,elements : {resists:[Element.Fire, Element.Earth]}
                ,magic : {chance:37.5,order:["LIT2"]}
                ,skills : {chance:25,order:["INK"]}
-               ,ui: {size:"fiend",cssClass:"kraken",boss:true}});
+               ,ui: {size:"fiend",cssClass:"kraken kraken2",boss:true}});
 Monster.create({names : {original:"TIAMAT", other:{origins:"Tiamat"}}
                ,type : Monster.Types.Dragon
                ,stats : {hp:1000,atk:49,acc:80,hits:4,crt:1,def:80,eva:72,md:200,mor:255}
@@ -763,7 +763,7 @@ Monster.create({names : {original:"TIAMAT2", other:{origins:"Tiamat"}}
                ,elements : {resists:[Element.Fire, Element.Ice, Element.Lightning, Element.Earth]}
                ,magic : {chance:50,order:["BANE","ICE2","LIT2","FIR2"]}
                ,skills : {chance:50,order:["THUNDER","POISON G","BLIZZARD","BLAZE"]}
-               ,ui: {size:"fiend",cssClass:"tiamat",boss:true}});
+               ,ui: {size:"fiend",cssClass:"tiamat tiamat2",boss:true}});
 Monster.create({names : {original:"CHAOS", other:{origins:"Chaos"}}
                ,stats : {hp:2000,atk:100,acc:200,hits:2,crt:1,def:100,eva:100,md:200,mor:255}
                ,rewards : {gold:0,exp:0}

@@ -25,9 +25,10 @@
   <script type="text/javascript" src="js/battle-commands.js"></script>
   <script type="text/javascript" src="js/elements-statuses.js"></script>
   <script type="text/javascript" src="js/spells.js"></script>
-  <script type="text/javascript" src="js/equipment.js"></script>
   <script type="text/javascript" src="js/target.js"></script>
   <script type="text/javascript" src="js/monster.js"></script>
+  <script type="text/javascript" src="js/equipment.js"></script>
+  <script type="text/javascript" src="js/actions.js"></script>
   <script type="text/javascript" src="js/animations.js"></script>
   <script type="text/javascript" src="js/map/map-config.js"></script>
   <script type="text/javascript" src="js/map/map-builder.js"></script>
@@ -52,6 +53,7 @@
   <script type="text/javascript" src="js/debug/weaponAnimations.js"></script>
   <script type="text/javascript" src="js/debug/animations.js"></script>
   <script type="text/javascript" src="js/debug/battleMessages.js"></script>
+  <script type="text/javascript" src="js/debug/actions.js"></script>
   <script type="text/javascript" src="js/debug/util.js"></script>
   <script type="text/javascript" src="js/init.js"></script>
 </head>
@@ -108,6 +110,7 @@
     <li class="curve tl bl big"><a href="#" class="weaponAnimations">Weapon Animations</a></li>
     <li class="curve tl bl big"><a href="#" class="animations">Animations</a></li>
     <li class="curve tl bl big"><a href="#" class="battleMessages">Battle Messages</a></li>
+    <li class="curve tl bl big"><a href="#" class="actions">Actions</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -378,6 +381,13 @@
       <p><label>Damage</label><input type="text" class="damage message" /></p>
       <p><label>Desc</label><input type="text" class="desc message" /></p>
       <button class="show messages action">Show battle messages</button>
+    </div>
+  </section>
+  
+  <section class="actions curve all">
+    <div class="container">
+      <button class="action char attack">Character attack</button>
+      <button class="action monster attack">Monster attack</button>
     </div>
   </section>
   

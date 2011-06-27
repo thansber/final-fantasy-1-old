@@ -34,6 +34,7 @@ $(document).ready(function() {
   $("#debug .weaponAnimations button").click(function(event) { WeaponAnimationHelper.event($(event.target)); });
   $("#debug .animations button").click(function(event) { AnimationHelper.event($(event.target)); });
   $("#debug .battleMessages button").click(function(event) { BattleMessageHelper.event($(event.target)); });
+  $("#debug .actions button").click(function(event) { ActionHelper.event($(event.target)); });
   
-  $("#debug .menu a.battleSetup").click();  
+  $("#debug .menu a.actions").click();  
 });

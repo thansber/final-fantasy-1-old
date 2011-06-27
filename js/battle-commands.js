@@ -15,10 +15,11 @@ var BattleCommands = (function() {
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
-  var commandsToString = function(commands, isParty) {
+  var commandsToString = function(commands) {
     var s = "", NEWLINE = "\r\n";
     
     jQuery.each(commands, function(i, command) {
+      var isParty = command.type == "party";
       s += command.source.getName();
       switch (command.action) {
         case CommandTypes.Attack:
@@ -65,11 +66,39 @@ var BattleCommands = (function() {
   var changeCharIndex = function(amount) {
     charIndex += amount;
   };
+  
+  var clearPartyCommand = function() {
+    partyCommands[charIndex] = null;
+  };
 
   var executeCommands = function() {
-    // need to combine party + enemy and randomize;
-    console.log(commandsToString(partyCommands, true));
-    console.log(commandsToString(enemyCommands, false));
+    var all = jQuery.merge([], partyCommands);
+    jQuery.merge(all, enemyCommands);
+    RNG.shuffle(all);
+    
+    console.log(commandsToString(all));
+    
+    jQuery.each(all, function(i, command) {
+      if (Battle.areAllTargetsDead(Battle.getAllEnemies())) {
+        // TODO: handle victory
+        console.log("party wins - victory animation");
+        return false;
+      }
+      
+      if (Battle.areAllTargetsDead(Party.getChars())) {
+        // TODO: handle game over
+        console.log("party is dead - lose");
+        return false;
+      }
+      
+      if (command.source.isDead()) {
+        return true;
+      }
+      
+      // TODO: Check for various incapicated statuses, check for healing
+      
+      
+    });
   };
   
   var getCharIndex = function() {
@@ -81,8 +110,8 @@ var BattleCommands = (function() {
     for (var n in enemiesByName) {
       var enemies = enemiesByName[n];
       jQuery.each(enemies, function(i, enemy) {
-        // Need to check for various incapacitating statuses
-        enemyCommands.push(enemy.determineAction());
+        // TODO: Need to check for various incapacitating statuses
+        enemyCommands.push(jQuery.extend(true, {type:"enemy"}, enemy.determineAction()));
       });
     }
     
@@ -102,7 +131,7 @@ var BattleCommands = (function() {
   var party = function(opt) {
     var command = partyCommands[charIndex];
     if (!command) {
-      command = {};
+      command = {type:"party"};
     }
     
     if (opt.source) {
@@ -122,7 +151,8 @@ var BattleCommands = (function() {
   };
   
   return {
-    changeCharIndex : changeCharIndex
+    clearPartyCommand : clearPartyCommand
+   ,changeCharIndex : changeCharIndex
    ,generateEnemyCommands : generateEnemyCommands
    ,getCharIndex : getCharIndex
    ,init : init

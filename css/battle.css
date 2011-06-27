@@ -8,7 +8,7 @@
 #battle .enemies { float:left; padding:1px 4px; height:272px; }
 #battle .enemies .column { float:left; }
 #battle .enemies .column.small.single { margin-top:66px; }
-#battle .enemies .column.large:last-child { float:right; }
+#battle .enemies .column.large.second { float:right; }
 #battle .enemies .column.fiend { position:relative; margin-top:32px; margin-left:40px; }
 
 #battle .party { width:96px; height:272px; float:left; margin-left:3px; padding:1px 4px; }

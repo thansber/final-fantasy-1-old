@@ -47,14 +47,43 @@ var Character = (function() {
     this.currentStatuses[status.id] = true;
     return this; 
   };
-  Char.prototype.getName = function() { return this.charName; };
-  Char.prototype.hasStatus = function(status) { 
-    return this.currentStatuses[status.id]; 
+  Char.prototype.applyDamage = function(dmg) {
+    this.hitPoints -= dmg;
+    if (this.hitPoints <= 0) {
+      this.addStatus(Status.Dead);
+    } else if (this.hitPoints > this.maxHitPoints) {
+      this.hitPoints = this.maxHitPoints;
+    }
   };
+  Char.prototype.attack = function() { return this.currentClass.attack(this); };
+  Char.prototype.attacksWithElement = function(element) { 
+    if (this.equippedWeapon) {
+      return jQuery.inArray(element, this.equippedWeapon.elements) > -1;
+    }
+    return false;
+  };
+  Char.prototype.critical = function() { return this.currentClass.critical(this); };
+  Char.prototype.defense = function() { return this.currentClass.defense(this); };
+  Char.prototype.evasion = function() { return this.currentClass.evasion(this); };
+  Char.prototype.getName = function() { return this.charName; };
+  Char.prototype.getStatusAttack = function() { return null; };
+  Char.prototype.hasStatus = function(status) { return this.currentStatuses[status.id]; };
+  Char.prototype.hitPercent = function() { return this.currentClass.hitPercent(this); };
   Char.prototype.isDead = function() { 
     var d = this.hasStatus(Status.Dead); 
     return (d == null ? false : d); 
   };
+  Char.prototype.isMonsterType = function(type) { return false; };
+  Char.prototype.isProtectedFrom = function(element) { return this.resistedElements[element]; };
+  Char.prototype.isStrongAgainstMonsterType = function(type) { 
+    if (this.equippedWeapon) {
+      return jQuery.inArray(type, this.equippedWeapon.monsterTypes) > -1;
+    }
+    return false;
+  };
+  Char.prototype.isWeakToElement = function(element) { return this.weakElements[element]; };
+  Char.prototype.magicDefense = function() { return this.magicDef; };
+  Char.prototype.numHits = function() { return this.currentClass.numHits(this); };
   Char.prototype.removeStatus = function(status) { 
     this.currentStatuses[status.id] = false;
     return this;
@@ -153,6 +182,7 @@ var Character = (function() {
   
   Char.prototype.unequipWeapon = function() {
     this.equippedWeapon = null;
+    return this;
   };
   
   Char.prototype.addExperience = function(exp) {
@@ -168,30 +198,6 @@ var Character = (function() {
   // --------------
   // GETTER methods
   // --------------
-  Char.prototype.attack = function() { 
-    return this.currentClass.attack(this); 
-  };
-  
-  Char.prototype.defense = function() { 
-    return this.currentClass.defense(this); 
-  };
-  
-  Char.prototype.hitPercent = function() { 
-    return this.currentClass.hitPercent(this); 
-  };
-  
-  Char.prototype.evasion = function() { 
-    return this.currentClass.evasion(this); 
-  };
-  
-  Char.prototype.numHits = function() { 
-    return this.currentClass.numHits(this); 
-  };
-  
-  Char.prototype.critical = function() { 
-    return this.currentClass.critical(this); 
-  };
-  
   Char.prototype.armorWeight = function() {
     var totalWeight = 0;
     jQuery(this.equippedArmor).each(function() { 
@@ -210,10 +216,6 @@ var Character = (function() {
     return allStatuses;
   };
   
-  Char.prototype.isProtectedFrom = function(element) { 
-    return this.resistedElements[element]; 
-  };
-  
   Char.prototype.elementsProtectedFrom = function() { 
     var protectedFrom = [];
     for (var e in this.resistedElements) {
@@ -222,10 +224,6 @@ var Character = (function() {
       }
     }
     return protectedFrom;
-  };
-  
-  Char.prototype.isWeakTo = function(element) { 
-    return this.weakElements[element]; 
   };
   
   Char.prototype.canCastSpell = function(spell) {
@@ -267,15 +265,6 @@ var Character = (function() {
   // -----------------------------------------------
   // Methods that change the state of this character
   // -----------------------------------------------
-  Char.prototype.applyDamage = function(dmg) {
-    this.hitPoints -= dmg;
-    if (this.hitPoints <= 0) {
-      this.addStatus(Status.Dead);
-    } else if (this.hitPoints > this.maxHitPoints) {
-      this.hitPoints = this.maxHitPoints;
-    }
-  };
-  
   Char.prototype.protectFrom = function(element) { 
     this.resistedElements[element] = true; 
   };
@@ -318,7 +307,8 @@ var Character = (function() {
   // ----------------------------------------
   // Textual representation methods (toString)
   // ----------------------------------------
-  Char.prototype.toString = function() {
+  Char.prototype.toString = function() { return this.getName() + " - " + this.hitPoints + "," + this.maxHitPoints; };
+  Char.prototype.toStringFull = function() {
     var s = "";
     s += this.charName + " - " + this.currentClass.name + ", ";
     s += this.hitPoints + "/" + this.maxHitPoints + " HP\n";

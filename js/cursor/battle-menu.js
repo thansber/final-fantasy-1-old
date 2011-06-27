@@ -21,24 +21,23 @@ var BattleMenuCursor = (function() {
     }
   };
   
+  var drink = function() {
+    BattleCommands.party({action:BattleCommands.Drink});
+    console.log("drink");
+  };
+  
   var executeCommand = function($command) {
-    if ($command.is(".fight")) {
-      BattleCommands.party({action:BattleCommands.Attack});
-      BattleEnemyCursor.startListening();
-    } else if ($command.is(".magic")) {
-      BattleCommands.party({action:BattleCommands.CastSpell});
-      console.log("magic");
-    } else if ($command.is(".drink")) {
-      BattleCommands.party({action:BattleCommands.Drink});
-      console.log("drink");
-    } else if ($command.is(".item")) {
-      BattleCommands.party({action:BattleCommands.UseItem});
-      console.log("item");
-    } else if ($command.is(".run")) {
-      BattleCommands.party({action:BattleCommands.Run});
-      console.log("run");
-    }
-  }
+    if ($command.is(".fight")) { fight(); } 
+    else if ($command.is(".magic")) { magic(); }
+    else if ($command.is(".drink")) { drink(); } 
+    else if ($command.is(".item")) { item(); } 
+    else if ($command.is(".run")) { run(); }
+  };
+  
+  var fight = function() { 
+    BattleCommands.party({action:BattleCommands.Attack});
+    BattleEnemyCursor.startListening();
+  };
   
   var getColumnMessage = function(columnNum, messageNum) {
     var numColumns = $container.find(".column").size();
@@ -52,10 +51,25 @@ var BattleMenuCursor = (function() {
     return $message;
   };
   
+  var item = function() {
+    BattleCommands.party({action:BattleCommands.UseItem});
+    console.log("item");
+  };
+  
+  var magic = function() {
+    BattleCommands.party({action:BattleCommands.CastSpell});
+    console.log("magic");
+  };
+  
   var moveCursor = function(columnNum, messageNum) {
     clearCursor();
     $cursor = getColumnMessage(columnNum, messageNum);
     $cursor.append(Cursor.createCursor());
+  };
+  
+  var run = function() {
+    BattleCommands.party({action:BattleCommands.Run});
+    console.log("run");
   };
   
   /* ============== */
@@ -81,6 +95,29 @@ var BattleMenuCursor = (function() {
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
         executeCommand($cursor);
+        return false;
+      case KeyPressNotifier.Esc:
+        BattleCommands.clearPartyCommand();
+        Battle.moveCurrentCharBackwardAndPreviousCharForward();
+        BattleCommands.changeCharIndex(-1);
+        return false;
+      case KeyPressNotifier.F:
+        fight();
+        return false;
+      case KeyPressNotifier.M:
+        magic();
+        return false;
+      case KeyPressNotifier.D:
+        drink();
+        return false;
+      case KeyPressNotifier.I:
+        item();
+        return false;
+      case KeyPressNotifier.R:
+        run();
+        return false;
+      default:
+        console.log(key);
     }
   };
   
@@ -93,7 +130,7 @@ var BattleMenuCursor = (function() {
     init: init
    ,keyPressChange: keyPressChange
    ,startListening: startListening
-   ,registeredKeys: [KeyPressNotifier.Enter, KeyPressNotifier.Space]
+   ,registeredKeys: [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc]
   }
 })();
   

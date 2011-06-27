@@ -4,9 +4,14 @@ var Util = (function() {
     return parseInt(s.replace("px", ""));
   };
   
-  var getCssClass = function($elem, where) {
+  var getCssClass = function(source, where) {
     
-    var cssClasses = $elem.attr("class").split(" ");
+    var cssClasses = null;
+    if (typeof source === "string") {
+      cssClasses = source.split(" ");
+    } else {
+      cssClasses = source.attr("class").split(" ");
+    }
     
     var start = -1, end = -1, index = -1;
     if (typeof where === "string") {
