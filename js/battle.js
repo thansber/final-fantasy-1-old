@@ -60,10 +60,6 @@ var Battle = (function() {
     return $charStats;
   };
   
-  var hideInput = function() {
-    $(".input", $battle).hide();
-  };
-  
   var isMixedSize = function(sizeCounts) {
     var numSizes = 0;
     if (sizeCounts.small.enemies.length > 0) { numSizes++; } 
@@ -161,7 +157,7 @@ var Battle = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var areAllTargetsDead = function(targets) {
+  var areAllCharactersDead = function(targets) {
     var allDead = true;
     jQuery.each(targets, function(i, target) {
       if (!target.isDead()) {
@@ -170,7 +166,21 @@ var Battle = (function() {
       }
     });
     return allDead;
-  }
+  };
+  
+  var areAllEnemiesDead = function(targets) {
+    var allDead = true;
+    for (var e in targets) {
+      var enemiesByName = targets[e];
+      jQuery.each(enemiesByName, function(i, target) {
+        if (!target.isDead()) {
+          allDead = false;
+          return false;
+        }
+      });
+    }
+    return allDead;
+  };
   
   var createCharUI = function(char) {
     var $char = $("<p/>").addClass("char").addClass(char.currentClass.name);
@@ -198,6 +208,11 @@ var Battle = (function() {
       return null;
     }
     return $party.find(".char").eq(char.charIndex);
+  };
+  
+  var inputMessageToggler = function(roundStarting) {
+    $(".input", $battle).toggle(!roundStarting);
+    $(".messages", $battle).toggleClass("hidden", !roundStarting);
   };
   
   var lookupEnemy = function(name, index) {
@@ -232,34 +247,6 @@ var Battle = (function() {
     }
   };
   
-  var animateRound = function(commands) {
-    hideInput();
-    $(".messages", $battle).removeClass("hidden");
-    jQuery.each(commands, function(i, command) {
-      Message.hideAllBattleMessages();
-      
-      if (command.source) {
-        Message.source(command.source.getName());
-      }
-      if (command.target) {
-        Message.target(command.target.getName());
-      }
-      
-      for (var m in result.messages) {
-        var message = result.messages[m];
-        if (isMessageValid(message)) {
-          switch (m) {
-            case "source": Message.source(message); break;
-            case "target": Message.target(message); break;
-            case "action": Message.action(message); break;
-            case "damage": Message.damage(message); break;
-            case "desc": Message.desc(message); break;
-          }
-        }        
-      }
-    });
-  };
-  
   var resetCharUI = function(char, $char) {
     $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
     if (char.isCritical()) { $char.addClass("critical"); }
@@ -271,9 +258,11 @@ var Battle = (function() {
   // Input definition:
   // - enemies: array of {name,qty}
   var setup = function(opt) {
-    var enemies = (opt && opt.enemies) || {};
-    setupEnemies(enemies);
+    var battleEnemies = (opt && opt.enemies) || {};
+    setupEnemies(battleEnemies);
     setupParty(Party.getChars());
+    
+    inputMessageToggler(false);
     
     // Clear all commands
     BattleCommands.init();
@@ -288,12 +277,14 @@ var Battle = (function() {
   
   return {
     init: init
-   ,areAllTargetsDead: areAllTargetsDead
+   ,areAllCharactersDead: areAllCharactersDead
+   ,areAllEnemiesDead: areAllEnemiesDead
    ,createCharUI: createCharUI
    ,createEnemyUI: createEnemyUI
    ,createSpellUI: createSpellUI
    ,getAllEnemies: function() { return enemies; }
    ,getCharUI: getCharUI
+   ,inputMessageToggler: inputMessageToggler
    ,lookupEnemy: lookupEnemy
    ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
    ,moveCurrentCharBackwardAndPreviousCharForward: moveCurrentCharBackwardAndPreviousCharForward

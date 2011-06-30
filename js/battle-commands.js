@@ -78,14 +78,18 @@ var BattleCommands = (function() {
     
     console.log(commandsToString(all));
     
+    Battle.inputMessageToggler(true);
+    
     jQuery.each(all, function(i, command) {
-      if (Battle.areAllTargetsDead(Battle.getAllEnemies())) {
+      Message.hideAllBattleMessages();
+      
+      if (Battle.areAllEnemiesDead(Battle.getAllEnemies())) {
         // TODO: handle victory
         console.log("party wins - victory animation");
         return false;
       }
       
-      if (Battle.areAllTargetsDead(Party.getChars())) {
+      if (Battle.areAllCharactersDead(Party.getChars())) {
         // TODO: handle game over
         console.log("party is dead - lose");
         return false;
@@ -94,10 +98,19 @@ var BattleCommands = (function() {
       if (command.source.isDead()) {
         return true;
       }
-      
+
       // TODO: Check for various incapicated statuses, check for healing
+
+      var result = null;
       
+      switch (command.action) {
+        case CommandTypes.Attack:
+          result = Action.attack(command.source, command.target);
+          break;
+      }
       
+      if (result.source) { Message.source(result.source.getName()); }
+      if (result.target) { Message.target(result.target.getName()); }
     });
   };
   
