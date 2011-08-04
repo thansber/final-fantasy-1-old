@@ -479,7 +479,7 @@ Monster.create({names : {original:"WzMUMMY", other:{origins:"King Mummy"}}
 Monster.create({names : {original:"COCTRICE", other:{origins:"Cockatrice"}}
                ,stats : {hp:50,atk:1,acc:10,hits:1,crt:1,def:4,eva:72,md:47,mor:124}
                ,rewards : {gold:200,exp:186}
-               ,specialAttacks : {status:Status.Petrify, element:Element.PoisonStone}
+               ,specialAttacks : {status:Status.Stone, element:Element.PoisonStone}
                ,elements : {resists:[Element.Earth]}
                ,ui: {size:"small",cssClass:"coctrice"}});
 Monster.create({names : {original:"PERILISK", other:{origins:"Pyrolisk"}}

@@ -6,26 +6,25 @@ var ActionHelper = (function() {
       .weapon("Rapier", true)
       .armor("Wooden[A]", true)
       .armor("Wooden[S]", true);
-    var monster = Monster.createForBattle(Monster.lookup("ARACHNID"));
+    
+    var monsterName = "SABER T";
+    var monsterIndex = 1;
+    Party.addChar(char);
+    Battle.setup({enemies:[{name:monsterName,qty:2}], background:"Forest", doNotMove:true});
+
+    var monster = Battle.lookupEnemy(monsterName, monsterIndex);    
     var result = null;
     
+    Battle.inputMessageToggler(true);
+    Message.hideAllBattleMessages();
+    
     if ($target.is(".char.attack")) {
-      result = Action.attack(char, monster);
+      BattleCommands.party({source:char, target:{name:monster.name, index:monsterIndex}, action:BattleCommands.Attack});
     } else if ($target.is(".monster.attack")) {
-      result = Action.attack(monster, char);
+      BattleCommands.enemy(monster);
     }
     
-    console.log(jQuery.map(result, function(value, index) {
-      var v = value;
-      if (value) {
-        if (value.getName) {
-          v = value.getName();
-        } else if (value.desc) {
-          v = value.desc;
-        }
-      }
-      return index + "=" + v;
-    }).join(","));
+    BattleCommands.executeCommands();
   };
   
   return {

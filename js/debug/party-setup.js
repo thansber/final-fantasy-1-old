@@ -59,11 +59,15 @@ var PartySetupHelper = (function() {
       return weapon;
     });
     weaponArray.unshift(null);
+    
     var weapon = RNG.randomArrayElement(weaponArray);
-    if (weapon) {
-      char.weapon(weapon.name, true);
-    } else {
+    while (weapon != null && !char.canEquip(weapon.name, "weapon")) {
+      weapon = RNG.randomArrayElement(weaponArray);
+    }
+    if (weapon == null) {
       char.unequipWeapon();
+    } else {
+      char.weapon(weapon.name, true);
     }
   };
   

@@ -152,12 +152,30 @@ var Character = (function() {
     return this; 
   };
 
+  Char.prototype.canEquip = function(name, type) {
+    var equippable = null;
+    switch (type) {
+      case "weapon":
+        equippable = Equipment.Weapon.lookup(name);
+        break;
+      case "armor":
+        equippable = Equipment.Armor.lookup(name);
+        break;
+    }
+    return (jQuery.inArray(this.currentClass.name, equippable.allowedClasses) > -1);
+  };
+  
   Char.prototype.weapon = function(w, equipped) {
     var weapon = Equipment.Weapon.lookup(w);
     if (equipped) {
       if (this.equippedWeapon) {
         alert("A character can only equip at most 1 weapon, change the 2nd parameter for weapon " + w + " to false");
         this.weapons.push(weapon); 
+        return this;
+      }
+      
+      if (!this.canEquip(w, "weapon")) {
+        alert("This character's class [" + this.currentClass.name + "] is not allowed to equip a " + w);
         return this;
       }
       this.equippedWeapon = weapon;
@@ -170,6 +188,10 @@ var Character = (function() {
   Char.prototype.armor = function(a, equipped) {
     var armor = Equipment.Armor.lookup(a);
     if (equipped) { 
+      if (!this.canEquip(a, "armor")) {
+        alert("This character's class [" + this.currentClass.name + "] is not allowed to equip a " + w);
+        return this;
+      }
       this.equippedArmor.push(armor);
       for (var e in armor.element) {
         this.resistedElements[armor.element[e]] = true;

@@ -2,6 +2,7 @@ var Battle = (function() {
   
   var $battle = null;
   var $party = null;
+  var $enemies = null;
   var $stats = null;
 
   var enemies = {};
@@ -15,6 +16,7 @@ var Battle = (function() {
   var init = function() {
     $battle = $("#battle");
     $party = $(".party", $battle);
+    $enemies = $(".enemies", $battle);
     $stats = $(".stats", $battle);
     
     $battle.find(".commands .column").eq(0)
@@ -46,6 +48,8 @@ var Battle = (function() {
     });
     return sizeCounts;
   };
+  
+  var cleanMonsterIndex = function(index) { return (index == null ? 0 : index); };
 
   var createCharStatsUI = function(char) {
     var $charStats = $("<div/>").addClass("charStats").addClass(ORDINALS[char.charIndex]);
@@ -130,7 +134,7 @@ var Battle = (function() {
           $enemies.append($column);
         }
         
-        var monster = Monster.lookup(name);
+        var monster = Monster.createForBattle(Monster.lookup(name));
         addEnemy(monster);
         $column.append(createEnemyUI(monster));
       });
@@ -190,7 +194,7 @@ var Battle = (function() {
     } else if (char.currentClass.isMartialArtist()) {
       $weapon.addClass("punch");
     }
-    resetCharUI(char, $char);
+    resetCharUI(char);
     return $char;
   };
   
@@ -210,15 +214,26 @@ var Battle = (function() {
     return $party.find(".char").eq(char.charIndex);
   };
   
+  var getEnemyUI = function(monster, index) {
+    if (!monster) {
+      return null;
+    }
+    return $enemies.find(".enemy." + monster.cssClass).eq(cleanMonsterIndex(index));
+  };
+  
   var inputMessageToggler = function(roundStarting) {
     $(".input", $battle).toggle(!roundStarting);
     $(".messages", $battle).toggleClass("hidden", !roundStarting);
   };
   
+  var killEnemyUI = function(monster, index) {
+    getEnemyUI(monster, index).addClass("dead");    
+  };
+  
   var lookupEnemy = function(name, index) {
     var enemiesByName = enemies[name];
     if (enemiesByName) {
-      return enemiesByName[index];
+      return enemiesByName[cleanMonsterIndex(index)];
     }
     return null;
   };
@@ -247,18 +262,42 @@ var Battle = (function() {
     }
   };
   
-  var resetCharUI = function(char, $char) {
+  var resetCharUI = function(char) {
+    var $char = getCharUI(char); 
+    var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
+    
+    // Updates the HP for the character
+    $("div.hp", $charStats).empty().append(Message.create(char.hitPoints + ""));
+    
     $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
-    if (char.isCritical()) { $char.addClass("critical"); }
-    if (char.isDead()) { $char.addClass("dead"); }
-    if (char.hasStatus(Status.Stone)) { $char.addClass("stone"); }
+    
+    if (char.isCritical()) { 
+      $char.addClass("critical"); 
+    }
+    if (char.hasStatus(Status.Poison)) { 
+      $("label.hp", $charStats).empty().append(Message.create("PO"));
+      $char.addClass("critical"); 
+    }
+    if (char.isDead()) { 
+      $char.addClass("dead"); 
+    }
+    if (char.hasStatus(Status.Stone)) { 
+      $("label.hp", $charStats).empty().append(Message.create("ST"));
+      $char.addClass("stone"); 
+    }
   };
   
   // Called for each new battle
   // Input definition:
-  // - enemies: array of {name,qty}
+  // - enemies: [{name:"IMP",qty:3},...]
+  // - background: string for the battle background, see Map.BattleBackgrounds
   var setup = function(opt) {
+    enemies = {};
+    if (opt.background && Map.BattleBackgrounds[opt.background]) {
+      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[opt.background].cssClass);
+    }
     var battleEnemies = (opt && opt.enemies) || {};
+    var moveFirstChar = !opt.doNotMove;
     setupEnemies(battleEnemies);
     setupParty(Party.getChars());
     
@@ -270,7 +309,7 @@ var Battle = (function() {
     BattleMenuCursor.startListening();
     // First character walks forward to indicate they are choosing an action
     var firstChar = Party.getChar(0);
-    if (firstChar) {
+    if (firstChar && moveFirstChar) {
       Animation.walkAndMoveInBattle(firstChar);
     }
   };
@@ -284,7 +323,9 @@ var Battle = (function() {
    ,createSpellUI: createSpellUI
    ,getAllEnemies: function() { return enemies; }
    ,getCharUI: getCharUI
+   ,getEnemyUI: getEnemyUI
    ,inputMessageToggler: inputMessageToggler
+   ,killEnemyUI: killEnemyUI
    ,lookupEnemy: lookupEnemy
    ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
    ,moveCurrentCharBackwardAndPreviousCharForward: moveCurrentCharBackwardAndPreviousCharForward

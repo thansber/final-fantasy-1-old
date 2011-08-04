@@ -196,18 +196,24 @@ var Monster = (function() {
   };
   
   MonsterBase.prototype.determineSingleTarget = function() {
-    var r = RNG.randomUpTo(8);
-    var charIndex = -1;
-    if (r >= 1 && r <= 4) {
-      charIndex = 0;
-    } else if (r >= 5 && r <= 6) {
-      charIndex = 1;
-    } else if (r == 7) {
-      charIndex = 2;
-    } else if (r == 8) {
-      charIndex = 3;
+    var validTarget = false;
+    var target = null;
+    while (!validTarget) {
+      var r = RNG.randomUpTo(8);
+      var charIndex = -1;
+      if (r >= 1 && r <= 4) {
+        charIndex = 0;
+      } else if (r >= 5 && r <= 6) {
+        charIndex = 1;
+      } else if (r == 7) {
+        charIndex = 2;
+      } else if (r == 8) {
+        charIndex = 3;
+      }
+      target = Party.getChar(charIndex);
+      validTarget = (target != null && !target.isDead() && !target.hasStatus(Status.Stone));
     }
-    return Party.getChar(charIndex);
+    return target;
   };
   
   MonsterBase.prototype.toString = function() { return this.getName() + " - " + this.hp + "," + this.maxHp; };

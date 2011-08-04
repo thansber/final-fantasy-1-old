@@ -5,7 +5,8 @@ var DebugHelper = (function() {
    ,battleSetup : {view:"battleView"}
    ,partySetup : {view:"battleView"} 
    ,animations : {view:"battleView"} 
-   ,battleMessages : {view:"battleView", disableKeyListener:true}
+   ,battleMessages : {view:"battleView", disableKeyListener:true} 
+   ,actions : {view:"battleView"}
   };
   
   var addOption = function($selector, value, text) {

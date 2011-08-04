@@ -12,7 +12,7 @@ var WeaponAnimationHelper = (function() {
     if ($target.is(".selector")) {
       if ($target.val().length > 0) {
         $(".stances", $debug).remove();
-        $debug.append(createCharWithAllWeapons($target.val()));
+        $debug.append(createCharWithAllEquippableWeapons($target.val()));
       }
     } else if ($target.is(".start")) {
       jQuery.each($(".char", $debug), function(i, char) {
@@ -29,16 +29,17 @@ var WeaponAnimationHelper = (function() {
     });
   };
   
-  var createCharWithAllWeapons = function(charClass) {
+  var createCharWithAllEquippableWeapons = function(charClass) {
     var char = Party.createNewChar("AAAA", charClass, 0);
     var $stances = $("<div/>").addClass("attack stances").addClass(charClass);
     
     jQuery.each(Equipment.Weapon.All, function(i, weapon) {
       char.unequipWeapon();
-      char.weapon(weapon.name, true);
-
-      $stances.append(Battle.createCharUI(char));
-      $(".weapon", $stances).removeClass("hidden");
+      if (char.canEquip(weapon.name, "weapon")) {
+        char.weapon(weapon.name, true);
+        $stances.append(Battle.createCharUI(char));
+        $(".weapon", $stances).removeClass("hidden");
+      }
     });
     
     if (CharacterClass.lookup(charClass).isMartialArtist()) {

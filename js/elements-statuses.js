@@ -28,13 +28,13 @@ var Status = (function() {
   
   var ALL = {
     Dead : {id:"dead", desc:"dead"}
-   ,Stone : {id:"stone", desc:"petrified"}
-   ,Poison : {id:"poison", desc:"poisoned"}
-   ,Blind : {id:"blind", desc:"blind"}
-   ,Paralysis : {id:"paralysis", desc:"paralyzed"}
-   ,Sleep : {id:"sleep", desc:"asleep"}
-   ,Mute : {id:"mute", desc:"slienced"}
-   ,Confuse : {id:"confuse", desc:"confused"}
+   ,Stone : {id:"stone", desc:"Petrified"}
+   ,Poison : {id:"poison", desc:"Poisoned"}
+   ,Blind : {id:"blind", desc:"Darkness"}
+   ,Paralysis : {id:"paralysis", desc:"Paralyzed"}
+   ,Sleep : {id:"sleep", desc:"Asleep"}
+   ,Mute : {id:"mute", desc:"Silenced"}
+   ,Confuse : {id:"confuse", desc:"Confused"}
   };
   
   return {

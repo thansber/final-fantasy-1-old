@@ -21,7 +21,7 @@ $(document).ready(function() {
   });
   
   test("Xcalber attack elements", function() {
-    var char = Party.createNewChar("A", CharacterClass.FIGHTER, 0).weapon("Xcalber", true);
+    var char = Party.createNewChar("A", CharacterClass.KNIGHT, 0).weapon("Xcalber", true);
     jQuery.each(Element.AllElements, function(i, element) {
       ok(char.attacksWithElement(element));
     });
@@ -57,7 +57,7 @@ $(document).ready(function() {
   });
   
   test("Xcalber strong against all", function() {
-    var char = Party.createNewChar("A", CharacterClass.FIGHTER, 0).weapon("Xcalber", true);
+    var char = Party.createNewChar("A", CharacterClass.KNIGHT, 0).weapon("Xcalber", true);
     jQuery.each(Monster.Types, function(i, type) {
       ok(char.isStrongAgainstMonsterType(type));
     });

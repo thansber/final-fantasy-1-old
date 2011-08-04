@@ -1,4 +1,5 @@
 .enemy { background-repeat:no-repeat; background-position:1000em 1000em; }
+.enemy.dead { filter:alpha(opacity=0); opacity:0; }
 .small .enemy { background-image:url(../images/enemies-small.png); width:66px; height:66px; }
 .large .enemy { background-image:url(../images/enemies-large.png); width:100px; height:100px; }
 .large.mixed .enemy { width:92px; }

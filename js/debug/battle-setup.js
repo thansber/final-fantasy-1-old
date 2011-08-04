@@ -62,10 +62,6 @@ var BattleSetupHelper = (function() {
   
   var setupBattle = function() {
     var background = $(".background.row .selector").val();
-    if (background.length > 0) {
-      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[background].cssClass);
-    }
-    
     var enemies = [];
     $(".small.row .selectors div", $debug).each(function() {
       var enemyQty = readEnemyQty($(this));
@@ -86,7 +82,7 @@ var BattleSetupHelper = (function() {
       enemies.push(fiendQty);
     }
     
-    Battle.setup({enemies:enemies});
+    Battle.setup({enemies:enemies, background:background});
   };
   
   var sortByNameIgnoreCase = function(a, b) {

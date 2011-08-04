@@ -38,6 +38,7 @@ var Message = (function() {
   };
   
   var $messages = null;
+  var postActionPause = 1000;
   
   var init = function(opt) {
     $messages = $(opt.messages);
@@ -107,28 +108,40 @@ var Message = (function() {
   
   var source = function(opt) {
     opt = parseOptions(opt);
-    battleMessage($(".source.message", $messages), opt.show, opt.text);
+    var $msg = $(".source.message", $messages);
+    battleMessage($msg, false, "");
+    battleMessage($msg, opt.show, opt.text);
   };
   
   var action = function(opt) {
     opt = parseOptions(opt);
-    battleMessage($(".action.message", $messages), opt.show, opt.text);
+    var $msg = $(".action.message", $messages);
+    battleMessage($msg, false, "");
+    battleMessage($msg, opt.show, opt.text);
   };
   
   var target = function(opt) {
     opt = parseOptions(opt);
-    battleMessage($(".target.message", $messages), opt.show, opt.text);
+    var $msg = $(".target.message", $messages);
+    battleMessage($msg, false, "");
+    battleMessage($msg, opt.show, opt.text);
   };
   
   var damage = function(opt) {
     opt = parseOptions(opt);
-    battleMessage($(".damage.message", $messages), opt.show, opt.text);
+    var $msg = $(".damage.message", $messages);
+    battleMessage($msg, false, "");
+    battleMessage($msg, opt.show, opt.text);
   };
   
   var desc = function(opt) {
     opt = parseOptions(opt);
-    battleMessage($(".desc.message", $messages), opt.show, opt.text);
+    var $msg = $(".desc.message", $messages);
+    battleMessage($msg, false, "");
+    battleMessage($msg, opt.show, opt.text);
   };
+
+  var getPostActionPause = function() { return postActionPause; };
   
   var hideAllBattleMessages = function() {
     source({show:false});
@@ -138,6 +151,8 @@ var Message = (function() {
     desc({show:false});
   };
   
+  var setPostActionPause = function(amt) { postActionPause = amt; };
+  
   return {
     init: init
    ,create: create
@@ -146,6 +161,8 @@ var Message = (function() {
    ,target: target
    ,damage: damage
    ,desc: desc
+   ,getPostActionPause: getPostActionPause
    ,hideAllBattleMessages: hideAllBattleMessages
+   ,setPostActionPause: setPostActionPause
   };
 })();
