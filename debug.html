@@ -38,6 +38,7 @@
   <script type="text/javascript" src="js/chars/party.js"></script>
   <script type="text/javascript" src="js/cursor/battle-menu.js"></script>
   <script type="text/javascript" src="js/cursor/battle-enemies.js"></script>
+  <script type="text/javascript" src="js/cursor/battle-spells.js"></script>
   <script type="text/javascript" src="js/data/spells.js"></script>
   <script type="text/javascript" src="js/data/monsters.js"></script>
   <script type="text/javascript" src="js/data/equipment.js"></script>
@@ -83,6 +84,16 @@
         <div class="commands border">
           <div class="first column"></div>
           <div class="second column"></div>
+        </div>
+        <div class="spells border hidden">
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
         </div>
       </div>
       <div class="messages hidden">
@@ -389,6 +400,9 @@
     <div class="container">
       <button class="action char attack">Character attack</button>
       <button class="action monster attack">Monster attack</button>
+      <button class="action spell self">Cast spell on self</button>
+      <button class="action spell party target">Cast spell on party target</button>
+      <button class="action spell enemies">Cast spell on all enemies</button>
     </div>
   </section>
   

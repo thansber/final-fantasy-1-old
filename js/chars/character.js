@@ -18,8 +18,9 @@ var Character = (function() {
     this.spellAttack = 0; // can be manipulated by TMPR/SABR
     this.spellEvasion = 0; // can be manipulated by RUSE/LOCK/LOK2/INVS/INV2
     this.spellHit = 0; // can be manipulated by SABR
-    this.charges = [];
+    this.charges = [0,0,0,0,0,0,0,0];
     this.maxCharges = [0,0,0,0,0,0,0,0];
+    this.knownSpells = [];
     this.equippedWeapon = null;
     this.weapons = [];
     this.equippedArmor = [];
@@ -248,14 +249,34 @@ var Character = (function() {
     return protectedFrom;
   };
   
+  Char.prototype.isSpellAllowed = function(spell) {
+    return (jQuery.inArray(this.currentClass.name, spell.allowedClasses) > -1);
+  };
+  
+  Char.prototype.knowsSpell = function(spell) {
+    if (!this.knownSpells[spell.spellLevel - 1]) {
+      return false;
+    }
+    return jQuery.inArray(spell.spellId, this.knownSpells[spell.spellLevel - 1]) > -1;
+  };
+  
   Char.prototype.canCastSpell = function(spell) {
-    var hasCharge = this.hasSpellCharge(spell.spellLevel);
-    var allowedToCast = (jQuery.inArray(this.currentClass.name, spell.allowedClasses) > -1);
-    return hasCharge && allowedToCast; 
+    return this.hasSpellCharge(spell.spellLevel) && this.isSpellAllowed(spell) && this.knowsSpell(spell); 
   };
   
   Char.prototype.hasSpellCharge = function(spellLevel) { 
     return (this.charges[spellLevel - 1] != null && this.charges[spellLevel - 1] > 0); 
+  };
+  
+  Char.prototype.canLearnSpell = function(spell) {
+    return this.isSpellAllowed(spell) && (!this.knownSpells[spell.spellLevel - 1] || this.knownSpells[spell.spellLevel - 1].length < 3);
+  };
+  
+  Char.prototype.learnSpell = function(spell) {
+    if (!this.knownSpells[spell.spellLevel - 1]) {
+      this.knownSpells[spell.spellLevel - 1] = [];
+    }
+    this.knownSpells[spell.spellLevel - 1].push(spell.spellId);
   };
   
   Char.prototype.hasItemForSpell = function(spellId) { 

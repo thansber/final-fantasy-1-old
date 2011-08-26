@@ -43,7 +43,7 @@
 #debug .coords label { width:6em; display:block; float:left; text-align:right; }
 #debug .coords input { width:2em; display:block; float:left; margin-left:1em; }
 
-#debug .messages .message { background-color:navy; padding:0.4em; margin-bottom:0.2em; overflow:auto; }
+#debug .messages .text { background-color:navy; padding:0.4em; margin-bottom:0.2em; overflow:auto; }
 
 #debug .enemiesSplash .row { clear:both; margin-bottom:1em; overflow:auto; }
 #debug .enemiesSplash label { float:left; width:9em; text-align:right; margin-right:0.4em; }
@@ -95,3 +95,5 @@
 #debug .battleMessages p { height:30px; clear:both; }
 #debug .battleMessages p label { width:6em; float:left; text-align:right; margin-right:1em; }
 #debug .battleMessages p input { width:150px; float:left; }
+
+#debug .actions button { display:block; margin-bottom:1em; }

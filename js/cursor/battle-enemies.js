@@ -101,7 +101,7 @@ var BattleEnemyCursor = (function() {
         KeyPressNotifier.setListener(BattleMenuCursor);
         return false;
       default:
-        console.log(key);
+        console.log("Unhandled key press in enemy selection: " + key);
     }
   };
   

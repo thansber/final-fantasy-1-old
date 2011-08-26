@@ -5,18 +5,21 @@ var Animation = (function() {
    ,BattleWalk : "walkInBattle"
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
+   ,HideAllMessages : "hideAllMessages"
    ,ResultMessages : "resultMessages"
    ,ResultMessagesPostSplash : "resultMessagesPostSplash"
+   ,ResultSpellTarget : "resultSpellTarget"
    ,SlideChar : "slideChar"
+   ,SpellBackground : "spellBackground"
    ,SpellEffect : "spellEffect"
    ,ShowSplash : "showSplash"
    ,SwingWeapon : "swingWeapon"
    ,WindowShake : "windowShake"
   };
   
-  var betweenMessagePause = 300;
   var CHAR_AT_REST_CLASSES = ["critical"];
   var SPLASH_ORDINALS = ["one", "two", "three"];
+  var quickPause = 100;
   
   /* ======================================================== */
   /* QUEUE object ------------------------------------------- */ 
@@ -36,6 +39,14 @@ var Animation = (function() {
   };
   
   Queue.prototype.delay = function(delayTime) { this.theQueue.delay(delayTime, this.name); };
+  
+  Queue.prototype.insertAt = function(f, index) {
+    this.theQueue.queue(this.name).splice(index, 0, function(next) {
+      f();
+      next();
+    });
+  };
+  
   Queue.prototype.start = function() { this.theQueue.dequeue(this.name); };
   
   /* ======================================================== */
@@ -46,6 +57,22 @@ var Animation = (function() {
       marginLeft : "-=" + (left * opt.numPixels) + "px"
      ,marginTop : "-=" + (top * opt.numPixels) + "px"
     }, opt.speed);
+  };
+  
+  var spellBackgroundFlicker = function(spell, opt) {
+    var settings = jQuery.extend({}, {numAnimations:4, flickerPause:50, autoStart:false}, opt);
+    var $background = $("#battle .main .border, .stats .border");
+    var q = new Queue(Queues.SpellBackground);
+    for (var i = 0; i < settings.numAnimations; i++) {
+      q.add(function() { $background.css("backgroundColor", Spell.lookup(spell.spellId).backgroundColor); });
+      q.delay(settings.flickerPause);
+      q.add(function() { $background.css("backgroundColor", "black"); });
+      q.delay(settings.flickerPause);
+    }
+    
+    if (settings.autoStart) {
+      q.start();
+    }
   };
   
   var walkAndMoveBackwards = function(char, callback) {
@@ -67,9 +94,10 @@ var Animation = (function() {
     slideChar(char, {autoStart:true, callback:swinging});
   };
   
-  var castSpell = function(char, spell) {
+  var castSpell = function(char, spell, callback) {
     var casting = function() {
-      spellEffect(char, spell, {autoStart:true, callback:walkAndMoveBackwards(char)});
+      spellEffect(char, spell, {autoStart:true, callback:walkAndMoveBackwards(char, callback)});
+      spellBackgroundFlicker(spell, {autoStart:true});
     };
     
     walkInBattle(char, {autoStart:true});
@@ -107,7 +135,7 @@ var Animation = (function() {
       q.add(function() { Message.source(result.source.getName()); }); 
     }
     if (result.target) { 
-      q.delay(betweenMessagePause);
+      q.delay(quickPause);
       q.add(function() { Message.target(result.target.getName()); }); 
     }
 
@@ -117,10 +145,10 @@ var Animation = (function() {
     
     if (isParty) {
       // Char doing the attacking
-      // TODO: Ensure splash works for BB/MA punch (equipped weapon may be null)
       var splashCallback = function() {
         var $enemy = Battle.getEnemyUI(command.target, command.targetIndex);
-        var weaponSplash = command.source.equippedWeapon.splash; 
+        // unequipped chars using their fists get a gold splash effect
+        var weaponSplash = (command.source.equippedWeapon ? command.source.equippedWeapon.splash : "gold"); 
         splash($enemy, weaponSplash, {autoStart:true, callback:postAttackAnimationCallback});
       };
       
@@ -138,32 +166,34 @@ var Animation = (function() {
   
   var resultFromAttackDamage = function(command, result) {
     var q = new Queue(Queues.ResultMessagesPostSplash);
+    var messageHider = new Queue(Queues.HideAllMessages);
     var isParty = (command.type == BattleCommands.Party);
 
     if (result.hits && result.hits > 1) { 
-      q.add(function() { Message.action(result.hits + "Hits!"); }); 
+      q.add(function() { Message.action(result.hits + "Hits!"); });
     }
+    
     if (result.dmg != null) {
       if (result.dmg == 0) {
         q.add(function() { Message.damage("Missed!"); });
       } else {
-        q.delay(betweenMessagePause);
+        q.delay(quickPause);
         q.add(function() { Message.damage(result.dmg + "DMG"); });
       }
     }
     
     if (result.crit) {
-      q.delay(betweenMessagePause);
+      q.delay(quickPause);
       q.add(function() { Message.desc("Critical hit!!"); });
     }
     
     if (result.status) {
-      q.delay(result.critical ? Message.getPostActionPause() : betweenMessagePause);
+      q.delay(result.crit ? Message.getBattlePause() : quickPause);
       q.add(function() { Message.desc(result.status.desc); });
     }
     
     if (result.died) {
-      q.delay(result.crit || result.status ? Message.getPostActionPause() : betweenMessagePause);
+      q.delay(result.crit || result.status ? Message.getBattlePause() : quickPause);
       if (isParty) {
         q.add(function() { Message.desc("Terminated"); });
         q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
@@ -177,10 +207,121 @@ var Animation = (function() {
       q.add(function() { Battle.resetCharUI(command.target); });
     }
 
-    q.delay(Message.getPostActionPause());
-    q.add(function() { Message.hideAllBattleMessages(); });
+    q.delay(Message.getBattlePause());
+    
+    if (result.crit || result.status || result.died) {
+      messageHider.add(function() { Message.desc({show:false}); });
+      messageHider.delay(quickPause);
+    }
+    
+    if (result.dmg != null) {
+      messageHider.add(function() { Message.damage({show:false}); });
+      messageHider.delay(quickPause);
+    }
+
+    messageHider.add(function() { Message.target({show:false}); });
+    messageHider.delay(quickPause);
+    
+    if (result.hits && result.hits > 1) { 
+      messageHider.add(function() { Message.action({show:false}); });
+      messageHider.delay(quickPause);
+    }
+
+    messageHider.add(function() { Message.source({show:false}); });
+    
+    q.add(function() { messageHider.start(); });
     
     return q;
+  };
+  
+  var resultFromSpell = function(command, result) {
+    var q = new Queue(Queues.ResultMessages);
+    var isParty = (command.type == BattleCommands.Party);
+    
+    if (result.source) { 
+      q.add(function() { Message.source(result.source.getName()); }); 
+    }
+    
+    if (result.spell) {
+      q.delay(quickPause);
+      q.add(function() { Message.action(result.spell.spellId); });
+    }
+    
+    q.add(function() { 
+      castSpell(command.source, result.spell, function() { resultFromSpellTarget(command, result).start(); }); 
+    });
+    
+    q.start();
+  };
+  
+  var resultFromSpellTarget = function(command, result) {
+    var spell = Spell.lookup(command.spellId);
+    var messageHider = new Queue(Queues.HideAllMessages);
+    var targetQueues = [];
+    
+    switch (command.targetType) {
+      
+      case BattleCommands.Party:
+      
+        for (var t in result.target) {
+          var target = result.target[t];
+          var q = charFlicker(target);
+          q.insertAt(function() { Message.target(target.getName()); }, 0);
+          
+          if (spell.message) { 
+            var afterFirstMessage = false;
+            var spellMessages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
+            for (var m in spellMessages) {
+              if (afterFirstMessage) {
+                q.delay(Message.getBattlePause());
+              }
+              q.add(function() { Message.desc(spellMessages[m]); });
+              afterFirstMessage = true;
+            }
+          }
+          
+          q.add(function() { Battle.resetCharUI(target); });
+          q.delay(Message.getBattlePause());
+          if (spell.message) {
+            q.add(function() { Message.desc({show:false}); });
+            q.delay(quickPause);
+          }
+          q.add(function() { Message.target({show:false}); });
+          q.delay(quickPause);
+
+          
+          targetQueues.push(q);
+        }
+        break;
+        
+      case BattleCommands.Enemy:
+        var enemyIndex = 0;
+        var enemyName = null;
+        for (var t in result.target) {
+          var target = result.target[t];
+          enemyIndex = (enemyName != target.getName() ? 0 : enemyIndex + 1);
+          enemyName = target.getName();
+          var q = splash(Battle.getEnemyUI(enemyName, enemyIndex), spell.splash);
+          // TODO: ended here, stuck on splash with white overlay
+        }
+        
+        break;
+    };
+    
+    messageHider.add(function() { Message.action({show:false}); });
+    messageHider.delay(quickPause);
+    messageHider.add(function() { Message.source({show:false}); });
+    
+    targetQueues[targetQueues.length - 1].add(function() { messageHider.start(); });
+    
+    // Chain all the target queues so they run serially and run after the previous one finishes
+    for (var i = 0; i < targetQueues.length; i++) {
+      if (i < targetQueues.length - 1) {
+        targetQueues[i].add(function() { targetQueues[i + 1].start(); });
+      }
+    }
+    
+    return targetQueues[0];
   };
   
   var splash = function($enemy, splashColors, opt) {
@@ -346,6 +487,7 @@ var Animation = (function() {
    ,castSpell : castSpell
    ,charFlicker : charFlicker
    ,resultFromAttack : resultFromAttack
+   ,resultFromSpell : resultFromSpell
    ,slideChar : slideChar
    ,spellEffect : spellEffect
    ,splash : splash

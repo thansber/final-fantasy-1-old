@@ -58,7 +58,8 @@ var BattleMenuCursor = (function() {
   
   var magic = function() {
     BattleCommands.party({action:BattleCommands.CastSpell});
-    console.log("magic");
+    Battle.populateSpellList();
+    BattleSpellCursor.startListening();
   };
   
   var moveCursor = function(columnNum, messageNum) {

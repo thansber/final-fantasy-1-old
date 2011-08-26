@@ -33,7 +33,7 @@ var Spell = (function() {
    }
   };
   
-  var TargetGroup = {Same:{}, Other:{}, None:{}};
+  var TargetGroup = {Same:{id:"same"}, Other:{id:"other"}, None:{id:"none"}};
   var SpellType = {
     HpRecovery : {
       targetGroup : TargetGroup.Same
@@ -84,7 +84,7 @@ var Spell = (function() {
        }
        var dmgLog = "    dmg=" + dmg + (doubled ? " (DOUBLED)" : "") + " out of " + (doubled ? minDmg * 2 : minDmg) + "-" + (doubled ? maxDmg * 2 : maxDmg);
 
-       Output.log(dmgLog);
+       console.log(dmgLog);
        
        spell.result.dmg.push(dmg);
        target.applyDamage(dmg);
@@ -93,13 +93,17 @@ var Spell = (function() {
    }
    ,StatUp : {
      targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) { target[spell.statChanged] += spell.effectivity; }
+    ,apply : function(spell, caster, target) { 
+       target[spell.statChanged] += spell.effectivity; 
+       spell.result.success.push(true);
+     }
    }
    ,StatUpMulti : {
      targetGroup : TargetGroup.Same
     ,apply : function(spell, caster, target) {
        target[spell.statChanged.eff] += spell.effectivity;
        target[spell.statChanged.acc] += spell.accuracy;
+       spell.result.success.push(true);
      }
    }
    ,StatDown : {
@@ -174,6 +178,7 @@ var Spell = (function() {
        if (target.hitMultiplier > 2) {
          target.hitMultiplier = 2;
        }
+       spell.result.success.push(true);
      }
    } 
    ,HitMultiplierDown : {
@@ -229,7 +234,7 @@ var Spell = (function() {
       logMsg += "HIT-AUTO";
       success = true;
     } else if (r == Action.AUTO_MISS) {
-      logMsg += ",MIS-AUTO";
+      logMsg += ",MISS-AUTO";
       success = false;
     } else {
       success = (r <= baseChance + spell.accuracy - target.magicDef);
@@ -238,7 +243,7 @@ var Spell = (function() {
 
     logMsg += "=[to hit=" + (baseChance + spell.accuracy - target.magicDef) + "(" + baseChance + "+" + spell.accuracy + "-" + target.magicDef + ")" + ",rnd=" + r + "]";
 
-    Output.log(logMsg);
+    console.log(logMsg);
       
     return success;
   };
@@ -273,8 +278,9 @@ var Spell = (function() {
     this.result.success = [];
     
     this.effect = ui.effect;
-    this.backgroundColor = ui.backgroundColor;
+    this.backgroundColor = ui.bgColor;
     this.splash = ui.splash;
+    this.message = ui.message;
     
     ALL[this.spellId] = this;
   };
@@ -284,6 +290,8 @@ var Spell = (function() {
   Spell.prototype.isSingleTarget = function() { return this.targetType.id == "single"; };
   Spell.prototype.isAllTarget = function() { return this.targetType.id == "all"; };
   Spell.prototype.isSelfTarget = function() { return this.targetType.id == "self"; };
+  Spell.prototype.isSameTargetGroup = function() { return this.spellType.targetGroup.id == "same"; };
+  Spell.prototype.isOtherTargetGroup = function() { return this.spellType.targetGroup.id == "other"; };
   
   var create = function(opt) {
     return new Spell(opt);

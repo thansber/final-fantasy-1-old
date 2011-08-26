@@ -142,7 +142,7 @@ var Action = (function() {
     }
     
     opt = opt || {};
-    var spell = jQuery.extend({}, Spell.lookup(spellId));
+    var spell = jQuery.extend(true, {}, Spell.lookup(spellId));
     var usingItem = (opt.item != null);
     
     if (!usingItem && !source.canCastSpell(spell)) {
@@ -157,7 +157,7 @@ var Action = (function() {
       }
     });
     
-    Output.log("Casting " + spellId + (usingItem ? "(using " + opt.item.name + ")" : "") + " on " + targets.length + " target(s), " + spellTargets.length + " of which are valid");
+    console.log("Casting " + spellId + (usingItem ? "(using " + opt.item.name + ")" : "") + " on " + targets.length + " target(s), " + spellTargets.length + " of which are valid");
     
     if (!usingItem) {
       source.useSpellCharge(spell.spellLevel);

@@ -38,7 +38,7 @@ var Message = (function() {
   };
   
   var $messages = null;
-  var postActionPause = 1000;
+  var battlePause = 1000;
   
   var init = function(opt) {
     $messages = $(opt.messages);
@@ -47,7 +47,17 @@ var Message = (function() {
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
-  var battleMessage = function($message, showing, text) {
+  var battleMessage = function(opt, $message) {
+    opt = parseOptions(opt);
+    toggleMessage($message, false, "");
+    toggleMessage($message, opt.show, opt.text);
+  };
+  
+  var parseOptions = function(opt) {
+    return typeof opt === "string" ? {text:opt, show:true} : opt || {};
+  };
+  
+  var toggleMessage = function($message, showing, text) {
     if (showing) {
       $message.append(create(text));
     } else {
@@ -56,10 +66,6 @@ var Message = (function() {
     
     $message.toggleClass("hidden", !showing);
     $message.parent(".overlap").toggleClass("hidden", !showing);
-  };
-  
-  var parseOptions = function(opt) {
-    return typeof opt === "string" ? {text:opt, show:true} : opt || {};
   };
   
   /* ======================================================== */
@@ -106,42 +112,13 @@ var Message = (function() {
     return $msg;
   };
   
-  var source = function(opt) {
-    opt = parseOptions(opt);
-    var $msg = $(".source.message", $messages);
-    battleMessage($msg, false, "");
-    battleMessage($msg, opt.show, opt.text);
-  };
-  
-  var action = function(opt) {
-    opt = parseOptions(opt);
-    var $msg = $(".action.message", $messages);
-    battleMessage($msg, false, "");
-    battleMessage($msg, opt.show, opt.text);
-  };
-  
-  var target = function(opt) {
-    opt = parseOptions(opt);
-    var $msg = $(".target.message", $messages);
-    battleMessage($msg, false, "");
-    battleMessage($msg, opt.show, opt.text);
-  };
-  
-  var damage = function(opt) {
-    opt = parseOptions(opt);
-    var $msg = $(".damage.message", $messages);
-    battleMessage($msg, false, "");
-    battleMessage($msg, opt.show, opt.text);
-  };
-  
-  var desc = function(opt) {
-    opt = parseOptions(opt);
-    var $msg = $(".desc.message", $messages);
-    battleMessage($msg, false, "");
-    battleMessage($msg, opt.show, opt.text);
-  };
+  var source = function(opt) { battleMessage(opt, $(".source.message", $messages)); };
+  var action = function(opt) { battleMessage(opt, $(".action.message", $messages)); };
+  var target = function(opt) { battleMessage(opt, $(".target.message", $messages)); };
+  var damage = function(opt) { battleMessage(opt, $(".damage.message", $messages)); };
+  var desc = function(opt) { battleMessage(opt, $(".desc.message", $messages)); };
 
-  var getPostActionPause = function() { return postActionPause; };
+  var getBattlePause = function() { return battlePause; };
   
   var hideAllBattleMessages = function() {
     source({show:false});
@@ -151,7 +128,7 @@ var Message = (function() {
     desc({show:false});
   };
   
-  var setPostActionPause = function(amt) { postActionPause = amt; };
+  var setBattlePause = function(amt) { battlePause = amt; };
   
   return {
     init: init
@@ -161,8 +138,8 @@ var Message = (function() {
    ,target: target
    ,damage: damage
    ,desc: desc
-   ,getPostActionPause: getPostActionPause
+   ,getBattlePause: getBattlePause
    ,hideAllBattleMessages: hideAllBattleMessages
-   ,setPostActionPause: setPostActionPause
+   ,setBattlePause: setBattlePause
   };
 })();

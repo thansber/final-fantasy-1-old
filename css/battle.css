@@ -32,6 +32,11 @@
 #battle .input .commands .column { float:left; }
 #battle .input .commands .second.column { margin-left:36px; }
 #battle .input .commands .text { height:24px; }
+#battle .input .spells { width:326px; height:90px; z-index:2; position:absolute; margin:8px 0 0 8px; padding:12px 0 12px 4px; overflow:hidden;}
+#battle .input .spells .spell.level { float:left; width:100%; height:26px; }
+#battle .input .spells .spell.level .text { float:left; width:80px; }
+#battle .input .spells .spell.level .levelNum { width:50px; }
+#battle .input .spells .spell.level .numCharges { float:right; width:32px; }
 
 #battle .messages { width:350px; padding-top:8px; clear:both; }
 #battle .messages .message { padding-top:16px; height:24px; padding-left:8px; }

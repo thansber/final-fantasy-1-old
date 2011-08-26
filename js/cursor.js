@@ -5,6 +5,7 @@ var Cursor = (function() {
   var init = function() {
     registerCursor(BattleMenuCursor);
     registerCursor(BattleEnemyCursor);
+    registerCursor(BattleSpellCursor);
   };
   
   var initCursors = function() {

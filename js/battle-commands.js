@@ -17,6 +17,11 @@ var BattleCommands = (function() {
    ,Enemy : "enemy"
   };
   
+  var TargetAffects = {
+    All : "all"
+   ,Single : "single"
+  };
+  
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
@@ -41,20 +46,15 @@ var BattleCommands = (function() {
         break;
     }
     
-    if (command.spell) {
-      s += " " + command.spell.spellId + " on";
+    if (command.spellId) {
+      s += " " + command.spellId + " on";
     }
+  
+    var targets = jQuery.isArray(command.target) ? command.target : [command.target];
+    s += " " + jQuery.map(targets, function(target) { 
+      return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
+    }).join(", ");
     
-    if (command.target) {
-      var targets = command.target;
-      if (!jQuery.isArray(command.target)) {
-        targets = [command.target];
-      }
-      
-      s += " " + jQuery.map(targets, function(target) { 
-        return target.getName() + (isParty ? " " + command.targetIndex : ""); 
-      }).join(", ");
-    };
     return s;
   };
   
@@ -77,6 +77,8 @@ var BattleCommands = (function() {
           v = value.getName();
         } else if (value.desc) {
           v = value.desc;
+        } else if (value.spellId) {
+          v = value.spellId;
         }
       }
       return index + "=" + v;
@@ -133,12 +135,15 @@ var BattleCommands = (function() {
       switch (command.action) {
         case ActionTypes.Attack:
           result = Action.attack(command.source, command.target);
+          Animation.resultFromAttack(command, result);
+          break;
+        case ActionTypes.CastSpell:
+          result = Action.castSpell(command.source, command.spellId, command.target);
+          Animation.resultFromSpell(command, result);
           break;
       }
       
       console.log(resultToString(result));
-      
-      Animation.resultFromAttack(command, result);
     });
   };
   
@@ -175,17 +180,34 @@ var BattleCommands = (function() {
       command = {type:CommandTypes.Party};
     }
     
-    if (opt.source) {
-      command.source = opt.source;
-    }
-    
-    if (opt.action) {
-      command.action = opt.action;
-    }
+    if (opt.source) { command.source = opt.source; }
+    if (opt.action) { command.action = opt.action; }
+    if (opt.spellId) { command.spellId = opt.spellId; }
     
     if (opt.target) {
-      command.targetIndex = (opt.target.index == null ? 0 : opt.target.index);
-      command.target = Battle.lookupEnemy(opt.target.name, command.targetIndex);
+      command.targetType = opt.target.type;
+      command.targetAffects = opt.target.affects;
+      var isAllTarget = (command.targetAffects == TargetAffects.All); 
+      var isEnemyTarget = (command.targetType == CommandTypes.Enemy); 
+      // Single target
+      if (isAllTarget) {
+       // Multi-target
+        if (isEnemyTarget) {
+          command.target = [];
+          jQuery.each(Battle.getAllEnemies(), function(enemyName, enemies) {
+            jQuery.merge(command.target, enemies);
+          });
+        } else {
+          command.target = jQuery.merge([], Party.getChars());
+        }
+      } else {
+        if (isEnemyTarget) {
+          command.targetIndex = (opt.target.index == null ? 0 : opt.target.index);
+          command.target = Battle.lookupEnemy(opt.target.name, command.targetIndex);
+        } else {
+          command.target = opt.target.char;
+        }
+      } 
     }
     
     partyCommands[charIndex] = command;
@@ -210,5 +232,7 @@ var BattleCommands = (function() {
    
    ,Party : CommandTypes.Party
    ,Enemy : CommandTypes.Enemy
+   ,All : TargetAffects.All
+   ,Single : TargetAffects.Single
   };
 })();

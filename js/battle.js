@@ -4,6 +4,7 @@ var Battle = (function() {
   var $party = null;
   var $enemies = null;
   var $stats = null;
+  var $spellList = null;
 
   var enemies = {};
   
@@ -18,6 +19,7 @@ var Battle = (function() {
     $party = $(".party", $battle);
     $enemies = $(".enemies", $battle);
     $stats = $(".stats", $battle);
+    $spellList = $(".input .spells", $battle);
     
     $battle.find(".commands .column").eq(0)
       .append(Message.create("FIGHT", "fight"))
@@ -155,6 +157,7 @@ var Battle = (function() {
     jQuery.each(party, function(i, char) {
       $party.append(createCharUI(char));
       $stats.append(createCharStatsUI(char));
+      resetCharUI(char);
     });
   };
   
@@ -262,6 +265,22 @@ var Battle = (function() {
     }
   };
   
+  var populateSpellList = function() {
+    $(".spell.level", $spellList).empty();
+    var char = Party.getChar(BattleCommands.getCharIndex()); 
+    $(".spell.level", $spellList).each(function(i) {
+      var $this = $(this);
+      $this.append(Message.create("L" + (i + 1), "levelNum"));
+      if (char.knownSpells[i]) {
+        for (var s in char.knownSpells[i]) {
+          $this.append(Message.create(char.knownSpells[i][s], "spell"));
+        }
+      }
+      $this.append(Message.create("" + char.charges[i], "numCharges"));
+    });
+    $spellList.removeClass("hidden");
+  };
+  
   var resetCharUI = function(char) {
     var $char = getCharUI(char); 
     var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
@@ -270,14 +289,14 @@ var Battle = (function() {
     $("div.hp", $charStats).empty().append(Message.create(char.hitPoints + ""));
     
     $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
-    
-    if (char.isCritical()) { 
-      $char.addClass("critical"); 
+    $char.toggleClass("critical", char.isCritical()); 
+
+    var isPoisoned = char.hasStatus(Status.Poison);
+    $("label.hp", $charStats).empty().append(Message.create(isPoisoned ? "PO" : "HP"));
+    if (isPoisoned) {
+      $char.addClass("critical");
     }
-    if (char.hasStatus(Status.Poison)) { 
-      $("label.hp", $charStats).empty().append(Message.create("PO"));
-      $char.addClass("critical"); 
-    }
+
     if (char.isDead()) { 
       $char.addClass("dead"); 
     }
@@ -290,11 +309,12 @@ var Battle = (function() {
   // Called for each new battle
   // Input definition:
   // - enemies: [{name:"IMP",qty:3},...]
-  // - background: string for the battle background, see Map.BattleBackgrounds
+  // - background: background object, see Map.BattleBackgrounds
   var setup = function(opt) {
     enemies = {};
-    if (opt.background && Map.BattleBackgrounds[opt.background]) {
-      $("#battle .background").attr("class", "background " + Map.BattleBackgrounds[opt.background].cssClass);
+    opt = opt || {};
+    if (opt.background) {
+      $("#battle .background").attr("class", "background " + opt.background.cssClass);
     }
     var battleEnemies = (opt && opt.enemies) || {};
     var moveFirstChar = !opt.doNotMove;
@@ -329,6 +349,7 @@ var Battle = (function() {
    ,lookupEnemy: lookupEnemy
    ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
    ,moveCurrentCharBackwardAndPreviousCharForward: moveCurrentCharBackwardAndPreviousCharForward
+   ,populateSpellList: populateSpellList
    ,resetCharUI: resetCharUI
    ,setup: setup
   }  
