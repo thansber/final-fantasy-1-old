@@ -149,6 +149,9 @@
 .enemies .splash { background-image:url(../images/splash-sheet.png); background-repeat:no-repeat; width:32px; height:32px; background-position:1000em 1000em; position:absolute; }
 .enemies .splash.three { height:16px; }
 
+.enemies .splash.overlay.one { background-position:0 0; }
+.enemies .splash.overlay.two { background-position:0 -32px; }
+.enemies .splash.overlay.three { background-position:0 -64px; }
 .enemies .splash.blue.one { background-position:-32px 0; }
 .enemies .splash.blue.two { background-position:-32px -32px; }
 .enemies .splash.blue.three { background-position:-32px -64px; }

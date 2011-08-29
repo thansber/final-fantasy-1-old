@@ -71,17 +71,31 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands();
   };
   
-  var castSpellOnEnemies = function() {
-    var char = Party.createNewChar("AAAA", CharacterClass.BLACK_MAGE, 0);
-    var spellsToLearn = ["FIRE","LIT","LOCK","ICE","TMPR","FIR2","LIT2","LOK2","FAST","ICE2","BANE","FIR3"];
-    char.spellCharges([5,3,2,0,0,0,0,0]);
+  var castSpellOnEnemy = function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.BLACK_WIZARD, 0);
+    var spellsToLearn = ["BRAK"];
+    char.spellCharges([5,3,2,2,1,1,1,1]);
     for (var s in spellsToLearn) {
       char.learnSpell(Spell.lookup(spellsToLearn[s]));
     }
     Party.addChar(char);
     Battle.setup({enemies:[{name:"IMP",qty:2}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
     
-    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"FIR2", target:{type:BattleCommands.Enemy, affects:BattleCommands.All}});
+    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"BRAK", target:{name:"IMP",index:1,type:BattleCommands.Enemy, affects:BattleCommands.Single}});
+    BattleCommands.executeCommands();
+  };
+  
+  var castSpellOnEnemies = function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.BLACK_WIZARD, 0);
+    var spellsToLearn = ["FIRE","LIT","LOCK","ICE","TMPR","FIR2","LIT2","LOK2","FAST","ICE2","BANE","FIR3","STOP"];
+    char.spellCharges([5,3,2,2,1,1,1,1]);
+    for (var s in spellsToLearn) {
+      char.learnSpell(Spell.lookup(spellsToLearn[s]));
+    }
+    Party.addChar(char);
+    Battle.setup({enemies:[{name:"IMP",qty:1},{name:"WORM",qty:1}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
+    
+    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"STOP", target:{type:BattleCommands.Enemy, affects:BattleCommands.All}});
     BattleCommands.executeCommands();
   };
   
@@ -96,6 +110,8 @@ var ActionHelper = (function() {
       castSpellOnSelf();
     } else if ($target.is(".spell.party.target")) {
       castSpellOnPartyTarget();
+    } else if ($target.is(".spell.enemy")) {
+      castSpellOnEnemy();
     } else if ($target.is(".spell.enemies")) {
       castSpellOnEnemies();
     }

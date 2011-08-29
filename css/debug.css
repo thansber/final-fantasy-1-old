@@ -48,6 +48,7 @@
 #debug .enemiesSplash .row { clear:both; margin-bottom:1em; overflow:auto; }
 #debug .enemiesSplash label { float:left; width:9em; text-align:right; margin-right:0.4em; }
 #debug .enemiesSplash select { float:left; margin-left:1em; }
+#debug .enemiesSplash input { float:left; margin-left:1em; }
 #debug .enemiesSplash .monster { float:left; margin-left:1.6em; }
 
 #debug .battleSetup .row { clear:both; height:2em;}

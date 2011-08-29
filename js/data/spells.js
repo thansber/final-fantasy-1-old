@@ -15,7 +15,7 @@ Spell.create({
   base:{name:"HARM", level:1, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:20, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#0070EC", splash:"blue white-overlay"}
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#0070EC", splash:"blue", overlay:true}
  // TODO: add some way to specify it only affects Undead
  });
 Spell.create({
@@ -27,22 +27,22 @@ Spell.create({
   base:{name:"FIRE", level:1, target:Spell.TargetType.Single, type:Spell.SpellType.Damage}
  ,stats:{eff:10, acc:24, element:Element.Fire}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC7460", splash:"red white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC7460", splash:"red", overlay:true}});
 Spell.create({
   base:{name:"LIT", level:1, target:Spell.TargetType.Single, type:Spell.SpellType.Damage}
  ,stats:{eff:10, acc:24, element:Element.Lightning}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#F0BC3C", splash:"gold white-overlay"}});
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#F0BC3C", splash:"gold", overlay:true}});
 Spell.create({
   base:{name:"LOCK", level:1, target:Spell.TargetType.Single, type:Spell.SpellType.StatDown}
  ,stats:{eff:20, acc:64, statChanged:"spellEvasion"}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Star, message:"Easy to hit", bgColor:"#F0BC3C", splash:"gold white-overlay"}});
+ ,ui:{effect:Spell.Effect.Star, message:"Easy to hit", bgColor:"#F0BC3C", splash:"gold", overlay:true}});
 Spell.create({
   base:{name:"SLEP", level:1, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:24, element:Element.Status, status:Status.Sleep}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Asleep", bgColor:"#58F898", splash:"sea green white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Asleep", bgColor:"#58F898", splash:"sea green", overlay:true}});
 
 // --------------
 // Level 2 Spells
@@ -71,17 +71,17 @@ Spell.create({
   base:{name:"DARK", level:2, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:24, element:Element.Status, status:Status.Blind}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Darkness", bgColor:"#4088FC", splash:"purple white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Darkness", bgColor:"#4088FC", splash:"purple", overlay:true}});
 Spell.create({
   base:{name:"ICE", level:2, target:Spell.TargetType.Single, type:Spell.SpellType.Damage}
  ,stats:{eff:20, acc:24, element:Element.Ice}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#3CBCFC", splash:"blue white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#3CBCFC", splash:"blue", overlay:true}});
 Spell.create({
   base:{name:"SLOW", level:2, target:Spell.TargetType.All, type:Spell.SpellType.HitMultiplierDown}
  ,stats:{eff:0, acc:64, element:Element.Status, hitMultiplierChange:-1}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Lost intelligence", bgColor:"#4CDC48", splash:"light green white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Lost intelligence", bgColor:"#4CDC48", splash:"light green", overlay:true}});
 Spell.create({
   base:{name:"TMPR", level:2, target:Spell.TargetType.Single, type:Spell.SpellType.StatUp}
  ,stats:{eff:14, acc:0, statChanged:"spellAttack"}
@@ -111,29 +111,29 @@ Spell.create({
   base:{name:"HRM2", level:3, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:40, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#4088FC", splash:"purple white-overlay"}
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#4088FC", splash:"purple", overlay:true}
  // TODO: add some way to specify it only affects Undead
  });
 Spell.create({
   base:{name:"FIR2", level:3, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:30, acc:24, element:Element.Fire}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC9838", splash:"orange white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC9838", splash:"orange", overlay:true}});
 Spell.create({
   base:{name:"HOLD", level:3, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:64, element:Element.Status, status:Status.Paralysis}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Attack halted", bgColor:"#FC9838", splash:"orange white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Attack halted", bgColor:"#FC9838", splash:"orange", overlay:true}});
 Spell.create({
   base:{name:"LIT2", level:3, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:30, acc:24, element:Element.Lightning}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC9838", splash:"orange white-overlay"}});
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC9838", splash:"orange", overlay:true}});
 Spell.create({
   base:{name:"LOK2", level:3, target:Spell.TargetType.All, type:Spell.SpellType.StatDown}
  ,stats:{eff:20, acc:40, statChanged:"spellEvasion"}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Star, message:"Easy to hit", bgColor:"#FC9838", splash:"orange white-overlay"}});
+ ,ui:{effect:Spell.Effect.Star, message:"Easy to hit", bgColor:"#FC9838", splash:"orange", overlay:true}});
 
 // --------------
 // Level 4 Spells
@@ -152,7 +152,7 @@ Spell.create({
   base:{name:"FEAR", level:4, target:Spell.TargetType.All, type:Spell.SpellType.MoraleDown}
  ,stats:{eff:40, acc:24, element:Element.Status}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Became terrified", bgColor:"#FC74B4", splash:"pink white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Became terrified", bgColor:"#FC74B4", splash:"pink", overlay:true}});
 Spell.create({
   base:{name:"PURE", level:4, target:Spell.TargetType.Single, type:Spell.SpellType.RemoveStatus}
  ,stats:{eff:0, acc:0, status:Status.Poison}
@@ -162,7 +162,7 @@ Spell.create({
   base:{name:"CONF", level:4, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:64, status:Status.Confuse}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Confused", bgColor:"#FC7460", splash:"red white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Confused", bgColor:"#FC7460", splash:"red", overlay:true}});
 Spell.create({
   base:{name:"FAST", level:4, target:Spell.TargetType.Single, type:Spell.SpellType.HitMultiplierUp}
  ,stats:{eff:0, acc:0, hitMultiplierChange:1}
@@ -173,12 +173,12 @@ Spell.create({
   base:{name:"ICE2", level:4, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:40, acc:24, element:Element.Ice}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#5C94FC", splash:"blue white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#5C94FC", splash:"blue", overlay:true}});
 Spell.create({
   base:{name:"SLP2", level:4, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:64, status:Status.Sleep}
  ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Asleep", bgColor:"#3CBCFC", splash:"blue white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Asleep", bgColor:"#3CBCFC", splash:"blue", overlay:true}});
 
 // --------------
 // Level 5 Spells
@@ -197,7 +197,7 @@ Spell.create({
   base:{name:"HRM3", level:5, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:60, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC74B4", splash:"pink white-overlay"}
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC74B4", splash:"pink", overlay:true}
  // TODO: add some way to specify it only affects Undead
  });
 Spell.create({
@@ -208,17 +208,17 @@ Spell.create({
   base:{name:"BANE", level:5, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:40, element:Element.PoisonStone, status:Status.Dead}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Poison Smoke", bgColor:"#FC94FC", splash:"blue white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Poison smoke", bgColor:"#FC94FC", splash:"blue", overlay:true}});
 Spell.create({
   base:{name:"FIR3", level:5, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:50, acc:24, element:Element.Fire}
  ,allowedClasses:[CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC74B4", splash:"pink white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#FC74B4", splash:"pink", overlay:true}});
 Spell.create({
   base:{name:"SLO2", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.HitMultiplierDown}
  ,stats:{eff:0, acc:64, hitMultiplierChange:-1}
  ,allowedClasses:[CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Lost intelligence", bgColor:"#80D010", splash:"green white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Lost intelligence", bgColor:"#80D010", splash:"green", overlay:true}});
 Spell.create({
   base:{name:"WARP", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle}
  ,stats:{eff:0, acc:0}
@@ -249,22 +249,22 @@ Spell.create({
   base:{name:"LIT3", level:6, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:60, acc:24, element:Element.Lightning}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#5C94FC", splash:"blue white-overlay"}});
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#5C94FC", splash:"blue", overlay:true}});
 Spell.create({
   base:{name:"QAKE", level:6, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:24, element:Element.Earth, status:Status.Dead}
  ,allowedClasses:[CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Star, message:"Fell into crack", bgColor:"#FC7460", splash:"red white-overlay"}});
+ ,ui:{effect:Spell.Effect.Star, message:"Fell into crack", bgColor:"#FC7460", splash:"red", overlay:true}});
 Spell.create({
   base:{name:"RUB", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:24, element:Element.Death, status:Status.Dead}
  ,allowedClasses:[CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Death, message:"Erased", bgColor:"#BCBCBC", splash:"grey white-overlay"}});
+ ,ui:{effect:Spell.Effect.Death, message:"Erased", bgColor:"#BCBCBC", splash:"grey", overlay:true}});
 Spell.create({
   base:{name:"STUN", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus300Hp}
  ,stats:{eff:0, acc:0, element:Element.Status, status:Status.Paralysis}
  ,allowedClasses:[CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Paralyzed", bgColor:"#F0BC3C", splash:"gold white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Paralyzed", bgColor:"#F0BC3C", splash:"gold", overlay:true}});
 
 // --------------
 // Level 7 Spells
@@ -288,24 +288,24 @@ Spell.create({
   base:{name:"HRM4", level:7, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:80, acc:48}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#00E8D8", splash:"turquoise white-overlay"}
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#00E8D8", splash:"turquoise", overlay:true}
  // TODO: add some way to specify it only affects Undead
  });
 Spell.create({
   base:{name:"BLND", level:7, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus300Hp}
  ,stats:{eff:0, acc:0, element:Element.Status, status:Status.Blind}
  ,allowedClasses:[CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:"Darkness", bgColor:"#F478FC", splash:"magenta white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:"Darkness", bgColor:"#F478FC", splash:"magenta", overlay:true}});
 Spell.create({
   base:{name:"BRAK", level:7, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:64, element:Element.PoisonStone, status:Status.Stone}
  ,allowedClasses:[CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, message:"Broken into pieces", bgColor:"#BCBCBC", splash:"grey white-overlay"}});
+ ,ui:{effect:Spell.Effect.Beam, message:"Broken into pieces", bgColor:"#BCBCBC", splash:"grey", overlay:true}});
 Spell.create({
   base:{name:"ICE3", level:7, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:70, acc:24, element:Element.Ice}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#58F898", splash:"sea green white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#58F898", splash:"sea green", overlay:true}});
 Spell.create({
   base:{name:"SABR", level:7, target:Spell.TargetType.Self, type:Spell.SpellType.StatUpMulti}
  ,stats:{eff:16, acc:40, statChanged:{eff:"spellAttack", acc:"spellHit"}}
@@ -319,7 +319,7 @@ Spell.create({
   base:{name:"FADE", level:8, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:80, acc:107}
  ,allowedClasses:[CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Beam, bgColor:"#F478FC", splash:"magenta white-overlay"}});
+ ,ui:{effect:Spell.Effect.Beam, bgColor:"#F478FC", splash:"magenta", overlay:true}});
 Spell.create({
   base:{name:"LIF2", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle}
  ,stats:{eff:0, acc:0}
@@ -333,27 +333,27 @@ Spell.create({
   base:{name:"XFER", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.WeakToElement}
  ,stats:{eff:0, acc:107, element:Element.AllElements}
  ,allowedClasses:[CharacterClass.WHITE_WIZARD]
- ,ui:{effect:Spell.Effect.Star, message:"Defenseless", bgColor:"#BCBCBC", splash:"grey white-overlay"}});
+ ,ui:{effect:Spell.Effect.Star, message:"Defenseless", bgColor:"#BCBCBC", splash:"grey", overlay:true}});
 Spell.create({
   base:{name:"NUKE", level:8, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
  ,stats:{eff:100, acc:107}
  ,allowedClasses:[CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Flame, bgColor:"#F0BC3C", splash:"gold white-overlay"}});
+ ,ui:{effect:Spell.Effect.Flame, bgColor:"#F0BC3C", splash:"gold", overlay:true}});
 Spell.create({
   base:{name:"STOP", level:8, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:48, element:Element.Time, status:Status.Paralysis}
  ,allowedClasses:[CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Status, message:["Time stopped","Paralyzed"], bgColor:"#BCBCBC", splash:"grey white-overlay"}});
+ ,ui:{effect:Spell.Effect.Status, message:["Time stopped","Paralyzed"], bgColor:"#BCBCBC", splash:"grey", overlay:true}});
 Spell.create({
   base:{name:"XXXX", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:0, element:Element.Death, status:Status.Dead}
  ,allowedClasses:[CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Death, message:"Erased", bgColor:"#F0BC3C", splash:"gold white-overlay"}});
+ ,ui:{effect:Spell.Effect.Death, message:"Erased", bgColor:"#F0BC3C", splash:"gold", overlay:true}});
 Spell.create({
   base:{name:"ZAP!", level:8, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:32, element:Element.Time, status:Status.Dead}
  ,allowedClasses:[CharacterClass.BLACK_WIZARD]
- ,ui:{effect:Spell.Effect.Death, message:"Exile to 4th dimension", bgColor:"#58F898", splash:"sea green white-overlay"}});
+ ,ui:{effect:Spell.Effect.Death, message:"Exile to 4th dimension", bgColor:"#58F898", splash:"sea green", overlay:true}});
  
   // --------------
 // Monster skills

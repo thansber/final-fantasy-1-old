@@ -54,7 +54,7 @@ var Message = (function() {
   };
   
   var parseOptions = function(opt) {
-    return typeof opt === "string" ? {text:opt, show:true} : opt || {};
+    return typeof opt === "string" || typeof opt === "number" ? {text:"" + opt, show:true} : opt || {};
   };
   
   var toggleMessage = function($message, showing, text) {

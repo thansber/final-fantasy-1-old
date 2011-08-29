@@ -70,7 +70,7 @@ var Spell = (function() {
          if (target.isProtectedFrom(spell.element)) {
            maxDmg = spell.effectivity; // halved
            minDmg = spell.effectivity * 0.5; // halved
-         } else if (target.isWeakTo(spell.element)) {
+         } else if (target.isWeakToElement(spell.element)) {
            maxDmg = Math.floor(maxDmg * 1.5);
            minDmg = Math.floor(minDmg * 1.5);
          }
@@ -123,6 +123,7 @@ var Spell = (function() {
        if (statusSuccess) {
          target.addStatus(spell.status);
        }
+       spell.result.died.push(statusSuccess && (Status.equals(spell.status, Status.Dead) || Status.equals(spell.status, Status.Stone)));
        spell.result.success.push(statusSuccess);
      }
    }
@@ -221,7 +222,7 @@ var Spell = (function() {
       if (target.isProtectedFrom(spell.element)) {
         baseChance = 0;
       }
-      if (target.isWeakTo(spell.element)) {
+      if (target.isWeakToElement(spell.element)) {
         baseChance += 40;
       }
     }
@@ -281,6 +282,7 @@ var Spell = (function() {
     this.backgroundColor = ui.bgColor;
     this.splash = ui.splash;
     this.message = ui.message;
+    this.overlay = !!ui.overlay;
     
     ALL[this.spellId] = this;
   };

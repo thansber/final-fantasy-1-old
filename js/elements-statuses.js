@@ -47,6 +47,7 @@ var Status = (function() {
    ,Mute : ALL.Mute
    ,Confuse : ALL.Confuse
    ,AllStatuses : [ALL.Dead, ALL.Stone, ALL.Poison, ALL.Blind, ALL.Paralysis, ALL.Sleep, ALL.Mute, ALL.Confuse]
-   ,AllExceptDead : [ALL.Stone, ALL.Poison, ALL.Blind, ALL.Paralysis, ALL.Sleep, ALL.Mute, ALL.Confuse] 
+   ,AllExceptDead : [ALL.Stone, ALL.Poison, ALL.Blind, ALL.Paralysis, ALL.Sleep, ALL.Mute, ALL.Confuse]
+   ,equals : function(status1, status2) { return status1.id == status2.id; }
   };
 })();

@@ -27,7 +27,6 @@ var BattleSetupHelper = (function() {
     var $selector = $(".background .selector", $debug);
     $selector.append($("<option/>", {text:"-- Select a background --", value:""}));
     for (var b in Map.BattleBackgrounds) {
-      var background = Map.BattleBackgrounds[b]; 
       $selector.append($("<option/>", {text:b,value:b}));
     }
   };
@@ -82,7 +81,7 @@ var BattleSetupHelper = (function() {
       enemies.push(fiendQty);
     }
     
-    Battle.setup({enemies:enemies, background:background});
+    Battle.setup({enemies:enemies, background:Map.BattleBackgrounds[background]});
   };
   
   var sortByNameIgnoreCase = function(a, b) {

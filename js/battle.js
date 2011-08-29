@@ -224,13 +224,18 @@ var Battle = (function() {
     return $enemies.find(".enemy." + monster.cssClass).eq(cleanMonsterIndex(index));
   };
   
+  var getEnemyUIByIndex = function(index) {
+    return $enemies.find(".enemy").eq(cleanMonsterIndex(index));
+  };
+  
   var inputMessageToggler = function(roundStarting) {
     $(".input", $battle).toggle(!roundStarting);
     $(".messages", $battle).toggleClass("hidden", !roundStarting);
   };
   
   var killEnemyUI = function(monster, index) {
-    getEnemyUI(monster, index).addClass("dead");    
+    var $enemy = (index == null ? monster : getEnemyUI(monster, index));
+    $enemy.addClass("dead");    
   };
   
   var lookupEnemy = function(name, index) {
@@ -344,6 +349,7 @@ var Battle = (function() {
    ,getAllEnemies: function() { return enemies; }
    ,getCharUI: getCharUI
    ,getEnemyUI: getEnemyUI
+   ,getEnemyUIByIndex: getEnemyUIByIndex
    ,inputMessageToggler: inputMessageToggler
    ,killEnemyUI: killEnemyUI
    ,lookupEnemy: lookupEnemy

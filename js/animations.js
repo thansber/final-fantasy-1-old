@@ -19,6 +19,14 @@ var Animation = (function() {
   
   var CHAR_AT_REST_CLASSES = ["critical"];
   var SPLASH_ORDINALS = ["one", "two", "three"];
+  var ENEMY_DIED_MSG = "Terminated";
+  var CHAR_DIED_MSG = "Slain..";
+  var DAMAGE_MSG = "DMG";
+  var CRITICAL_HIT_MSG = "Critical hit!!";
+  var NUM_HITS_MSG = "Hits!";
+  var MISSED_MSG = "Missed!";
+  var INEFFECTIVE_MSG = "Ineffective";
+  
   var quickPause = 100;
   
   /* ======================================================== */
@@ -26,7 +34,7 @@ var Animation = (function() {
   /* ======================================================== */
   var Queue = function(name) {
     this.theQueue = $({});
-    this.name = name;
+    this.name = name + (+new Date());
   };
   
   Queue.prototype.add = function(f) {
@@ -72,6 +80,24 @@ var Animation = (function() {
     
     if (settings.autoStart) {
       q.start();
+    }
+  };
+  
+  var spellMessages = function(q, spell) {
+    if (spell.message) { 
+      var afterFirstMessage = false;
+      var spellMessages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
+      for (var m in spellMessages) {
+        if (afterFirstMessage) {
+          q.delay(Message.getBattlePause());
+        }
+        q.add(function(message) { 
+          return function() { 
+            Message.desc(message); 
+          }; 
+        }(spellMessages[m]));
+        afterFirstMessage = true;
+      }
     }
   };
   
@@ -170,21 +196,21 @@ var Animation = (function() {
     var isParty = (command.type == BattleCommands.Party);
 
     if (result.hits && result.hits > 1) { 
-      q.add(function() { Message.action(result.hits + "Hits!"); });
+      q.add(function() { Message.action(result.hits + Animation.NUM_HITS_MSG); });
     }
     
     if (result.dmg != null) {
       if (result.dmg == 0) {
-        q.add(function() { Message.damage("Missed!"); });
+        q.add(function() { Message.damage(Animation.MISSED_MSG); });
       } else {
         q.delay(quickPause);
-        q.add(function() { Message.damage(result.dmg + "DMG"); });
+        q.add(function() { Message.damage(result.dmg + Animation.DAMAGE_MSG); });
       }
     }
     
     if (result.crit) {
       q.delay(quickPause);
-      q.add(function() { Message.desc("Critical hit!!"); });
+      q.add(function() { Message.desc(Animation.CRITICAL_HIT_MSG); });
     }
     
     if (result.status) {
@@ -195,10 +221,10 @@ var Animation = (function() {
     if (result.died) {
       q.delay(result.crit || result.status ? Message.getBattlePause() : quickPause);
       if (isParty) {
-        q.add(function() { Message.desc("Terminated"); });
+        q.add(function() { Message.desc(Animation.ENEMY_DIED_MSG); });
         q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
       } else {
-        q.add(function() { Message.desc("Slain.."); });
+        q.add(function() { Message.desc(Animation.CHAR_DIED_MSG); });
         q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
       }
     }
@@ -248,7 +274,9 @@ var Animation = (function() {
     }
     
     q.add(function() { 
-      castSpell(command.source, result.spell, function() { resultFromSpellTarget(command, result).start(); }); 
+      var spellResultQueue = resultFromSpellTarget(command, result);
+      var spellResultCallback = function() { spellResultQueue.start(); };
+      castSpell(command.source, result.spell, spellResultCallback); 
     });
     
     q.start();
@@ -260,51 +288,15 @@ var Animation = (function() {
     var targetQueues = [];
     
     switch (command.targetType) {
-      
       case BattleCommands.Party:
-      
-        for (var t in result.target) {
-          var target = result.target[t];
-          var q = charFlicker(target);
-          q.insertAt(function() { Message.target(target.getName()); }, 0);
-          
-          if (spell.message) { 
-            var afterFirstMessage = false;
-            var spellMessages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
-            for (var m in spellMessages) {
-              if (afterFirstMessage) {
-                q.delay(Message.getBattlePause());
-              }
-              q.add(function() { Message.desc(spellMessages[m]); });
-              afterFirstMessage = true;
-            }
-          }
-          
-          q.add(function() { Battle.resetCharUI(target); });
-          q.delay(Message.getBattlePause());
-          if (spell.message) {
-            q.add(function() { Message.desc({show:false}); });
-            q.delay(quickPause);
-          }
-          q.add(function() { Message.target({show:false}); });
-          q.delay(quickPause);
-
-          
-          targetQueues.push(q);
-        }
+        targetQueues = resultFromSpellPartyTarget(result, spell);
         break;
-        
       case BattleCommands.Enemy:
-        var enemyIndex = 0;
-        var enemyName = null;
-        for (var t in result.target) {
-          var target = result.target[t];
-          enemyIndex = (enemyName != target.getName() ? 0 : enemyIndex + 1);
-          enemyName = target.getName();
-          var q = splash(Battle.getEnemyUI(enemyName, enemyIndex), spell.splash);
-          // TODO: ended here, stuck on splash with white overlay
+        for (var i = 0; i < result.target.length; i++) {
+          var target = result.target[i];
+          var $target = (result.target.length == 1 ? Battle.getEnemyUI(target, command.targetIndex) : Battle.getEnemyUIByIndex(i));
+          targetQueues.push(resultFromSpellEnemyTarget(result, i, spell, target, $target));
         }
-        
         break;
     };
     
@@ -315,17 +307,86 @@ var Animation = (function() {
     targetQueues[targetQueues.length - 1].add(function() { messageHider.start(); });
     
     // Chain all the target queues so they run serially and run after the previous one finishes
-    for (var i = 0; i < targetQueues.length; i++) {
-      if (i < targetQueues.length - 1) {
-        targetQueues[i].add(function() { targetQueues[i + 1].start(); });
+    if (targetQueues.length > 1) {
+      for (var i = 0; i < targetQueues.length - 1; i++) {
+        var nextTargetQueue = targetQueues[i + 1];
+        targetQueues[i].add(function() { nextTargetQueue.start(); });
       }
     }
     
     return targetQueues[0];
   };
   
+  var resultFromSpellEnemyTarget = function(result, resultIndex, spell, target, $target) {
+    var dmgShown = false, descShown = false;
+    var q = splash($target, spell.splash, {overlay:spell.overlay});
+
+    q.insertAt(function() { Message.target(target.getName()); }, 0);
+    
+    var resultDamage = result.dmg[resultIndex];
+    if (resultDamage != null) {
+      q.delay(quickPause);
+      q.add(function() { Message.damage(resultDamage + Animation.DAMAGE_MSG); });
+      dmgShown = true;
+    }
+    
+    if (result.success.length > 0) {
+      q.delay(quickPause);
+      if (!!result.success[resultIndex]) {
+        spellMessages(q, spell);
+      } else {
+        q.add(function() { Message.desc(Animation.INEFFECTIVE_MSG); });
+      }
+      descShown = true;
+    }
+    
+    if (!!result.died[resultIndex]) {
+      q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : quickPause);
+      q.add(function() { Message.desc(Animation.ENEMY_DIED_MSG); });
+      q.add(function() { Battle.killEnemyUI($target); });
+      descShown = true;
+    }
+    q.delay(Message.getBattlePause());
+    
+    if (descShown) {
+      q.add(function() { Message.desc({show:false}); });
+      q.delay(quickPause);
+    }
+    
+    if (dmgShown) {
+      q.add(function() { Message.damage({show:false}); });
+      q.delay(quickPause);
+    }
+    
+    q.add(function() { Message.target({show:false}); });
+    q.delay(quickPause);
+    
+    return q;
+  };
+  
+  var resultFromSpellPartyTarget = function(result, spell) {
+    var targetQueues = [];
+    for (var t in result.target) {
+      var target = result.target[t];
+      var q = charFlicker(target);
+      q.insertAt(function() { Message.target(target.getName()); }, 0);
+      spellMessages(q, spell);
+      q.add(function() { Battle.resetCharUI(target); });
+      q.delay(Message.getBattlePause());
+      if (spell.message) {
+        q.add(function() { Message.desc({show:false}); });
+        q.delay(quickPause);
+      }
+      q.add(function() { Message.target({show:false}); });
+      q.delay(quickPause);
+      
+      targetQueues.push(q);
+    }
+    return targetQueues;
+  };
+  
   var splash = function($enemy, splashColors, opt) {
-    var settings = jQuery.extend({}, {pause:100, autoStart:false, callback:null}, opt);
+    var settings = jQuery.extend({}, {pause:80, overlay:false, autoStart:false, callback:null}, opt);
     if (!settings.numAnimations) {
       var $parent = $enemy.parent();
       
@@ -337,7 +398,7 @@ var Animation = (function() {
     
     for (var n = 0; n < settings.numAnimations; n++) {
       q.add(function() { 
-        $("#battle .enemies .splash").each(function() {
+        $("#battle .enemies .splash:not(.overlay)").each(function(i) {
           var $splash = $(this);
           var randomSplashIndex = RNG.randomArrayElement(SPLASH_ORDINALS);
           $splash.removeClass().addClass("splash hidden").addClass(randomSplashIndex).addClass(splashColors);
@@ -350,6 +411,15 @@ var Animation = (function() {
             left : enemyPos.left + splashX
            ,top : enemyPos.top + splashY
           });
+          
+          if (settings.overlay) {
+            var $overlay = $splash.siblings(".overlay").eq(i);
+            $overlay.css({
+              left : enemyPos.left + splashX
+             ,top : enemyPos.top + splashY
+            });
+            $overlay.removeClass().addClass("splash overlay").addClass(randomSplashIndex);
+          }
           
           $splash.removeClass("hidden");
         });
@@ -497,5 +567,12 @@ var Animation = (function() {
    ,windowShake : windowShake
     
    ,Queues : Queues
+   ,ENEMY_DIED_MSG : ENEMY_DIED_MSG
+   ,CHAR_DIED_MSG : CHAR_DIED_MSG
+   ,DAMAGE_MSG : DAMAGE_MSG
+   ,CRITICAL_HIT_MSG : CRITICAL_HIT_MSG
+   ,NUM_HITS_MSG : NUM_HITS_MSG
+   ,MISSED_MSG : MISSED_MSG
+   ,INEFFECTIVE_MSG : INEFFECTIVE_MSG
   };
 })();
