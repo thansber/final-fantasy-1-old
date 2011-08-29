@@ -225,7 +225,7 @@ var Battle = (function() {
   };
   
   var getEnemyUIByIndex = function(index) {
-    return $enemies.find(".enemy").eq(cleanMonsterIndex(index));
+    return $enemies.find(".enemy:not(.dead)").eq(cleanMonsterIndex(index));
   };
   
   var inputMessageToggler = function(roundStarting) {

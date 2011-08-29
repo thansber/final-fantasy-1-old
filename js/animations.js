@@ -284,7 +284,6 @@ var Animation = (function() {
   
   var resultFromSpellTarget = function(command, result) {
     var spell = Spell.lookup(command.spellId);
-    var messageHider = new Queue(Queues.HideAllMessages);
     var targetQueues = [];
     
     switch (command.targetType) {
@@ -295,22 +294,26 @@ var Animation = (function() {
         for (var i = 0; i < result.target.length; i++) {
           var target = result.target[i];
           var $target = (result.target.length == 1 ? Battle.getEnemyUI(target, command.targetIndex) : Battle.getEnemyUIByIndex(i));
-          targetQueues.push(resultFromSpellEnemyTarget(result, i, spell, target, $target));
+          if (!($target.is(".dead"))) {
+            targetQueues.push(resultFromSpellEnemyTarget(result, i, spell, target, $target));
+          }
         }
         break;
     };
     
-    messageHider.add(function() { Message.action({show:false}); });
-    messageHider.delay(quickPause);
-    messageHider.add(function() { Message.source({show:false}); });
-    
-    targetQueues[targetQueues.length - 1].add(function() { messageHider.start(); });
+    // Hide the source/spell at the very end
+    var lastQueue = targetQueues[targetQueues.length - 1];
+    lastQueue.add(function() { Message.action({show:false}); });
+    lastQueue.delay(quickPause);
+    lastQueue.add(function() { Message.source({show:false}); });
     
     // Chain all the target queues so they run serially and run after the previous one finishes
     if (targetQueues.length > 1) {
       for (var i = 0; i < targetQueues.length - 1; i++) {
-        var nextTargetQueue = targetQueues[i + 1];
-        targetQueues[i].add(function() { nextTargetQueue.start(); });
+        targetQueues[i].add(
+          function(nextQueue) { 
+            return function() { nextQueue.start(); };
+          }(targetQueues[i + 1]));
       }
     }
     

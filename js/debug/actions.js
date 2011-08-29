@@ -93,9 +93,14 @@ var ActionHelper = (function() {
       char.learnSpell(Spell.lookup(spellsToLearn[s]));
     }
     Party.addChar(char);
-    Battle.setup({enemies:[{name:"IMP",qty:1},{name:"WORM",qty:1}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
+    Battle.setup({enemies:[{name:"IMP",qty:3}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
     
-    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"STOP", target:{type:BattleCommands.Enemy, affects:BattleCommands.All}});
+    // Kill off one enemy
+    var enemyToKill = Battle.lookupEnemy("IMP", 1);
+    enemyToKill.applyDamage(1000);
+    Battle.killEnemyUI(enemyToKill, 1);
+    
+    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"ICE2", target:{type:BattleCommands.Enemy, affects:BattleCommands.All}});
     BattleCommands.executeCommands();
   };
   
