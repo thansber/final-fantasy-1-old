@@ -104,22 +104,28 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands();
   };
   
+  var castSpellOnEntireParty = function() {
+    Party.addChar(Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0));
+    Party.addChar(Party.createNewChar("BBBB", CharacterClass.BLACKBELT, 1));
+    Party.addChar(Party.createNewChar("CCCC", CharacterClass.WHITE_MAGE, 2));
+    Party.addChar(Party.createNewChar("DDDD", CharacterClass.BLACK_MAGE, 3));
+    Battle.setup({enemies:[{name:"MAGE",qty:4}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
+    
+    var monster = Battle.lookupEnemy("MAGE", 0);
+    var spell = Spell.lookup("FIR3");
+    BattleCommands.enemy(null, {source:monster, action:BattleCommands.CastSpell, spellId:spell.spellId, target:monster.determineSpellTarget(spell), targetType:BattleCommands.Party});
+    BattleCommands.executeCommands();
+  };
+  
   var event = function($target) {
     Party.clearChars();
-
-    if ($target.is(".char.attack")) {
-      charAttack();
-    } else if ($target.is(".monster.attack")) {
-      enemyAttack();
-    } else if ($target.is(".spell.self")) {
-      castSpellOnSelf();
-    } else if ($target.is(".spell.party.target")) {
-      castSpellOnPartyTarget();
-    } else if ($target.is(".spell.enemy")) {
-      castSpellOnEnemy();
-    } else if ($target.is(".spell.enemies")) {
-      castSpellOnEnemies();
-    }
+    if ($target.is(".char.attack")) { charAttack(); } 
+    else if ($target.is(".monster.attack")) { enemyAttack(); } 
+    else if ($target.is(".spell.self")) { castSpellOnSelf(); } 
+    else if ($target.is(".spell.party.single")) { castSpellOnPartyTarget(); } 
+    else if ($target.is(".spell.party.all")) { castSpellOnEntireParty(); } 
+    else if ($target.is(".spell.enemy")) { castSpellOnEnemy(); } 
+    else if ($target.is(".spell.enemies")) { castSpellOnEnemies(); }
   };
   
   return {

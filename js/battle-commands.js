@@ -60,12 +60,7 @@ var BattleCommands = (function() {
   
   var commandsToString = function(commands) {
     var s = "", NEWLINE = "\r\n";
-    
-    jQuery.each(commands, function(i, command) {
-      s += commandToString(command);
-      s += NEWLINE;
-    });
-    
+    jQuery.each(commands, function(i, command) { s += commandToString(command) + NEWLINE; });
     return s;
   };
   
@@ -96,8 +91,8 @@ var BattleCommands = (function() {
     partyCommands[charIndex] = null;
   };
 
-  var enemy = function(monster) {
-    enemyCommands.push(jQuery.extend(true, {type:CommandTypes.Enemy}, monster.determineAction()));
+  var enemy = function(monster, action) {
+    enemyCommands.push(jQuery.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction()));
   };
   
   var executeCommands = function() {

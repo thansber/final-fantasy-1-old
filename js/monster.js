@@ -102,6 +102,7 @@ var Monster = (function() {
   };
   MonsterBase.prototype.attack = function() { return this.strength; };
   MonsterBase.prototype.attacksWithElement = function(element) { return this.attackElement == element; };
+  MonsterBase.prototype.canCastSpell = function(spell) { return true; };
   MonsterBase.prototype.critical = function() { return this.criticalRate; };
   MonsterBase.prototype.defense = function() { return this.defence; };
   MonsterBase.prototype.evasion = function() { return this.evade; };
@@ -123,7 +124,7 @@ var Monster = (function() {
     this.currentStatuses[status.id] = false;
     return this;
   };
-    
+  MonsterBase.prototype.useSpellCharge = function(spellLevel) {};
   
   // --------------------------------
   // AI methods (determining actions)
@@ -199,15 +200,15 @@ var Monster = (function() {
     var validTarget = false;
     var target = null;
     while (!validTarget) {
-      var r = RNG.randomUpTo(8);
+      var r = RNG.randomUpTo(7, 0);
       var charIndex = -1;
-      if (r >= 1 && r <= 4) {
+      if (r >>> 2) { // 4-7
         charIndex = 0;
-      } else if (r >= 5 && r <= 6) {
+      } else if (r >>> 1) { // 2-3
         charIndex = 1;
-      } else if (r == 7) {
+      } else if (r) { // 1
         charIndex = 2;
-      } else if (r == 8) {
+      } else { // 0
         charIndex = 3;
       }
       target = Party.getChar(charIndex);

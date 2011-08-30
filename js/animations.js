@@ -225,7 +225,7 @@ var Animation = (function() {
         q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
       } else {
         q.add(function() { Message.desc(Animation.CHAR_DIED_MSG); });
-        q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
+        q.delay(quickPause);
       }
     }
     
@@ -272,12 +272,15 @@ var Animation = (function() {
       q.delay(quickPause);
       q.add(function() { Message.action(result.spell.spellId); });
     }
-    
-    q.add(function() { 
-      var spellResultQueue = resultFromSpellTarget(command, result);
-      var spellResultCallback = function() { spellResultQueue.start(); };
-      castSpell(command.source, result.spell, spellResultCallback); 
-    });
+
+    var spellResultQueue = resultFromSpellTarget(command, result);
+    var spellResultCallback = function() { spellResultQueue.start(); };
+
+    if (isParty) {
+      q.add(function() { castSpell(command.source, result.spell, spellResultCallback); });
+    } else {
+      q.add(spellResultCallback);
+    }
     
     q.start();
   };
@@ -288,7 +291,9 @@ var Animation = (function() {
     
     switch (command.targetType) {
       case BattleCommands.Party:
-        targetQueues = resultFromSpellPartyTarget(result, spell);
+        for (var i = 0; i < result.target.length; i++) {
+          targetQueues.push(resultFromSpellPartyTarget(result, i, spell, result.target[i]));
+        }
         break;
       case BattleCommands.Enemy:
         for (var i = 0; i < result.target.length; i++) {
@@ -367,25 +372,38 @@ var Animation = (function() {
     return q;
   };
   
-  var resultFromSpellPartyTarget = function(result, spell) {
-    var targetQueues = [];
-    for (var t in result.target) {
-      var target = result.target[t];
-      var q = charFlicker(target);
-      q.insertAt(function() { Message.target(target.getName()); }, 0);
-      spellMessages(q, spell);
-      q.add(function() { Battle.resetCharUI(target); });
-      q.delay(Message.getBattlePause());
-      if (spell.message) {
-        q.add(function() { Message.desc({show:false}); });
-        q.delay(quickPause);
-      }
-      q.add(function() { Message.target({show:false}); });
+  var resultFromSpellPartyTarget = function(result, resultIndex, spell, target) {
+    var q = charFlicker(target);
+    var charDied = false, dmgShown = false;
+    q.insertAt(function() { Message.target(target.getName()); }, 0);
+    
+    var resultDamage = result.dmg[resultIndex];
+    if (resultDamage != null) {
       q.delay(quickPause);
-      
-      targetQueues.push(q);
+      q.add(function() { Message.damage(resultDamage + Animation.DAMAGE_MSG); });
+      dmgShown = true;
     }
-    return targetQueues;
+    
+    spellMessages(q, spell);
+    if (!!result.died[resultIndex]) {
+      q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : quickPause);
+      q.add(function() { Message.desc(Animation.CHAR_DIED_MSG); });
+      charDied = true;
+    }
+    q.add(function() { Battle.resetCharUI(target); });
+    q.delay(Message.getBattlePause());
+    if (spell.message || charDied) {
+      q.add(function() { Message.desc({show:false}); });
+      q.delay(quickPause);
+    }
+    if (dmgShown) {
+      q.add(function() { Message.damage({show:false}); });
+      q.delay(quickPause);
+    }
+    q.add(function() { Message.target({show:false}); });
+    q.delay(quickPause);
+    
+    return q;
   };
   
   var splash = function($enemy, splashColors, opt) {
