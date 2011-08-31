@@ -305,6 +305,10 @@ var Character = (function() {
     return this.hitPoints > 0 && (this.hitPoints / this.maxHitPoints) <= 0.25;
   };
   
+  Char.prototype.isAlive = function() {
+    return !this.isDead() && !this.hasStatus(Status.Stone);
+  };
+  
   // -----------------------------------------------
   // Methods that change the state of this character
   // -----------------------------------------------

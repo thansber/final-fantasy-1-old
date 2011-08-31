@@ -1,5 +1,6 @@
 var Party = (function() {
   var chars = [];
+  var gold = 0;
   
   var $player = null;
   var worldMapPosition = null;
@@ -23,13 +24,9 @@ var Party = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var addChar = function(c) {
-    chars.push(c);
-  };
-  
-  var clearChars = function() {
-    chars = [];
-  };
+  var addChar = function(c) { chars.push(c); };
+  var addGold = function(gp) { gold += gp; };
+  var clearChars = function() { chars = []; };
   
   var createNewChar = function(name, charClass, index) {
     var startingStats = CharacterGrowth.startingStats[charClass];
@@ -40,17 +37,10 @@ var Party = (function() {
     return char;
   };
   
-  var getChar = function(index) {
-    return chars[index];
-  };
-  
-  var getChars = function() {
-    return chars;
-  };
-  
-  var getTransportation = function() {
-    return currentTransportation;
-  };
+  var getChar = function(index) { return chars[index]; };
+  var getChars = function() { return chars; };
+  var getGold = function() { return gold; };
+  var getTransportation = function() { return currentTransportation; };
   
   var isDestinationPassable = function(yChange, xChange) {
     var map = Map.getMap(currentMap);
@@ -82,10 +72,12 @@ var Party = (function() {
     init: init
    
    ,addChar: addChar
+   ,addGold: addGold
    ,clearChars: clearChars
    ,createNewChar: createNewChar
    ,getChar: getChar
    ,getChars: getChars
+   ,getGold: getGold
    ,getTransportation: getTransportation
    ,isDestinationPassable: isDestinationPassable
    ,jumpTo: jumpTo

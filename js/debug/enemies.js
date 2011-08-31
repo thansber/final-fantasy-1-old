@@ -59,7 +59,7 @@ var EnemyHelper = (function() {
       var $enemy = $(".enemy", $monsterContainer);
       var splashColors = $(".splash.selector", $container).val();
       var showOverlay = $(".splash.overlay", $container).prop("checked");
-      Animation.splash($enemy, splashColors, {overlay:showOverlay, autoStart:true});
+      Animation.splash($enemy, splashColors, {overlay:showOverlay}).start();
     }
   };
   

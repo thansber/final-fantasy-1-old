@@ -18,7 +18,7 @@ var SpellEffectHelper = (function() {
   var event = function($target) {
     jQuery.each($(".effect", $debug), function() {
       var $this = $(this);
-      Animation.spellEffect(null, Spell.lookup($this.find("label").text()), {numAnimations:30, autoStart:true, $char:$this});
+      Animation.spellEffect(null, Spell.lookup($this.find("label").text()), {numAnimations:30, $char:$this}).start();
     });
   };
   

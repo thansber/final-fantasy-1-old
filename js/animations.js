@@ -6,15 +6,12 @@ var Animation = (function() {
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
    ,Defeat : "defeat"
-   ,HideAllMessages : "hideAllMessages"
-   ,ResultMessages : "resultMessages"
-   ,ResultMessagesPostSplash : "resultMessagesPostSplash"
-   ,ResultSpellTarget : "resultSpellTarget"
    ,SlideChar : "slideChar"
    ,SpellBackground : "spellBackground"
    ,SpellEffect : "spellEffect"
    ,ShowSplash : "showSplash"
    ,SwingWeapon : "swingWeapon"
+   ,Victory : "victory"
    ,WindowShake : "windowShake"
   };
   
@@ -27,6 +24,9 @@ var Animation = (function() {
   var NUM_HITS_MSG = "Hits!";
   var MISSED_MSG = "Missed!";
   var INEFFECTIVE_MSG = "Ineffective";
+  var VICTORY = "Monsters perished";
+  var VICTORY_EXP = "EXP up";
+  var VICTORY_GOLD = "GOLD";
   
   /* ======================================================== */
   /* QUEUE object ------------------------------------------- */ 
@@ -85,21 +85,21 @@ var Animation = (function() {
     var isParty = (command.type == BattleCommands.Party);
 
     if (result.hits && result.hits > 1) { 
-      q.add(function() { Message.action(result.hits + Animation.NUM_HITS_MSG); });
+      q.add(function() { Message.action(result.hits + NUM_HITS_MSG); });
     }
     
     if (result.dmg != null) {
       if (result.dmg == 0) {
-        q.add(function() { Message.damage(Animation.MISSED_MSG); });
+        q.add(function() { Message.damage(MISSED_MSG); });
       } else {
         q.delay(Message.getQuickPause());
-        q.add(function() { Message.damage(result.dmg + Animation.DAMAGE_MSG); });
+        q.add(function() { Message.damage(result.dmg + DAMAGE_MSG); });
       }
     }
     
     if (result.crit) {
       q.delay(Message.getQuickPause());
-      q.add(function() { Message.desc(Animation.CRITICAL_HIT_MSG); });
+      q.add(function() { Message.desc(CRITICAL_HIT_MSG); });
     }
     
     if (result.status) {
@@ -110,10 +110,10 @@ var Animation = (function() {
     if (result.died) {
       q.delay(result.crit || result.status ? Message.getBattlePause() : Message.getQuickPause());
       if (isParty) {
-        q.add(function() { Message.desc(Animation.ENEMY_DIED_MSG); });
+        q.add(function() { Message.desc(ENEMY_DIED_MSG); });
         q.add(function() { Battle.killEnemyUI(command.target, command.targetIndex); });
       } else {
-        q.add(function() { Message.desc(Animation.CHAR_DIED_MSG); });
+        q.add(function() { Message.desc(CHAR_DIED_MSG); });
         q.delay(Message.getQuickPause());
       }
     }
@@ -122,14 +122,13 @@ var Animation = (function() {
       q.add(function() { Battle.resetCharUI(command.target); });
     }
 
-    hideSpellTargetMessages(q, {hideDesc:result.crit || result.status || result.died, hideDamage:result.dmg != null});
-    
-    if (result.hits && result.hits > 1) { 
-      q.add(function() { Message.action({show:false}); });
-      q.delay(Message.getQuickPause());
-    }
-
-    q.add(function() { Message.source({show:false}); });
+    hideMessages(q, {
+      hideDesc: result.crit || result.status || result.died
+     ,hideDamage: result.dmg != null
+     ,hideTarget: true
+     ,hideAction: result.hits && result.hits > 1
+     ,hideSource: true
+    });
     
     return q;
   };
@@ -155,10 +154,7 @@ var Animation = (function() {
         break;
     };
     
-    // Hide the source/spell at the very end
-    queue.add(function() { Message.action({show:false}); });
-    queue.delay(Message.getQuickPause());
-    queue.add(function() { Message.source({show:false}); });
+    hideMessages(queue, {hideAction:true, hideSource:true});
     
     return queue;
   };
@@ -171,7 +167,7 @@ var Animation = (function() {
     var resultDamage = result.dmg[resultIndex];
     if (resultDamage != null) {
       q.delay(Message.getQuickPause());
-      q.add(function() { Message.damage(resultDamage + Animation.DAMAGE_MSG); });
+      q.add(function() { Message.damage(resultDamage + DAMAGE_MSG); });
       dmgShown = true;
     }
     
@@ -180,19 +176,19 @@ var Animation = (function() {
       if (!!result.success[resultIndex]) {
         spellMessages(q, spell);
       } else {
-        q.add(function() { Message.desc(Animation.INEFFECTIVE_MSG); });
+        q.add(function() { Message.desc(INEFFECTIVE_MSG); });
       }
       descShown = true;
     }
     
     if (!!result.died[resultIndex]) {
       q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : Message.getQuickPause());
-      q.add(function() { Message.desc(Animation.ENEMY_DIED_MSG); });
+      q.add(function() { Message.desc(ENEMY_DIED_MSG); });
       q.add(function() { Battle.killEnemyUI($target); });
       descShown = true;
     }
     
-    hideSpellTargetMessages(q, {hideDesc:descShown, hideDamage:dmgShown});
+    hideMessages(q, {hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
     
     return q;
   };
@@ -205,38 +201,46 @@ var Animation = (function() {
     var resultDamage = result.dmg[resultIndex];
     if (resultDamage != null) {
       q.delay(Message.getQuickPause());
-      q.add(function() { Message.damage(resultDamage + Animation.DAMAGE_MSG); });
+      q.add(function() { Message.damage(resultDamage + DAMAGE_MSG); });
       dmgShown = true;
     }
     
     spellMessages(q, spell);
     if (!!result.died[resultIndex]) {
       q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : Message.getQuickPause());
-      q.add(function() { Message.desc(Animation.CHAR_DIED_MSG); });
+      q.add(function() { Message.desc(CHAR_DIED_MSG); });
       charDied = true;
     }
     q.add(function() { Battle.resetCharUI(target); });
     
-    hideSpellTargetMessages(q, {hideDesc:spell.message || charDied, hideDamage:dmgShown});
+    hideMessages(q, {hideDesc:spell.message || charDied, hideDamage:dmgShown, hideTarget:true});
     
     return q;
   };
   
-  var hideSpellTargetMessages = function(q, opt) {
-    var settings = jQuery.extend({}, {hideDesc:false, hideDamage:false, hideTarget:true}, opt);
+  var hideMessages = function(q, opt) {
+    var defaults = {all:false, hideDesc:false, hideDamage:false, hideTarget:false, hideAction:false, hideSource:false};
+    var settings = jQuery.extend({}, defaults, opt);
     
     q.delay(Message.getBattlePause());
-    if (settings.hideDesc) {
+    if (settings.all || settings.hideDesc) {
       q.add(function() { Message.desc({show:false}); });
       q.delay(Message.getQuickPause());
     }
-    if (settings.hideDamage) {
+    if (settings.all || settings.hideDamage) {
       q.add(function() { Message.damage({show:false}); });
       q.delay(Message.getQuickPause());
     }
-    if (settings.hideTarget) {
+    if (settings.all || settings.hideTarget) {
       q.add(function() { Message.target({show:false}); });
       q.delay(Message.getQuickPause());
+    }
+    if (settings.all || settings.hideAction) { 
+      q.add(function() { Message.action({show:false}); });
+      q.delay(Message.getQuickPause());
+    }
+    if (settings.all || settings.hideSource) { 
+      q.add(function() { Message.source({show:false}); });
     }
   };
   
@@ -248,7 +252,7 @@ var Animation = (function() {
   };
   
   var spellBackgroundFlicker = function(spell, opt) {
-    var settings = jQuery.extend({}, {numAnimations:4, flickerPause:50, autoStart:false}, opt);
+    var settings = jQuery.extend({}, {numAnimations:4, flickerPause:50}, opt);
     var $background = $("#battle .main .border, .stats .border");
     var q = new Queue(Queues.SpellBackground);
     for (var i = 0; i < settings.numAnimations; i++) {
@@ -256,10 +260,6 @@ var Animation = (function() {
       q.delay(settings.flickerPause);
       q.add(function() { $background.css("backgroundColor", "black"); });
       q.delay(settings.flickerPause);
-    }
-    
-    if (settings.autoStart) {
-      q.start();
     }
     
     return q;
@@ -325,6 +325,7 @@ var Animation = (function() {
     swingWeapon(char, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
+    q.addToChain(function() { Battle.resetCharUI(char); });
     
     return q;
   };
@@ -360,13 +361,14 @@ var Animation = (function() {
     spellEffect(char, spell, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
+    q.addToChain(function() { Battle.resetCharUI(char); });
     
     return q;
   };
   
   var charFlicker = function(char, opt) {
-    var settings = jQuery.extend({}, {numAnimations:3, flickerPause:60, initialPause:200, autoStart:false, queue:null, $char:null}, opt);
-    var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
+    var settings = jQuery.extend({}, {numAnimations:3, flickerPause:60, initialPause:200, queue:null}, opt);
+    var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(Queues.CharFlicker);
     
     q.delay(settings.initialPause);
@@ -377,10 +379,6 @@ var Animation = (function() {
       q.delay(settings.flickerPause);
     }
     q.delay(settings.initialPause);
-    
-    if (settings.autoStart) {
-      q.start();
-    }
     
     return q;
   };
@@ -394,7 +392,7 @@ var Animation = (function() {
   };
   
   var slideChar = function(char, opt) {
-    var settings = jQuery.extend({}, {speed:350, direction:"forward", autoStart:false, queue:null}, opt);
+    var settings = jQuery.extend({}, {speed:350, direction:"forward", queue:null}, opt);
     var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(Queues.SlideChar);
     
@@ -409,15 +407,11 @@ var Animation = (function() {
       };
     });
     
-    if (settings.autoStart) {
-      q.start();
-    }
-    
     return q;
   };
   
   var spellEffect = function(char, spell, opt) {
-    var settings = jQuery.extend({}, {numAnimations:4, pause:100, autoStart:false, queue:null, $char:null}, opt);
+    var settings = jQuery.extend({}, {numAnimations:4, pause:100, queue:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
     var $spell = Battle.createSpellUI(spell);
     var q = settings.queue || new Queue(Queues.SpellEffect);
@@ -431,15 +425,11 @@ var Animation = (function() {
     
     q.add(function() { $(".spell", $char).remove(); $char.removeClass("casting arms up"); });
     
-    if (settings.autoStart) {
-      q.start();
-    }
-    
     return q;
   };
   
   var splash = function($enemy, splashColors, opt) {
-    var settings = jQuery.extend({}, {pause:80, overlay:false, autoStart:false, queue:null}, opt);
+    var settings = jQuery.extend({}, {pause:80, overlay:false, queue:null}, opt);
     if (!settings.numAnimations) {
       var $parent = $enemy.parent();
       
@@ -481,15 +471,11 @@ var Animation = (function() {
       q.add(function() { $("#battle .enemies .splash").addClass("hidden"); });
     }
     
-    if (settings.autoStart) {
-      q.start();
-    }
-    
     return q;
   };
   
   var swingWeapon = function(char, opt) {
-    var settings = jQuery.extend({}, {numAnimations:3, pause:60, autoStart:false, queue:null, $char:null}, opt);
+    var settings = jQuery.extend({}, {numAnimations:3, pause:60, queue:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
     var q = settings.queue || new Queue(Queues.SwingWeapon);
 
@@ -503,15 +489,61 @@ var Animation = (function() {
     }
 
     q.add(function() { $char.removeClass("attack swing forward back"); });
+
+    return q;
+  };
+  
+  var victory = function(opt) {
+    var settings = jQuery.extend({}, {numAnimations:4, pause:250, queue:null}, opt);
+    var q = settings.queue || new Queue(Queues.Victory);
     
-    if (settings.autoStart) {
-      q.start();
+    for (var i = 0; i < settings.numAnimations; i++) {
+      q.add(function() { 
+        jQuery.each(Party.getChars(), function(i, char) {
+          if (char.isAlive()) {
+            Battle.getCharUI(char).addClass("victory arms up");
+          }
+        }); 
+      });
+      q.delay(settings.pause);
+      q.add(function() { 
+        jQuery.each(Party.getChars(), function(i, char) { 
+          if (char.isAlive()) {
+            Battle.getCharUI(char).removeClass("victory arms up");
+          }
+        }); 
+      });
+      q.delay(settings.pause);
     }
+
+    var rewards = Battle.calculateRewards();
+    jQuery.each(rewards.aliveChars, function(i, char) { char.addExperience(rewards.exp); });
+    Party.addGold(rewards.gold);
+    
+    q.add(function() { Message.desc(VICTORY); });
+    q.delay(Message.getBattlePause());
+    q.add(function() { Message.desc({show:false}); });
+    
+    q.add(function() { Message.source(VICTORY_EXP); });
+    q.delay(Message.getQuickPause());
+    q.add(function() { Message.action(rewards.exp + "P"); });
+    q.delay(Message.getQuickPause());
+    q.add(function() { Message.target(VICTORY_GOLD); });
+    q.delay(Message.getQuickPause());
+    q.add(function() { Message.damage(rewards.gold + "G"); });
+    
+    hideMessages(q, {
+      hideDamage: true
+     ,hideTarget: true
+     ,hideAction: true
+     ,hideSource: true
+    });
+    
     return q;
   };
   
   var walkInBattle = function(char, opt) {
-    var settings = jQuery.extend({}, {numAnimations:3, pause:70, autoStart:false, queue:null}, opt);
+    var settings = jQuery.extend({}, {numAnimations:3, pause:70, queue:null}, opt);
     var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(Queues.BattleWalk);
     
@@ -522,10 +554,6 @@ var Animation = (function() {
       q.delay(settings.pause);
       q.add(function() { $char.removeClass("swing forward"); });
       q.delay(settings.pause);
-    }
-    
-    if (settings.autoStart) {
-      q.start();
     }
     
     return q;
@@ -539,7 +567,7 @@ var Animation = (function() {
   };
   
   var windowShake = function(opt) {
-    var settings = jQuery.extend({}, {numPixels:3, speed:30, pause:50, autoStart:false, queue:null}, opt);
+    var settings = jQuery.extend({}, {numPixels:3, speed:30, pause:50, queue:null}, opt);
     var $battle = $("#battle");
     var q = settings.queue || new Queue(Queues.WindowShake);
     
@@ -548,10 +576,6 @@ var Animation = (function() {
     q.add(function() { moveBattleWindow($battle, settings, RNG.randomUpTo(1, -1), RNG.randomUpTo(1, 0)); });
     q.delay(settings.pause);
     q.add(function() { $battle.animate({marginLeft:0, marginTop:0}, 0); });
-    
-    if (settings.autoStart) {
-      q.start();
-    }
     
     return q;
   };
@@ -570,18 +594,12 @@ var Animation = (function() {
    ,spellEffect : spellEffect
    ,splash : splash
    ,swingWeapon : swingWeapon
+   ,victory : victory
    ,walkInBattle : walkInBattle
    ,walkAndMoveInBattle : walkAndMoveInBattle
    ,windowShake : windowShake
     
    ,ActionQueue : ActionQueue
    ,Queues : Queues
-   ,ENEMY_DIED_MSG : ENEMY_DIED_MSG
-   ,CHAR_DIED_MSG : CHAR_DIED_MSG
-   ,DAMAGE_MSG : DAMAGE_MSG
-   ,CRITICAL_HIT_MSG : CRITICAL_HIT_MSG
-   ,NUM_HITS_MSG : NUM_HITS_MSG
-   ,MISSED_MSG : MISSED_MSG
-   ,INEFFECTIVE_MSG : INEFFECTIVE_MSG
   };
 })();

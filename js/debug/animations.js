@@ -6,27 +6,30 @@ var AnimationHelper = (function() {
     } else if ($target.is(".walk.slide.backward")) {
       jQuery.each(Party.getChars(), function(i, char) { Animation.walkAndMoveInBattle(char, {direction:"backward"}).start(); });
     } else if ($target.is(".slide.backward")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.slideChar(char, {direction:"backward", autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.slideChar(char, {direction:"backward"}).start(); });
     } else if ($target.is(".slide.forward")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.slideChar(char, {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.slideChar(char).start(); });
     } else if ($target.is(".walk")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.walkInBattle(char, {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.walkInBattle(char).start(); });
     } else if ($target.is(".swing.weapon")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.swingWeapon(char, {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.swingWeapon(char).start(); });
     } else if ($target.is(".attack")) {
       var aq = new Animation.ActionQueue();
-      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.attackAnimation(Party.getChar(i), aq.chain)); });
+      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.attackAnimation(char, aq.chain)); });
       aq.start(); 
     } else if ($target.is(".spell.effect")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.spellEffect(Party.getChar(i),getRandomSpell(), {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.spellEffect(char, getRandomSpell()).start(); });
     } else if ($target.is(".cast.spell")) {
       var aq = new Animation.ActionQueue();
-      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.castSpellAnimation(Party.getChar(i),getRandomSpell(), aq.chain)); });
+      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.castSpellAnimation(char, getRandomSpell(), aq.chain)); });
       aq.start();
     } else if ($target.is(".window.shake")) {
-      Animation.windowShake({autoStart:true});
+      Animation.windowShake().start();
     } else if ($target.is(".char.flicker")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.charFlicker(char, {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.charFlicker(char).start(); });
+    } else if ($target.is(".victory")) {
+      Battle.inputMessageToggler(true);
+      Animation.victory().start();
     }
   };
 

@@ -16,8 +16,7 @@ var WeaponAnimationHelper = (function() {
       }
     } else if ($target.is(".start")) {
       jQuery.each($(".char", $debug), function(i, char) {
-        var $char = $(char);
-        Animation.swingWeapon(null, {numAnimations:20, autoStart:true, $char:$char});
+        Animation.swingWeapon(null, {numAnimations:20, $char:$(char)}).start();
       });
     }
   };

@@ -149,6 +149,9 @@ var BattleCommands = (function() {
     if (defeat) {
       commandQueue.add(Animation.defeat(commandQueue.chain));
     }
+    if (victory) {
+      commandQueue.add(Animation.victory({queue:commandQueue.chain}));
+    }
     
     jQuery.when(commandQueue.start()).then(function() {
       if (defeat) { console.log("party is dead - lose"); }

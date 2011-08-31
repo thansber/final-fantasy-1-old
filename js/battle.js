@@ -136,6 +136,7 @@ var Battle = (function() {
           $enemies.append($column);
         }
         
+        // TODO: determine if we need to call createForBattle here, also called in addEnemy()
         var monster = Monster.createForBattle(Monster.lookup(name));
         addEnemy(monster);
         $column.append(createEnemyUI(monster));
@@ -187,6 +188,33 @@ var Battle = (function() {
       });
     }
     return allDead;
+  };
+  
+  var calculateRewards = function() {
+    var totalExp = 0, goldToAdd = 0;
+    for (var name in enemies) {
+      var enemiesByName = enemies[name];
+      for (var e in enemiesByName) {
+        // TODO: Enemies that run away do not count towards exp
+        totalExp += enemiesByName[e].exp;
+        goldToAdd += enemiesByName[e].gold;
+      }
+    }
+    
+    var charsGettingExp = [];
+    jQuery.each(Party.getChars(), function(i, char) {
+      if (char.isAlive()) { charsGettingExp.push(char); }
+    });
+    
+    var expPerChar = Math.floor(totalExp / charsGettingExp.length);
+    // EXP is always at least 1, even if all enemies run away
+    expPerChar = expPerChar <= 0 ? 1 : expPerChar; 
+    
+    return {
+      aliveChars: charsGettingExp
+     ,exp: expPerChar
+     ,gold: goldToAdd
+    };
   };
   
   var createCharUI = function(char) {
@@ -332,6 +360,7 @@ var Battle = (function() {
     init: init
    ,areAllCharactersDead: areAllCharactersDead
    ,areAllEnemiesDead: areAllEnemiesDead
+   ,calculateRewards: calculateRewards
    ,createCharUI: createCharUI
    ,createEnemyUI: createEnemyUI
    ,createSpellUI: createSpellUI
