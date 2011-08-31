@@ -68,13 +68,10 @@ var BattleCommands = (function() {
     return jQuery.map(result, function(value, index) {
       var v = value;
       if (value) {
-        if (value.getName) {
-          v = value.getName();
-        } else if (value.desc) {
-          v = value.desc;
-        } else if (value.spellId) {
-          v = value.spellId;
-        }
+        if (value.getName) { v = value.getName(); } 
+        else if (value.desc) { v = value.desc; } 
+        else if (value.spellId) { v = value.spellId; } 
+        else if (jQuery.isArray(value)) { v = "[" + value + "]"; }
       }
       return index + "=" + v;
     }).join(",");
@@ -92,7 +89,14 @@ var BattleCommands = (function() {
   };
 
   var enemy = function(monster, action) {
-    enemyCommands.push(jQuery.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction()));
+    var command = jQuery.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction());
+    if (command.spellId) {
+      var spell = Spell.lookup(command.spellId);
+      if (spell.isOtherTargetGroup()) { command.targetType = CommandTypes.Party; }
+      else if (spell.isSameTargetGroup()) { command.targetType = CommandTypes.Enemy; }
+      else if (spell.isSelfTarget()) { command.targetType = CommandTypes.Enemy; } 
+    }
+    enemyCommands.push(command);
   };
   
   var executeCommands = function() {
@@ -103,21 +107,11 @@ var BattleCommands = (function() {
     console.log(commandsToString(all));
     
     Battle.inputMessageToggler(true);
+    var victory = false, defeat = false;
+    var commandQueue = new Animation.ActionQueue();
     
     jQuery.each(all, function(i, command) {
       Message.hideAllBattleMessages();
-      
-      if (Battle.areAllEnemiesDead(Battle.getAllEnemies())) {
-        // TODO: handle victory
-        console.log("party wins - victory animation");
-        return false;
-      }
-      
-      if (Battle.areAllCharactersDead(Party.getChars())) {
-        // TODO: handle game over
-        console.log("party is dead - lose");
-        return false;
-      }
       
       if (command.source.isDead()) {
         return true;
@@ -130,15 +124,36 @@ var BattleCommands = (function() {
       switch (command.action) {
         case ActionTypes.Attack:
           result = Action.attack(command.source, command.target);
-          Animation.resultFromAttack(command, result);
+          commandQueue.add(Animation.attack(command, result, commandQueue.chain));
           break;
         case ActionTypes.CastSpell:
           result = Action.castSpell(command.source, command.spellId, command.target);
-          Animation.resultFromSpell(command, result);
+          commandQueue.add(Animation.castSpell(command, result, commandQueue.chain));
           break;
       }
       
       console.log(resultToString(result));
+      
+      if (Battle.areAllEnemiesDead(Battle.getAllEnemies())) {
+        victory = true;
+        return false;
+      }
+      
+      if (Battle.areAllCharactersDead(Party.getChars())) {
+        defeat = true;
+        return false;
+      }
+    });
+    
+    commandQueue.chain.delay(Message.getBattlePause());
+    if (defeat) {
+      commandQueue.add(Animation.defeat(commandQueue.chain));
+    }
+    
+    jQuery.when(commandQueue.start()).then(function() {
+      if (defeat) { console.log("party is dead - lose"); }
+      else if (victory) { console.log("enemies are dead - victory"); }
+      else { console.log("round animation done, show commands for next round input"); }
     });
   };
   

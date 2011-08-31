@@ -39,6 +39,7 @@
 #battle .input .spells .spell.level .numCharges { float:right; width:32px; }
 
 #battle .messages { width:350px; padding-top:8px; clear:both; }
+#battle .messages .hidden { display:block; visibility:hidden; }
 #battle .messages .message { padding-top:16px; height:24px; padding-left:8px; }
 #battle .messages .overlap { position:relative; top:-7px; padding-top:4px; background-color:black; }
 #battle .messages .overlap.target { width:146px; clear:left; }
@@ -110,7 +111,7 @@
 .party .spell.poof.lamp { background-position:-32px -136px; }
 .party .spell.poof.pure { background-position:-64px -136px; }
 
-.party .spell.protect { width:18px; }
+.party .spell.protect { width:18px; right:20px; }
 .party .spell.protect.afir { background-position:0 -170px; }
 .party .spell.protect.aice { background-position:-18px -170px; }
 .party .spell.protect.alit { background-position:-36px -170px; }

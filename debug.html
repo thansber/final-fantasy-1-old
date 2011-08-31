@@ -49,7 +49,6 @@
   <script type="text/javascript" src="js/debug/messages.js"></script>
   <script type="text/javascript" src="js/debug/enemies.js"></script>
   <script type="text/javascript" src="js/debug/battle-setup.js"></script>
-  <script type="text/javascript" src="js/debug/party-setup.js"></script>
   <script type="text/javascript" src="js/debug/spell-effects.js"></script>
   <script type="text/javascript" src="js/debug/weapons.js"></script>
   <script type="text/javascript" src="js/debug/weapon-animations.js"></script>
@@ -119,7 +118,6 @@
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="enemiesSplash">Enemies/Splash</a></li>
     <li class="curve tl bl big"><a href="#" class="battleSetup">Battle Setup</a></li>
-    <li class="curve tl bl big"><a href="#" class="partySetup">Party Setup</a></li>
     <li class="curve tl bl big"><a href="#" class="spellEffects">Spell Effects</a></li>
     <li class="curve tl bl big"><a href="#" class="weapons">Weapon Frames</a></li>
     <li class="curve tl bl big"><a href="#" class="weaponAnimations">Weapon Animations</a></li>
@@ -207,6 +205,33 @@
   
   <section class="battleSetup curve all">
     <div class="container">
+      <table class="party">
+        <tr>
+          <th></th>
+          <th>Class</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td class="label">Character 1:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 2:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 3:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 4:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+      </table>
       <div class="background row">
         <label>Background:</label>
         <select class="selector"></select>
@@ -230,117 +255,8 @@
         <select class="selector"></select><input type="text" class="qty" value="0" />
       </div>
       <button class="button setup">Setup battle</button>
+      <button class="button randomize">Randomize everything</button>
       <button class="button commands">Generate enemy commands</button>
-    </div>
-  </section>
-  
-  <section class="partySetup curve all">
-    <div class="container">
-      <div class="row">
-        <label>Character 1</label>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char1" value="fighter" />Fighter</p>
-          <p class="charClass"><input type="radio" name="char1" value="thief" />Thief</p>
-          <p class="charClass"><input type="radio" name="char1" value="blackbelt" />Blackbelt</p>
-          <p class="charClass"><input type="radio" name="char1" value="redmage" />Red Mage</p>
-          <p class="charClass"><input type="radio" name="char1" value="whitemage" />White Mage</p>
-          <p class="charClass"><input type="radio" name="char1" value="blackmage" />Black Mage</p>
-        </div>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char1" value="knight" />Knight</p>
-          <p class="charClass"><input type="radio" name="char1" value="ninja" />Ninja</p>
-          <p class="charClass"><input type="radio" name="char1" value="master" />Master</p>
-          <p class="charClass"><input type="radio" name="char1" value="redwizard" />Red Wizard</p>
-          <p class="charClass"><input type="radio" name="char1" value="whitewizard" />White Wizard</p>
-          <p class="charClass"><input type="radio" name="char1" value="blackwizard" />Black Wizard</p>
-        </div>
-        <label class="status">Status</label>
-        <div class="statuses">
-          <p class="status"><input type="radio" name="status1" value="ok" />OK</p>
-          <p class="status"><input type="radio" name="status1" value="dead" />Dead</p>
-          <p class="status"><input type="radio" name="status1" value="stone" />Petrified</p>
-          <p class="status"><input type="radio" name="status1" value="critical" />Critical</p>
-        </div>
-      </div>
-      <div class="row">
-        <label>Character 2</label>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char2" value="fighter" />Fighter</p>
-          <p class="charClass"><input type="radio" name="char2" value="thief" />Thief</p>
-          <p class="charClass"><input type="radio" name="char2" value="blackbelt" />Blackbelt</p>
-          <p class="charClass"><input type="radio" name="char2" value="redmage" />Red Mage</p>
-          <p class="charClass"><input type="radio" name="char2" value="whitemage" />White Mage</p>
-          <p class="charClass"><input type="radio" name="char2" value="blackmage" />Black Mage</p>
-        </div>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char2" value="knight" />Knight</p>
-          <p class="charClass"><input type="radio" name="char2" value="ninja" />Ninja</p>
-          <p class="charClass"><input type="radio" name="char2" value="master" />Master</p>
-          <p class="charClass"><input type="radio" name="char2" value="redwizard" />Red Wizard</p>
-          <p class="charClass"><input type="radio" name="char2" value="whitewizard" />White Wizard</p>
-          <p class="charClass"><input type="radio" name="char2" value="blackwizard" />Black Wizard</p>
-        </div>
-        <label class="status">Status</label>
-        <div class="statuses">
-          <p class="status"><input type="radio" name="status2" value="ok" />OK</p>
-          <p class="status"><input type="radio" name="status2" value="dead" />Dead</p>
-          <p class="status"><input type="radio" name="status2" value="stone" />Petrified</p>
-          <p class="status"><input type="radio" name="status2" value="critical" />Critical</p>
-        </div>
-      </div>
-      <div class="row">
-        <label>Character 3</label>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char3" value="fighter" />Fighter</p>
-          <p class="charClass"><input type="radio" name="char3" value="thief" />Thief</p>
-          <p class="charClass"><input type="radio" name="char3" value="blackbelt" />Blackbelt</p>
-          <p class="charClass"><input type="radio" name="char3" value="redmage" />Red Mage</p>
-          <p class="charClass"><input type="radio" name="char3" value="whitemage" />White Mage</p>
-          <p class="charClass"><input type="radio" name="char3" value="blackmage" />Black Mage</p>
-        </div>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char3" value="knight" />Knight</p>
-          <p class="charClass"><input type="radio" name="char3" value="ninja" />Ninja</p>
-          <p class="charClass"><input type="radio" name="char3" value="master" />Master</p>
-          <p class="charClass"><input type="radio" name="char3" value="redwizard" />Red Wizard</p>
-          <p class="charClass"><input type="radio" name="char3" value="whitewizard" />White Wizard</p>
-          <p class="charClass"><input type="radio" name="char3" value="blackwizard" />Black Wizard</p>
-        </div>
-        <label class="status">Status</label>
-        <div class="statuses">
-          <p class="status"><input type="radio" name="status3" value="ok" />OK</p>
-          <p class="status"><input type="radio" name="status3" value="dead" />Dead</p>
-          <p class="status"><input type="radio" name="status3" value="stone" />Petrified</p>
-          <p class="status"><input type="radio" name="status3" value="critical" />Critical</p>
-        </div>
-      </div>
-      <div class="row">
-        <label>Character 4</label>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char4" value="fighter" />Fighter</p>
-          <p class="charClass"><input type="radio" name="char4" value="thief" />Thief</p>
-          <p class="charClass"><input type="radio" name="char4" value="blackbelt" />Blackbelt</p>
-          <p class="charClass"><input type="radio" name="char4" value="redmage" />Red Mage</p>
-          <p class="charClass"><input type="radio" name="char4" value="whitemage" />White Mage</p>
-          <p class="charClass"><input type="radio" name="char4" value="blackmage" />Black Mage</p>
-        </div>
-        <div class="classes">
-          <p class="charClass"><input type="radio" name="char4" value="knight" />Knight</p>
-          <p class="charClass"><input type="radio" name="char4" value="ninja" />Ninja</p>
-          <p class="charClass"><input type="radio" name="char4" value="master" />Master</p>
-          <p class="charClass"><input type="radio" name="char4" value="redwizard" />Red Wizard</p>
-          <p class="charClass"><input type="radio" name="char4" value="whitewizard" />White Wizard</p>
-          <p class="charClass"><input type="radio" name="char4" value="blackwizard" />Black Wizard</p>
-        </div>
-        <label class="status">Status</label>
-        <div class="statuses">
-          <p class="status"><input type="radio" name="status4" value="ok" />OK</p>
-          <p class="status"><input type="radio" name="status4" value="dead" />Dead</p>
-          <p class="status"><input type="radio" name="status4" value="stone" />Petrified</p>
-          <p class="status"><input type="radio" name="status4" value="critical" />Critical</p>
-        </div>
-      </div>
-      <button class="button setup">Setup party</button>
     </div>
   </section>
   

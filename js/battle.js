@@ -246,29 +246,18 @@ var Battle = (function() {
     return null;
   };
   
-  var moveCurrentCharBackwardAndNextCharForward = function() {
+  var moveCharBackwardAndOtherForward = function(charIndexChange) {
+    // charIndexChange = -1 for prev char, 1 for next char
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
-      var nextChar = Party.getChar(BattleCommands.getCharIndex() + 1);
-      var callback = null;
-      if (nextChar) {
-        callback = function() { Animation.walkAndMoveInBattle(nextChar); };
+      var otherChar = Party.getChar(BattleCommands.getCharIndex() + charIndexChange);
+      var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
+      if (otherChar) {
+        Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
-      Animation.walkAndMoveInBattle(char, {direction:"backward", callback:callback});
     }
-  };
-  
-  var moveCurrentCharBackwardAndPreviousCharForward = function() {
-    var char = Party.getChar(BattleCommands.getCharIndex());
-    if (char) {
-      var prevChar = Party.getChar(BattleCommands.getCharIndex() - 1);
-      var callback = null;
-      if (prevChar) {
-        callback = function() { Animation.walkAndMoveInBattle(prevChar); };
-      }
-      Animation.walkAndMoveInBattle(char, {direction:"backward", callback:callback});
-    }
-  };
+    q.start();
+  }
   
   var populateSpellList = function() {
     $(".spell.level", $spellList).empty();
@@ -335,7 +324,7 @@ var Battle = (function() {
     // First character walks forward to indicate they are choosing an action
     var firstChar = Party.getChar(0);
     if (firstChar && moveFirstChar) {
-      Animation.walkAndMoveInBattle(firstChar);
+      Animation.walkAndMoveInBattle(firstChar).start();
     }
   };
   
@@ -353,8 +342,7 @@ var Battle = (function() {
    ,inputMessageToggler: inputMessageToggler
    ,killEnemyUI: killEnemyUI
    ,lookupEnemy: lookupEnemy
-   ,moveCurrentCharBackwardAndNextCharForward: moveCurrentCharBackwardAndNextCharForward
-   ,moveCurrentCharBackwardAndPreviousCharForward: moveCurrentCharBackwardAndPreviousCharForward
+   ,moveCharBackwardAndOtherForward : moveCharBackwardAndOtherForward
    ,populateSpellList: populateSpellList
    ,resetCharUI: resetCharUI
    ,setup: setup

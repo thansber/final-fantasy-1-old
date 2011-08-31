@@ -46,8 +46,6 @@ var DebugHelper = (function() {
     loadMainView(HELPERS[section]);
   };
   
-
-  
   return {
     addOption: addOption
    ,loadMainView: loadMainView

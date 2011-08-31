@@ -61,7 +61,7 @@ var BattleEnemyCursor = (function() {
     var $enemies = $cursor.closest(".enemies").find("." + monsterCss);
     var monsterIndex = $enemies.index($cursor);
   
-    BattleCommands.party({source:Party.getChar(BattleCommands.getCharIndex()), target:{name:monster.name, index:monsterIndex}});
+    BattleCommands.party({source:Party.getChar(BattleCommands.getCharIndex()), target:{name:monster.name, index:monsterIndex, type:BattleCommands.Enemy}});
   };
   
   /* ============== */
@@ -87,7 +87,7 @@ var BattleEnemyCursor = (function() {
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
         selectEnemyAsTarget();
-        Battle.moveCurrentCharBackwardAndNextCharForward();
+        Battle.moveCharBackwardAndOtherForward(1);
         BattleCommands.changeCharIndex(1);
         clearCursor();
         if (BattleCommands.isAllPartyCommandsEntered()) {

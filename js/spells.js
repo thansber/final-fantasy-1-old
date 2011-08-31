@@ -229,7 +229,7 @@ var Spell = (function() {
     
     var success = false; 
     var r = RNG.randomUpTo(Action.AUTO_MISS);
-    var logMsg = caster.charName + " casting " + spell.spellId + " - ";
+    var logMsg = caster.getName() + " casting " + spell.spellId + " - ";
     
     if (r == Action.AUTO_HIT) {
       logMsg += "HIT-AUTO";

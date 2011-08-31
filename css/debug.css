@@ -51,9 +51,13 @@
 #debug .enemiesSplash input { float:left; margin-left:1em; }
 #debug .enemiesSplash .monster { float:left; margin-left:1.6em; }
 
-#debug .battleSetup .row { clear:both; height:2em;}
-#debug .battleSetup .row label { float:left; width:8em; text-align:right;}
-#debug .battleSetup .row .selector { float:left; margin-left:1em; width:12em; }
+#debug .battleSetup .selector { margin-left:1em; }
+#debug .battleSetup .party { margin-bottom:1em; border-collapse:collapse; }
+#debug .battleSetup .party th { font-size:0.8em; padding-left:1em; }
+#debug .battleSetup .party .label { width:8em; text-align:right; }
+#debug .battleSetup .row { clear:both; height:2em; }
+#debug .battleSetup .row label { float:left; width:8em; text-align:right; }
+#debug .battleSetup .row .selector { float:left; width:12em; }
 #debug .battleSetup .row .selectors { float:left; }
 #debug .battleSetup .row .selectors div { height:1.6em; }
 #debug .battleSetup .row .selectors .selector { float:none; }
@@ -63,14 +67,7 @@
 #debug .battleSetup .small.row .selectors { float:left; }
 #debug .battleSetup .small.row .selectors div { height:1.6em; }
 #debug .battleSetup .small.row .selectors .selector { float:none; }
-
-#debug .partySetup .row { font-size:0.8em; clear:both; margin-bottom:1.5em; overflow:auto; }
-#debug .partySetup .row label { float:left; margin-top:0.1em; }
-#debug .partySetup .row p { font-size:0.8em; }
-#debug .partySetup .row p input { position:relative; top:2px; }
-#debug .partySetup .row .classes { float:left; margin-left:1em; }
-#debug .partySetup .row label.status { margin-left:3em; }
-#debug .partySetup .row .statuses { float:left; margin-left:1em; }
+#debug .battleSetup .button { display:block; margin-bottom:0.6em; }
 
 #debug section.spellEffects { background-color:black; }
 #debug .spellEffects .container { padding:0.8em; overflow:auto; }

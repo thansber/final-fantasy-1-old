@@ -2,9 +2,9 @@ var AnimationHelper = (function() {
   
   var event = function($target) {
     if ($target.is(".walk.slide.forward")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.walkAndMoveInBattle(char); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.walkAndMoveInBattle(char).start(); });
     } else if ($target.is(".walk.slide.backward")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.walkAndMoveInBattle(char, {direction:"backward"}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.walkAndMoveInBattle(char, {direction:"backward"}).start(); });
     } else if ($target.is(".slide.backward")) {
       jQuery.each(Party.getChars(), function(i, char) { Animation.slideChar(char, {direction:"backward", autoStart:true}); });
     } else if ($target.is(".slide.forward")) {
@@ -14,11 +14,15 @@ var AnimationHelper = (function() {
     } else if ($target.is(".swing.weapon")) {
       jQuery.each(Party.getChars(), function(i, char) { Animation.swingWeapon(char, {autoStart:true}); });
     } else if ($target.is(".attack")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.attack(char); });
+      var aq = new Animation.ActionQueue();
+      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.attackAnimation(Party.getChar(i), aq.chain)); });
+      aq.start(); 
     } else if ($target.is(".spell.effect")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.spellEffect(char, getRandomSpell(), {autoStart:true}); });
+      jQuery.each(Party.getChars(), function(i, char) { Animation.spellEffect(Party.getChar(i),getRandomSpell(), {autoStart:true}); });
     } else if ($target.is(".cast.spell")) {
-      jQuery.each(Party.getChars(), function(i, char) { Animation.castSpell(char, getRandomSpell(), {autoStart:true}); });
+      var aq = new Animation.ActionQueue();
+      jQuery.each(Party.getChars(), function(i, char) { aq.add(Animation.castSpellAnimation(Party.getChar(i),getRandomSpell(), aq.chain)); });
+      aq.start();
     } else if ($target.is(".window.shake")) {
       Animation.windowShake({autoStart:true});
     } else if ($target.is(".char.flicker")) {

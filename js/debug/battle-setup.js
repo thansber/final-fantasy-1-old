@@ -2,18 +2,40 @@ var BattleSetupHelper = (function() {
   
   var $debug = null;
   
+  /* ======================================================== */
+  /* INIT METHOD -------------------------------------------- */
+  /* ======================================================== */
   var init = function() {
     $debug = $("#debug section.battleSetup");
+    initializeCharClass();
+    initializeStatuses();
     initializeBackgroundSelector();
     initializeEnemySelectors();
+    randomizeEverything();
   };
   
-  var event = function($target) {
-    if ($target.is(".setup")) { setupBattle(); }
-    else if ($target.is(".commands")) { generateCommands(); }
+  /* ======================================================== */
+  /* PRIVATE METHODS ---------------------------------------- */
+  /* ======================================================== */
+  var equipRandomWeapon = function(char) {
+    var weaponArray = jQuery.map(Equipment.Weapon.All, function(weapon, name) {
+      return weapon;
+    });
+    weaponArray.unshift(null);
+    
+    var weapon = RNG.randomArrayElement(weaponArray);
+    while (weapon != null && !char.canEquip(weapon.name, "weapon")) {
+      weapon = RNG.randomArrayElement(weaponArray);
+    }
+    if (weapon == null) {
+      char.unequipWeapon();
+    } else {
+      char.weapon(weapon.name, true);
+    }
   };
   
   var generateCommands = function() {
+    BattleCommands.init();
     BattleCommands.generateEnemyCommands();
   };
   
@@ -29,6 +51,15 @@ var BattleSetupHelper = (function() {
     for (var b in Map.BattleBackgrounds) {
       $selector.append($("<option/>", {text:b,value:b}));
     }
+  };
+  
+  var initializeCharClass = function() {
+    $("select.charClass", $debug).each(function() {
+      for (var c in CharacterClass.All) {
+        var charClass = CharacterClass.All[c];
+        DebugHelper.addOption($(this), charClass.name, CharacterClass.fullClassNames[charClass.name]);
+      }
+    });
   };
   
   var initializeEnemySelectors = function() {
@@ -50,16 +81,40 @@ var BattleSetupHelper = (function() {
     jQuery.each(fiends, function(i, name) { $fiendSelectors.append($("<option/>", {value:name, text:name})); });
   };
   
+  var initializeStatuses = function() {
+    var statuses = {ok:"OK", dead:"Dead", stone:"Petrified", critical:"Critical"};
+    $("select.status", $debug).each(function() {
+      for (var s in statuses) {
+        var status = statuses[s];
+        DebugHelper.addOption($(this), s, status);
+      }
+    });
+  };
+  
+  var randomizeEverything = function() {
+    $("select.charClass", $debug).each(function() { selectRandomValue($(this)); });
+    selectRandomValue($(".background .selector", $debug));
+    $(".small .selector, .large .selector").each(function() { selectRandomValue($(this)); });
+  };
+  
   var readEnemyQty = function($parent) {
     var enemy = $(".selector", $parent).val();
     var qty = $(".qty", $parent).val();
-    if (enemy.length > 0 && qty.length > 0) {
+    if (enemy.length > 0 && qty.length > 0 && +qty) {
       return {name:enemy, qty:parseInt(qty)};
     }
     return null;
   };
   
+  var selectRandomValue = function($select) {
+    var $options = $("option", $select); 
+    $options.eq(RNG.randomUpTo($options.size() - 1, 0)).attr("selected", "selected");
+  };
+  
   var setupBattle = function() {
+    
+    setupParty();
+    
     var background = $(".background.row .selector").val();
     var enemies = [];
     $(".small.row .selectors div", $debug).each(function() {
@@ -84,10 +139,46 @@ var BattleSetupHelper = (function() {
     Battle.setup({enemies:enemies, background:Map.BattleBackgrounds[background]});
   };
   
+  var setupParty = function() {
+    var chars = [];
+    Party.clearChars();
+    $debug.find("select.charClass").each(function(i, elem) {
+      var $this = $(elem);
+      var charClass = elem.value;
+      var name = "";
+      for (var n = 0; n < 4; n++) { 
+        name += String.fromCharCode(65 + i); 
+      }
+      
+      var char = Party.createNewChar(name, charClass, i);
+      Party.addChar(char);
+      
+      equipRandomWeapon(char);
+      
+      var status = $this.closest("tr").find("select.status").val();
+      switch (status) {
+        case "dead": char.addStatus(Status.Dead); break;
+        case "stone": char.addStatus(Status.Stone); break;
+        case "critical": char.applyDamage(Math.floor(char.maxHitPoints * 0.75) + 1); break;
+      }
+    });
+    
+    //jQuery.each(Party.getChars(), function(i, char) { console.log(char.toString()); });    
+  };
+  
   var sortByNameIgnoreCase = function(a, b) {
     b = b.toLowerCase();
     a = a.toLowerCase();
     return a > b ? 1 : a < b ? -1 : 0;
+  };
+  
+  /* ======================================================== */
+  /* PUBLIC METHODS ----------------------------------------- */
+  /* ======================================================== */
+  var event = function($target) {
+    if ($target.is(".setup")) { setupBattle(); }
+    else if ($target.is(".randomize")) { randomizeEverything(); }
+    else if ($target.is(".commands")) { generateCommands(); }
   };
   
   return {

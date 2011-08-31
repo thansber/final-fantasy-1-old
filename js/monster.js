@@ -137,16 +137,17 @@ var Monster = (function() {
     if (this.isCastingSpell()) {
       var spellId = this.getNextSpell();
       var spell = Spell.lookup(spellId);
-      return { source:this, action:BattleCommands.CastSpell, spell:spell, target:this.determineSpellTarget(spell) };
+      // targetType is set via BattleCommands
+      return { source:this, action:BattleCommands.CastSpell, spellId:spell.spellId, target:this.determineSpellTarget(spell) };
     }
     
     if (this.isUsingSkill()) {
       var skillId = this.getNextSkill();
       var spell = Spell.lookup(skillId);
-      return { source:this, action:BattleCommands.CastSpell, spell:spell, target:this.determineSpellTarget(spell) };
+      return { source:this, action:BattleCommands.CastSpell, spellId:spell.spellId, target:this.determineSpellTarget(spell), targetType:BattleCommands.Party };
     }
     
-    return { source:this, action:BattleCommands.Attack, target:this.determineSingleTarget() };
+    return { source:this, action:BattleCommands.Attack, target:this.determineSingleTarget(), targetType:BattleCommands.Party };
   };
   
   MonsterBase.prototype.isRunningAway = function() {
@@ -176,11 +177,19 @@ var Monster = (function() {
   };
   
   MonsterBase.prototype.getNextSpell = function() {
-    return this.magic[++this.magicIndex];
+    this.magicIndex++;
+    if (this.magicIndex >= this.magic.length) {
+      this.magicIndex = 0;
+    }
+    return this.magic[this.magicIndex];
   };
   
   MonsterBase.prototype.getNextSkill = function() {
-    return this.skills[++this.skillIndex];
+    this.skillIndex++;
+    if (this.skillIndex >= this.skills.length) {
+      this.skillIndex = 0;
+    }
+    return this.skills[this.skillIndex];
   };
   
   MonsterBase.prototype.determineSpellTarget = function(spell) {

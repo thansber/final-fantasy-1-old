@@ -39,6 +39,7 @@ var Message = (function() {
   
   var $messages = null;
   var battlePause = 1000;
+  var quickPause = 100;
   
   var init = function(opt) {
     $messages = $(opt.messages);
@@ -119,6 +120,7 @@ var Message = (function() {
   var desc = function(opt) { battleMessage(opt, $(".desc.message", $messages)); };
 
   var getBattlePause = function() { return battlePause; };
+  var getQuickPause = function() { return quickPause; };
   
   var hideAllBattleMessages = function() {
     source({show:false});
@@ -139,6 +141,7 @@ var Message = (function() {
    ,damage: damage
    ,desc: desc
    ,getBattlePause: getBattlePause
+   ,getQuickPause: getQuickPause
    ,hideAllBattleMessages: hideAllBattleMessages
    ,setBattlePause: setBattlePause
   };

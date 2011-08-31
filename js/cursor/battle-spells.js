@@ -65,19 +65,23 @@ var BattleSpellCursor = (function () {
     var spell = Spell.lookup(spellId);
     if (char.canCastSpell(spell)) {
       BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:spellId});
+      if (spell.isSameTargetGroup()) { 
+        BattleCommands.party({target:{type:BattleCommands.Party}}); 
+      } else if (spell.isOtherTargetGroup()) { 
+        BattleCommands.party({target:{type:BattleCommands.Enemy}}); 
+      }
+
       if (spell.isSingleTarget()) {
         clearCursor();
         hideSpellList();
-        BattleEnemyCursor.startListening();
-      } else if (spell.isAllTarget()) {
-        if (spell.isSameTargetGroup()) {
-          
-        } else if (spell.isOtherTargetGroup()) {
-          
+        if (spell.isSameTargetGroup()) { 
+          // TODO: add cursor for chars
+        } else if (spell.isOtherTargetGroup()) { 
+          BattleEnemyCursor.startListening(); 
         }
       } else if (spell.isSelfTarget()) {
         BattleCommands.party({target:{type:BattleCommands.Party, char:char}});
-      }
+      } 
       return true;
     }
     

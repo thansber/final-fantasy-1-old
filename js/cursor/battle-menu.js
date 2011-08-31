@@ -99,7 +99,7 @@ var BattleMenuCursor = (function() {
         return false;
       case KeyPressNotifier.Esc:
         BattleCommands.clearPartyCommand();
-        Battle.moveCurrentCharBackwardAndPreviousCharForward();
+        Battle.moveCharBackwardAndOtherForward(-1);
         BattleCommands.changeCharIndex(-1);
         return false;
       case KeyPressNotifier.F:

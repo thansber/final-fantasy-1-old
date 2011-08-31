@@ -12,7 +12,6 @@ $(document).ready(function() {
   MessageHelper.init();
   EnemyHelper.init();
   BattleSetupHelper.init();
-  PartySetupHelper.init();
   SpellEffectHelper.init();
   WeaponHelper.init();
   WeaponAnimationHelper.init();
@@ -27,7 +26,6 @@ $(document).ready(function() {
   $("#debug .enemiesSplash select").change(function(event) { EnemyHelper.event($(event.target)); });
   $("#debug .enemiesSplash button").click(function(event) { EnemyHelper.event($(event.target)); });
   $("#debug .battleSetup button").click(function(event) { BattleSetupHelper.event($(event.target)); });
-  $("#debug .partySetup button").click(function(event) { PartySetupHelper.event($(event.target)); });
   $("#debug .spellEffects button").click(function(event) { SpellEffectHelper.event($(event.target)); });
   $("#debug .weapons select").change(function(event) { WeaponHelper.event($(event.target)); });
   $("#debug .weaponAnimations select").change(function(event) { WeaponAnimationHelper.event($(event.target)); });
@@ -36,5 +34,5 @@ $(document).ready(function() {
   $("#debug .battleMessages button").click(function(event) { BattleMessageHelper.event($(event.target)); });
   $("#debug .actions button").click(function(event) { ActionHelper.event($(event.target)); });
   
-  $("#debug .menu a.actions").click();  
+  $("#debug .menu a.battleSetup").click();  
 });
