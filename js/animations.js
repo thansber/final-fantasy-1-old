@@ -61,7 +61,6 @@ var Animation = (function() {
       this.add(function() { slideChar(char, opt).start(); });
     }
   };
-  Queue.prototype.resetCriticality = function(char) { this.addToChain(function() { Battle.getCharUI(char).toggleClass("critical", char.isCritical()); }); };
   Queue.prototype.setChain = function(chain) { this.chain = chain; };
   Queue.prototype.start = function() { this.theQueue.dequeue(this.name); return this.getPromise(); };
   Queue.prototype.toString = function() { return this.name + " has " + this.theQueue.queue(this.name).length + " elements"; };
@@ -329,7 +328,7 @@ var Animation = (function() {
     swingWeapon(char, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.getCharUI(char).toggleClass("critical", char.isCritical()); });
+    q.addToChain(function() { Battle.resetCharUI(char); });
     
     return q;
   };
@@ -567,6 +566,7 @@ var Animation = (function() {
     var settings = jQuery.extend({}, {queue:null}, opt);
     var q = settings.queue || new Queue(Queues.BattleWalk);
     q.moveChar(char, q.chain, opt);
+    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   

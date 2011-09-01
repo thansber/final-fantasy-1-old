@@ -168,7 +168,7 @@ var Battle = (function() {
   var areAllCharactersDead = function(targets) {
     var allDead = true;
     jQuery.each(targets, function(i, target) {
-      if (!target.isDead()) {
+      if (target.isAlive()) {
         allDead = false;
         return false;
       }
@@ -279,8 +279,11 @@ var Battle = (function() {
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
       var otherChar = Party.getChar(BattleCommands.getCharIndex() + charIndexChange);
+      // If we are on the first char, and the user tries to go back (ESC), 
+      // use the first char to move forward again
+      otherChar = charIndexChange < 0 && !otherChar ? char : otherChar;
       var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
-      q.resetCriticality(char);
+      
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
@@ -357,6 +360,14 @@ var Battle = (function() {
     }
   };
   
+  var toggleCriticalStatus = function(char) {
+    var $char = Battle.getCharUI(char);
+    $char.toggleClass("critical", char.isCritical()); 
+    if (char.hasStatus(Status.Poison)) {
+      $char.addClass("critical");
+    }
+  };
+  
   return {
     init: init
    ,areAllCharactersDead: areAllCharactersDead
@@ -376,5 +387,6 @@ var Battle = (function() {
    ,populateSpellList: populateSpellList
    ,resetCharUI: resetCharUI
    ,setup: setup
+   ,toggleCriticalStatus: toggleCriticalStatus
   }  
 })();

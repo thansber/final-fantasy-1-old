@@ -82,6 +82,7 @@ var BattleCommands = (function() {
   /* ======================================================== */
   var changeCharIndex = function(amount) {
     charIndex += amount;
+    charIndex = charIndex < 0 ? 0 : charIndex;
   };
   
   var clearPartyCommand = function() {
