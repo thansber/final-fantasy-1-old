@@ -55,6 +55,7 @@ var BattleSetupHelper = (function() {
   
   var initializeCharClass = function() {
     $("select.charClass", $debug).each(function() {
+      DebugHelper.addOption($(this), "", "--Select a class--");
       for (var c in CharacterClass.All) {
         var charClass = CharacterClass.All[c];
         DebugHelper.addOption($(this), charClass.name, CharacterClass.fullClassNames[charClass.name]);
@@ -108,7 +109,7 @@ var BattleSetupHelper = (function() {
   
   var selectRandomValue = function($select) {
     var $options = $("option", $select); 
-    $options.eq(RNG.randomUpTo($options.size() - 1, 0)).attr("selected", "selected");
+    $options.eq(RNG.randomUpTo($options.size() - 1)).attr("selected", "selected");
   };
   
   var setupBattle = function() {
@@ -141,25 +142,29 @@ var BattleSetupHelper = (function() {
   
   var setupParty = function() {
     var chars = [];
+    var charIndex = -1;
     Party.clearChars();
     $debug.find("select.charClass").each(function(i, elem) {
       var $this = $(elem);
       var charClass = elem.value;
-      var name = "";
-      for (var n = 0; n < 4; n++) { 
-        name += String.fromCharCode(65 + i); 
-      }
-      
-      var char = Party.createNewChar(name, charClass, i);
-      Party.addChar(char);
-      
-      equipRandomWeapon(char);
-      
-      var status = $this.closest("tr").find("select.status").val();
-      switch (status) {
-        case "dead": char.addStatus(Status.Dead); break;
-        case "stone": char.addStatus(Status.Stone); break;
-        case "critical": char.applyDamage(Math.floor(char.maxHitPoints * 0.75) + 1); break;
+      if (charClass.length > 0) {
+        charIndex++;
+        var name = "";
+        for (var n = 0; n < 4; n++) { 
+          name += String.fromCharCode(65 + charIndex); 
+        }
+        
+        var char = Party.createNewChar(name, charClass, charIndex);
+        Party.addChar(char);
+        
+        equipRandomWeapon(char);
+        
+        var status = $this.closest("tr").find("select.status").val();
+        switch (status) {
+          case "dead": char.addStatus(Status.Dead); break;
+          case "stone": char.addStatus(Status.Stone); break;
+          case "critical": char.applyDamage(Math.floor(char.maxHitPoints * 0.75) + 1); break;
+        }
       }
     });
     

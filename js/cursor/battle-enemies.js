@@ -94,11 +94,13 @@ var BattleEnemyCursor = (function() {
           BattleCommands.generateEnemyCommands();
         } else {
           KeyPressNotifier.setListener(BattleMenuCursor);
+          BattleMenuCursor.startListening();
         }
         return false;
       case KeyPressNotifier.Esc:
         clearCursor();
         KeyPressNotifier.setListener(BattleMenuCursor);
+        BattleMenuCursor.startListening();
         return false;
       default:
         console.log("Unhandled key press in enemy selection: " + key);

@@ -280,6 +280,7 @@ var Battle = (function() {
     if (char) {
       var otherChar = Party.getChar(BattleCommands.getCharIndex() + charIndexChange);
       var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
+      q.resetCriticality(char);
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }

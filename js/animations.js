@@ -1,5 +1,7 @@
 var Animation = (function() {
   
+  var result = null;
+  
   var Queues = {
     Attack : "attack"
    ,BattleWalk : "walkInBattle"
@@ -59,6 +61,7 @@ var Animation = (function() {
       this.add(function() { slideChar(char, opt).start(); });
     }
   };
+  Queue.prototype.resetCriticality = function(char) { this.addToChain(function() { Battle.getCharUI(char).toggleClass("critical", char.isCritical()); }); };
   Queue.prototype.setChain = function(chain) { this.chain = chain; };
   Queue.prototype.start = function() { this.theQueue.dequeue(this.name); return this.getPromise(); };
   Queue.prototype.toString = function() { return this.name + " has " + this.theQueue.queue(this.name).length + " elements"; };
@@ -289,6 +292,7 @@ var Animation = (function() {
   var attack = function(command, result, queue) {
     var q = queue || new Queue(Queues.Attack);
     var isParty = (command.type == BattleCommands.Party);
+    
     q.setChain(q);
     q.delay(Message.getQuickPause());
     
@@ -325,12 +329,12 @@ var Animation = (function() {
     swingWeapon(char, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.resetCharUI(char); });
+    q.addToChain(function() { Battle.getCharUI(char).toggleClass("critical", char.isCritical()); });
     
     return q;
   };
   
-  var castSpell = function(command, result) {
+  var castSpell = function(command, result, queue) {
     var q = queue || new Queue(Queues.CastSpell);
     var isParty = (command.type == BattleCommands.Party);
     q.setChain(q);

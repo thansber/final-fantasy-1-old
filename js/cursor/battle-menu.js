@@ -36,6 +36,7 @@ var BattleMenuCursor = (function() {
   
   var fight = function() { 
     BattleCommands.party({action:BattleCommands.Attack});
+    clearCursor();
     BattleEnemyCursor.startListening();
   };
   
@@ -118,7 +119,7 @@ var BattleMenuCursor = (function() {
         run();
         return false;
       default:
-        console.log(key);
+        console.log("Unhandled key press in menu selection: " + key);
     }
   };
   

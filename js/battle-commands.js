@@ -145,7 +145,7 @@ var BattleCommands = (function() {
       }
     });
     
-    commandQueue.chain.delay(Message.getBattlePause());
+    //commandQueue.chain.delay(Message.getBattlePause());
     if (defeat) {
       commandQueue.add(Animation.defeat(commandQueue.chain));
     }
@@ -178,7 +178,9 @@ var BattleCommands = (function() {
   };
 
   var isAllPartyCommandsEntered = function() {
-    return charIndex > 3;
+    var numAliveChars = 0;
+    jQuery.each(Party.getChars(), function(i, char) { if (char.isAlive()) { numAliveChars++; } });
+    return charIndex >= numAliveChars;
   };
   
   var init = function() {

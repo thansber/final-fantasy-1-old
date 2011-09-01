@@ -1,7 +1,7 @@
 Monster.create({names : {original:"IMP", other:{origins:"Goblin"}}
                ,type : Monster.Types.Giant
                ,stats : {hp:8,atk:4,acc:2,hits:1,crt:1,def:4,eva:6,md:16,mor:106}
-               ,reward : {gold:6,exp:6}
+               ,rewards : {gold:6,exp:6}
                ,ui: {size:"small",cssClass:"imp"}});
 Monster.create({names : {original:"GrIMP", other:{origins:"Goblin Guard"}}
                ,type : Monster.Types.Giant
