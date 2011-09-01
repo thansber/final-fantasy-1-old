@@ -22,9 +22,9 @@ var Battle = (function() {
     $spellList = $(".input .spells", $battle);
     
     $battle.find(".commands .column").eq(0)
-      .append(Message.create("FIGHT", "fight"))
-      .append(Message.create("MAGIC", "magic"))
-      .append(Message.create("DRINK", "drink"))
+      .append(Message.create(null, "battle menu fight"))
+      .append(Message.create(null, "battle menu magic"))
+      .append(Message.create(null, "battle menu drink"))
       .append(Message.create("ITEM", "item"));
     $battle.find(".commands .column").eq(1)
       .append(Message.create("RUN", "run"));
@@ -317,9 +317,16 @@ var Battle = (function() {
     $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
     $char.toggleClass("critical", char.isCritical()); 
 
-    var isPoisoned = char.hasStatus(Status.Poison);
-    $("label.hp", $charStats).empty().append(Message.create(isPoisoned ? "PO" : "HP"));
-    if (isPoisoned) {
+    var battleStatus = char.getBattleStatus();
+    var $status = null;
+    if (battleStatus) {
+      $status = battleStatus.length > 4 ? Message.create(null, "shrunk " + battleStatus) : Message.create(battleStatus);
+    } else {
+      $status = Message.create("HP");
+    }
+    
+    $("label.hp", $charStats).empty().append($status);
+    if (char.hasCriticalStatus()) {
       $char.addClass("critical");
     }
 
@@ -327,7 +334,6 @@ var Battle = (function() {
       $char.addClass("dead"); 
     }
     if (char.hasStatus(Status.Stone)) { 
-      $("label.hp", $charStats).empty().append(Message.create("ST"));
       $char.addClass("stone"); 
     }
   };
@@ -353,19 +359,25 @@ var Battle = (function() {
     BattleCommands.init();
     // Start the cursor listener for the first character's action
     BattleMenuCursor.startListening();
-    // First character walks forward to indicate they are choosing an action
-    var firstChar = Party.getChar(0);
-    if (firstChar && moveFirstChar) {
-      Animation.walkAndMoveInBattle(firstChar).start();
+    // First character that can select an action walks forward to indicate they are choosing an action
+    if (moveFirstChar) {
+      var firstChar = null;
+      jQuery.each(Party.getChars(), function(i, char) {
+        if (char.canTakeAction()) {
+          firstChar = char;
+          return false;
+        } else {
+          // need to add an action for characters to attempt to get healed for certain statuses
+        }
+      });
+      if (firstChar) {
+        Animation.walkAndMoveInBattle(firstChar).start();
+      }
     }
   };
   
   var toggleCriticalStatus = function(char) {
-    var $char = Battle.getCharUI(char);
-    $char.toggleClass("critical", char.isCritical()); 
-    if (char.hasStatus(Status.Poison)) {
-      $char.addClass("critical");
-    }
+    Battle.getCharUI(char).toggleClass("critical", char.isCritical() || char.hasCriticalStatus()); 
   };
   
   return {

@@ -23,18 +23,32 @@ var ActionHelper = (function() {
     //var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0).weapon("Rapier", true).armor("Wooden[A]", true).armor("Wooden[S]", true);
     var char = Party.createNewChar("AAAA", CharacterClass.BLACKBELT, 0);
     
-    var monsterName = "SABER T";
+    var monsterName = "COCTRICE";
     var monsterIndex = 1;
     Party.addChar(char);
     Battle.setup({enemies:[{name:monsterName,qty:2}], background:Map.BattleBackgrounds.Forest, doNotMove:true});
 
     var monster = Battle.lookupEnemy(monsterName, monsterIndex);    
-    var result = null;
     
     Battle.inputMessageToggler(true);
     Message.hideAllBattleMessages();
     
     BattleCommands.enemy(monster);
+    BattleCommands.executeCommands();
+  };
+  
+  var multipleEnemyAttack = function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.BLACK_MAGE, 0);
+    var monsterName = "CRAWL";
+    
+    Party.addChar(char);
+    Battle.setup({enemies:[{name:monsterName,qty:2}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
+
+    Battle.inputMessageToggler(true);
+    Message.hideAllBattleMessages();
+    
+    BattleCommands.enemy(Battle.lookupEnemy(monsterName, 0));
+    BattleCommands.enemy(Battle.lookupEnemy(monsterName, 1));
     BattleCommands.executeCommands();
   };
   
@@ -57,6 +71,8 @@ var ActionHelper = (function() {
     targetChar.applyDamage(30);
 
     var char = Party.createNewChar("AAAA", CharacterClass.WHITE_MAGE, 1);
+    char.applyDamage(24);
+
     var spellsToLearn = ["CURE","RUSE","HARM","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"];
     char.spellCharges([5,3,2,0,0,0,0,0]);
     for (var s in spellsToLearn) {
@@ -120,6 +136,7 @@ var ActionHelper = (function() {
   var event = function($target) {
     Party.clearChars();
     if ($target.is(".char.attack")) { charAttack(); } 
+    else if ($target.is(".monster.multi.attack")) { multipleEnemyAttack(); } 
     else if ($target.is(".monster.attack")) { enemyAttack(); } 
     else if ($target.is(".spell.self")) { castSpellOnSelf(); } 
     else if ($target.is(".spell.party.single")) { castSpellOnPartyTarget(); } 

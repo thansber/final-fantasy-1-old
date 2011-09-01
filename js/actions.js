@@ -132,7 +132,15 @@ var Action = (function() {
     
     totalDamage = Math.floor(totalDamage);
     target.applyDamage(totalDamage);
-    return jQuery.extend({}, baseResult, {hits:numConnectedHits, dmg:totalDamage, crit:anyHitCritical, died:target.isDead(), status:statusApplied});
+    var attackResult = {
+      hits: numConnectedHits
+     ,dmg: totalDamage
+     ,crit: anyHitCritical
+     ,died: target.isDead()
+     ,status: statusApplied
+     ,targetHp: target.hitPoints 
+    };
+    return jQuery.extend({}, baseResult, attackResult);
   };
   
   var castSpell = function(source, spellId, target, opt) {

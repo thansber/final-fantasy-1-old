@@ -301,12 +301,35 @@ var Character = (function() {
     return null; 
   };
   
-  Char.prototype.isCritical = function() {
-    return this.hitPoints > 0 && (this.hitPoints / this.maxHitPoints) <= 0.25;
+  Char.prototype.isCritical = function() { return this.hitPoints > 0 && (this.hitPoints / this.maxHitPoints) <= 0.25; };
+  Char.prototype.isAlive = function() { return !this.isDead() && !this.hasStatus(Status.Stone); };
+  Char.prototype.hasCriticalStatus = function() { 
+    var anyCriticalStatus = false;
+    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+      if (hasStatus && Status.lookup(id).critical) {
+        anyCriticalStatus = true;
+      }
+    });
+    return anyCriticalStatus;
   };
-  
-  Char.prototype.isAlive = function() {
-    return !this.isDead() && !this.hasStatus(Status.Stone);
+  Char.prototype.getBattleStatus = function() {
+    var battleStatus = "";
+    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+      if (hasStatus && !!Status.lookup(id).battleText) {
+        // last status applied wins
+        battleStatus = Status.lookup(id).battleText;
+      }
+    });
+    return battleStatus;
+  };
+  Char.prototype.canTakeAction = function() {
+    var actionAllowed = true;
+    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+      if (hasStatus && !Status.lookup(id).canTakeAction) {
+        actionAllowed = false;
+      }
+    });
+    return actionAllowed;
   };
   
   // -----------------------------------------------

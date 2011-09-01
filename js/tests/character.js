@@ -30,4 +30,93 @@ $(document).ready(function() {
     ok(char.canCastSpell(spell), "A " + char.currentClass.name + " should be able to cast " + spell.spellId + " after learning it");
   });
 
+  // -----------------------------------------------------------------
+  module("Statuses");
+  
+  test("adding status", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    var status = Status.Poison;
+    char.addStatus(status);
+    ok(!!char.currentStatuses[status.id]);
+    
+    var otherStatuses = jQuery.map(Status.AllStatuses, function(status) { return status.id; });
+    otherStatuses.splice(jQuery.inArray(status.id, otherStatuses), 1);
+    for (var s in otherStatuses) {
+      ok(!char.currentStatuses[otherStatuses[s]]);
+    }
+  });
+  
+  test("remove status", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    var status = Status.Poison;
+    char.addStatus(status);
+    char.removeStatus(status);
+    ok(!char.currentStatuses[status.id]);
+    
+    var otherStatuses = jQuery.map(Status.AllStatuses, function(status) { return status.id; });
+    otherStatuses.splice(jQuery.inArray(status.id, otherStatuses), 1);
+    for (var s in otherStatuses) {
+      ok(!char.currentStatuses[otherStatuses[s]]);
+    }
+  });
+  
+  test("has status", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    var status = Status.Confuse;
+    char.addStatus(status);
+    ok(char.hasStatus(status));
+  });
+  
+  test("is dead", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    var status = Status.Dead;
+    char.addStatus(status);
+    ok(char.hasStatus(status));
+    ok(char.isDead());
+  });
+  
+  test("is alive", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    char.addStatus(Status.Dead);
+    ok(!char.isAlive());
+    char.removeStatus(Status.Dead);
+    ok(char.isAlive());
+    char.addStatus(Status.Stone);
+    ok(!char.isAlive());
+  });
+  
+  test("has critical status", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    char.addStatus(Status.Dead);
+    ok(!char.hasCriticalStatus());
+    char.removeStatus(Status.Dead);
+    char.addStatus(Status.Poison);
+    ok(char.hasCriticalStatus());
+    char.removeStatus(Status.Poison);
+    char.addStatus(Status.Paralysis);
+    ok(char.hasCriticalStatus());
+  });
+  
+  test("battle status text", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    char.addStatus(Status.Dead);
+    equal("", char.getBattleStatus());
+    char.removeStatus(Status.Dead);
+    char.addStatus(Status.Poison);
+    equal(Status.Poison.battleText, char.getBattleStatus());
+    char.addStatus(Status.Paralysis);
+    equal(Status.Paralysis.battleText, char.getBattleStatus());
+  });
+  
+  test("status preventing actions", function() {
+    var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
+    char.addStatus(Status.Dead);
+    ok(!char.canTakeAction());
+    char.removeStatus(Status.Dead);
+    char.addStatus(Status.Poison);
+    ok(char.canTakeAction());
+    char.addStatus(Status.Sleep);
+    ok(!char.canTakeAction());
+  });
+  
 });

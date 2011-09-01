@@ -23,6 +23,9 @@
 #battle .stats .charStats .border { width:64px; padding:12px 8px 8px 8px; position:relative; top:-3px; overflow:auto; }
 #battle .stats .charStats .name { margin-bottom:1em; height:16px; }
 #battle .stats .charStats label.hp { display:block; clear:left; }
+#battle .stats .charStats label.hp .shrunk.text { background-image:url(../images/font-battle-status-sheet.png); height:16px; background-repeat:no-repeat; background-position:1000em 1000em; }
+#battle .stats .charStats label.hp .shrunk.text.poison { background-position:0 0;  }
+#battle .stats .charStats label.hp .shrunk.text.stone { background-position:0 -16px;  }
 #battle .stats .charStats div.hp { display:block; clear:left; float:right; }
 
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }
@@ -32,6 +35,11 @@
 #battle .input .commands .column { float:left; }
 #battle .input .commands .second.column { margin-left:36px; }
 #battle .input .commands .text { height:24px; }
+#battle .input .commands .text.battle.menu { background-image:url(../images/font-battle-menu-sheet.png); width:73px; height:16px; background-repeat:no-repeat; margin-bottom:8px; }
+#battle .input .commands .text.battle.menu.fight { background-position:0 0; }
+#battle .input .commands .text.battle.menu.magic { background-position:0 -16px; }
+#battle .input .commands .text.battle.menu.drink { background-position:0 -32px; }
+
 #battle .input .spells { width:326px; height:90px; z-index:2; position:absolute; margin:8px 0 0 8px; padding:12px 0 12px 4px; overflow:hidden;}
 #battle .input .spells .spell.level { float:left; width:100%; height:26px; }
 #battle .input .spells .spell.level .text { float:left; width:80px; }

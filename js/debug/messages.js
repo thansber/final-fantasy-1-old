@@ -16,10 +16,12 @@ var MessageHelper = (function() {
                                    + "You impertinent fools.\n" 
                                    + "I, Garland, will knock\n" 
                                    + "you all down!!"));
-    $container.append(Message.create("Wooden#  Wooden|  Small ^\n"
-                                   + "                         \n"
-                                   + "     50        5        5"));
-    $container.append(Message.create("Iron  ~\n      \n    100"));
+    $container.append(Message.create("Wooden#  Wooden|\n"
+                                   + "                \n"
+                                   + "     50        5"));
+    $container.append(Message.create("Iron  ~  Small ^\n"
+                                   + "                \n"
+                                   + "    100        5"));
   };
   
   return {

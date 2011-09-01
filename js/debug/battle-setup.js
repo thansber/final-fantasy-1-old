@@ -83,7 +83,13 @@ var BattleSetupHelper = (function() {
   };
   
   var initializeStatuses = function() {
-    var statuses = {ok:"OK", dead:"Dead", stone:"Petrified", critical:"Critical"};
+    var statuses = {};
+    statuses["ok"] = "OK";
+    statuses["critical"] = "Critical";
+    statuses[Status.Dead.id] = "Dead";
+    statuses[Status.Stone.id] = "Petrified";
+    statuses[Status.Poison.id] = "Poisoned";
+    statuses[Status.Paralysis.id] = "Paralyzed";
     $("select.status", $debug).each(function() {
       for (var s in statuses) {
         var status = statuses[s];
@@ -161,9 +167,9 @@ var BattleSetupHelper = (function() {
         
         var status = $this.closest("tr").find("select.status").val();
         switch (status) {
-          case "dead": char.addStatus(Status.Dead); break;
-          case "stone": char.addStatus(Status.Stone); break;
           case "critical": char.applyDamage(Math.floor(char.maxHitPoints * 0.75) + 1); break;
+          case "ok": break;
+          default: char.addStatus(Status.lookup(status)); break;
         }
       }
     });

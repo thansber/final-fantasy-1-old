@@ -86,6 +86,13 @@ var Animation = (function() {
   var attackResultMessages = function(command, result, q) {
     var isParty = (command.type == BattleCommands.Party);
 
+    if (result.status) {
+      q.delay(Message.getQuickPause());
+      q.add(function() { Message.desc(result.status.desc); });
+      q.delay(Message.getBattlePause());
+      hideMessages(q, {hideDesc:true});
+    }
+    
     if (result.hits && result.hits > 1) { 
       q.add(function() { Message.action(result.hits + NUM_HITS_MSG); });
     }
@@ -102,11 +109,6 @@ var Animation = (function() {
     if (result.crit) {
       q.delay(Message.getQuickPause());
       q.add(function() { Message.desc(CRITICAL_HIT_MSG); });
-    }
-    
-    if (result.status) {
-      q.delay(result.crit ? Message.getBattlePause() : Message.getQuickPause());
-      q.add(function() { Message.desc(result.status.desc); });
     }
     
     if (result.died) {
@@ -328,8 +330,7 @@ var Animation = (function() {
     swingWeapon(char, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.resetCharUI(char); });
-    
+    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   
@@ -364,8 +365,7 @@ var Animation = (function() {
     spellEffect(char, spell, {queue:q.chain});
     slideChar(char, {queue:q.chain, direction:"backward"});
     walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.resetCharUI(char); });
-    
+    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   
