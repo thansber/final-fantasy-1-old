@@ -43,7 +43,7 @@ var Status = (function() {
   ALL[PARALYSIS] = {id:PARALYSIS, desc:"Paralyzed", critical:true, battleText:"Stun"};
   ALL[SLEEP] = {id:SLEEP, desc:"Asleep"};
   ALL[MUTE] = {id:MUTE, desc:"Silenced", battleText:"Mute", canTakeAction:true};
-  ALL[CONFUSE] = {id:CONFUSE, desc:"Confused"}; // TODO: can a confused char select an action?
+  ALL[CONFUSE] = {id:CONFUSE, desc:"Confused"}; 
   
   var ALL_STATUSES = jQuery.map(ALL, function(status, id) { return status; });
   var ALL_EXCEPT_DEAD = jQuery.merge([], ALL_STATUSES); 

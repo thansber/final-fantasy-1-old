@@ -2,7 +2,15 @@ var Action = (function() {
   
   var AUTO_HIT = 1;
   var AUTO_MISS = 201;
+
+  /* ======================================================== */
+  /* PRIVATE METHODS ---------------------------------------- */
+  /* ======================================================== */
+  var healParalysis = function(source, type) { return (type == BattleCommands.Party) ? RNG.percent(25) : RNG.percent(9.8); };
   
+  /* ======================================================== */
+  /* PUBLIC METHODS ----------------------------------------- */
+  /* ======================================================== */
   var attack = function(source, target) {
     
     var baseChanceToHit = 168;
@@ -191,9 +199,34 @@ var Action = (function() {
     return spellAction; 
   };
   
+  var statusHeal = function(source, type) {
+    var result = {type:"SH", source:source};
+    if (source.hasStatus(Status.Paralysis)) {
+      var success = (type == BattleCommands.Party) ? RNG.percent(25) : RNG.percent(9.8);
+      result = jQuery.extend(result, {status:Status.Paralysis, success:success});
+    } else if (source.hasStatus(Status.Confuse)) {
+      result = jQuery.extend(result, {status:Status.Confuse, success:RNG.percent(25)});
+    } else if (source.hasStatus(Status.Sleep)) {
+      var success = source.getMaxHitPoints() > 80 || RNG.randomUpTo(80, 0) < source.getMaxHitPoints(); 
+      result = jQuery.extend(result, {status:Status.Sleep, success:success});
+    }
+    
+    if (result.success) {
+      source.removeStatus(result.status);
+    }
+    
+    if (result.status) {
+      console.log(source.getName() + " is trying to be healed from [" + result.status.id + "] - " + (result.success ? "SUCCESS" : "FAIL"));
+    }
+    
+    // if the source was already healed, return null
+    return result.status ? result : null;
+  };
+  
   return {
     attack : attack
    ,castSpell : castSpell
+   ,statusHeal : statusHeal
    
    ,AUTO_HIT : AUTO_HIT
    ,AUTO_MISS : AUTO_MISS

@@ -66,6 +66,7 @@ var Character = (function() {
   Char.prototype.critical = function() { return this.currentClass.critical(this); };
   Char.prototype.defense = function() { return this.currentClass.defense(this); };
   Char.prototype.evasion = function() { return this.currentClass.evasion(this); };
+  Char.prototype.getMaxHitPoints = function() { return this.maxHitPoints; };
   Char.prototype.getName = function() { return this.charName; };
   Char.prototype.getStatusAttack = function() { return null; };
   Char.prototype.hasStatus = function(status) { return this.currentStatuses[status.id]; };

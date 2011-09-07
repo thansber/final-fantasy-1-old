@@ -9,6 +9,7 @@ var Target = (function() {
   Target.prototype.canCastSpell = function(spell) { alert("A sub-class of this needs to override the canCastSpell(spell) method"); };
   Target.prototype.critical = function() { alert("A sub-class of this needs to override the critical() method"); };
   Target.prototype.evasion = function() { alert("A sub-class of this needs to override the evasion() method"); };
+  Target.prototype.getMaxHitPoints = function() { alert("A sub-class of this needs to override the getMaxHitPoints() method"); };
   Target.prototype.getName = function() { alert("A sub-class of this needs to override the getName() method"); };
   Target.prototype.getStatusAttack = function() { alert("A sub-class of this needs to override the getStatusAttack() method"); };
   Target.prototype.hasStatus = function(status) { alert("A sub-class of this needs to override the hasStatus(status) method"); };

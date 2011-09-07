@@ -99,9 +99,7 @@ var BattleMenuCursor = (function() {
         executeCommand($cursor);
         return false;
       case KeyPressNotifier.Esc:
-        BattleCommands.clearPartyCommand();
-        Battle.moveCharBackwardAndOtherForward(-1);
-        BattleCommands.changeCharIndex(-1);
+        Battle.prevChar();
         return false;
       case KeyPressNotifier.F:
         fight();

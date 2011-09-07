@@ -106,6 +106,7 @@ var Monster = (function() {
   MonsterBase.prototype.critical = function() { return this.criticalRate; };
   MonsterBase.prototype.defense = function() { return this.defence; };
   MonsterBase.prototype.evasion = function() { return this.evade; };
+  MonsterBase.prototype.getMaxHitPoints = function() { return this.maxHp; };
   MonsterBase.prototype.getName = function() { return this.name; };
   MonsterBase.prototype.getStatusAttack = function() { return this.attackStatus; };
   MonsterBase.prototype.hasStatus = function(status) { return this.currentStatuses[status.id]; };

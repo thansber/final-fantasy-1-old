@@ -288,8 +288,26 @@ var Battle = (function() {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
     }
+    BattleCommands.changeCharIndex(1);
     q.start();
-  }
+  };
+  
+  var nextChar = function() {
+    var char = Party.getChar(BattleCommands.getCharIndex());
+    if (char) {
+      BattleCommands.changeCharIndex(1);
+      var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
+      var otherChar = Party.getChar(BattleCommands.getCharIndex());
+      while (otherChar && !otherChar.canTakeAction()) {
+        BattleCommands.incapacitatedChar(otherChar);
+        otherChar = Party.getChar(BattleCommands.getCharIndex());
+      }
+      if (otherChar) {
+        Animation.walkAndMoveInBattle(otherChar, {queue:q});
+      }
+      q.start();
+    }
+  };
   
   var populateSpellList = function() {
     $(".spell.level", $spellList).empty();
@@ -305,6 +323,29 @@ var Battle = (function() {
       $this.append(Message.create("" + char.charges[i], "numCharges"));
     });
     $spellList.removeClass("hidden");
+  };
+  
+  var prevChar = function() {
+    BattleCommands.clearPartyCommand();
+    var char = Party.getChar(BattleCommands.getCharIndex());
+    if (char) {
+      BattleCommands.changeCharIndex(-1);
+      var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
+      var otherChar = Party.getChar(BattleCommands.getCharIndex());
+      while (otherChar && !otherChar.canTakeAction()) {
+        BattleCommands.changeCharIndex(-1);
+        if (BattleCommands.getCharIndex() == 0) {
+          otherChar = char;
+          BattleCommands.changeCharIndex(char.charIndex);
+        } else {
+          otherChar = Party.getChar(BattleCommands.getCharIndex());
+        }
+      }
+      if (otherChar) {
+        Animation.walkAndMoveInBattle(otherChar, {queue:q});
+      }
+      q.start();
+    }
   };
   
   var resetCharUI = function(char) {
@@ -367,11 +408,16 @@ var Battle = (function() {
           firstChar = char;
           return false;
         } else {
-          // need to add an action for characters to attempt to get healed for certain statuses
+          BattleCommands.incapacitatedChar(char);
         }
       });
       if (firstChar) {
         Animation.walkAndMoveInBattle(firstChar).start();
+      }
+      
+      // If all characters are incapacitated, move on to the enemy commands and start the round 
+      if (BattleCommands.isAllPartyCommandsEntered()) {
+        BattleCommands.generateEnemyCommands();
       }
     }
   };
@@ -396,7 +442,9 @@ var Battle = (function() {
    ,killEnemyUI: killEnemyUI
    ,lookupEnemy: lookupEnemy
    ,moveCharBackwardAndOtherForward : moveCharBackwardAndOtherForward
+   ,nextChar : nextChar
    ,populateSpellList: populateSpellList
+   ,prevChar : prevChar
    ,resetCharUI: resetCharUI
    ,setup: setup
    ,toggleCriticalStatus: toggleCriticalStatus

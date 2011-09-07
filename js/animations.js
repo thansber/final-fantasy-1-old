@@ -8,24 +8,26 @@ var Animation = (function() {
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
    ,Defeat : "defeat"
+   ,ShowSplash : "showSplash"
    ,SlideChar : "slideChar"
    ,SpellBackground : "spellBackground"
    ,SpellEffect : "spellEffect"
-   ,ShowSplash : "showSplash"
+   ,StatusHeal : "statusHeal"
    ,SwingWeapon : "swingWeapon"
    ,Victory : "victory"
    ,WindowShake : "windowShake"
   };
   
   var CHAR_AT_REST_CLASSES = ["critical"];
-  var SPLASH_ORDINALS = ["one", "two", "three"];
-  var ENEMY_DIED_MSG = "Terminated";
   var CHAR_DIED_MSG = "Slain..";
-  var DAMAGE_MSG = "DMG";
   var CRITICAL_HIT_MSG = "Critical hit!!";
-  var NUM_HITS_MSG = "Hits!";
-  var MISSED_MSG = "Missed!";
+  var DAMAGE_MSG = "DMG";
+  var ENEMY_DIED_MSG = "Terminated";
   var INEFFECTIVE_MSG = "Ineffective";
+  var MISSED_MSG = "Missed!";
+  var NUM_HITS_MSG = "Hits!";
+  var SPLASH_ORDINALS = ["one", "two", "three"];
+  var STATUS_CURED = "Cured!";
   var VICTORY = "Monsters perished";
   var VICTORY_EXP = "EXP up";
   var VICTORY_GOLD = "GOLD";
@@ -477,6 +479,28 @@ var Animation = (function() {
     return q;
   };
   
+  var statusHeal = function(command, result, queue) {
+    var q = queue || new Queue(Queues.StatusHeal);
+    var isParty = (command.type == BattleCommands.Party);
+    
+    q.setChain(q);
+    q.delay(Message.getQuickPause());
+    
+    if (command.source) { 
+      q.add(function() { Message.source(command.source.getName()); }); 
+    }
+    
+    q.delay(Message.getQuickPause());
+    q.add(function() { Message.desc(result.success ? STATUS_CURED : result.status.desc); });
+    if (isParty) {
+      q.add(function() { Battle.resetCharUI(command.target); });
+    }
+    q.delay(Message.getBattlePause());
+    hideMessages(q, {hideDesc:true, hideSource:true});
+    
+    return q;
+  };
+  
   var swingWeapon = function(char, opt) {
     var settings = jQuery.extend({}, {numAnimations:3, pause:60, queue:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
@@ -589,6 +613,7 @@ var Animation = (function() {
     attack : attack
    ,castSpell : castSpell
    ,defeat : defeat
+   ,statusHeal : statusHeal
    
    // Helper animations
    ,attackAnimation : attackAnimation

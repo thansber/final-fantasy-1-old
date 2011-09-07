@@ -103,7 +103,6 @@ var BattleSpellCursor = (function () {
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
         if (selectSpell()) {
-          BattleCommands.changeCharIndex(1);
           hideSpellList();
           clearCursor();
           if (BattleCommands.isAllPartyCommandsEntered()) {

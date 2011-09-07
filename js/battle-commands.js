@@ -10,6 +10,7 @@ var BattleCommands = (function() {
    ,Drink : "drink"
    ,UseItem : "item"
    ,Run : "run"
+   ,StatusHeal : "statusHeal"
   };
   
   var CommandTypes = {
@@ -44,6 +45,9 @@ var BattleCommands = (function() {
       case ActionTypes.Run:
         s += " is running away";
         break;
+      case ActionTypes.StatusHeal:
+        s += " is trying to heal from a status";
+        break;
     }
     
     if (command.spellId) {
@@ -51,9 +55,11 @@ var BattleCommands = (function() {
     }
   
     var targets = jQuery.isArray(command.target) ? command.target : [command.target];
-    s += " " + jQuery.map(targets, function(target) { 
-      return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
-    }).join(", ");
+    if (targets) {
+      s += " " + jQuery.map(targets, function(target) { 
+        return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
+      }).join(", ");
+    }
     
     return s;
   };
@@ -131,6 +137,12 @@ var BattleCommands = (function() {
           result = Action.castSpell(command.source, command.spellId, command.target);
           commandQueue.add(Animation.castSpell(command, result, commandQueue.chain));
           break;
+        case ActionTypes.StatusHeal:
+          result = Action.statusHeal(command.source, command.targetType);
+          if (result) {
+            commandQueue.add(Animation.statusHeal(command, result, commandQueue.chain));
+          }
+          break;
       }
       
       console.log(resultToString(result));
@@ -178,6 +190,11 @@ var BattleCommands = (function() {
     executeCommands();
   };
 
+  var incapacitatedChar = function(char) {
+    party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
+    changeCharIndex(1);
+  };
+  
   var isAllPartyCommandsEntered = function() {
     var numAliveChars = 0;
     jQuery.each(Party.getChars(), function(i, char) { if (char.isAlive()) { numAliveChars++; } });
@@ -237,6 +254,7 @@ var BattleCommands = (function() {
    ,generateEnemyCommands : generateEnemyCommands
    ,getCharIndex : getCharIndex
    ,init : init
+   ,incapacitatedChar : incapacitatedChar
    ,isAllPartyCommandsEntered : isAllPartyCommandsEntered
    ,party : party
    
@@ -245,6 +263,7 @@ var BattleCommands = (function() {
    ,Drink : ActionTypes.Drink
    ,UseItem : ActionTypes.UseItem
    ,Run : ActionTypes.Run
+   ,StatusHeal : ActionTypes.StatusHeal
    
    ,Party : CommandTypes.Party
    ,Enemy : CommandTypes.Enemy

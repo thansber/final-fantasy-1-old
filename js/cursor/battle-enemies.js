@@ -87,8 +87,7 @@ var BattleEnemyCursor = (function() {
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
         selectEnemyAsTarget();
-        Battle.moveCharBackwardAndOtherForward(1);
-        BattleCommands.changeCharIndex(1);
+        Battle.nextChar();
         clearCursor();
         if (BattleCommands.isAllPartyCommandsEntered()) {
           BattleCommands.generateEnemyCommands();
