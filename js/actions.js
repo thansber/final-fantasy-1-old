@@ -1,7 +1,10 @@
 var Action = (function() {
-  
-  var AUTO_HIT = 1;
-  var AUTO_MISS = 201;
+
+  /* ========= */
+  /* CONSTANTS */
+  /* ========= */
+  this.AUTO_HIT = 1;
+  this.AUTO_MISS = 201;
 
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
@@ -11,7 +14,7 @@ var Action = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var attack = function(source, target) {
+  this.attack = function(source, target) {
     
     var baseChanceToHit = 168;
     var numHits = source.numHits();
@@ -71,11 +74,11 @@ var Action = (function() {
     
     for (var i = 0; i < numHits; i++) {
       var attackLog = "";
-      var r = RNG.randomUpTo(AUTO_MISS);
-      if (r == AUTO_HIT) {
+      var r = RNG.randomUpTo(this.AUTO_MISS);
+      if (r == this.AUTO_HIT) {
         hitSuccess = true;
         critSuccess = true;
-      } else if (r == AUTO_MISS) {
+      } else if (r == this.AUTO_MISS) {
         hitSuccess = false;
         critSuccess = false;
       } else {
@@ -122,7 +125,7 @@ var Action = (function() {
           });
           
           statusLog += " ST=[";
-          var st = RNG.randomUpTo(AUTO_MISS);
+          var st = RNG.randomUpTo(this.AUTO_MISS);
           if (st <= (baseStatusChance - target.magicDefense())) {
             statusApplied = source.getStatusAttack();
             target.addStatus(source.getStatusAttack());
@@ -151,7 +154,7 @@ var Action = (function() {
     return jQuery.extend({}, baseResult, attackResult);
   };
   
-  var castSpell = function(source, spellId, target, opt) {
+  this.castSpell = function(source, spellId, target, opt) {
     
     if (source.isDead()) {
       return null;
@@ -199,7 +202,7 @@ var Action = (function() {
     return spellAction; 
   };
   
-  var statusHeal = function(source, type) {
+  this.statusHeal = function(source, type) {
     var result = {type:"SH", source:source};
     if (source.hasStatus(Status.Paralysis)) {
       var success = (type == BattleCommands.Party) ? RNG.percent(25) : RNG.percent(9.8);
@@ -223,12 +226,5 @@ var Action = (function() {
     return result.status ? result : null;
   };
   
-  return {
-    attack : attack
-   ,castSpell : castSpell
-   ,statusHeal : statusHeal
-   
-   ,AUTO_HIT : AUTO_HIT
-   ,AUTO_MISS : AUTO_MISS
-  };
-})();
+  return this;
+}).call({});

@@ -1,8 +1,9 @@
 var Animation = (function() {
   
+  var self = this;
   var result = null;
   
-  var Queues = {
+  this.Queues = {
     Attack : "attack"
    ,BattleWalk : "walkInBattle"
    ,CastSpell : "castSpell"
@@ -53,14 +54,14 @@ var Animation = (function() {
   Queue.prototype.delay = function(delayTime) { this.theQueue.delay(delayTime, this.name); };
   Queue.prototype.getPromise = function() { return this.theQueue.promise(this.name); };
   Queue.prototype.moveChar = function(char, chain, opt) {
-    this.setChain(chain || walkInBattle(char, opt));
+    this.setChain(chain || self.walkInBattle(char, opt));
     var queueChain = this.chain;
     if (chain) {
-      this.addToChain(function() { slideChar(char, opt).start(); });
-      walkInBattle(char, jQuery.extend({}, opt, {queue:queueChain}));
+      this.addToChain(function() { self.slideChar(char, opt).start(); });
+      self.walkInBattle(char, jQuery.extend({}, opt, {queue:queueChain}));
     } else {
       this.add(function() { queueChain.start(); });
-      this.add(function() { slideChar(char, opt).start(); });
+      this.add(function() { self.slideChar(char, opt).start(); });
     }
   };
   Queue.prototype.setChain = function(chain) { this.chain = chain; };
@@ -70,17 +71,17 @@ var Animation = (function() {
   /* ======================================================== */
   /* ACTION QUEUE object ------------------------------------ */ 
   /* ======================================================== */
-  var ActionQueue = function() {
+  self.ActionQueue = function() {
     this.animationQueue = null;
     this.chain = null;
   };
-  ActionQueue.prototype.add = function(animationQueue, chain) {
+  self.ActionQueue.prototype.add = function(animationQueue, chain) {
     if (this.animationQueue == null) {
       this.animationQueue = animationQueue;
       this.chain = this.animationQueue.chain;
     }
   };
-  ActionQueue.prototype.start = function() { return this.animationQueue.start(); };
+  self.ActionQueue.prototype.start = function() { return this.animationQueue.start(); };
   
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
@@ -168,7 +169,7 @@ var Animation = (function() {
   var castSpellResultMessageEnemy = function(result, resultIndex, spell, target, $target, q) {
     var dmgShown = false, descShown = false;
     q.add(function() { Message.target(target.getName()); });
-    splash($target, spell.splash, {overlay:spell.overlay, queue:q});
+    self.splash($target, spell.splash, {overlay:spell.overlay, queue:q});
     
     var resultDamage = result.dmg[resultIndex];
     if (resultDamage != null) {
@@ -202,7 +203,7 @@ var Animation = (function() {
   var castSpellResultMessageParty = function(result, resultIndex, spell, target, q) {
     var charDied = false, dmgShown = false;
     q.add(function() { Message.target(target.getName()); }, 0);
-    charFlicker(target, {queue:q});
+    self.charFlicker(target, {queue:q});
     
     var resultDamage = result.dmg[resultIndex];
     if (resultDamage != null) {
@@ -260,7 +261,7 @@ var Animation = (function() {
   var spellBackgroundFlicker = function(spell, opt) {
     var settings = jQuery.extend({}, {numAnimations:4, flickerPause:50}, opt);
     var $background = $("#battle .main .border, .stats .border");
-    var q = new Queue(Queues.SpellBackground);
+    var q = new Queue(this.Queues.SpellBackground);
     for (var i = 0; i < settings.numAnimations; i++) {
       q.add(function() { $background.css("backgroundColor", Spell.lookup(spell.spellId).backgroundColor); });
       q.delay(settings.flickerPause);
@@ -292,8 +293,8 @@ var Animation = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var attack = function(command, result, queue) {
-    var q = queue || new Queue(Queues.Attack);
+  self.attack = function(command, result, queue) {
+    var q = queue || new Queue(this.Queues.Attack);
     var isParty = (command.type == BattleCommands.Party);
     
     q.setChain(q);
@@ -313,11 +314,11 @@ var Animation = (function() {
       // unequipped chars using their fists get a gold splash effect
       var weaponSplash = (command.source.equippedWeapon ? command.source.equippedWeapon.splash : "gold"); 
       
-      attackAnimation(command.source, q);
-      splash($enemy, weaponSplash, {queue:q});
+      self.attackAnimation(command.source, q);
+      self.splash($enemy, weaponSplash, {queue:q});
     } else {
-      windowShake({queue:q});
-      charFlicker(command.target, {queue:q}); 
+      self.windowShake({queue:q});
+      self.charFlicker(command.target, {queue:q}); 
     }
 
     attackResultMessages(command, result, q);
@@ -325,19 +326,19 @@ var Animation = (function() {
     return q;
   };
   
-  var attackAnimation = function(char, queue) {
-    var q = queue || new Queue(Queues.Attack);
+  self.attackAnimation = function(char, queue) {
+    var q = queue || new Queue(this.Queues.Attack);
     var chain = queue || q.chain;
     q.moveChar(char, chain);
-    swingWeapon(char, {queue:q.chain});
-    slideChar(char, {queue:q.chain, direction:"backward"});
-    walkInBattle(char, {queue:q.chain});
+    self.swingWeapon(char, {queue:q.chain});
+    self.slideChar(char, {queue:q.chain, direction:"backward"});
+    self.walkInBattle(char, {queue:q.chain});
     q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   
-  var castSpell = function(command, result, queue) {
-    var q = queue || new Queue(Queues.CastSpell);
+  self.castSpell = function(command, result, queue) {
+    var q = queue || new Queue(this.Queues.CastSpell);
     var isParty = (command.type == BattleCommands.Party);
     q.setChain(q);
     q.delay(Message.getQuickPause());
@@ -352,29 +353,29 @@ var Animation = (function() {
     }
 
     if (isParty) {
-      castSpellAnimation(command.source, result.spell, q);
+      self.castSpellAnimation(command.source, result.spell, q);
     } 
     castSpellResultMessages(command, result, q);
     
     return q;
   };
   
-  var castSpellAnimation = function(char, spell, queue) {
-    var q = queue || new Queue(Queues.CastSpell);
+  self.castSpellAnimation = function(char, spell, queue) {
+    var q = queue || new Queue(this.Queues.CastSpell);
     var chain = queue || q.chain;
     q.moveChar(char, chain);
     q.addToChain(function() { spellBackgroundFlicker(spell).start(); });
-    spellEffect(char, spell, {queue:q.chain});
-    slideChar(char, {queue:q.chain, direction:"backward"});
-    walkInBattle(char, {queue:q.chain});
+    self.spellEffect(char, spell, {queue:q.chain});
+    self.slideChar(char, {queue:q.chain, direction:"backward"});
+    self.walkInBattle(char, {queue:q.chain});
     q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   
-  var charFlicker = function(char, opt) {
+  self.charFlicker = function(char, opt) {
     var settings = jQuery.extend({}, {numAnimations:3, flickerPause:60, initialPause:200, queue:null}, opt);
     var $char = Battle.getCharUI(char);
-    var q = settings.queue || new Queue(Queues.CharFlicker);
+    var q = settings.queue || new Queue(this.Queues.CharFlicker);
     
     q.delay(settings.initialPause);
     for (var i = 0; i < settings.numAnimations; i++) {
@@ -388,18 +389,18 @@ var Animation = (function() {
     return q;
   };
   
-  var defeat = function(queue) {
-    var q = queue || new Queue(Queues.Defeat);
+  self.defeat = function(queue) {
+    var q = queue || new Queue(this.Queues.Defeat);
     var firstChar = Party.getChar(0);
     q.delay(Message.getQuickPause());
     q.add(function() { Message.desc(firstChar.getName() + " party perished"); });
     return q;
   };
   
-  var slideChar = function(char, opt) {
+  self.slideChar = function(char, opt) {
     var settings = jQuery.extend({}, {speed:350, direction:"forward", queue:null}, opt);
     var $char = Battle.getCharUI(char);
-    var q = settings.queue || new Queue(Queues.SlideChar);
+    var q = settings.queue || new Queue(this.Queues.SlideChar);
     
     q.add(function() {
       switch (settings.direction) {
@@ -415,11 +416,11 @@ var Animation = (function() {
     return q;
   };
   
-  var spellEffect = function(char, spell, opt) {
+  self.spellEffect = function(char, spell, opt) {
     var settings = jQuery.extend({}, {numAnimations:4, pause:100, queue:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
     var $spell = Battle.createSpellUI(spell);
-    var q = settings.queue || new Queue(Queues.SpellEffect);
+    var q = settings.queue || new Queue(this.Queues.SpellEffect);
     
     q.add(function() { $char.append($spell); $char.addClass("casting arms up"); });
     
@@ -433,7 +434,7 @@ var Animation = (function() {
     return q;
   };
   
-  var splash = function($enemy, splashColors, opt) {
+  self.splash = function($enemy, splashColors, opt) {
     var settings = jQuery.extend({}, {pause:80, overlay:false, queue:null}, opt);
     if (!settings.numAnimations) {
       var $parent = $enemy.parent();
@@ -442,7 +443,7 @@ var Animation = (function() {
       else if ($parent.is(".large")) { settings.numAnimations = RNG.randomUpTo(6, 4); } 
       else if ($parent.is(".fiend,.chaos")) { settings.numAnimations = RNG.randomUpTo(7, 5); } 
     }
-    var q = settings.queue || new Queue(Queues.ShowSplash);
+    var q = settings.queue || new Queue(this.Queues.ShowSplash);
     
     for (var n = 0; n < settings.numAnimations; n++) {
       q.add(function() { 
@@ -479,8 +480,8 @@ var Animation = (function() {
     return q;
   };
   
-  var statusHeal = function(command, result, queue) {
-    var q = queue || new Queue(Queues.StatusHeal);
+  self.statusHeal = function(command, result, queue) {
+    var q = queue || new Queue(this.Queues.StatusHeal);
     var isParty = (command.type == BattleCommands.Party);
     
     q.setChain(q);
@@ -501,10 +502,10 @@ var Animation = (function() {
     return q;
   };
   
-  var swingWeapon = function(char, opt) {
+  self.swingWeapon = function(char, opt) {
     var settings = jQuery.extend({}, {numAnimations:3, pause:60, queue:null, $char:null}, opt);
     var $char = settings.$char ? settings.$char : Battle.getCharUI(char);
-    var q = settings.queue || new Queue(Queues.SwingWeapon);
+    var q = settings.queue || new Queue(this.Queues.SwingWeapon);
 
     q.add(function() { $char.addClass("attack swing"); });
     
@@ -520,9 +521,9 @@ var Animation = (function() {
     return q;
   };
   
-  var victory = function(opt) {
+  self.victory = function(opt) {
     var settings = jQuery.extend({}, {numAnimations:4, pause:250, queue:null}, opt);
-    var q = settings.queue || new Queue(Queues.Victory);
+    var q = settings.queue || new Queue(this.Queues.Victory);
     
     for (var i = 0; i < settings.numAnimations; i++) {
       q.add(function() { 
@@ -569,10 +570,10 @@ var Animation = (function() {
     return q;
   };
   
-  var walkInBattle = function(char, opt) {
+  self.walkInBattle = function(char, opt) {
     var settings = jQuery.extend({}, {numAnimations:3, pause:70, queue:null}, opt);
     var $char = Battle.getCharUI(char);
-    var q = settings.queue || new Queue(Queues.BattleWalk);
+    var q = settings.queue || new Queue(this.Queues.BattleWalk);
     
     q.add(function() { $char.removeClass(CHAR_AT_REST_CLASSES.join(" ")); });
     
@@ -586,18 +587,18 @@ var Animation = (function() {
     return q;
   };
   
-  var walkAndMoveInBattle = function(char, opt) {
+  this.walkAndMoveInBattle = function(char, opt) {
     var settings = jQuery.extend({}, {queue:null}, opt);
-    var q = settings.queue || new Queue(Queues.BattleWalk);
+    var q = settings.queue || new Queue(this.Queues.BattleWalk);
     q.moveChar(char, q.chain, opt);
     q.addToChain(function() { Battle.toggleCriticalStatus(char); });
     return q;
   };
   
-  var windowShake = function(opt) {
+  this.windowShake = function(opt) {
     var settings = jQuery.extend({}, {numPixels:3, speed:30, pause:50, queue:null}, opt);
     var $battle = $("#battle");
-    var q = settings.queue || new Queue(Queues.WindowShake);
+    var q = settings.queue || new Queue(this.Queues.WindowShake);
     
     q.add(function() { moveBattleWindow($battle, settings, RNG.randomUpTo(1, 0), 1); });
     q.delay(settings.pause);
@@ -608,27 +609,5 @@ var Animation = (function() {
     return q;
   };
   
-  return {
-    // Full animations
-    attack : attack
-   ,castSpell : castSpell
-   ,defeat : defeat
-   ,statusHeal : statusHeal
-   
-   // Helper animations
-   ,attackAnimation : attackAnimation
-   ,castSpellAnimation : castSpellAnimation
-   ,charFlicker : charFlicker
-   ,slideChar : slideChar
-   ,spellEffect : spellEffect
-   ,splash : splash
-   ,swingWeapon : swingWeapon
-   ,victory : victory
-   ,walkInBattle : walkInBattle
-   ,walkAndMoveInBattle : walkAndMoveInBattle
-   ,windowShake : windowShake
-    
-   ,ActionQueue : ActionQueue
-   ,Queues : Queues
-  };
-})();
+  return this;
+}).call({});
