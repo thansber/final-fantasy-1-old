@@ -1,5 +1,7 @@
 var Monster = (function() {
   
+  var self = this;
+    
   var ALL = {};
   var ALL_BY_CSS = {};
   
@@ -14,6 +16,9 @@ var Monster = (function() {
    ,Mage : "mage"
    ,Regenerative : "regen"
   };
+  
+  self.Types = Types;
+  self.All = ALL;
   
   function MonsterBase(opt) {
     var types = opt.type || [];
@@ -232,20 +237,16 @@ var Monster = (function() {
   // ----------------
   // Creation methods
   // ----------------
-  var create = function(opt) {
+  self.create = function(opt) {
     new MonsterBase(opt);
   };
   
-  var createForBattle = function(monster) {
+  self.createForBattle = function(monster) {
     return jQuery.extend(true, {}, monster);
   };
   
-  return {
-    lookup : function(name) { return ALL[name]; }
-   ,lookupByCss : function(css) { return ALL_BY_CSS[css]; }
-   ,create : create
-   ,createForBattle : createForBattle
-   ,Types : Types
-   ,All : ALL
-  };
-})();
+  self.lookup = function(name) { return ALL[name]; };
+  self.lookupByCss = function(css) { return ALL_BY_CSS[css]; };
+  
+  return this;
+}).call({});

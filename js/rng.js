@@ -1,5 +1,7 @@
 var RNG = (function() {
 
+  var self = this;
+    
   var isDecimal = function(n) { return n % 1 != 0; };
   var decimalPercentToInteger = function(d) {
     if (!isDecimal(d)) {
@@ -29,20 +31,20 @@ var RNG = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var percent = function(pct) {
+  self.percent = function(pct) {
     var params = isDecimal(pct) ? decimalPercentToInteger(pct) : {max:100, pct:pct};
-    return randomUpTo(params.max) <= params.pct; 
+    return self.randomUpTo(params.max) <= params.pct; 
   };
-  var randomArrayElement = function(array) { return array[randomUpTo(array.length - 1, 0)]; };
+  self.randomArrayElement = function(array) { return array[self.randomUpTo(array.length - 1, 0)]; };
   
-  var randomUpTo = function(max, min) {
+  self.randomUpTo = function(max, min) {
     if (min == null) {
       min = 1;
     }
     return Math.floor(Math.random() * (max + 1 - min)) + min;
   };
   
-  var shuffle = function(myArray) {
+  self.shuffle = function(myArray) {
     var i = myArray.length;
     if ( i == 0 ) return false;
     while ( --i ) {
@@ -60,6 +62,6 @@ var RNG = (function() {
    ,randomUpTo : randomUpTo
    ,shuffle : shuffle
   };
-})();
+}).call({});
 
 

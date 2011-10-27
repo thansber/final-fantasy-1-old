@@ -1,5 +1,7 @@
 var Movement = (function() {
   
+  var self = this;
+    
   var moveDistance = 16;
   var $view = null;
   var isMoving = false;
@@ -17,11 +19,12 @@ var Movement = (function() {
   var MOVE_SCROLL_SPEEDS = {};
   MOVE_SCROLL_SPEEDS[Transportation.Foot] = 250;
 
+  self.Transportation = Transportation;
   
   /* =========== */
   /* INIT METHOD */
   /* =========== */
-  var init = function(opt) {
+  self.init = function(opt) {
     $view = $("#view");
   };
 
@@ -31,7 +34,7 @@ var Movement = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var move = function(xChange, yChange) {
+  self.move = function(xChange, yChange) {
     if (isMoving) {
       return;
     }
@@ -48,58 +51,42 @@ var Movement = (function() {
     $view.stop().animate({backgroundPosition:newPos}, speed, "linear", function() { isMoving = false; });
   };
   
-  var left = function() { move(-1, 0); };
-  var right = function() { move(1, 0); };
-  var up = function() { move(0, -1); };
-  var down = function() { move(0, 1); };
-  var moving = function() { return isMoving; };
+  self.left = function() { self.move(-1, 0); };
+  self.right = function() { self.move(1, 0); };
+  self.up = function() { self.move(0, -1); };
+  self.down = function() { self.move(0, 1); };
+  self.moving = function() { return isMoving; };
   
-  var keyPressChange = function(key, isPressed) {
+  self.keyPressChange = function(key, isPressed) {
     keysPressed[key] = isPressed;
   };
   
-  var refresh = function() {
+  self.refresh = function() {
     for (var k in keysPressed) {
       if (keysPressed[k]) {
         switch (k) {
-          case KeyPressNotifier.Left: left(); return false;
-          case KeyPressNotifier.Up: up(); return false;
-          case KeyPressNotifier.Right: right(); return false;
-          case KeyPressNotifier.Down: down(); return false;
+          case KeyPressNotifier.Left: self.left(); return false;
+          case KeyPressNotifier.Up: self.up(); return false;
+          case KeyPressNotifier.Right: self.right(); return false;
+          case KeyPressNotifier.Down: self.down(); return false;
         }
       }
     }
   };
   
-  var startListening = function() {
+  self.startListening = function() {
     KeyPressNotifier.setListener(Movement);
     $(document).everyTime("30ms", TIMER_LABEL, function() {
       Movement.refresh();
     });
   };
   
-  var stopListening = function() {
+  self.stopListening = function() {
     $(document).stopTime(TIMER_LABEL);
     for (var k in keysPressed) {
       keysPressed[k] = false;
     }
   };
   
-  return {
-    init: init
-   
-   ,left: left
-   ,right: right
-   ,down: down
-   ,up: up
-   
-   ,moving: moving
-   ,keyPressChange: keyPressChange
-   ,startListening: startListening
-   ,stopListening: stopListening
-   ,refresh: refresh
-   
-   ,Transportation: Transportation
-  };
-  
-})();
+  return this;
+}).call({});

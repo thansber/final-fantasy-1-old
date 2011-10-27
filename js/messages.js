@@ -1,5 +1,7 @@
 var Message = (function() {
   
+  var self = this;
+    
   var digits = {
     "0": "zero"
    ,"1": "one"
@@ -41,7 +43,7 @@ var Message = (function() {
   var battlePause = 1000;
   var quickPause = 100;
   
-  var init = function(opt) {
+  self.init = function(opt) {
     $messages = $(opt.messages);
   };
   
@@ -72,7 +74,7 @@ var Message = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var create = function(text, cssClasses) {
+  self.create = function(text, cssClasses) {
     var $msg = $("<div/>").addClass("text");
     if (cssClasses) {
       $msg.addClass(jQuery.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
@@ -115,36 +117,24 @@ var Message = (function() {
     return $msg;
   };
   
-  var source = function(opt) { battleMessage(opt, $(".source.message", $messages)); };
-  var action = function(opt) { battleMessage(opt, $(".action.message", $messages)); };
-  var target = function(opt) { battleMessage(opt, $(".target.message", $messages)); };
-  var damage = function(opt) { battleMessage(opt, $(".damage.message", $messages)); };
-  var desc = function(opt) { battleMessage(opt, $(".desc.message", $messages)); };
+  self.source = function(opt) { battleMessage(opt, $(".source.message", $messages)); };
+  self.action = function(opt) { battleMessage(opt, $(".action.message", $messages)); };
+  self.target = function(opt) { battleMessage(opt, $(".target.message", $messages)); };
+  self.damage = function(opt) { battleMessage(opt, $(".damage.message", $messages)); };
+  self.desc = function(opt) { battleMessage(opt, $(".desc.message", $messages)); };
 
-  var getBattlePause = function() { return battlePause; };
-  var getQuickPause = function() { return quickPause; };
+  self.getBattlePause = function() { return battlePause; };
+  self.getQuickPause = function() { return quickPause; };
   
-  var hideAllBattleMessages = function() {
-    source({show:false});
-    target({show:false});
-    action({show:false});
-    damage({show:false});
-    desc({show:false});
+  self.hideAllBattleMessages = function() {
+    self.source({show:false});
+    self.target({show:false});
+    self.action({show:false});
+    self.damage({show:false});
+    self.desc({show:false});
   };
   
-  var setBattlePause = function(amt) { battlePause = amt; };
+  self.setBattlePause = function(amt) { battlePause = amt; };
   
-  return {
-    init: init
-   ,create: create
-   ,source: source
-   ,action: action
-   ,target: target
-   ,damage: damage
-   ,desc: desc
-   ,getBattlePause: getBattlePause
-   ,getQuickPause: getQuickPause
-   ,hideAllBattleMessages: hideAllBattleMessages
-   ,setBattlePause: setBattlePause
-  };
-})();
+  return this;
+}).call({});
