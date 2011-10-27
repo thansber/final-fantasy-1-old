@@ -1,5 +1,7 @@
 var BattleCommands = (function() {
   
+  var self = this;
+    
   var partyCommands = [];
   var enemyCommands = [];
   var charIndex = 0;
@@ -22,6 +24,21 @@ var BattleCommands = (function() {
     All : "all"
    ,Single : "single"
   };
+  
+  /* ========= */
+  /* CONSTANTS */
+  /* ========= */
+  self.Party = CommandTypes.Party;
+  self.Enemy = CommandTypes.Enemy;
+  self.All = TargetAffects.All;
+  self.Single = TargetAffects.Single;
+  
+  self.Attack = ActionTypes.Attack;
+  self.CastSpell = ActionTypes.CastSpell;
+  self.Drink = ActionTypes.Drink;
+  self.UseItem = ActionTypes.UseItem;
+  self.Run = ActionTypes.Run;
+  self.StatusHeal = ActionTypes.StatusHeal;
   
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
@@ -86,16 +103,16 @@ var BattleCommands = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var changeCharIndex = function(amount) {
+  self.changeCharIndex = function(amount) {
     charIndex += amount;
     charIndex = charIndex < 0 ? 0 : charIndex;
   };
   
-  var clearPartyCommand = function() {
+  self.clearPartyCommand = function() {
     partyCommands[charIndex] = null;
   };
 
-  var enemy = function(monster, action) {
+  self.enemy = function(monster, action) {
     var command = jQuery.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction());
     if (command.spellId) {
       var spell = Spell.lookup(command.spellId);
@@ -106,7 +123,7 @@ var BattleCommands = (function() {
     enemyCommands.push(command);
   };
   
-  var executeCommands = function() {
+  self.executeCommands = function() {
     var all = jQuery.merge([], partyCommands);
     jQuery.merge(all, enemyCommands);
     RNG.shuffle(all);
@@ -173,41 +190,41 @@ var BattleCommands = (function() {
     });
   };
   
-  var getCharIndex = function() {
+  self.getCharIndex = function() {
     return charIndex;
   };
   
-  var generateEnemyCommands = function() {
+  self.generateEnemyCommands = function() {
     var enemiesByName = Battle.getAllEnemies();
     for (var n in enemiesByName) {
       var enemies = enemiesByName[n];
       jQuery.each(enemies, function(i, e) {
         // TODO: Need to check for various incapacitating statuses
-        enemy(e);
+        self.enemy(e);
       });
     }
     
-    executeCommands();
+    self.executeCommands();
   };
 
-  var incapacitatedChar = function(char) {
-    party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
-    changeCharIndex(1);
+  self.incapacitatedChar = function(char) {
+    self.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
+    self.changeCharIndex(1);
   };
   
-  var isAllPartyCommandsEntered = function() {
+  self.init = function() {
+      charIndex = 0;
+      partyCommands = [];
+      enemyCommands = [];
+    };
+  
+  self.isAllPartyCommandsEntered = function() {
     var numAliveChars = 0;
     jQuery.each(Party.getChars(), function(i, char) { if (char.isAlive()) { numAliveChars++; } });
     return charIndex >= numAliveChars;
   };
   
-  var init = function() {
-    charIndex = 0;
-    partyCommands = [];
-    enemyCommands = [];
-  };
-  
-  var party = function(opt) {
+  self.party = function(opt) {
     var command = partyCommands[charIndex];
     if (!command) {
       command = {type:CommandTypes.Party};
@@ -246,28 +263,5 @@ var BattleCommands = (function() {
     partyCommands[charIndex] = command;
   };
   
-  return {
-    clearPartyCommand : clearPartyCommand
-   ,changeCharIndex : changeCharIndex
-   ,enemy : enemy
-   ,executeCommands : executeCommands
-   ,generateEnemyCommands : generateEnemyCommands
-   ,getCharIndex : getCharIndex
-   ,init : init
-   ,incapacitatedChar : incapacitatedChar
-   ,isAllPartyCommandsEntered : isAllPartyCommandsEntered
-   ,party : party
-   
-   ,Attack : ActionTypes.Attack
-   ,CastSpell : ActionTypes.CastSpell
-   ,Drink : ActionTypes.Drink
-   ,UseItem : ActionTypes.UseItem
-   ,Run : ActionTypes.Run
-   ,StatusHeal : ActionTypes.StatusHeal
-   
-   ,Party : CommandTypes.Party
-   ,Enemy : CommandTypes.Enemy
-   ,All : TargetAffects.All
-   ,Single : TargetAffects.Single
-  };
-})();
+  return this;
+}).call({});

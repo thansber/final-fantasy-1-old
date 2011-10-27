@@ -2,30 +2,25 @@ var Cursor = (function() {
   
   var cursors = [];
   
-  var init = function() {
-    registerCursor(BattleMenuCursor);
-    registerCursor(BattleEnemyCursor);
-    registerCursor(BattleSpellCursor);
+  this.init = function() {
+    this.registerCursor(BattleMenuCursor);
+    this.registerCursor(BattleEnemyCursor);
+    this.registerCursor(BattleSpellCursor);
   };
   
-  var initCursors = function() {
+  this.initCursors = function() {
     for (var c in cursors) {
       cursors[c].init();
     }
   };
   
-  var createCursor = function() {
+  this.createCursor = function() {
     return $("<div/>").addClass("cursor");
   };
   
-  var registerCursor = function(cursorObj) {
+  this.registerCursor = function(cursorObj) {
     cursors.push(cursorObj);
   };
   
-  return {
-    init : init
-   ,initCursors : initCursors
-   ,createCursor : createCursor
-   ,registerCursor : registerCursor
-  };
-})();
+  return this;
+}).call({});

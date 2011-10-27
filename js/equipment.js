@@ -6,8 +6,10 @@ var Equipment = (function() {
   // ==============================================================
   // WEAPON -------------------------------------------------------
   // ==============================================================
-  var Weapon = (function() {
+  this.Weapon = (function() {
     
+    var self = this;  
+      
     function Weapon(opt) {
       this.name = opt.name;
       this.attack = opt.stats.attack;
@@ -26,19 +28,21 @@ var Equipment = (function() {
       ALL_WEAPONS[this.name] = this;
     };
     
-     return {
-      create : function(opt) { return new Weapon(opt); }
-     ,lookup : function(id) { return ALL_WEAPONS[id]; }
-     ,All : ALL_WEAPONS
-    };
-  })();
+    self.create = function(opt) { return new Weapon(opt); };
+    self.lookup = function(id) { return ALL_WEAPONS[id]; };
+    self.All = ALL_WEAPONS;
+    
+    return self;
+  }).call({});
   
   
   // ==============================================================
   // ARMOR --------------------------------------------------------
   // ==============================================================
-  var Armor = (function() {
+  this.Armor = (function() {
     
+    var self = this;
+      
     function Armor(opt) {
       this.name = opt.name;
       this.defense = opt.stats.def;
@@ -59,15 +63,12 @@ var Equipment = (function() {
       ALL_ARMOR[this.name] = this;
     };
     
-    return {
-      create : function(opt) { return new Armor(opt); }
-     ,lookup : function(id) { return ALL_ARMOR[id]; }
-     ,All : ALL_ARMOR
-    };
-  })();
+    self.create = function(opt) { return new Armor(opt); };
+    self.lookup = function(id) { return ALL_ARMOR[id]; };
+    self.All = ALL_ARMOR;
+    
+    return self;
+  }).call({});
   
-  return {
-    Weapon : Weapon
-   ,Armor : Armor
-  };
-})();
+  return this;
+}).call({});

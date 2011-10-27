@@ -11,18 +11,19 @@ var Element = (function() {
    ,Status : "status"
   };
   
-  return {
-    Fire : ALL.Fire
-   ,Ice : ALL.Ice
-   ,Lightning : ALL.Lightning
-   ,Earth : ALL.Earth
-   ,Death : ALL.Death
-   ,Time : ALL.Time
-   ,PoisonStone : ALL.PoisonStone
-   ,Status : ALL.Status
-   ,AllElements : [ALL.Fire, ALL.Ice, ALL.Lightning, ALL.Earth, ALL.Death, ALL.Time, ALL.PoisonStone, ALL.Status]
-  };
-})();
+  this.Fire = ALL.Fire
+  this.Ice = ALL.Ice
+  this.Lightning = ALL.Lightning
+  this.Earth = ALL.Earth
+  this.Death = ALL.Death
+  this.Time = ALL.Time
+  this.PoisonStone = ALL.PoisonStone
+  this.Status = ALL.Status
+  this.AllElements = [ALL.Fire, ALL.Ice, ALL.Lightning, ALL.Earth, ALL.Death, ALL.Time, ALL.PoisonStone, ALL.Status]
+
+  
+  return this;
+}).call({});
 
 var Status = (function() {
   
@@ -49,18 +50,19 @@ var Status = (function() {
   var ALL_EXCEPT_DEAD = jQuery.merge([], ALL_STATUSES); 
   ALL_EXCEPT_DEAD.shift();
   
-  return {
-    Dead : ALL[DEAD]
-   ,Stone : ALL[STONE]
-   ,Poison : ALL[POISON]
-   ,Blind : ALL[BLIND]
-   ,Paralysis : ALL[PARALYSIS] 
-   ,Sleep : ALL[SLEEP]
-   ,Mute : ALL[MUTE]
-   ,Confuse : ALL[CONFUSE]
-   ,AllStatuses : ALL_STATUSES
-   ,AllExceptDead : ALL_EXCEPT_DEAD
-   ,equals : function(status1, status2) { return status1.id == status2.id; }
-   ,lookup : function(id) { return ALL[id]; }
-  };
-})();
+  this.Dead = ALL[DEAD];
+  this.Stone = ALL[STONE];
+  this.Poison = ALL[POISON];
+  this.Blind = ALL[BLIND];
+  this.Paralysis = ALL[PARALYSIS]; 
+  this.Sleep = ALL[SLEEP];
+  this.Mute = ALL[MUTE];
+  this.Confuse = ALL[CONFUSE];
+  this.AllStatuses = ALL_STATUSES;
+  this.AllExceptDead = ALL_EXCEPT_DEAD;
+  
+  this.equals = function(status1, status2) { return status1.id == status2.id; }
+  this.lookup = function(id) { return ALL[id]; }
+  
+  return this;
+}).call({});

@@ -1,5 +1,7 @@
 var Battle = (function() {
   
+  var self = this;  
+    
   var $battle = null;
   var $party = null;
   var $enemies = null;
@@ -14,7 +16,7 @@ var Battle = (function() {
   var CHAR_ANIMATION_CLASSES = ["swing", "forward", "back", "arms", "up"];
   
   // One-time initialization
-  var init = function() {
+  self.init = function() {
     $battle = $("#battle");
     $party = $(".party", $battle);
     $enemies = $(".enemies", $battle);
@@ -139,7 +141,7 @@ var Battle = (function() {
         // TODO: determine if we need to call createForBattle here, also called in addEnemy()
         var monster = Monster.createForBattle(Monster.lookup(name));
         addEnemy(monster);
-        $column.append(createEnemyUI(monster));
+        $column.append(self.createEnemyUI(monster));
       });
       
       if (size == "small" && enemiesBySize.length % ENEMIES_PER_COLUMN[size] == 1) {
@@ -156,16 +158,16 @@ var Battle = (function() {
     $stats.empty();
     
     jQuery.each(party, function(i, char) {
-      $party.append(createCharUI(char));
+      $party.append(self.createCharUI(char));
       $stats.append(createCharStatsUI(char));
-      resetCharUI(char);
+      self.resetCharUI(char);
     });
   };
   
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  var areAllCharactersDead = function(targets) {
+  self.areAllCharactersDead = function(targets) {
     var allDead = true;
     jQuery.each(targets, function(i, target) {
       if (target.isAlive()) {
@@ -176,7 +178,7 @@ var Battle = (function() {
     return allDead;
   };
   
-  var areAllEnemiesDead = function(targets) {
+  self.areAllEnemiesDead = function(targets) {
     var allDead = true;
     for (var e in targets) {
       var enemiesByName = targets[e];
@@ -190,7 +192,7 @@ var Battle = (function() {
     return allDead;
   };
   
-  var calculateRewards = function() {
+  self.calculateRewards = function() {
     var totalExp = 0, goldToAdd = 0;
     for (var name in enemies) {
       var enemiesByName = enemies[name];
@@ -217,7 +219,7 @@ var Battle = (function() {
     };
   };
   
-  var createCharUI = function(char) {
+  self.createCharUI = function(char) {
     var $char = $("<p/>").addClass("char").addClass(char.currentClass.name);
     var $weapon = $("<span/>").addClass("weapon hidden").appendTo($char);
     if (char.equippedWeapon) {
@@ -225,48 +227,50 @@ var Battle = (function() {
     } else if (char.currentClass.isMartialArtist()) {
       $weapon.addClass("punch");
     }
-    resetCharUI(char);
+    self.resetCharUI(char);
     return $char;
   };
   
   // Expects a Monster object
-  var createEnemyUI = function(monster) {
+  self.createEnemyUI = function(monster) {
     return $("<div/>").addClass("enemy").addClass(monster.cssClass);
   };
   
-  var createSpellUI = function(spell) {
+  self.createSpellUI = function(spell) {
     return $("<span/>").addClass("spell").addClass(spell.effect).addClass(spell.spellId.toLowerCase().replace("!", ""));
   };
   
-  var getCharUI = function(char) {
+  self.getCharUI = function(char) {
     if (!char) {
       return null;
     }
     return $party.find(".char").eq(char.charIndex);
   };
   
-  var getEnemyUI = function(monster, index) {
+  self.getAllEnemies = function() { return enemies; };
+  
+  self.getEnemyUI = function(monster, index) {
     if (!monster) {
       return null;
     }
     return $enemies.find(".enemy." + monster.cssClass).eq(cleanMonsterIndex(index));
   };
   
-  var getEnemyUIByIndex = function(index) {
+  self.getEnemyUIByIndex = function(index) {
     return $enemies.find(".enemy:not(.dead)").eq(cleanMonsterIndex(index));
   };
   
-  var inputMessageToggler = function(roundStarting) {
+  self.inputMessageToggler = function(roundStarting) {
     $(".input", $battle).toggle(!roundStarting);
     $(".messages", $battle).toggleClass("hidden", !roundStarting);
   };
   
-  var killEnemyUI = function(monster, index) {
-    var $enemy = (index == null ? monster : getEnemyUI(monster, index));
+  self.killEnemyUI = function(monster, index) {
+    var $enemy = (index == null ? monster : self.getEnemyUI(monster, index));
     $enemy.addClass("dead");    
   };
   
-  var lookupEnemy = function(name, index) {
+  self.lookupEnemy = function(name, index) {
     var enemiesByName = enemies[name];
     if (enemiesByName) {
       return enemiesByName[cleanMonsterIndex(index)];
@@ -274,7 +278,7 @@ var Battle = (function() {
     return null;
   };
   
-  var moveCharBackwardAndOtherForward = function(charIndexChange) {
+  self.moveCharBackwardAndOtherForward = function(charIndexChange) {
     // charIndexChange = -1 for prev char, 1 for next char
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
@@ -292,7 +296,7 @@ var Battle = (function() {
     q.start();
   };
   
-  var nextChar = function() {
+  self.nextChar = function() {
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
       BattleCommands.changeCharIndex(1);
@@ -309,7 +313,7 @@ var Battle = (function() {
     }
   };
   
-  var populateSpellList = function() {
+  self.populateSpellList = function() {
     $(".spell.level", $spellList).empty();
     var char = Party.getChar(BattleCommands.getCharIndex()); 
     $(".spell.level", $spellList).each(function(i) {
@@ -325,7 +329,7 @@ var Battle = (function() {
     $spellList.removeClass("hidden");
   };
   
-  var prevChar = function() {
+  self.prevChar = function() {
     BattleCommands.clearPartyCommand();
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
@@ -348,8 +352,8 @@ var Battle = (function() {
     }
   };
   
-  var resetCharUI = function(char) {
-    var $char = getCharUI(char); 
+  self.resetCharUI = function(char) {
+    var $char = self.getCharUI(char); 
     var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
     
     // Updates the HP for the character
@@ -383,7 +387,7 @@ var Battle = (function() {
   // Input definition:
   // - enemies: [{name:"IMP",qty:3},...]
   // - background: background object, see Map.BattleBackgrounds
-  var setup = function(opt) {
+  self.setup = function(opt) {
     enemies = {};
     opt = opt || {};
     if (opt.background) {
@@ -394,7 +398,7 @@ var Battle = (function() {
     setupEnemies(battleEnemies);
     setupParty(Party.getChars());
     
-    inputMessageToggler(false);
+    self.inputMessageToggler(false);
     
     // Clear all commands
     BattleCommands.init();
@@ -422,31 +426,9 @@ var Battle = (function() {
     }
   };
   
-  var toggleCriticalStatus = function(char) {
-    Battle.getCharUI(char).toggleClass("critical", char.isCritical() || char.hasCriticalStatus()); 
+  self.toggleCriticalStatus = function(char) {
+    self.getCharUI(char).toggleClass("critical", char.isCritical() || char.hasCriticalStatus()); 
   };
   
-  return {
-    init: init
-   ,areAllCharactersDead: areAllCharactersDead
-   ,areAllEnemiesDead: areAllEnemiesDead
-   ,calculateRewards: calculateRewards
-   ,createCharUI: createCharUI
-   ,createEnemyUI: createEnemyUI
-   ,createSpellUI: createSpellUI
-   ,getAllEnemies: function() { return enemies; }
-   ,getCharUI: getCharUI
-   ,getEnemyUI: getEnemyUI
-   ,getEnemyUIByIndex: getEnemyUIByIndex
-   ,inputMessageToggler: inputMessageToggler
-   ,killEnemyUI: killEnemyUI
-   ,lookupEnemy: lookupEnemy
-   ,moveCharBackwardAndOtherForward : moveCharBackwardAndOtherForward
-   ,nextChar : nextChar
-   ,populateSpellList: populateSpellList
-   ,prevChar : prevChar
-   ,resetCharUI: resetCharUI
-   ,setup: setup
-   ,toggleCriticalStatus: toggleCriticalStatus
-  }  
-})();
+  return this;
+}).call({});
