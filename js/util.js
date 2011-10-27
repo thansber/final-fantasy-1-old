@@ -1,10 +1,10 @@
 var Util = (function() {
   
-  var cssNumericValue = function(s) {
+  this.cssNumericValue = function(s) {
     return parseInt(s.replace("px", ""));
   };
   
-  var getCssClass = function(source, where) {
+  this.getCssClass = function(source, where) {
     
     var cssClasses = null;
     if (typeof source === "string") {
@@ -30,8 +30,5 @@ var Util = (function() {
     return cssClasses[index];
   };
   
-  return {
-    cssNumericValue : cssNumericValue
-   ,getCssClass : getCssClass
-  };
-})();
+  return this;
+}).call({});
