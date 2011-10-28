@@ -24,7 +24,7 @@ var Target = (function() {
   Target.prototype.removeStatus = function(status) { alert("A sub-class of this needs to override the removeStatus(status) method"); };
   Target.prototype.useSpellCharge = function(spellLevel) { alert("A sub-class of this needs to override the useSpellCharge(spellLevel) method"); };
   
-  return {
-    create: function() { return new Target(); }
-  };  
-})();
+  this.create = function() { return new Target(); };
+ 
+  return this;  
+}).call({});

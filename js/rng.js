@@ -56,12 +56,7 @@ var RNG = (function() {
     }
   };
   
-  return { 
-    percent : percent
-   ,randomArrayElement : randomArrayElement
-   ,randomUpTo : randomUpTo
-   ,shuffle : shuffle
-  };
+  return this;
 }).call({});
 
 

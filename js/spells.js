@@ -1,220 +1,7 @@
 var Spell = (function() {
   
-  var ALL = {};
-  
-  var TargetType = {
-    Single:{
-      apply : function(spell, caster, target) { 
-        spell.applyToTarget(caster, target);   
-      }
-     ,id:"single"
-    }
-   ,All:{
-     apply : function(spell, caster, targets) {
-       var spellTargets = [];
-       if (!jQuery.isArray(targets)) {
-         spellTargets = jQuery.makeArray(targets);
-       } else {
-         spellTargets = jQuery.merge([], targets);
-       }
-       jQuery(spellTargets).each(function() {
-         if (!this.isDead()) {
-           spell.applyToTarget(caster, this);
-         }
-       });
-     }
-    ,id:"all"
-   }
-   ,Self:{
-     apply : function(spell, caster) {
-       spell.applyToTarget(caster, caster);
-     }
-    ,id:"self"
-   }
-  };
-  
-  var TargetGroup = {Same:{id:"same"}, Other:{id:"other"}, None:{id:"none"}};
-  var SpellType = {
-    HpRecovery : {
-      targetGroup : TargetGroup.Same
-     ,apply : function(spell, caster, target) {
-        if (target.isDead()) {
-          return;
-        }
-        var hpUp = RNG.randomUpTo(2 * spell.effectivity, spell.effectivity);
-        hpUp = (hpUp > 255 ? 255 : hpUp);
-
-        spell.result.dmg = hpUp;
-        target.applyDamage(hpUp * -1);
-      }
-   }
-   ,HpRecoveryFull : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) {
-       if (target.isDead()) {
-         return;
-       }
-       target.hitPoints = target.maxHitPoints;
-       for (var s in Status.AllExceptDead) {
-         target.removeStatus(Status.AllExceptDead[s]);
-       }
-     }
-   }
-   ,Damage : {
-     targetGroup : TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-       var maxDmg = 2 * spell.effectivity;
-       var minDmg = spell.effectivity;
-       
-       if (spell.element) {
-         if (target.isProtectedFrom(spell.element)) {
-           maxDmg = spell.effectivity; // halved
-           minDmg = spell.effectivity * 0.5; // halved
-         } else if (target.isWeakToElement(spell.element)) {
-           maxDmg = Math.floor(maxDmg * 1.5);
-           minDmg = Math.floor(minDmg * 1.5);
-         }
-       }
-       
-       var dmg = RNG.randomUpTo(maxDmg, minDmg);
-       var doubled = false;
-       if (spellSuccess(spell, caster, target)) {
-         dmg *= 2;
-         doubled = true;
-       }
-       var dmgLog = "    dmg=" + dmg + (doubled ? " (DOUBLED)" : "") + " out of " + (doubled ? minDmg * 2 : minDmg) + "-" + (doubled ? maxDmg * 2 : maxDmg);
-
-       console.log(dmgLog);
-       
-       spell.result.dmg.push(dmg);
-       target.applyDamage(dmg);
-       spell.result.died.push(target.isDead());
-     }
-   }
-   ,StatUp : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) { 
-       target[spell.statChanged] += spell.effectivity; 
-       spell.result.success.push(true);
-     }
-   }
-   ,StatUpMulti : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) {
-       target[spell.statChanged.eff] += spell.effectivity;
-       target[spell.statChanged.acc] += spell.accuracy;
-       spell.result.success.push(true);
-     }
-   }
-   ,StatDown : {
-     targetGroup:TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-       var statChangeSuccess = spellSuccess(spell, caster, target);
-       if (statChangeSuccess) {
-         target[spell.statChanged] -= spell.effectivity;
-       }
-       spell.result.success.push(statChangeSuccess);
-     }
-   }
-   ,AddStatus : {
-     targetGroup : TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-       var statusSuccess = spellSuccess(spell, caster, target);
-       if (statusSuccess) {
-         target.addStatus(spell.status);
-       }
-       spell.result.died.push(statusSuccess && (Status.equals(spell.status, Status.Dead) || Status.equals(spell.status, Status.Stone)));
-       spell.result.success.push(statusSuccess);
-     }
-   }
-   ,AddStatus300Hp : {
-     targetGroup : TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-      var statusSuccess = false;
-      if (target.hitPoints <= 300 && !target.isProtectedFrom(spell.element)) {
-        target.addStatus(spell.status);
-        statusSuccess = true;
-      }
-      spell.result.success.push(statusSuccess);
-     }
-   }
-   ,RemoveStatus : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) {
-       var statusSuccess = target.hasStatus(spell.status);
-       target.removeStatus(spell.status);
-       spell.result.success.push(statusSuccess);
-     }
-   }
-   ,ResistElement : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) {
-       var elementsResisted = [];
-       if (jQuery.isArray(spell.element)) {
-         jQuery.merge(elementsResisted, spell.element);
-       } else {
-         elementsResisted.push(spell.element);
-       }
-       
-       jQuery(elementsResisted).each(function() { target.protectFrom(this); });
-     }
-   }
-   ,WeakToElement : {
-     targetGroup:TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-       var elementsWeakTo = [];
-       if (jQuery.isArray(spell.element)) {
-         jQuery.merge(elementsWeakTo, spell.element);
-       } else {
-         elementsWeakTo.push(spell.element);
-       }
-       
-       jQuery(elementsWeakTo).each(function() { target.weakTo(this, true); });
-     }
-   }
-   ,HitMultiplierUp : {
-     targetGroup : TargetGroup.Same
-    ,apply : function(spell, caster, target) {
-       target.hitMultiplier += parseInt(spell.hitMultiplierChange, 10);
-       if (target.hitMultiplier > 2) {
-         target.hitMultiplier = 2;
-       }
-       spell.result.success.push(true);
-     }
-   } 
-   ,HitMultiplierDown : {
-     targetGroup:TargetGroup.Other
-    ,apply : function(spell, caster, target) {
-      var success = spellSuccess(spell, caster, target);
-      if (success) {
-        target.hitMultiplier += parseInt(spell.hitMultiplierChange, 10);
-        if (target.hitMultiplier < 0) {
-          target.hitMultiplier = 0;
-        }
-      }
-      spell.result.success.push(success);
-    }
-   }
-   ,MoraleDown : {
-     targetGroup:TargetGroup.Other
-    ,apply : function(spell, caster, target) { alert("This spell does not work yet [" + spell.spellId + "]"); }
-   }
-   ,NonBattle : {
-     targetGroup:TargetGroup.None
-    ,apply : function(spell, caster, target) { alert("This spell cannot be cast in battle [" + spell.spellId + "]"); }
-   }
-  };
-  
-  var Effect = {
-    Beam : "beam"
-   ,Death : "death"
-   ,Flame : "flame"
-   ,Heal : "healing"
-   ,Poof : "poof"
-   ,Protect : "protect"
-   ,Star : "star"
-   ,Status : "status"
-  };
+  var self = this;
+  self.ALL = {};
   
   var spellSuccess = function(spell, caster, target) {
     var baseChance = 148;
@@ -249,7 +36,221 @@ var Spell = (function() {
     return success;
   };
   
-  function Spell(opt) {
+  self.TargetType = {
+    Single:{
+      apply : function(spell, caster, target) { 
+        spell.applyToTarget(caster, target);   
+      }
+     ,id:"single"
+    }
+   ,All:{
+     apply : function(spell, caster, targets) {
+       var spellTargets = [];
+       if (!jQuery.isArray(targets)) {
+         spellTargets = jQuery.makeArray(targets);
+       } else {
+         spellTargets = jQuery.merge([], targets);
+       }
+       jQuery(spellTargets).each(function() {
+         if (!this.isDead()) {
+           spell.applyToTarget(caster, this);
+         }
+       });
+     }
+    ,id:"all"
+   }
+   ,Self:{
+     apply : function(spell, caster) {
+       spell.applyToTarget(caster, caster);
+     }
+    ,id:"self"
+   }
+  };
+  
+  self.TargetGroup = {Same:{id:"same"}, Other:{id:"other"}, None:{id:"none"}};
+  self.SpellType = {
+    HpRecovery : {
+      targetGroup : self.TargetGroup.Same
+     ,apply : function(spell, caster, target) {
+        if (target.isDead()) {
+          return;
+        }
+        var hpUp = RNG.randomUpTo(2 * spell.effectivity, spell.effectivity);
+        hpUp = (hpUp > 255 ? 255 : hpUp);
+
+        spell.result.dmg = hpUp;
+        target.applyDamage(hpUp * -1);
+      }
+   }
+   ,HpRecoveryFull : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       if (target.isDead()) {
+         return;
+       }
+       target.hitPoints = target.maxHitPoints;
+       for (var s in Status.AllExceptDead) {
+         target.removeStatus(Status.AllExceptDead[s]);
+       }
+     }
+   }
+   ,Damage : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+       var maxDmg = 2 * spell.effectivity;
+       var minDmg = spell.effectivity;
+       
+       if (spell.element) {
+         if (target.isProtectedFrom(spell.element)) {
+           maxDmg = spell.effectivity; // halved
+           minDmg = spell.effectivity * 0.5; // halved
+         } else if (target.isWeakToElement(spell.element)) {
+           maxDmg = Math.floor(maxDmg * 1.5);
+           minDmg = Math.floor(minDmg * 1.5);
+         }
+       }
+       
+       var dmg = RNG.randomUpTo(maxDmg, minDmg);
+       var doubled = false;
+       if (spellSuccess(spell, caster, target)) {
+         dmg *= 2;
+         doubled = true;
+       }
+       var dmgLog = "    dmg=" + dmg + (doubled ? " (DOUBLED)" : "") + " out of " + (doubled ? minDmg * 2 : minDmg) + "-" + (doubled ? maxDmg * 2 : maxDmg);
+
+       console.log(dmgLog);
+       
+       spell.result.dmg.push(dmg);
+       target.applyDamage(dmg);
+       spell.result.died.push(target.isDead());
+     }
+   }
+   ,StatUp : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) { 
+       target[spell.statChanged] += spell.effectivity; 
+       spell.result.success.push(true);
+     }
+   }
+   ,StatUpMulti : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       target[spell.statChanged.eff] += spell.effectivity;
+       target[spell.statChanged.acc] += spell.accuracy;
+       spell.result.success.push(true);
+     }
+   }
+   ,StatDown : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+       var statChangeSuccess = spellSuccess(spell, caster, target);
+       if (statChangeSuccess) {
+         target[spell.statChanged] -= spell.effectivity;
+       }
+       spell.result.success.push(statChangeSuccess);
+     }
+   }
+   ,AddStatus : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+       var statusSuccess = spellSuccess(spell, caster, target);
+       if (statusSuccess) {
+         target.addStatus(spell.status);
+       }
+       spell.result.died.push(statusSuccess && (Status.equals(spell.status, Status.Dead) || Status.equals(spell.status, Status.Stone)));
+       spell.result.success.push(statusSuccess);
+     }
+   }
+   ,AddStatus300Hp : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+      var statusSuccess = false;
+      if (target.hitPoints <= 300 && !target.isProtectedFrom(spell.element)) {
+        target.addStatus(spell.status);
+        statusSuccess = true;
+      }
+      spell.result.success.push(statusSuccess);
+     }
+   }
+   ,RemoveStatus : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       var statusSuccess = target.hasStatus(spell.status);
+       target.removeStatus(spell.status);
+       spell.result.success.push(statusSuccess);
+     }
+   }
+   ,ResistElement : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       var elementsResisted = [];
+       if (jQuery.isArray(spell.element)) {
+         jQuery.merge(elementsResisted, spell.element);
+       } else {
+         elementsResisted.push(spell.element);
+       }
+       
+       jQuery(elementsResisted).each(function() { target.protectFrom(this); });
+     }
+   }
+   ,WeakToElement : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+       var elementsWeakTo = [];
+       if (jQuery.isArray(spell.element)) {
+         jQuery.merge(elementsWeakTo, spell.element);
+       } else {
+         elementsWeakTo.push(spell.element);
+       }
+       
+       jQuery(elementsWeakTo).each(function() { target.weakTo(this, true); });
+     }
+   }
+   ,HitMultiplierUp : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       target.hitMultiplier += parseInt(spell.hitMultiplierChange, 10);
+       if (target.hitMultiplier > 2) {
+         target.hitMultiplier = 2;
+       }
+       spell.result.success.push(true);
+     }
+   } 
+   ,HitMultiplierDown : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) {
+      var success = spellSuccess(spell, caster, target);
+      if (success) {
+        target.hitMultiplier += parseInt(spell.hitMultiplierChange, 10);
+        if (target.hitMultiplier < 0) {
+          target.hitMultiplier = 0;
+        }
+      }
+      spell.result.success.push(success);
+    }
+   }
+   ,MoraleDown : {
+     targetGroup : self.TargetGroup.Other
+    ,apply : function(spell, caster, target) { alert("This spell does not work yet [" + spell.spellId + "]"); }
+   }
+   ,NonBattle : {
+     targetGroup : self.TargetGroup.None
+    ,apply : function(spell, caster, target) { alert("This spell cannot be cast in battle [" + spell.spellId + "]"); }
+   }
+  };
+  
+  self.Effect = {
+    Beam : "beam"
+   ,Death : "death"
+   ,Flame : "flame"
+   ,Heal : "healing"
+   ,Poof : "poof"
+   ,Protect : "protect"
+   ,Star : "star"
+   ,Status : "status"
+  };
+  
+  self.SpellBase = function(opt) {
     if (!opt) {
       return;
     }
@@ -284,53 +285,42 @@ var Spell = (function() {
     this.message = ui.message;
     this.overlay = !!ui.overlay;
     
-    ALL[this.spellId] = this;
+    self.ALL[this.spellId] = this;
   };
   
-  Spell.prototype.cast = function(source, target) { this.targetType.apply(this, source, target); }
-  Spell.prototype.applyToTarget = function(caster, target) { this.spellType.apply(this, caster, target); };
-  Spell.prototype.isSingleTarget = function() { return this.targetType.id == "single"; };
-  Spell.prototype.isAllTarget = function() { return this.targetType.id == "all"; };
-  Spell.prototype.isSelfTarget = function() { return this.targetType.id == "self"; };
-  Spell.prototype.isSameTargetGroup = function() { return this.spellType.targetGroup.id == "same"; };
-  Spell.prototype.isOtherTargetGroup = function() { return this.spellType.targetGroup.id == "other"; };
+  self.SpellBase.prototype.cast = function(source, target) { this.targetType.apply(this, source, target); }
+  self.SpellBase.prototype.applyToTarget = function(caster, target) { this.spellType.apply(this, caster, target); };
+  self.SpellBase.prototype.isSingleTarget = function() { return this.targetType.id == "single"; };
+  self.SpellBase.prototype.isAllTarget = function() { return this.targetType.id == "all"; };
+  self.SpellBase.prototype.isSelfTarget = function() { return this.targetType.id == "self"; };
+  self.SpellBase.prototype.isSameTargetGroup = function() { return this.spellType.targetGroup.id == "same"; };
+  self.SpellBase.prototype.isOtherTargetGroup = function() { return this.spellType.targetGroup.id == "other"; };
   
-  var create = function(opt) {
-    return new Spell(opt);
+  self.create = function(opt) {
+    return new self.SpellBase(opt);
   };
   
-  return {
-     ALL : ALL
-    ,TargetType : TargetType
-    ,TargetGroup : TargetGroup
-    ,SpellType : SpellType
-    ,Effect : Effect
-    ,Spell : Spell
-    
-    ,create : create
-    ,lookup : function(spellId) { return ALL[spellId]; }
-  };
-})();
+  self.lookup = function(skillId) { return ALL[skillId]; };
+  
+  return self;
+}).call({});
 
 var Skill = (function() {
   
-  var ALL = {};
+  this.ALL = {};
   
-  Skill.prototype = new Spell.Spell();
+  Skill.prototype = new Spell.SpellBase();
   function Skill(opt) {
     opt.base.level = 0;
     opt.base.isSkill = true;
-    Spell.Spell.call(this, opt);
+    Spell.SpellBase.call(this, opt);
   };
   
-  var create = function(opt) {
+  this.create = function(opt) {
     return new Skill(opt);
   };
   
-  return {
-    ALL : ALL
-   
-   ,create : create
-   ,lookup : function(skillId) { return ALL[skillId]; }
- };
-})();
+  this.lookup = function(skillId) { return ALL[skillId]; };
+  
+  return this;
+}).call({});
