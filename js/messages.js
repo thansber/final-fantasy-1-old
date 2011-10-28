@@ -62,7 +62,7 @@ var Message = (function() {
   
   var toggleMessage = function($message, showing, text) {
     if (showing) {
-      $message.append(create(text));
+      $message.append(self.create(text));
     } else {
       $message.empty();
     }

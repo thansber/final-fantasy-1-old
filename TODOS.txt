@@ -1,0 +1,2 @@
+- if a character is killed, the char sprite changes to dead status to early
+- if a monster's initial command targets a char that is already dead, re-target (or re-generate command?)
