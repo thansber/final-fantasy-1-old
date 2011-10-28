@@ -1,7 +1,6 @@
 var Animation = (function() {
   
   var self = this;
-  var result = null;
   
   this.Queues = {
     Attack : "attack"
@@ -303,9 +302,9 @@ var Animation = (function() {
     if (command.source) { 
       q.add(function() { Message.source(command.source.getName()); }); 
     }
-    if (result.target) { 
+    if (command.target) { 
       q.delay(Message.getQuickPause());
-      q.add(function() { Message.target(result.target.getName()); }); 
+      q.add(function() { Message.target(command.target.getName()); }); 
     }
     
     if (isParty) {
