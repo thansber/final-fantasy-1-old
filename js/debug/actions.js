@@ -143,6 +143,20 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands();
   };
   
+  var charDies = function() {
+    Party.addChar(Party.createNewChar("AAAA", CharacterClass.BLACK_MAGE, 0));
+    Party.addChar(Party.createNewChar("BBBB", CharacterClass.FIGHTER, 1));
+    Battle.setup({enemies:[{name:"IronGOL",qty:1}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
+    
+    var char = Party.getChar(0);
+    var monster = Battle.lookupEnemy("IronGOL", 0);
+    var commands = [];
+    
+    commands.push(BattleCommands.party({source:char, action:BattleCommands.Attack, target:{type:BattleCommands.Enemy, name:"IronGOL"}}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+    BattleCommands.executeCommands(commands);
+  };
+  
   var event = function($target) {
     Party.clearChars();
     if ($target.is(".char.attack")) { charAttack(); } 
@@ -154,6 +168,7 @@ var ActionHelper = (function() {
     else if ($target.is(".spell.enemy")) { castSpellOnEnemy(); } 
     else if ($target.is(".spell.enemies")) { castSpellOnEnemies(); }
     else if ($target.is(".status.heal")) { healStatusForChar(); }
+    else if ($target.is(".char.dies")) { charDies(); }
   };
   
   return {

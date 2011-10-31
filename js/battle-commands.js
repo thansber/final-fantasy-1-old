@@ -121,12 +121,19 @@ var BattleCommands = (function() {
       else if (spell.isSelfTarget()) { command.targetType = CommandTypes.Enemy; } 
     }
     enemyCommands.push(command);
+    return command;
   };
   
-  self.executeCommands = function() {
-    var all = jQuery.merge([], partyCommands);
-    jQuery.merge(all, enemyCommands);
-    RNG.shuffle(all);
+  self.executeCommands = function(customCommands) {
+    var all = [];
+    
+    if (customCommands) {
+      all = customCommands;
+    } else {
+      all = jQuery.merge([], partyCommands);
+      jQuery.merge(all, enemyCommands);
+      RNG.shuffle(all);
+    }
     
     console.log(commandsToString(all));
     
@@ -261,6 +268,7 @@ var BattleCommands = (function() {
     }
     
     partyCommands[charIndex] = command;
+    return command;
   };
   
   return this;

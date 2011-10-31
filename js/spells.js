@@ -300,7 +300,7 @@ var Spell = (function() {
     return new self.SpellBase(opt);
   };
   
-  self.lookup = function(skillId) { return ALL[skillId]; };
+  self.lookup = function(skillId) { return self.ALL[skillId]; };
   
   return self;
 }).call({});
@@ -320,7 +320,7 @@ var Skill = (function() {
     return new Skill(opt);
   };
   
-  this.lookup = function(skillId) { return ALL[skillId]; };
+  this.lookup = function(skillId) { return this.tALL[skillId]; };
   
   return this;
 }).call({});
