@@ -257,7 +257,7 @@ var Spell = (function() {
     var base = opt.base || {};
     var stats = opt.stats || {};
     var allowedClasses = opt.allowedClasses || [];
-    var ui = opt.ui || {effect:"", backgroundColor:"black", splash:""};
+    var ui = jQuery.extend({effect:"", backgroundColor:"black", splash:""}, opt.ui);
     
     this.spellLevel = base.level;
     this.spellId = base.name.toUpperCase();
@@ -320,7 +320,7 @@ var Skill = (function() {
     return new Skill(opt);
   };
   
-  this.lookup = function(skillId) { return this.tALL[skillId]; };
+  this.lookup = function(skillId) { return this.ALL[skillId]; };
   
   return this;
 }).call({});

@@ -153,7 +153,7 @@ var ActionHelper = (function() {
     var commands = [];
     
     commands.push(BattleCommands.party({source:char, action:BattleCommands.Attack, target:{type:BattleCommands.Enemy, name:"IronGOL"}}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.CastSpell, spellId:"TOXIC", target:Party.getChars(), targetType:BattleCommands.Party}));
     BattleCommands.executeCommands(commands);
   };
   

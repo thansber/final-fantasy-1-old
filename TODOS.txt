@@ -3,3 +3,4 @@
         last action which we need to use to change their char stats
         critical, last status, died, etc
 - if a monster's initial command targets a char that is already dead, re-target (or re-generate command?)
+- monster skills causing status prob need messages/ineffective messages

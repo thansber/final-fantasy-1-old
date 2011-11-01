@@ -414,7 +414,8 @@ Skill.create({
  ,stats:{eff:76, acc:32, element:Element.Lightning}});
 Skill.create({
   base:{name:"TOXIC", target:Spell.TargetType.All, type:Spell.SpellType.AddStatus}
- ,stats:{eff:0, acc:0, element:Element.Death, status:Status.Dead}});
+ ,stats:{eff:0, acc:0, element:Element.Death, status:Status.Dead}
+ ,ui:{message:"Poison smoke"}});
 Skill.create({
   base:{name:"SNORTING", target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus}
  ,stats:{eff:0, acc:24, element:Element.Status, status:Status.Blind}});
