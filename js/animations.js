@@ -160,7 +160,7 @@ var Animation = (function() {
         break;
     };
     
-    hideMessages(queue, {hideAction:true, hideSource:true});
+    hideMessages(queue, {hideAction:true, hideSource:true, initialPause:false});
     
     return queue;
   };
@@ -200,7 +200,7 @@ var Animation = (function() {
   };
   
   var castSpellResultMessageParty = function(result, resultIndex, spell, target, q) {
-    var charDied = false, dmgShown = false;
+    var descShown = false, dmgShown = false;
     q.add(function() { Message.target(target.getName()); }, 0);
     self.charFlicker(target, {queue:q});
     
@@ -211,24 +211,36 @@ var Animation = (function() {
       dmgShown = true;
     }
     
-    spellMessages(q, spell);
+    if (result.success.length > 0) {
+      q.delay(Message.getQuickPause());
+      if (!!result.success[resultIndex]) {
+        spellMessages(q, spell);
+      } else {
+        q.add(function() { Message.desc(INEFFECTIVE_MSG); });
+      }
+      descShown = true;
+    }
+    
     if (!!result.died[resultIndex]) {
       q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : Message.getQuickPause());
       q.add(function() { Message.desc(CHAR_DIED_MSG); });
-      charDied = true;
+      descShown = true;
     }
     q.add(function() { Battle.resetCharUI(target); });
     
-    hideMessages(q, {hideDesc:spell.message || charDied, hideDamage:dmgShown, hideTarget:true});
+    hideMessages(q, {hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
     
     return q;
   };
   
   var hideMessages = function(q, opt) {
-    var defaults = {all:false, hideDesc:false, hideDamage:false, hideTarget:false, hideAction:false, hideSource:false};
+    var defaults = {all:false, hideDesc:false, hideDamage:false, hideTarget:false, hideAction:false, hideSource:false, initialPause:true};
     var settings = jQuery.extend({}, defaults, opt);
     
-    q.delay(Message.getBattlePause());
+    if (settings.initialPause) {
+      q.delay(Message.getBattlePause());
+    }
+    
     if (settings.all || settings.hideDesc) {
       q.add(function() { Message.desc({show:false}); });
       q.delay(Message.getQuickPause());
@@ -274,8 +286,8 @@ var Animation = (function() {
   var spellMessages = function(q, spell) {
     if (spell.message) { 
       var afterFirstMessage = false;
-      var spellMessages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
-      for (var m in spellMessages) {
+      var messages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
+      for (var m in messages) {
         if (afterFirstMessage) {
           q.delay(Message.getBattlePause());
         }
@@ -283,7 +295,7 @@ var Animation = (function() {
           return function() { 
             Message.desc(message); 
           }; 
-        }(spellMessages[m]));
+        }(messages[m]));
         afterFirstMessage = true;
       }
     }

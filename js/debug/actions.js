@@ -146,6 +146,7 @@ var ActionHelper = (function() {
   var charDies = function() {
     Party.addChar(Party.createNewChar("AAAA", CharacterClass.BLACK_MAGE, 0));
     Party.addChar(Party.createNewChar("BBBB", CharacterClass.FIGHTER, 1));
+    //Party.getChar(0).addStatus(Status.Dead);
     Battle.setup({enemies:[{name:"IronGOL",qty:1}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
     
     var char = Party.getChar(0);
