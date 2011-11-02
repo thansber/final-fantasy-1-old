@@ -149,6 +149,8 @@ var ActionHelper = (function() {
     //Party.getChar(0).addStatus(Status.Dead);
     Battle.setup({enemies:[{name:"IronGOL",qty:1}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
     
+    RNG.useCustom(RNG.AlwaysFailure);
+    
     var char = Party.getChar(0);
     var monster = Battle.lookupEnemy("IronGOL", 0);
     var commands = [];
@@ -160,6 +162,7 @@ var ActionHelper = (function() {
   
   var event = function($target) {
     Party.clearChars();
+    RNG.useDefault(); // want this to be reset in case any action overrides the RNG
     if ($target.is(".char.attack")) { charAttack(); } 
     else if ($target.is(".monster.multi.attack")) { multipleEnemyAttack(); } 
     else if ($target.is(".monster.attack")) { enemyAttack(); } 

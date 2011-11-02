@@ -1,5 +1,7 @@
 $(document).ready(function() {
   
+  RNG.useDefault();
+    
   KeyPressNotifier.init();
   Movement.init();
   Cursor.init();
