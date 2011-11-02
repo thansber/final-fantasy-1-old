@@ -87,6 +87,13 @@ var BattleCommands = (function() {
     return s;
   };
   
+  var monsterTargetingCharThatDied = function(command) {
+    return command.type == CommandTypes.Enemy // monster doing the attacking
+        && command.targetType == BattleCommands.Party // targeting the party
+        && !jQuery.isArray(command.target) // targeting a single character 
+        && !command.target.isAlive(); // target is dead or stoned
+  };
+  
   var resultToString = function(result) {
     return jQuery.map(result, function(value, index) {
       var v = value;
@@ -150,6 +157,11 @@ var BattleCommands = (function() {
 
       // TODO: Check for various incapacitated statuses, check for healing
 
+      // If a monster's target died during this round, allow the monster to retarget
+      if (monsterTargetingCharThatDied(command)) {
+        command = self.enemy(command.source);
+      }
+      
       var result = null;
       
       switch (command.action) {

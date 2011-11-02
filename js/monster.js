@@ -227,7 +227,7 @@ var Monster = (function() {
         charIndex = 3;
       }
       target = Party.getChar(charIndex);
-      validTarget = (target != null && !target.isDead() && !target.hasStatus(Status.Stone));
+      validTarget = (target != null && target.isAlive());
     }
     return target;
   };
