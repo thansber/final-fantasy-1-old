@@ -78,9 +78,12 @@ var Spell = (function() {
         var hpUp = RNG.randomUpTo(2 * spell.effectivity, spell.effectivity);
         hpUp = (hpUp > 255 ? 255 : hpUp);
 
-        spell.result.dmg = hpUp;
         target.applyDamage(hpUp * -1);
-      }
+
+        spell.result.dmg.push(hpUp * -1);
+        spell.result.success.push(true);
+        spell.result.targetHp.push(target.hitPoints);
+     }
    }
    ,HpRecoveryFull : {
      targetGroup : self.TargetGroup.Same
@@ -92,6 +95,10 @@ var Spell = (function() {
        for (var s in Status.AllExceptDead) {
          target.removeStatus(Status.AllExceptDead[s]);
        }
+       
+       spell.result.clearStatuses = true;
+       spell.result.targetHp.push(target.hitPoints);
+       spell.result.success.push(true);
      }
    }
    ,Damage : {
@@ -120,8 +127,10 @@ var Spell = (function() {
 
        console.log(dmgLog);
        
-       spell.result.dmg.push(dmg);
        target.applyDamage(dmg);
+       
+       spell.result.dmg.push(dmg);
+       spell.result.targetHp.push(target.hitPoints);
        spell.result.died.push(target.isDead());
      }
    }
@@ -157,6 +166,7 @@ var Spell = (function() {
        if (statusSuccess) {
          target.addStatus(spell.status);
        }
+       spell.result.status.push(statusSuccess ? spell.status : null);
        spell.result.died.push(statusSuccess && (Status.equals(spell.status, Status.Dead) || Status.equals(spell.status, Status.Stone)));
        spell.result.success.push(statusSuccess);
      }
@@ -170,6 +180,7 @@ var Spell = (function() {
         statusSuccess = true;
       }
       spell.result.success.push(statusSuccess);
+      spell.result.status.push(statusSuccess ? spell.status : null);
      }
    }
    ,RemoveStatus : {
@@ -178,6 +189,15 @@ var Spell = (function() {
        var statusSuccess = target.hasStatus(spell.status);
        target.removeStatus(spell.status);
        spell.result.success.push(statusSuccess);
+       
+       if (statusSuccess) {
+         var remainingStatuses =  target.getStatuses();
+         if (remainingStatuses.length == 0) {
+           spell.result.clearStatuses = true;
+         } else {
+           spell.result.status.push(Status.lookup(remainingStatuses[remainingStatuses.length - 1]));
+         }
+       }
      }
    }
    ,ResistElement : {

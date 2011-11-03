@@ -302,7 +302,12 @@ var Character = (function() {
     return null; 
   };
   
-  Char.prototype.isCritical = function() { return this.hitPoints > 0 && (this.hitPoints / this.maxHitPoints) <= 0.25; };
+  Char.prototype.isCritical = function(hp) {
+    if (hp == null) {
+      hp = this.hitPoints;
+    }
+    return hp > 0 && (hp / this.maxHitPoints) <= 0.25; 
+  };
   Char.prototype.isAlive = function() { return !this.isDead() && !this.hasStatus(Status.Stone); };
   Char.prototype.hasCriticalStatus = function() { 
     var anyCriticalStatus = false;

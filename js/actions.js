@@ -185,7 +185,10 @@ var Action = (function() {
     // previous data gets carried over
     spell.result.dmg = [];
     spell.result.died = [];
+    spell.result.targetHp = [];
+    spell.result.status = [];
     spell.result.ineffective = false;
+    spell.result.clearStatuses = false;
     spell.cast(source, target);
     
     // Spell was cast on a single dead person
@@ -194,7 +197,14 @@ var Action = (function() {
       spell.result.ineffective = true;
     }
     
-    var spellAction = jQuery.extend({type:"S", source:source, target:spellTargets, spell:spell, dmg:0}, spell.result);
+    var baseSpellResult = {
+      type:"S"
+     ,source:source
+     ,target:spellTargets
+     ,spell:spell
+     ,dmg:0
+    };
+    var spellAction = jQuery.extend(baseSpellResult, spell.result);
     if (usingItem) {
       spellAction.type = "I";
       spellAction.item = opt.item;

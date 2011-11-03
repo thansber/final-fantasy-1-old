@@ -70,11 +70,11 @@ var ActionHelper = (function() {
     var targetChar = Party.createNewChar("BBBB", CharacterClass.FIGHTER, 0);
     targetChar.applyDamage(30);
 
-    var char = Party.createNewChar("AAAA", CharacterClass.WHITE_MAGE, 1);
+    var char = Party.createNewChar("AAAA", CharacterClass.WHITE_WIZARD, 1);
     char.applyDamage(24);
 
-    var spellsToLearn = ["CURE","RUSE","HARM","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"];
-    char.spellCharges([5,3,2,0,0,0,0,0]);
+    var spellsToLearn = ["CURE","RUSE","HARM","INVS","ALIT","LAMP","CUR2","AFIR","AMUT","CUR3","LIFE","CUR4"];
+    char.spellCharges([5,3,2,0,0,0,1,1]);
     for (var s in spellsToLearn) {
       char.learnSpell(Spell.lookup(spellsToLearn[s]));
     }
@@ -87,12 +87,41 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands();
   };
   
+  var castHealingSpellOnEntireParty = function() {
+    var firstChar = Party.createNewChar("BBBB", CharacterClass.FIGHTER, 0);
+    firstChar.applyDamage(30);
+
+    var secondChar = Party.createNewChar("AAAA", CharacterClass.WHITE_MAGE, 1);
+    secondChar.applyDamage(24);
+    
+    var thirdChar = Party.createNewChar("CCCC", CharacterClass.WHITE_MAGE, 2);
+    thirdChar.applyDamage(24);
+    
+    var fourthChar = Party.createNewChar("DDDD", CharacterClass.WHITE_MAGE, 3);
+    fourthChar.applyDamage(24);
+
+    var spellsToLearn = ["CURE","RUSE","HEAL","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"];
+    secondChar.spellCharges([5,3,2,0,0,0,0,0]);
+    for (var s in spellsToLearn) {
+      secondChar.learnSpell(Spell.lookup(spellsToLearn[s]));
+    }
+
+    Party.addChar(firstChar);
+    Party.addChar(secondChar);
+    Party.addChar(thirdChar);
+    Party.addChar(fourthChar);
+    Battle.setup({enemies:[{name:"IMP",qty:2}], background:Map.BattleBackgrounds.Plains, doNotMove:true});
+    
+    BattleCommands.party({source:secondChar, action:BattleCommands.CastSpell, spellId:"HEAL", target:{type:BattleCommands.Party, affects:BattleCommands.All}});
+    BattleCommands.executeCommands();
+  };
+  
   var castSpellOnEnemy = function() {
     var char = Party.createNewChar("AAAA", CharacterClass.BLACK_WIZARD, 0);
     var spellsToLearn = ["BRAK"];
     char.spellCharges([5,3,2,2,1,1,1,1]);
     for (var s in spellsToLearn) {
-      char.learnSpell(Spell.lookup(spellsToLearn[s]));
+     char.learnSpell(Spell.lookup(spellsToLearn[s]));
     }
     Party.addChar(char);
     Battle.setup({enemies:[{name:"IMP",qty:2}], background:Map.BattleBackgrounds.Swamp, doNotMove:true});
@@ -160,6 +189,28 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands(commands);
   };
   
+  var testRandomScenarios = function() {
+      
+      var monster = "SHADOW";
+      
+      Party.addChar(Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0));
+      var firstChar = Party.getChar(0);
+      firstChar.hp(50);
+      
+      Battle.setup({enemies:[{name:monster, qty:2}], background:Map.BattleBackgrounds.GurguVolcano, doNotMove:true});
+      
+      var firstMonster = Battle.lookupEnemy(monster, 0);
+      var secondMonster = Battle.lookupEnemy(monster, 1);
+      var commands = [];
+      
+      commands.push(BattleCommands.enemy(null, {source:firstMonster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+      commands.push(BattleCommands.enemy(null, {source:secondMonster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+      
+      RNG.useCustom(RNG.AlwaysSuccess);
+      
+      BattleCommands.executeCommands(commands);
+  };
+  
   var event = function($target) {
     Party.clearChars();
     RNG.useDefault(); // want this to be reset in case any action overrides the RNG
@@ -167,12 +218,14 @@ var ActionHelper = (function() {
     else if ($target.is(".monster.multi.attack")) { multipleEnemyAttack(); } 
     else if ($target.is(".monster.attack")) { enemyAttack(); } 
     else if ($target.is(".spell.self")) { castSpellOnSelf(); } 
+    else if ($target.is(".spell.heal.party.all")) { castHealingSpellOnEntireParty(); } 
     else if ($target.is(".spell.party.single")) { castSpellOnPartyTarget(); } 
     else if ($target.is(".spell.party.all")) { castSpellOnEntireParty(); } 
     else if ($target.is(".spell.enemy")) { castSpellOnEnemy(); } 
     else if ($target.is(".spell.enemies")) { castSpellOnEnemies(); }
     else if ($target.is(".status.heal")) { healStatusForChar(); }
     else if ($target.is(".monster.retarget")) { monsterRetargets(); }
+    else if ($target.is(".test.random")) { testRandomScenarios(); }
   };
   
   return {

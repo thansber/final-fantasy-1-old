@@ -46,7 +46,8 @@ var Battle = (function() {
     var sizeCounts = {chaos:{enemies:[]}, fiend:{enemies:[]}, large:{enemies:[]}, small:{enemies:[]}};
     jQuery.each(enemies, function(index, enemyObj) {
       var enemy = Monster.lookup(enemyObj.name);
-      for (var i = 0; i < enemyObj.qty; i++) {
+      var enemyQty = enemyObj.qty == null ? 1 : enemyObj.qty;
+      for (var i = 0; i < enemyQty; i++) {
         sizeCounts[enemy.size].enemies.push(enemyObj.name);
       }
     });
@@ -118,7 +119,6 @@ var Battle = (function() {
       return false;
     }
     
-    
     var $enemies = $(".enemies", $battle); 
     var $column = null, numColumns = 0;
     var mixed = isMixedSize(sizeCounts);
@@ -167,6 +167,51 @@ var Battle = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
+  self.adjustCharStats = function(result) {
+    var char = result.target;
+    var $char = self.getCharUI(char); 
+    var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
+      
+    if (result.targetHp) {
+    // Updates the HP for the character
+      $("div.hp", $charStats).empty().append(Message.create(result.targetHp + ""));
+    }
+    
+    $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
+
+    if (result.died) {
+      $char.addClass("dead");
+      $("label.hp", $charStats).empty().append(Message.create("HP"));
+      return;
+    }
+    
+    if (result.status) {
+      if (result.status.battleText) {
+        var $statusText = null;
+        if (result.status.shrunkBattleText) {
+          $statusText = Message.create(null, "shrunk " + result.status.battleText);
+        } else {
+          $statusText = Message.create(result.status.battleText);
+        }
+        $("label.hp", $charStats).empty().append($statusText);
+      }
+      
+      if (result.status.critical) {
+          $char.addClass("critical");
+      }
+      
+      if (Status.equals(result.status, Status.Stone)) {
+          $char.addClass("stone");
+      }
+    } else {
+      $char.toggleClass("critical", char.isCritical(result.targetHp));
+      if (result.clearStatuses) {
+        $char.removeClass("stone")
+        $("label.hp", $charStats).empty().append(Message.create("HP"));
+      }
+    }
+  };
+  
   self.areAllCharactersDead = function(targets) {
     var allDead = true;
     jQuery.each(targets, function(i, target) {
