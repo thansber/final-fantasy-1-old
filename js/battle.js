@@ -398,34 +398,13 @@ var Battle = (function() {
   };
   
   self.resetCharUI = function(char) {
-    var $char = self.getCharUI(char); 
-    var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
-    
-    // Updates the HP for the character
-    $("div.hp", $charStats).empty().append(Message.create(char.hitPoints + ""));
-    
-    $char.removeClass(CHAR_ANIMATION_CLASSES.join(" "));
-    $char.toggleClass("critical", char.isCritical()); 
-
-    var battleStatus = char.getBattleStatus();
-    var $status = null;
-    if (battleStatus) {
-      $status = battleStatus.length > 4 ? Message.create(null, "shrunk " + battleStatus) : Message.create(battleStatus);
-    } else {
-      $status = Message.create("HP");
-    }
-    
-    $("label.hp", $charStats).empty().append($status);
-    if (char.hasCriticalStatus()) {
-      $char.addClass("critical");
-    }
-
-    if (char.isDead()) { 
-      $char.addClass("dead"); 
-    }
-    if (char.hasStatus(Status.Stone)) { 
-      $char.addClass("stone"); 
-    }
+    self.adjustCharStats({
+      target: char
+     ,targetHp: char.hitPoints
+     ,died: char.isDead()
+     ,status: char.getBattleStatus()
+     ,clearStatuses: char.getBattleStatus().length == 0
+    });
   };
   
   // Called for each new battle

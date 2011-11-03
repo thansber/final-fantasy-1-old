@@ -323,7 +323,7 @@ var Character = (function() {
     jQuery.each(this.currentStatuses, function(id, hasStatus) {
       if (hasStatus && !!Status.lookup(id).battleText) {
         // last status applied wins
-        battleStatus = Status.lookup(id).battleText;
+        battleStatus = Status.lookup(id);
       }
     });
     return battleStatus;

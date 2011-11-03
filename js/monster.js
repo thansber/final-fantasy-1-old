@@ -214,6 +214,21 @@ var Monster = (function() {
   MonsterBase.prototype.determineSingleTarget = function() {
     var validTarget = false;
     var target = null;
+    var numAliveChars = 0;
+    var aliveChar = null;
+    
+    jQuery.each(Party.getChars(), function(i, char) {
+      if (char.isAlive()) {
+        numAliveChars++;
+        aliveChar = char;
+      }
+    });
+    
+    if (numAliveChars == 1) {
+      target = aliveChar;
+      validTarget = true;
+    }
+    
     while (!validTarget) {
       var r = RNG.randomUpTo(7, 0);
       var charIndex = -1;

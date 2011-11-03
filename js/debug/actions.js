@@ -164,11 +164,16 @@ var ActionHelper = (function() {
   
   var healStatusForChar = function() {
     Party.addChar(Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0));
-    Party.addChar(Party.createNewChar("BBBB", CharacterClass.BLACKBELT, 1));
     var char = Party.getChar(0); 
     char.addStatus(Status.Paralysis);
-    Battle.setup({enemies:[{name:"IMP",qty:1}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
+    
+    Battle.setup({enemies:[{name:"WrWOLF"}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
+    var monster = Battle.lookupEnemy("WrWOLF", 0);
+    
+    RNG.useCustom(RNG.AlwaysSuccess);
+    
     BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
+    BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:monster.determineSingleTarget(), targetType:BattleCommands.Party});
     BattleCommands.executeCommands();
   };
   
