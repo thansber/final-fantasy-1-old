@@ -18,7 +18,6 @@ var Animation = (function() {
    ,WindowShake : "windowShake"
   };
   
-  var CHAR_AT_REST_CLASSES = ["critical"];
   var CHAR_DIED_MSG = "Slain..";
   var CRITICAL_HIT_MSG = "Critical hit!!";
   var DAMAGE_MSG = "DMG";
@@ -124,12 +123,16 @@ var Animation = (function() {
       }
     }
     
+    if (result.wasDead) {
+      q.add(function() { Message.desc(INEFFECTIVE_MSG); });
+    }
+    
     if (!isParty) {
       q.add(function() { Battle.adjustCharStats(result); });
     }
 
     hideMessages(q, {
-      hideDesc: result.crit || result.status || result.died
+      hideDesc: result.crit || result.status || result.died || result.wasDead
      ,hideDamage: result.dmg != null
      ,hideTarget: true
      ,hideAction: result.hits && result.hits > 1
@@ -334,7 +337,9 @@ var Animation = (function() {
       var weaponSplash = (command.source.equippedWeapon ? command.source.equippedWeapon.splash : "gold"); 
       
       self.attackAnimation(command.source, q);
-      self.splash($enemy, weaponSplash, {queue:q});
+      if (!result.wasDead) {
+        self.splash($enemy, weaponSplash, {queue:q});
+      }
     } else {
       self.windowShake({queue:q});
       self.charFlicker(command.target, {queue:q}); 
@@ -594,7 +599,11 @@ var Animation = (function() {
     var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(this.Queues.BattleWalk);
     
-    q.add(function() { $char.removeClass(CHAR_AT_REST_CLASSES.join(" ")); });
+    q.add(function() {
+      if ($char.is(".critical")) {
+        $char.removeClass("critical").addClass("stillCritical");
+      }
+    });
     
     for (var i = 0; i < settings.numAnimations; i++) {
       q.add(function() { $char.addClass("swing forward"); });

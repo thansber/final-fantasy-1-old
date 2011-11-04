@@ -1,3 +1,9 @@
 - monster skills causing status prob need messages
 - after a round is over, prompt for commands for the next round
 - spells targeting characters - cursor
+- figure out what happens to a char when they are asleep
+- fix HARM spells so they only work on undead
+- enemy encounter tables
+    - ambush/surprise ratings
+- running away for chars
+- running away for enemies

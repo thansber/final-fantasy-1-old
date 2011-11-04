@@ -204,10 +204,11 @@ var Battle = (function() {
         $char.addClass("stone");
       }
     } else {
-      $char.toggleClass("critical", (result.targetHp && char.isCritical(result.targetHp)) || !result.clearStatuses);
       if (result.clearStatuses) {
-        $char.removeClass("stone")
+        $char.removeClass("stone").removeClass("critical");
         $("label.hp", $charStats).empty().append(Message.create("HP"));
+      } else if (result.targetHp) {
+        $char.toggleClass("critical", char.isCritical(result.targetHp));
       }
     }
   };
@@ -242,9 +243,11 @@ var Battle = (function() {
     for (var name in enemies) {
       var enemiesByName = enemies[name];
       for (var e in enemiesByName) {
-        // TODO: Enemies that run away do not count towards exp
-        totalExp += enemiesByName[e].exp;
-        goldToAdd += enemiesByName[e].gold;
+        var enemy = enemiesByName[e];
+        if (!enemy.ranAway) {
+          totalExp += enemiesByName[e].exp;
+          goldToAdd += enemiesByName[e].gold;
+        }
       }
     }
     
@@ -412,7 +415,6 @@ var Battle = (function() {
      ,targetHp: char.hitPoints
      ,died: char.isDead()
      ,status: char.getBattleStatus()
-     ,clearStatuses: !char.getBattleStatus()
     });
   };
   
@@ -460,7 +462,10 @@ var Battle = (function() {
   };
   
   self.toggleCriticalStatus = function(char) {
-    self.getCharUI(char).toggleClass("critical", char.isCritical() || char.hasCriticalStatus()); 
+    var $char = self.getCharUI(char);
+    if ($char.is(".stillCritical")) {
+        $char.removeClass("stillCritical").addClass("critical");
+    }
   };
   
   return this;

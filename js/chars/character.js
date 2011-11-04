@@ -139,6 +139,11 @@ var Character = (function() {
     return this;
   };
   
+  Char.prototype.addSpellCharge = function(level) { 
+    this.charges[level - 1]++;
+    return this;
+  };
+  
   Char.prototype.maxSpellCharges = function(c) { 
     this.maxCharges = c;
     return this;
@@ -278,6 +283,7 @@ var Character = (function() {
       this.knownSpells[spell.spellLevel - 1] = [];
     }
     this.knownSpells[spell.spellLevel - 1].push(spell.spellId);
+    return this;
   };
   
   Char.prototype.hasItemForSpell = function(spellId) { 

@@ -36,5 +36,5 @@ $(document).ready(function() {
   $("#debug .battleMessages button").click(function(event) { BattleMessageHelper.event($(event.target)); });
   $("#debug .actions button").click(function(event) { ActionHelper.event($(event.target)); });
   
-  $("#debug .menu a.battleSetup").click();  
+  $("#debug .menu a.actions").click();  
 });
