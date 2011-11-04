@@ -1,5 +1,6 @@
 var BattleEnemyCursor = (function() {
   
+  var self = this;
   var $container = null;
   var $cursor = null;
   var columnIndex = -1;
@@ -8,7 +9,7 @@ var BattleEnemyCursor = (function() {
   /* =========== */
   /* INIT METHOD */
   /* =========== */
-  var init = function() {
+  self.init = function() {
     $container = $("#battle .enemies");
   };
   
@@ -67,7 +68,7 @@ var BattleEnemyCursor = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var keyPressChange = function(key, isPressed) {
+  self.keyPressChange = function(key, isPressed) {
     if (!isPressed) {
       return false; 
     }
@@ -102,16 +103,11 @@ var BattleEnemyCursor = (function() {
     }
   };
   
-  var startListening = function() { 
+  self.startListening = function() { 
     KeyPressNotifier.setListener(BattleEnemyCursor);
     moveCursor(0, 0);
   };
   
-  return {
-    init: init
-   ,keyPressChange: keyPressChange
-   ,startListening: startListening
-   ,registeredKeys: [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc]
-  }
-})();
+  return this;
+}).call({});
   

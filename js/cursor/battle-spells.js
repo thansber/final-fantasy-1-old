@@ -1,5 +1,6 @@
 var BattleSpellCursor = (function () {
   
+  var self = this;
   var $container = null;
   var $cursor = null;
   var columnIndex = 0;
@@ -8,7 +9,7 @@ var BattleSpellCursor = (function () {
   /* =========== */
   /* INIT METHOD */
   /* =========== */
-  var init = function() {
+  self.init = function() {
     $container = $("#battle .input .spells");
   };
   
@@ -91,7 +92,7 @@ var BattleSpellCursor = (function () {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var keyPressChange = function(key, isPressed) {
+  self.keyPressChange = function(key, isPressed) {
     if (!isPressed) {
       return false; 
     }
@@ -122,16 +123,12 @@ var BattleSpellCursor = (function () {
     }
   };
   
-  var startListening = function() { 
+  self.startListening = function() { 
     KeyPressNotifier.setListener(BattleSpellCursor);
     moveCursor(0, 0);
   };
   
-  return {
-    init: init
-   ,keyPressChange: keyPressChange
-   ,registeredKeys: [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc]
-   ,startListening: startListening
-  }
+  self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   
-})();
+  return this;  
+}).call({});

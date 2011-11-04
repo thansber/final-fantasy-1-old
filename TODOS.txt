@@ -1,4 +1,3 @@
 - monster skills causing status prob need messages
 - after a round is over, prompt for commands for the next round
-- as chars are making selections, do not allow a selection until the prev char
-has moved back into position
+- spells targeting characters - cursor

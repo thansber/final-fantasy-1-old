@@ -1,6 +1,6 @@
 var MapBuilder = (function() {
   
-  var build = function(config, $container, htmlCallback) {
+  this.build = function(config, $container, htmlCallback) {
     // Start at 7 temporarily while debugging lower half to avoid loading the entire map
     for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
       var $tilesetRow = $("<div/>").addClass("tileset row");
@@ -15,7 +15,7 @@ var MapBuilder = (function() {
     }
   };
   
-  var buildTileset = function($container, tilesetY, tilesetX) {
+  this.buildTileset = function($container, tilesetY, tilesetX) {
     for (var y = 0; y < Map.SIZE; y++) {
       var $row = $("<div/>").addClass("row");
       for (var x = 0; x < Map.SIZE; x++) {
@@ -28,9 +28,6 @@ var MapBuilder = (function() {
     }
   };
   
-  return {
-    build: build
-   ,buildTileset: buildTileset
-  };
+  return this;
   
-})();
+}).call({});
