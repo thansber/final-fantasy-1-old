@@ -1,4 +1,7 @@
 var Party = (function() {
+    
+  var self = this;
+  
   var chars = [];
   var gold = 0;
   
@@ -10,12 +13,12 @@ var Party = (function() {
   /* =========== */
   /* INIT METHOD */
   /* =========== */
-  var init = function(opt) {
+  self.init = function(opt) {
     $player = $(opt.player);
     currentMap = Map.WORLD_MAP;
     currentTransportation = Movement.Transportation.FOOT;
     worldMapPosition = new Map.Coords(10, 9, 4, 8).toAbsolute();
-    jumpTo(worldMapPosition);
+    self.jumpTo(worldMapPosition);
   };
   
   /* =============== */
@@ -24,11 +27,11 @@ var Party = (function() {
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
-  var addChar = function(c) { chars.push(c); };
-  var addGold = function(gp) { gold += gp; };
-  var clearChars = function() { chars = []; };
+  self.addChar = function(c) { chars.push(c); };
+  self.addGold = function(gp) { gold += gp; };
+  self.clearChars = function() { chars = []; };
   
-  var createNewChar = function(name, charClass, index) {
+  self.createNewChar = function(name, charClass, index) {
     var startingStats = CharacterGrowth.startingStats[charClass];
     var char = Character.create().name(name).charClass(charClass).index(index);
     char.stats(startingStats).hp(startingStats.hp);
@@ -37,12 +40,12 @@ var Party = (function() {
     return char;
   };
   
-  var getChar = function(index) { return chars[index]; };
-  var getChars = function() { return chars; };
-  var getGold = function() { return gold; };
-  var getTransportation = function() { return currentTransportation; };
+  self.getChar = function(index) { return chars[index]; };
+  self.getChars = function() { return chars; };
+  self.getGold = function() { return gold; };
+  self.getTransportation = function() { return currentTransportation; };
   
-  var isDestinationPassable = function(yChange, xChange) {
+  self.isDestinationPassable = function(yChange, xChange) {
     var map = Map.getMap(currentMap);
     if (map.is(Map.WORLD_MAP)) {
       var oldPos = new Map.AbsoluteCoords(worldMapPosition);
@@ -57,7 +60,7 @@ var Party = (function() {
     }
   };
   
-  var jumpTo = function(absoluteCoords) {
+  self.jumpTo = function(absoluteCoords) {
     worldMapPosition = absoluteCoords;
     var playerTop = Util.cssNumericValue($player.css("marginTop"));
     var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
@@ -68,18 +71,5 @@ var Party = (function() {
     $player.closest("#view").css({backgroundPosition:left + "px " + top + "px"});
   };
   
-  return {
-    init: init
-   
-   ,addChar: addChar
-   ,addGold: addGold
-   ,clearChars: clearChars
-   ,createNewChar: createNewChar
-   ,getChar: getChar
-   ,getChars: getChars
-   ,getGold: getGold
-   ,getTransportation: getTransportation
-   ,isDestinationPassable: isDestinationPassable
-   ,jumpTo: jumpTo
-  };
-})();
+  return this;
+}).call({});

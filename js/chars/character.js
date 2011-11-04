@@ -427,11 +427,7 @@ var Character = (function() {
     return (this.getStatuses().length == 0 ? "[none]" : this.getStatuses().join(",")); 
   };
 
-  var create = function() {
-    return new Char();
-  };
+  this.create = function() { return new Char(); };
   
-  return {
-    create : create
-  };    
-})();
+  return this;    
+}).call({});

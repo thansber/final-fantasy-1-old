@@ -1,33 +1,35 @@
 var CharacterClass = (function() {
   
+  var self = this;
   var ALL = {};
   
-  var FIGHTER = "fighter";
-  var KNIGHT = "knight";
-  var THIEF = "thief";
-  var NINJA = "ninja";
-  var BLACKBELT = "blackbelt";
-  var MASTER = "master";
-  var RED_MAGE = "redmage";
-  var RED_WIZARD = "redwizard";
-  var WHITE_MAGE = "whitemage";
-  var WHITE_WIZARD = "whitewizard";
-  var BLACK_MAGE = "blackmage";
-  var BLACK_WIZARD = "blackwizard";
+  this.All = ALL;
+  this.FIGHTER = "fighter";
+  this.KNIGHT = "knight";
+  this.THIEF = "thief";
+  this.NINJA = "ninja";
+  this.BLACKBELT = "blackbelt";
+  this.MASTER = "master";
+  this.RED_MAGE = "redmage";
+  this.RED_WIZARD = "redwizard";
+  this.WHITE_MAGE = "whitemage";
+  this.WHITE_WIZARD = "whitewizard";
+  this.BLACK_MAGE = "blackmage";
+  this.BLACK_WIZARD = "blackwizard";
   
-  var fullClassNames = {};
-  fullClassNames[FIGHTER] = "Fighter";
-  fullClassNames[KNIGHT] = "Knight";
-  fullClassNames[THIEF] = "Thief";
-  fullClassNames[NINJA] = "Ninja";
-  fullClassNames[BLACKBELT] = "Black Belt";
-  fullClassNames[MASTER] = "Master";
-  fullClassNames[RED_MAGE] = "Red Mage";
-  fullClassNames[RED_WIZARD] = "Red Wizard";
-  fullClassNames[WHITE_MAGE] = "White Mage";
-  fullClassNames[WHITE_WIZARD] = "White Wizard";
-  fullClassNames[BLACK_MAGE] = "Black Mage";
-  fullClassNames[BLACK_WIZARD] = "Black Wizard";
+  this.fullClassNames = {};
+  this.fullClassNames[this.FIGHTER] = "Fighter";
+  this.fullClassNames[this.KNIGHT] = "Knight";
+  this.fullClassNames[this.THIEF] = "Thief";
+  this.fullClassNames[this.NINJA] = "Ninja";
+  this.fullClassNames[this.BLACKBELT] = "Black Belt";
+  this.fullClassNames[this.MASTER] = "Master";
+  this.fullClassNames[this.RED_MAGE] = "Red Mage";
+  this.fullClassNames[this.RED_WIZARD] = "Red Wizard";
+  this.fullClassNames[this.WHITE_MAGE] = "White Mage";
+  this.fullClassNames[this.WHITE_WIZARD] = "White Wizard";
+  this.fullClassNames[this.BLACK_MAGE] = "Black Mage";
+  this.fullClassNames[this.BLACK_WIZARD] = "Black Wizard";
   
   function CharClass(name) { 
     this.name = name; 
@@ -62,13 +64,13 @@ var CharacterClass = (function() {
   CharClass.prototype.isMartialArtist = function() { return false; }
   
   function FighterClass() {}; 
-  FighterClass.prototype = new CharClass(FIGHTER);
+  FighterClass.prototype = new CharClass(this.FIGHTER);
   
   function KnightClass() {}; 
-  KnightClass.prototype = new CharClass(KNIGHT);
+  KnightClass.prototype = new CharClass(this.KNIGHT);
   
   function BlackBeltClass() {}; 
-  BlackBeltClass.prototype = new CharClass(BLACKBELT);
+  BlackBeltClass.prototype = new CharClass(this.BLACKBELT);
   BlackBeltClass.prototype.attack = function(char) { 
     return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack + (char.strength / 2) + 1 : (char.charLevel * 2))); 
   };
@@ -93,36 +95,36 @@ var CharacterClass = (function() {
   BlackBeltClass.prototype.isMartialArtist = function() { return true; }
 
   function MasterClass() { 
-    this.name = MASTER; 
+    this.name = self.MASTER; 
     ALL[this.name] = this; 
   }; 
   MasterClass.prototype = new BlackBeltClass();
   
   function ThiefClass() {}; 
-  ThiefClass.prototype = new CharClass(THIEF);
+  ThiefClass.prototype = new CharClass(this.THIEF);
   
   function NinjaClass() {}; 
-  NinjaClass.prototype = new CharClass(NINJA);
+  NinjaClass.prototype = new CharClass(this.NINJA);
   
   function RedMageClass() {}; 
-  RedMageClass.prototype = new CharClass(RED_MAGE);
+  RedMageClass.prototype = new CharClass(this.RED_MAGE);
   
   function RedWizardClass() {}; 
-  RedWizardClass.prototype = new CharClass(RED_WIZARD);
+  RedWizardClass.prototype = new CharClass(this.RED_WIZARD);
   
   function WhiteMageClass() {}; 
-  WhiteMageClass.prototype = new CharClass(WHITE_MAGE);
+  WhiteMageClass.prototype = new CharClass(this.WHITE_MAGE);
   
   function WhiteWizardClass() {}; 
-  WhiteWizardClass.prototype = new CharClass(WHITE_WIZARD);
+  WhiteWizardClass.prototype = new CharClass(this.WHITE_WIZARD);
   
   function BlackMageClass() {}; 
-  BlackMageClass.prototype = new CharClass(BLACK_MAGE);
+  BlackMageClass.prototype = new CharClass(this.BLACK_MAGE);
   BlackMageClass.prototype.attack = function(char) { 
     return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack : 0) + (char.strength / 2) + 1); 
   };    
   function BlackWizardClass() { 
-    this.name = BLACK_WIZARD; 
+    this.name = self.BLACK_WIZARD; 
     ALL[this.name] = this; 
   }; 
   BlackWizardClass.prototype = new BlackMageClass();
@@ -140,25 +142,7 @@ var CharacterClass = (function() {
   new BlackMageClass();
   new BlackWizardClass();
   
-  var lookup = function(id) { return ALL[id]; };
+  this.lookup = function(id) { return ALL[id]; };
   
-  return {
-    lookup : lookup
-    
-   ,FIGHTER : FIGHTER
-   ,KNIGHT : KNIGHT
-   ,THIEF : THIEF
-   ,NINJA : NINJA
-   ,BLACKBELT : BLACKBELT
-   ,MASTER : MASTER
-   ,RED_MAGE : RED_MAGE 
-   ,RED_WIZARD : RED_WIZARD 
-   ,WHITE_MAGE : WHITE_MAGE 
-   ,WHITE_WIZARD : WHITE_WIZARD 
-   ,BLACK_MAGE : BLACK_MAGE 
-   ,BLACK_WIZARD : BLACK_WIZARD
-    
-   ,All : ALL
-   ,fullClassNames : fullClassNames
-  };
-})();
+  return this;
+}).call({});
