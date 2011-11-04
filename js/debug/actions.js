@@ -169,12 +169,12 @@ var ActionHelper = (function() {
     
     Battle.setup({enemies:[{name:"WrWOLF"}], background:Map.BattleBackgrounds.IceCave, doNotMove:true});
     var monster = Battle.lookupEnemy("WrWOLF", 0);
-    
+    var commands = [];
     RNG.useCustom(RNG.AlwaysSuccess);
     
-    BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
-    BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:monster.determineSingleTarget(), targetType:BattleCommands.Party});
-    BattleCommands.executeCommands();
+    commands.push(BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:monster.determineSingleTarget(), targetType:BattleCommands.Party}));
+    BattleCommands.executeCommands(commands);
   };
   
   var monsterRetargets = function() {

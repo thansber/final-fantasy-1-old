@@ -213,27 +213,32 @@ var Action = (function() {
   };
   
   this.statusHeal = function(source, type) {
-    var result = {type:"SH", source:source};
+    var statusResult = {};
     if (source.hasStatus(Status.Paralysis)) {
-      var success = (type == BattleCommands.Party) ? RNG.percent(25) : RNG.percent(9.8);
-      result = jQuery.extend(result, {status:Status.Paralysis, success:success});
+      statusResult = {statusCured:Status.Paralysis, success:type == BattleCommands.Party ? RNG.percent(25) : RNG.percent(9.8)};
     } else if (source.hasStatus(Status.Confuse)) {
-      result = jQuery.extend(result, {status:Status.Confuse, success:RNG.percent(25)});
+      statusResult = {statusCured:Status.Confuse, success:RNG.percent(25)};
     } else if (source.hasStatus(Status.Sleep)) {
-      var success = source.getMaxHitPoints() > 80 || RNG.randomUpTo(80, 0) < source.getMaxHitPoints(); 
-      result = jQuery.extend(result, {status:Status.Sleep, success:success});
+      statusResult = {statusCured:Status.Sleep, success:source.getMaxHitPoints() > 80 || RNG.randomUpTo(80, 0) < source.getMaxHitPoints()};
     }
+    var result = jQuery.extend({type:"SH", source:source, target:source}, statusResult);
     
     if (result.success) {
-      source.removeStatus(result.status);
+      source.removeStatus(result.statusCured);
+      var remainingStatuses =  source.getStatuses();
+      if (remainingStatuses.length == 0) {
+        result.clearStatuses = true;
+      } else {
+        result.status = Status.lookup(remainingStatuses[remainingStatuses.length - 1]);
+      }
     }
     
-    if (result.status) {
-      console.log(source.getName() + " is trying to be healed from [" + result.status.id + "] - " + (result.success ? "SUCCESS" : "FAIL"));
+    if (result.statusCured) {
+      console.log(source.getName() + " is trying to be healed from [" + result.statusCured.id + "] - " + (result.success ? "SUCCESS" : "FAIL"));
     }
     
     // if the source was already healed, return null
-    return result.status ? result : null;
+    return result.statusCured ? result : null;
   };
   
   return this;

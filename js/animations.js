@@ -511,12 +511,12 @@ var Animation = (function() {
     }
     
     q.delay(Message.getQuickPause());
-    q.add(function() { Message.desc(result.success ? STATUS_CURED : result.status.desc); });
+    q.add(function() { Message.desc(result.success ? STATUS_CURED : result.statusCured.desc); });
     if (isParty) {
-      q.add(function() { Battle.resetCharUI(command.target); });
+      q.add(function() { Battle.adjustCharStats(result); });
     }
     q.delay(Message.getBattlePause());
-    hideMessages(q, {hideDesc:true, hideSource:true});
+    hideMessages(q, {hideDesc:true, hideSource:true, initialPause:false});
     
     return q;
   };

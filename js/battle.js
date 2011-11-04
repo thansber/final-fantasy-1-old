@@ -173,7 +173,7 @@ var Battle = (function() {
     var $charStats = $(".charStats." + ORDINALS[char.charIndex], $stats);
       
     if (result.targetHp) {
-    // Updates the HP for the character
+      // Updates the HP for the character
       $("div.hp", $charStats).empty().append(Message.create(result.targetHp + ""));
     }
     
@@ -197,14 +197,14 @@ var Battle = (function() {
       }
       
       if (result.status.critical) {
-          $char.addClass("critical");
+        $char.addClass("critical");
       }
       
       if (Status.equals(result.status, Status.Stone)) {
-          $char.addClass("stone");
+        $char.addClass("stone");
       }
     } else {
-      $char.toggleClass("critical", char.isCritical(result.targetHp));
+      $char.toggleClass("critical", (result.targetHp && char.isCritical(result.targetHp)) || !result.clearStatuses);
       if (result.clearStatuses) {
         $char.removeClass("stone")
         $("label.hp", $charStats).empty().append(Message.create("HP"));
