@@ -354,6 +354,14 @@ var Battle = (function() {
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
+      q.addToChain(function() { 
+        if (BattleCommands.isAllPartyCommandsEntered()) {
+          BattleCommands.generateEnemyCommands();
+        } else {
+          KeyPressNotifier.setListener(BattleMenuCursor);
+          BattleMenuCursor.startListening();
+        }
+      });
       q.start();
     }
   };
@@ -393,6 +401,7 @@ var Battle = (function() {
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
+      q.addToChain(function() { KeyPressNotifier.setListener(BattleMenuCursor); });
       q.start();
     }
   };
@@ -403,7 +412,7 @@ var Battle = (function() {
      ,targetHp: char.hitPoints
      ,died: char.isDead()
      ,status: char.getBattleStatus()
-     ,clearStatuses: char.getBattleStatus().length == 0
+     ,clearStatuses: !char.getBattleStatus()
     });
   };
   

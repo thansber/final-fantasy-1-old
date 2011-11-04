@@ -86,17 +86,13 @@ var BattleEnemyCursor = (function() {
         return false;
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
+        KeyPressNotifier.clearListener();
         selectEnemyAsTarget();
         Battle.nextChar();
         clearCursor();
-        if (BattleCommands.isAllPartyCommandsEntered()) {
-          BattleCommands.generateEnemyCommands();
-        } else {
-          KeyPressNotifier.setListener(BattleMenuCursor);
-          BattleMenuCursor.startListening();
-        }
         return false;
       case KeyPressNotifier.Esc:
+        KeyPressNotifier.clearListener();
         clearCursor();
         KeyPressNotifier.setListener(BattleMenuCursor);
         BattleMenuCursor.startListening();

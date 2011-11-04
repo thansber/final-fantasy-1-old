@@ -101,7 +101,8 @@ var BattleSetupHelper = (function() {
   var randomizeEverything = function() {
     $("select.charClass", $debug).each(function() { selectRandomValue($(this)); });
     selectRandomValue($(".background .selector", $debug));
-    $(".small .selector, .large .selector").each(function() { selectRandomValue($(this)); });
+    $(".small .selector, .large .selector", $debug).each(function() { selectRandomValue($(this)); });
+    $(".small .qty", $debug).eq(0).val("2");
   };
   
   var readEnemyQty = function($parent) {

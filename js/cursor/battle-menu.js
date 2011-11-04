@@ -96,9 +96,11 @@ var BattleMenuCursor = (function() {
         return false;
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:
+        KeyPressNotifier.clearListener();
         executeCommand($cursor);
         return false;
       case KeyPressNotifier.Esc:
+        KeyPressNotifier.clearListener();  
         Battle.prevChar();
         return false;
       case KeyPressNotifier.F:
