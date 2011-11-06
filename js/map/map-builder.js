@@ -1,31 +1,26 @@
 var MapBuilder = (function() {
   
   this.build = function(config, $container, htmlCallback) {
-    // Start at 7 temporarily while debugging lower half to avoid loading the entire map
-    for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
-      var $tilesetRow = $("<div/>").addClass("tileset row");
-      for (var x = 0; x < WorldMap.Config.maxTilesetX(); x++) {
-        var $tileset = $("<div/>").addClass("tileset");
-        if (htmlCallback) {
-          $tileset.append(htmlCallback.apply(this, [$tileset, y, x]));
+    var markup = [];
+    var m = 0;
+    for (var y = 0; y < config.maxTilesetY(); y++) {
+      markup[m++] = "<div class=\"tileset row\">";
+      for (var x = 0; x < config.maxTilesetX(); x++) {
+        markup[m++] = "<div class=\"tileset\">";
+        for (var j = 0; j < Map.TILES_PER_AREA; j++) {
+          markup[m++] = "<div class=\"row\">";
+          for (var i = 0; i < Map.TILES_PER_AREA; i++) {
+            var tileClasses = config.getTileClasses(new Map.Coords(y, x, j, i));
+            markup[m++] = "<p class=\"tile " + tileClasses + "\">&nbsp;</p>";
+          }
+          markup[m++] = "</div>";
         }
-        $tilesetRow.append($tileset);
+        markup[m++] = "</div>";
       }
-      $container.append($tilesetRow);
+      markup[m++] = "</div>";
     }
-  };
-  
-  this.buildTileset = function($container, tilesetY, tilesetX) {
-    for (var y = 0; y < Map.SIZE; y++) {
-      var $row = $("<div/>").addClass("row");
-      for (var x = 0; x < Map.SIZE; x++) {
-        var coords = new Map.Coords(tilesetY, tilesetX, y, x);
-        var tileClasses = WorldMap.Config.getTileClasses(coords);
-        var $tile = $("<p/>").addClass("tile").addClass(tileClasses).html("&nbsp;");
-        $row.append($tile);
-      }
-      $container.append($row);
-    }
+    
+    $container.append($(markup.join("")));
   };
   
   return this;

@@ -9,7 +9,7 @@
     #world { width:100%; }
   </style>
 </head>
-<body>
+<body class="world-map">
 
 <div id="world">
   <div class="world map"></div>
@@ -24,7 +24,7 @@
 <script type="text/javascript" src="js/map/map-builder.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  MapBuilder.build(WorldMap.Config, $("#world .map"), function($tileset, y, x) {
+  MapBuilder.build(WorldMap.NewConfig, $("#world .map"), function($tileset, y, x) {
     MapBuilder.buildTileset($tileset, y, x);
   });
 });

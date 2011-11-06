@@ -4,8 +4,9 @@ var Map = (function() {
   /* MAP BASE */
   /* ======== */
   var ALL_SAME = "ALL";
-  var SIZE = 16;
-  var MAX_INDEX = SIZE * SIZE - 1;
+  var TILES_PER_AREA = 32;
+  var AREAS = 8;
+  var MAX_INDEX = TILES_PER_AREA * AREAS - 1;
   
   var allMaps = {};
   
@@ -20,6 +21,7 @@ var Map = (function() {
     this.id = opt.id;
     this.tilesets = [];
     this.mapping = $.extend(true, {}, opt.mapping);
+    this.rowIndex = 0;
     allMaps[this.id] = this;
   };
 
@@ -30,22 +32,33 @@ var Map = (function() {
   };
   
   Config.prototype.addTileset = function(row, tileset, allTileType) {
-    if (!this.tilesets[row]) {
-      this.tilesets[row] = [];
+    if (jQuery.isArray(row)) {
+      tileset = row;
+      if (this.tilesets[this.rowIndex] && this.tilesets[this.rowIndex].length == AREAS) {
+        this.rowIndex++;
+      }
+      if (!this.tilesets[this.rowIndex]) {
+        this.tilesets[this.rowIndex] = [];
+      }
+    } else {
+      this.rowIndex = row;
+      if (!this.tilesets[this.rowIndex]) {
+        this.tilesets[this.rowIndex] = [];
+      }
     }
     
     if (tileset == ALL_SAME) {
       tileset = [];
-      for (var i = 0; i < SIZE; i++) {
+      for (var i = 0; i < TILES_PER_AREA; i++) {
         var tileRow = "";
-        for (var j = 0; j < SIZE; j++) {
+        for (var j = 0; j < TILES_PER_AREA; j++) {
           tileRow += allTileType;
         }
         tileset.push(tileRow);
       }
     }
     
-    this.tilesets[row].push(tileset);
+    this.tilesets[this.rowIndex].push(tileset);
   }
   
   Config.prototype.getTileset = function(y, x) { return this.tilesets[y] ? this.tilesets[y][x] : null; };
@@ -225,14 +238,14 @@ var Map = (function() {
       alert("No tileset exists at [" + y + "][" + x + "]");
       return false;
     }
-    if (tileset.length != SIZE) {
-      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + SIZE);
+    if (tileset.length != TILES_PER_AREA) {
+      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + TILES_PER_AREA);
       return false;
     }
     
-    for (var i = 0; i < SIZE; i++) {
-      if (tileset[i].length != SIZE) {
-        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + SIZE);
+    for (var i = 0; i < TILES_PER_AREA; i++) {
+      if (tileset[i].length != TILES_PER_AREA) {
+        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + TILES_PER_AREA);
         return false;
       }
     }
@@ -296,8 +309,8 @@ var Map = (function() {
 
   Coords.prototype.toAbsolute = function() {
     return new AbsoluteCoords({
-      y : this.tilesetY() * Map.SIZE + this.tileY()
-     ,x: this.tilesetX() * Map.SIZE + this.tileX()
+      y : this.tilesetY() * Map.TILES_PER_AREA + this.tileY()
+     ,x: this.tilesetX() * Map.TILES_PER_AREA + this.tileX()
     });
   };
   
@@ -333,10 +346,10 @@ var Map = (function() {
     return this;
   };
   AbsoluteCoords.prototype.toCoords = function() {
-    return new Coords(Math.floor(this.y / Map.SIZE), 
-                      Math.floor(this.x / Map.SIZE), 
-                      this.y % Map.SIZE, 
-                      this.x % Map.SIZE);
+    return new Coords(Math.floor(this.y / Map.TILES_PER_AREA), 
+                      Math.floor(this.x / Map.TILES_PER_AREA), 
+                      this.y % Map.TILES_PER_AREA, 
+                      this.x % Map.TILES_PER_AREA);
   };
   AbsoluteCoords.prototype.toString = function() {
     return "[" + this.y + "," + this.x + "]";
@@ -378,7 +391,7 @@ var Map = (function() {
    ,WORLD_MAP: "world-map"
    
    ,ALL_SAME: ALL_SAME
-   ,SIZE: SIZE
+   ,TILES_PER_AREA: TILES_PER_AREA
   };
   
 })();
