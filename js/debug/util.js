@@ -18,8 +18,7 @@ var DebugHelper = (function() {
   
   var loadMainView = function(helper) {
     helper = jQuery.extend({view:"world", disableKeyListener:false}, helper);
-    $("body > .main").hide();
-    $("#" + helper.view).show();
+    Party.switchView("#" + helper.view);
     
     KeyPressNotifier.clearListener();
     

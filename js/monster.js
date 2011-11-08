@@ -224,6 +224,10 @@ var Monster = (function() {
       }
     });
     
+    if (numAliveChars == 0) {
+      target = null;
+      validTarget = true;
+    }
     if (numAliveChars == 1) {
       target = aliveChar;
       validTarget = true;

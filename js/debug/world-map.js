@@ -47,12 +47,21 @@ var WorldMapHelper = (function() {
     var showCoords = function($tileset, y, x) { 
       return $("<span/>").html(y + "," + x); 
     };
-    MapBuilder.build(WorldMap.Config, $tilesets, showCoords);
+    
+    var markup = [], m = -1;
+    for (var y = 0; y < WorldMap.Config.maxTilesetY(); y++) {
+      markup[++m] = "<div class=\"row\">";
+      for (var x = 0; x < WorldMap.Config.maxTilesetX(); x++) {
+        markup[++m] = "<div class=\"tileset\"><span>" + y + "," + x + "</span></div>";
+      }
+      markup[++m] = "</div>";
+    }
+    
+    $tilesets.append($(markup.join("")));
   };
   
   var load = function($target) {
     var $section = $target.closest("section");
-    var $map = $(".map", $section);
     
     $(".tileset", $tilesets).removeClass("selected");
     $target.addClass("selected");
@@ -66,14 +75,10 @@ var WorldMapHelper = (function() {
       return false;
     }
     
-    $map.attr("className", "");
-    $map.addClass("map world");
-    $map.empty();
+    $("#view").addClass("zoom two");
+    Party.jumpTo(new Map.Coords(selectedTilesetY, selectedTilesetX, 16, 16).toAbsolute());
     
-    MapBuilder.buildTileset($map, selectedTilesetY, selectedTilesetX);
-
     toggleGridlines($("#toggleMapGridlines"));
-    $map.addClass("loaded");
   };
   
   var loadByCoords = function(y, x) {

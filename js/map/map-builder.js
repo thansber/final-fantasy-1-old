@@ -1,6 +1,6 @@
 var MapBuilder = (function() {
   
-  this.build = function(config, $container, htmlCallback) {
+  this.build = function(config, $container) {
     var markup = [];
     var m = 0;
     for (var y = 0; y < config.maxTilesetY(); y++) {

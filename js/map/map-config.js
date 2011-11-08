@@ -1,22 +1,49 @@
 var Map = (function() {
   
+  var self = this;
+  
   /* ======== */
   /* MAP BASE */
   /* ======== */
-  var ALL_SAME = "ALL";
-  var TILES_PER_AREA = 32;
-  var AREAS = 8;
-  var MAX_INDEX = TILES_PER_AREA * AREAS - 1;
+
+  self.WORLD_MAP = "world-map";
+  self.OCEAN = "ocean";
+  self.TILES_PER_AREA = 32;
+  self.AREAS = 8;
+  self.TILE_SIZE = 16;
   
+  /* ================== */
+  /* BATTLE BACKGROUNDS */
+  /* ================== */
+  self.BattleBackgrounds = {
+    Castle:{cssClass:"castle"}
+   ,Desert:{cssClass:"desert"}
+   ,EarthCave:{cssClass:"earth cave"}
+   ,Forest:{cssClass:"forest"}
+   ,GurguVolcano:{cssClass:"gurgu"}
+   ,IceCave:{cssClass:"ice cave"}
+   ,MarshCave:{cssClass:"marsh cave"}
+   ,Plains:{cssClass:"plains"}
+   ,River:{cssClass:"river"}
+   ,Sea:{cssClass:"sea"}
+   ,SeaShrine:{cssClass:"sea shrine"}
+   ,SkyCastle:{cssClass:"sky castle"}
+   ,Swamp:{cssClass:"swamp"}
+   ,TempleofFiends:{cssClass:"tof"}
+   ,TitansTunnel:{cssClass:"titan"}
+   ,Waterfall:{cssClass:"waterfall"}
+  };
+  
+  var MAX_INDEX = self.TILES_PER_AREA * self.AREAS - 1;
   var allMaps = {};
   
-  var init = function(opt) {};
-  var getMap = function(id) { return allMaps[id]; };
+  self.init = function(opt) {};
+  self.getMap = function(id) { return allMaps[id]; };
   
   /* ========== */
   /* MAP CONFIG */
   /* ========== */
-  Config = function(opt) {
+  self.Config = function(opt) {
     opt = opt || {};
     this.id = opt.id;
     this.tilesets = [];
@@ -25,16 +52,16 @@ var Map = (function() {
     allMaps[this.id] = this;
   };
 
-  Config.prototype.is = function(id) { return this.id == id; };
+  self.Config.prototype.is = function(id) { return this.id == id; };
   
-  Config.prototype.setMapping = function(mapping) {
+  self.Config.prototype.setMapping = function(mapping) {
     this.mapping = $.extend(true, {}, mapping); 
   };
   
-  Config.prototype.addTileset = function(row, tileset, allTileType) {
+  self.Config.prototype.addTileset = function(row, tileset, allTileType) {
     if (jQuery.isArray(row)) {
       tileset = row;
-      if (this.tilesets[this.rowIndex] && this.tilesets[this.rowIndex].length == AREAS) {
+      if (this.tilesets[this.rowIndex] && this.tilesets[this.rowIndex].length == self.AREAS) {
         this.rowIndex++;
       }
       if (!this.tilesets[this.rowIndex]) {
@@ -47,23 +74,12 @@ var Map = (function() {
       }
     }
     
-    if (tileset == ALL_SAME) {
-      tileset = [];
-      for (var i = 0; i < TILES_PER_AREA; i++) {
-        var tileRow = "";
-        for (var j = 0; j < TILES_PER_AREA; j++) {
-          tileRow += allTileType;
-        }
-        tileset.push(tileRow);
-      }
-    }
-    
     this.tilesets[this.rowIndex].push(tileset);
   }
   
-  Config.prototype.getTileset = function(y, x) { return this.tilesets[y] ? this.tilesets[y][x] : null; };
+  self.Config.prototype.getTileset = function(y, x) { return this.tilesets[y] ? this.tilesets[y][x] : null; };
   
-  Config.prototype.getTile = function(coords) {
+  self.Config.prototype.getTile = function(coords) {
     var tileset = this.getTileset(coords.tilesetY(), coords.tilesetX());
     if (!tileset) {
       return null;
@@ -75,11 +91,11 @@ var Map = (function() {
     return row.charAt(coords.tileX()); 
   };
   
-  Config.prototype.getTileAbsolute = function(absolute) {
+  self.Config.prototype.getTileAbsolute = function(absolute) {
     return this.getTile(absolute.toCoords());
   };
   
-  Config.prototype.getTileClass = function(tile) {
+  self.Config.prototype.getTileClass = function(tile) {
     var mapping = this.getTileMapping(tile); 
     if (!mapping) {
       return "unknown";
@@ -88,8 +104,8 @@ var Map = (function() {
     return mapping.cssClasses;
   };
   
-  Config.prototype.getTileMapping = function(tile) { return this.mapping[tile]; };
-  Config.prototype.getParentTileMapping = function(tile) {
+  self.Config.prototype.getTileMapping = function(tile) { return this.mapping[tile]; };
+  self.Config.prototype.getParentTileMapping = function(tile) {
     var mapping = this.getTileMapping(tile);
     while (mapping.inheritsFrom) {
       mapping = this.getParentTileMapping(mapping.inheritsFrom);
@@ -97,7 +113,7 @@ var Map = (function() {
     return mapping;
   };
   
-  Config.prototype.getTileClasses = function(coords) {
+  self.Config.prototype.getTileClasses = function(coords) {
     var tile = this.getTile(coords);
     var mapping = this.getTileMapping(tile);
     var surrounding = this.getSurroundingTiles(coords);
@@ -120,7 +136,7 @@ var Map = (function() {
     return cssClasses.join(" ");
   };
   
-  Config.prototype.determineCornerClass = function(surrounding, borderTiles) {
+  self.Config.prototype.determineCornerClass = function(surrounding, borderTiles) {
     var count = 0;
     var tilesToCheck = "";
     for (var i = 0; i < borderTiles.length; i++) {
@@ -141,7 +157,7 @@ var Map = (function() {
     return "";
   };
   
-  Config.prototype.determineSideClass = function(surrounding, borderTiles) {
+  self.Config.prototype.determineSideClass = function(surrounding, borderTiles) {
     var count = this.countSurroundingForType(surrounding, borderTiles);
     if (count == 3) {
       var leftMatch = this.isTileOfType(surrounding.left, borderTiles);
@@ -157,7 +173,7 @@ var Map = (function() {
     return "";
   };
   
-  Config.prototype.determineBlockClass = function(coords, tile, mapping) {
+  self.Config.prototype.determineBlockClass = function(coords, tile, mapping) {
     var absoluteCoords = coords.toAbsolute();
     absoluteCoords.y -= (mapping.block.height - 1);
     absoluteCoords.x -= (mapping.block.width - 1);
@@ -170,7 +186,7 @@ var Map = (function() {
     
     for (var y = minY; y < maxY; y++) {
       for (var x = minX; x < maxX; x++) {
-        var currentTile = this.getTileAbsolute(new AbsoluteCoords(y, x));
+        var currentTile = this.getTileAbsolute(new self.AbsoluteCoords(y, x));
         if (tile == currentTile) {
           topBlock = Math.min(topBlock, y);
           leftBlock = Math.min(leftBlock, x);
@@ -185,7 +201,7 @@ var Map = (function() {
     return y + x;
   };
   
-  Config.prototype.countSurroundingForType = function(surrounding, tile) {
+  self.Config.prototype.countSurroundingForType = function(surrounding, tile) {
     var count = 0;
     for (var s in surrounding) {
       if (this.isTileOfType(surrounding[s], tile)) {
@@ -195,7 +211,7 @@ var Map = (function() {
     return count;
   }
   
-  Config.prototype.getSurroundingTiles = function(coords) {
+  self.Config.prototype.getSurroundingTiles = function(coords) {
     return {
       top: this.getTile(this.getCoordsAbove(coords))
      ,left: this.getTile(this.getCoordsToLeft(coords))
@@ -204,48 +220,48 @@ var Map = (function() {
     };
   };
   
-  Config.prototype.getCoordsToLeft = function(coords) {
+  self.Config.prototype.getCoordsToLeft = function(coords) {
     return coords.toAbsolute().adjust(0, -1).toCoords();
   };
 
-  Config.prototype.getCoordsToRight = function(coords) {
+  self.Config.prototype.getCoordsToRight = function(coords) {
     return coords.toAbsolute().adjust(0, 1).toCoords();
   };
   
-  Config.prototype.getCoordsAbove = function(coords) {
+  self.Config.prototype.getCoordsAbove = function(coords) {
     return coords.toAbsolute().adjust(-1, 0).toCoords();
   };
   
-  Config.prototype.getCoordsBelow = function(coords) {
+  self.Config.prototype.getCoordsBelow = function(coords) {
     return coords.toAbsolute().adjust(1, 0).toCoords();
   };
   
-  Config.prototype.isTileOfType = function(tile, type) { 
+  self.Config.prototype.isTileOfType = function(tile, type) { 
     return !tile || type.indexOf(tile) > -1; 
   };  
   
-  Config.prototype.maxTilesetX = function() { 
+  self.Config.prototype.maxTilesetX = function() { 
     return this.tilesets[0].length; 
   };
   
-  Config.prototype.maxTilesetY = function() { 
+  self.Config.prototype.maxTilesetY = function() { 
     return this.tilesets.length; 
   };
   
-  Config.prototype.validateTileSet = function(y, x) {
+  self.Config.prototype.validateTileSet = function(y, x) {
     var tileset = this.getTileset(y, x);
     if (!tileset) {
       alert("No tileset exists at [" + y + "][" + x + "]");
       return false;
     }
-    if (tileset.length != TILES_PER_AREA) {
+    if (tileset.length != self.TILES_PER_AREA) {
       alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + TILES_PER_AREA);
       return false;
     }
     
-    for (var i = 0; i < TILES_PER_AREA; i++) {
-      if (tileset[i].length != TILES_PER_AREA) {
-        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + TILES_PER_AREA);
+    for (var i = 0; i < self.TILES_PER_AREA; i++) {
+      if (tileset[i].length != self.TILES_PER_AREA) {
+        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + self.TILES_PER_AREA);
         return false;
       }
     }
@@ -256,8 +272,8 @@ var Map = (function() {
   /* =========== */
   /* TILE object */
   /* =========== */
-  Tile = function(opt) {
-    opt = opt || {
+  self.Tile = function(opt) {
+    opt = jQuery.extend(true, {
       cssClasses: ""
      ,hasCorners: false
      ,hasSides: false
@@ -265,17 +281,21 @@ var Map = (function() {
      ,passableUsing: []
      ,borderTile: null
      ,inheritsFrom: null
-    };
+     ,background: null
+     ,decrementBattleSteps: true
+    }, opt);
     this.cssClasses = opt.cssClasses;
     this.hasCorners = opt.hasCorners;
     this.hasSides = opt.hasSides;
     this.block = opt.block;
     this.passableUsing = opt.passableUsing;
     this.borderTile = opt.borderTile;
-    this.inheritsFrom = opt.inheritsFrom; 
+    this.inheritsFrom = opt.inheritsFrom;
+    this.background = opt.background;
+    this.decrementBattleSteps = opt.decrementBattleSteps;
   };
   
-  Tile.prototype.isPassableUsing = function(transportation) {
+  self.Tile.prototype.isPassableUsing = function(transportation) {
     for (var t in this.passableUsing) {
       if (this.passableUsing[t] == transportation) {
         return true;
@@ -289,7 +309,7 @@ var Map = (function() {
   /* =============== */
   // Parameters can either be an object or the 4 coordinates
   // TilesetY, TilesetX, TileY, TileX
-  Coords = function() {
+  self.Coords = function() {
     if (arguments.length > 1) {
       this.coords = {
         tilesetY: arguments[0]
@@ -302,19 +322,19 @@ var Map = (function() {
     }
   };
   
-  Coords.prototype.tilesetY = function() { return this.coords.tilesetY; };
-  Coords.prototype.tilesetX = function() { return this.coords.tilesetX; };
-  Coords.prototype.tileY = function() { return this.coords.tileY; };
-  Coords.prototype.tileX = function() { return this.coords.tileX; };
+  self.Coords.prototype.tilesetY = function() { return this.coords.tilesetY; };
+  self.Coords.prototype.tilesetX = function() { return this.coords.tilesetX; };
+  self.Coords.prototype.tileY = function() { return this.coords.tileY; };
+  self.Coords.prototype.tileX = function() { return this.coords.tileX; };
 
-  Coords.prototype.toAbsolute = function() {
-    return new AbsoluteCoords({
+  self.Coords.prototype.toAbsolute = function() {
+    return new self.AbsoluteCoords({
       y : this.tilesetY() * Map.TILES_PER_AREA + this.tileY()
      ,x: this.tilesetX() * Map.TILES_PER_AREA + this.tileX()
     });
   };
   
-  Coords.prototype.toString = function() {
+  self.Coords.prototype.toString = function() {
     return "tileset[" + this.tilesetY() + "," + this.tilesetX() + "], tile[" + this.tileY() + "," + this.tileX() + "]";
   };
 
@@ -326,7 +346,7 @@ var Map = (function() {
    * Args can be 2 params - y, x
    * or a object containing y and x
    */
-  AbsoluteCoords = function() {
+  self.AbsoluteCoords = function() {
     if (arguments.length == 2) {
       this.y = arguments[0];
       this.x = arguments[1];
@@ -336,7 +356,7 @@ var Map = (function() {
       this.x = opt.x;
     }
   };
-  AbsoluteCoords.prototype.adjust = function(yChange, xChange) {
+  self.AbsoluteCoords.prototype.adjust = function(yChange, xChange) {
     this.y += yChange;
     this.x += xChange;
     if (this.y < 0) { this.y = MAX_INDEX; }
@@ -345,53 +365,15 @@ var Map = (function() {
     if (this.x > MAX_INDEX) { this.x = 0; }
     return this;
   };
-  AbsoluteCoords.prototype.toCoords = function() {
-    return new Coords(Math.floor(this.y / Map.TILES_PER_AREA), 
-                      Math.floor(this.x / Map.TILES_PER_AREA), 
-                      this.y % Map.TILES_PER_AREA, 
-                      this.x % Map.TILES_PER_AREA);
+  self.AbsoluteCoords.prototype.toCoords = function() {
+    return new self.Coords(Math.floor(this.y / Map.TILES_PER_AREA), 
+                           Math.floor(this.x / Map.TILES_PER_AREA), 
+                           this.y % Map.TILES_PER_AREA, 
+                           this.x % Map.TILES_PER_AREA);
   };
-  AbsoluteCoords.prototype.toString = function() {
+  self.AbsoluteCoords.prototype.toString = function() {
     return "[" + this.y + "," + this.x + "]";
   };
 
-  
-  /* ================== */
-  /* BATTLE BACKGROUNDS */
-  /* ================== */
-  var BattleBackgrounds = {
-    Castle:{cssClass:"castle"}
-   ,Desert:{cssClass:"desert"}
-   ,EarthCave:{cssClass:"earth cave"}
-   ,Forest:{cssClass:"forest"}
-   ,GurguVolcano:{cssClass:"gurgu"}
-   ,IceCave:{cssClass:"ice cave"}
-   ,MarshCave:{cssClass:"marsh cave"}
-   ,Plains:{cssClass:"plains"}
-   ,River:{cssClass:"river"}
-   ,Sea:{cssClass:"sea"}
-   ,SeaShrine:{cssClass:"sea shrine"}
-   ,SkyCastle:{cssClass:"sky castle"}
-   ,Swamp:{cssClass:"swamp"}
-   ,TempleofFiends:{cssClass:"tof"}
-   ,TitansTunnel:{cssClass:"titan"}
-   ,Waterfall:{cssClass:"waterfall"}
-  };
-
-  return {
-    init: init
-   ,getMap: getMap
-    
-   ,Config: Config
-   ,Tile: Tile
-   ,Coords: Coords
-   ,AbsoluteCoords: AbsoluteCoords
-   ,BattleBackgrounds: BattleBackgrounds
-   
-   ,WORLD_MAP: "world-map"
-   
-   ,ALL_SAME: ALL_SAME
-   ,TILES_PER_AREA: TILES_PER_AREA
-  };
-  
-})();
+  return this;
+}).call({});

@@ -14,7 +14,7 @@
 #debug .movement .directions a.down { left:4em; top:4em; }
 #debug .movement .directions a.up { left:4em; }
 
-#debug .world-map .tilesets { font-size:0.5em; border-left:1px solid black; border-top:1px solid black; height:auto; width:416px; height:298px; margin-top:1em; margin-bottom:1em;}
+#debug .world-map .tilesets { font-size:0.5em; border-left:1px solid black; border-top:1px solid black; height:auto; width:208px; height:149px; margin-top:1em; margin-bottom:1em;}
 #debug .world-map .tilesets .row { clear:both; }
 #debug .world-map .tilesets .row .tileset { float:left; width:25px; height:1.8em; border-right:1px solid black; border-bottom:1px solid black; text-align:center; padding-top:0.4em; cursor:pointer; }
 #debug .world-map .tilesets .row .tileset.selected { background-color:blue; color:white; }

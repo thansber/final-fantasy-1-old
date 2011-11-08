@@ -3,7 +3,7 @@
 - spells targeting characters - cursor
 - figure out what happens to a char when they are asleep
 - fix HARM spells so they only work on undead
-- enemy encounter tables
-    - ambush/surprise ratings
 - running away for chars
 - running away for enemies
+- char dying still had 1 hp by multiple attacks
+- world map -> battle, enter goes back to world map

@@ -1,4 +1,7 @@
 #world { width:50%; height:100%; float:left; overflow:auto; }
 #view { background-color:blue; margin:2em; width:302px; height:302px; overflow:hidden; background-image:url(../images/world-map.png); }
-#view { background:none; } /* remove this to show the world map */
-#player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px;}
+/* #view { background:none; }  remove this to show the world map */
+#player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px; }
+
+#view.zoom.two { width:512px; height:512px; }
+#view.zoom.two #player { margin-top:288px; margin-left:288px; }
