@@ -1,9 +1,7 @@
-- monster skills causing status prob need messages
-- after a round is over, prompt for commands for the next round
 - spells targeting characters - cursor
+- monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
 - fix HARM spells so they only work on undead
 - running away for chars
 - running away for enemies
 - char dying still had 1 hp by multiple attacks
-- world map -> battle, enter goes back to world map

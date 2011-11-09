@@ -3,8 +3,6 @@ var BattleEnemyCursor = (function() {
   var self = this;
   var $container = null;
   var $cursor = null;
-  var columnIndex = -1;
-  var enemyIndex = -1;
   
   /* =========== */
   /* INIT METHOD */
@@ -22,38 +20,103 @@ var BattleEnemyCursor = (function() {
     }
   };
   
-  var getEnemy = function(columnNum, enemyNum) {
+  var columnChange = function(x) {
     var $columns = $container.find(".column");
-    var numColumns = $columns.size();
-    columnIndex = columnNum < 0 ? numColumns - 1 : columnNum % numColumns;
-    var $column = $columns.eq(columnIndex);
-
-    var $enemies = $column.find(".enemy");
-    var numEnemies = $enemies.size();
-    enemyIndex = enemyNum < 0 ? numEnemies - 1 : enemyNum % numEnemies;
+    var $enemies = $cursor.closest(".column").find(".enemy");
+    var columnIndex = $columns.index($cursor.closest(".column"));
+    var enemyIndex = $enemies.index($cursor);
     
-    if ($cursor) { 
-      // If the cursor is on a single enemy in a column, pressing left should go to the middle enemy, not the top
-      // but only if there are more than 1 enemy (i.e. multiple columns)
-      if (numEnemies > 1 && $cursor.parent().is(".single") && enemyIndex == 0) {
-        enemyIndex = 1;
+    var numAliveEnemies = -1;
+    var newColumnIndex = columnIndex;
+    while (numAliveEnemies <= 0) {
+      newColumnIndex += x;
+      if (newColumnIndex < 0) {
+        newColumnIndex = $columns.length - 1;
+      } else if (newColumnIndex >= $columns.length) {
+        newColumnIndex = 0;
       }
-
-      // If the cursor is moving left from the small to large and is on the last enemy, go to the bottom large enemy
-      // unless there is only 1 large enemy
-      if ($cursor.parent().is(".mixed.small") && enemyNum > 1 && enemyIndex == 0 && columnIndex == 0) {
-        enemyIndex = numEnemies - 1;
+      numAliveEnemies = $columns.eq(newColumnIndex).find(".enemy").not(".dead").length;
+    }
+    
+    // We tried going left/right, but no other columns, left/right movement
+    // goes nowhere
+    if (newColumnIndex == columnIndex) {
+      return $cursor;
+    }
+    
+    // If we were originally on a single enemy (4 small, on the 4th enemy)
+    // treat the enemy index as 1 (would be 0 otherwise)
+    if ($columns.eq(columnIndex).is(".single")) {
+      enemyIndex = 1;
+    }
+    
+    var newEnemyIndex = enemyIndex;
+    
+    // Going to a column with a single enemy, the index should be 0
+    // we've already handled the case where this single enemy is dead above
+    if ($columns.eq(newColumnIndex).is(".single")) {
+      newEnemyIndex = 0;
+    }
+    
+    var $newEnemies = $columns.eq(newColumnIndex).find(".enemy");
+    
+    // First check is for starting at the 3rd enemy and going to a column
+    // with only 2 enemies (i.e. 5 starting enemies)
+    // Second check is for trying to go to a dead enemy
+    if ($newEnemies.length - 1 < newEnemyIndex || $newEnemies.eq(newEnemyIndex).is(".dead")) {
+      if ($newEnemies.not(".dead").length == 1) {
+        newEnemyIndex = $newEnemies.index($newEnemies.not(".dead"));
+      } else {
+        var prefs = [];
+        if (enemyIndex == 0) {
+          prefs = [1, 2];
+        } else if (enemyIndex == 1) {
+          prefs = [0, 2];
+        } else {
+          prefs = [1, 0];
+        }
+        
+        var $newEnemy = null;
+        var i = 0;
+        do {
+          newEnemyIndex = prefs[i++];
+          $newEnemy = $newEnemies.eq(newEnemyIndex);
+        } while (i < prefs.length && $newEnemy.is(".dead"));
       }
     }
-    var $enemy = $enemies.eq(enemyIndex);
     
-    return $enemy;
+    return $columns.eq(newColumnIndex).find(".enemy").eq(newEnemyIndex);
   };
   
-  var moveCursor = function(columnNum, enemyNum) {
+  var enemyChange = function(y) {
+    var $enemies = $cursor.closest(".column").find(".enemy").not(".dead");
+    var enemyIndex = $enemies.index($cursor);
+    enemyIndex += y;
+    if (enemyIndex < 0) {
+      enemyIndex = $enemies.length - 1;
+    } else if (enemyIndex >= $enemies.length) {
+      enemyIndex = 0;
+    } 
+    return $enemies.eq(enemyIndex);
+  };
+  
+  var getFirstAliveEnemy = function() {
+    return $container.find(".enemy").not(".dead").eq(0);
+  };
+  
+  var moveCursor = function(x, y) {
     clearCursor();
-    $cursor = getEnemy(columnNum, enemyNum);
-    $cursor.append(Cursor.createCursor());
+    if (!(x || y)) {
+      $cursor = getFirstAliveEnemy();
+    } else if (x) {
+      $cursor = columnChange(x);
+    } else if (y) {
+      $cursor = enemyChange(y);
+    }
+    
+    if ($cursor) {
+      $cursor.append(Cursor.createCursor());
+    }
   };
   
   var selectEnemyAsTarget = function() {
@@ -74,16 +137,16 @@ var BattleEnemyCursor = (function() {
     }
     switch (key) {
       case KeyPressNotifier.Left: 
-        moveCursor(--columnIndex, enemyIndex);
+        moveCursor(-1, 0);
         return false;
       case KeyPressNotifier.Up:
-        moveCursor(columnIndex, --enemyIndex);
+        moveCursor(0, -1);
         return false;
       case KeyPressNotifier.Right: 
-        moveCursor(++columnIndex, enemyIndex);
+        moveCursor(1, 0);
         return false;
       case KeyPressNotifier.Down: 
-        moveCursor(columnIndex, ++enemyIndex);
+        moveCursor(0, 1);
         return false;
       case KeyPressNotifier.Enter:
       case KeyPressNotifier.Space:

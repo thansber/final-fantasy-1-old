@@ -18,6 +18,10 @@ var ActionHelper = (function() {
     }
     
     Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:true});
+    
+    if (callbacks && callbacks.monster) {
+      callbacks.monster.call();
+    }
   };
   
   var addSpellsToChar = function(char, spells) {
@@ -25,6 +29,12 @@ var ActionHelper = (function() {
       var spell = Spell.lookup(spells[s]);
       char.learnSpell(spell).addMaxSpellCharge(spell.spellLevel).addSpellCharge(spell.spellLevel);
     }
+  };
+  
+  var killEnemy = function(enemyName, enemyIndex) {
+    var monster = Battle.lookupEnemy(enemyName, enemyIndex);
+    monster.addStatus(Status.Dead);
+    Battle.killEnemyUI(monster, enemyIndex);
   };
     
   var charAttack = function() {
@@ -160,6 +170,15 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands(commands);
   };
   
+  var cursorFunWithDeadEnemies = function() {
+    var monsterName = "IMP";
+    newBattle([CharacterClass.FIGHTER], {name:monsterName, qty:8}, {monster:function() {
+      //killEnemy(monsterName, 3);
+      killEnemy(monsterName, 4);
+    }});
+    Battle.startRound(true);
+  };
+  
   var event = function($target) {
     Party.clearChars();
     RNG.useDefault(); // want this to be reset in case any action overrides the RNG
@@ -175,6 +194,7 @@ var ActionHelper = (function() {
     else if ($target.is(".status.heal")) { healStatusForChar(); }
     else if ($target.is(".monster.retarget")) { monsterRetargets(); }
     else if ($target.is(".ineffective.attack")) { ineffectiveCharAttack(); }
+    else if ($target.is(".cursor-dead-enemy")) { cursorFunWithDeadEnemies(); }
   };
   
   return {

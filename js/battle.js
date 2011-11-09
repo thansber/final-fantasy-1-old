@@ -433,8 +433,11 @@ var Battle = (function() {
     setupEnemies(battleEnemies);
     setupParty(Party.getChars());
     
+    self.startRound(!opt.doNotMove);
+  };
+  
+  self.startRound = function(moveFirstChar) {
     self.inputMessageToggler(false);
-    
     // Clear all commands
     BattleCommands.init();
     // Start the cursor listener for the first character's action

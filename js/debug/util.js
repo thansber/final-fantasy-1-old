@@ -37,6 +37,7 @@ var DebugHelper = (function() {
   var menuChange = function($menuOption) {
     $menuOption.parent().siblings().removeClass("selected");
     $menuOption.parent().addClass("selected");
+    $menuOption.blur();
     
     $("#debug section").hide();
     var section = $menuOption.attr("class").split(" ")[0];

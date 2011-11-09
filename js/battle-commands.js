@@ -205,7 +205,9 @@ var BattleCommands = (function() {
     jQuery.when(commandQueue.start()).then(function() {
       if (defeat) { console.log("party is dead - lose"); }
       else if (victory) { console.log("enemies are dead - victory"); }
-      else { console.log("round animation done, show commands for next round input"); }
+      else { 
+        Battle.startRound(true);
+      }
     });
   };
   
