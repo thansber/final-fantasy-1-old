@@ -51,6 +51,7 @@ var Animation = (function() {
   Queue.prototype.addToChain = function(f) { this.chain.add(f); };
   Queue.prototype.delay = function(delayTime) { this.theQueue.delay(delayTime, this.name); };
   Queue.prototype.getPromise = function() { return this.theQueue.promise(this.name); };
+  Queue.prototype.kill = function() { return this.theQueue.clearQueue(this.name); };
   Queue.prototype.moveChar = function(char, chain, opt) {
     this.setChain(chain || self.walkInBattle(char, opt));
     var queueChain = this.chain;
@@ -78,6 +79,10 @@ var Animation = (function() {
       this.animationQueue = animationQueue;
       this.chain = this.animationQueue.chain;
     }
+  };
+  self.ActionQueue.prototype.kill = function() { 
+    this.animationQueue.kill(); 
+    this.animationQueue.chain.kill(); 
   };
   self.ActionQueue.prototype.start = function() { return this.animationQueue.start(); };
   
@@ -419,6 +424,10 @@ var Animation = (function() {
     q.delay(Message.getQuickPause());
     q.add(function() { Message.desc(firstChar.getName() + " party perished"); });
     return q;
+  };
+  
+  self.reset = function() {
+    $("#battle .enemies .splash").addClass("hidden");
   };
   
   self.slideChar = function(char, opt) {
