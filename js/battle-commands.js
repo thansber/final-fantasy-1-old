@@ -5,6 +5,7 @@ var BattleCommands = (function() {
   var partyCommands = [];
   var enemyCommands = [];
   var charIndex = 0;
+  var commandQueue = null;
   
   var ActionTypes = {
     Attack : "attack"
@@ -115,6 +116,15 @@ var BattleCommands = (function() {
     charIndex = charIndex < 0 ? 0 : charIndex;
   };
   
+  self.clearAllCommands = function() {
+    partyCommands = [];
+    enemyCommands = [];
+    Animation.reset();
+    if (commandQueue) {
+      commandQueue.kill();
+    }
+  };
+  
   self.clearPartyCommand = function() {
     partyCommands[charIndex] = null;
   };
@@ -146,7 +156,7 @@ var BattleCommands = (function() {
     
     Battle.inputMessageToggler(true);
     var victory = false, defeat = false;
-    var commandQueue = new Animation.ActionQueue();
+    commandQueue = new Animation.ActionQueue();
     
     jQuery.each(all, function(i, command) {
       Message.hideAllBattleMessages();
@@ -213,6 +223,10 @@ var BattleCommands = (function() {
   
   self.getCharIndex = function() {
     return charIndex;
+  };
+  
+  self.getCurrentChar = function() {
+    return Party.getChar(self.getCharIndex());
   };
   
   self.generateEnemyCommands = function() {
