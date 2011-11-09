@@ -1,4 +1,5 @@
-- spells targeting characters - cursor
+- after battle victory transition back to world map
+
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
 - fix HARM spells so they only work on undead

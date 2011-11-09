@@ -14,6 +14,7 @@
 #battle .party { width:96px; height:272px; float:left; margin-left:3px; padding:1px 4px; }
 #battle .party .background { width:96px; }
 #battle .party .char { float:right; clear:right; }
+#battle .party .char .cursor { top:10px; }
 
 #battle .stats { width:114px; float:left; margin-left:2px; margin-top:34px; }
 #battle .stats .charStats { position:relative; z-index:1; padding-bottom:1px; position:relative; z-index:1; background-color:black; }

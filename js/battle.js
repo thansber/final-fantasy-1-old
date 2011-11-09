@@ -423,6 +423,7 @@ var Battle = (function() {
   // - enemies: [{name:"IMP",qty:3},...]
   // - background: background object, see Map.BattleBackgrounds
   self.setup = function(opt) {
+    BattleCommands.clearAllCommands();
     enemies = {};
     opt = opt || {};
     if (opt.background) {

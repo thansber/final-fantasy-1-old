@@ -179,6 +179,15 @@ var ActionHelper = (function() {
     Battle.startRound(true);
   };
   
+  var cursorFunWithSpells = function() {
+    var monsterName = "IMP";
+    newBattle([CharacterClass.BLACK_MAGE, CharacterClass.THIEF, CharacterClass.BLACKBELT, CharacterClass.RED_MAGE], {name:monsterName, qty:4}, {party:function() {
+      var caster = Party.getChar(0);
+      addSpellsToChar(caster, ["FIRE","LIT","LOCK","ICE","TMPR","FIR2","LIT2","LOK2","FAST","ICE2","BANE","FIR3"]);
+    }});
+    Battle.startRound(true);
+  };
+  
   var event = function($target) {
     Party.clearChars();
     RNG.useDefault(); // want this to be reset in case any action overrides the RNG
@@ -195,6 +204,7 @@ var ActionHelper = (function() {
     else if ($target.is(".monster.retarget")) { monsterRetargets(); }
     else if ($target.is(".ineffective.attack")) { ineffectiveCharAttack(); }
     else if ($target.is(".cursor-dead-enemy")) { cursorFunWithDeadEnemies(); }
+    else if ($target.is(".cursor-spells")) { cursorFunWithSpells(); }
   };
   
   return {
