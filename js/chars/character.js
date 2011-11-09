@@ -278,6 +278,10 @@ var Character = (function() {
     return this.isSpellAllowed(spell) && (!this.knownSpells[spell.spellLevel - 1] || this.knownSpells[spell.spellLevel - 1].length < 3);
   };
   
+  Char.prototype.canUseMagic = function() {
+    return this.currentClass.canUseMagic;
+  };
+  
   Char.prototype.learnSpell = function(spell) {
     if (!this.knownSpells[spell.spellLevel - 1]) {
       this.knownSpells[spell.spellLevel - 1] = [];

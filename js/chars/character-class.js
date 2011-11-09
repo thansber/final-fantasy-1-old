@@ -31,8 +31,10 @@ var CharacterClass = (function() {
   this.fullClassNames[this.BLACK_MAGE] = "Black Mage";
   this.fullClassNames[this.BLACK_WIZARD] = "Black Wizard";
   
-  function CharClass(name) { 
-    this.name = name; 
+  function CharClass(name, opt) {
+    opt = jQuery.extend(true, {canUseMagic:true}, opt);
+    this.name = name;
+    this.canUseMagic = opt.canUseMagic;
     ALL[this.name] = this; 
   };
   CharClass.prototype.attack = function(char) { 
@@ -64,13 +66,13 @@ var CharacterClass = (function() {
   CharClass.prototype.isMartialArtist = function() { return false; }
   
   function FighterClass() {}; 
-  FighterClass.prototype = new CharClass(this.FIGHTER);
+  FighterClass.prototype = new CharClass(this.FIGHTER, {canUseMagic:false});
   
   function KnightClass() {}; 
   KnightClass.prototype = new CharClass(this.KNIGHT);
   
   function BlackBeltClass() {}; 
-  BlackBeltClass.prototype = new CharClass(this.BLACKBELT);
+  BlackBeltClass.prototype = new CharClass(this.BLACKBELT, {canUseMagic:false});
   BlackBeltClass.prototype.attack = function(char) { 
     return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack + (char.strength / 2) + 1 : (char.charLevel * 2))); 
   };
@@ -101,7 +103,7 @@ var CharacterClass = (function() {
   MasterClass.prototype = new BlackBeltClass();
   
   function ThiefClass() {}; 
-  ThiefClass.prototype = new CharClass(this.THIEF);
+  ThiefClass.prototype = new CharClass(this.THIEF, {canUseMagic:false});
   
   function NinjaClass() {}; 
   NinjaClass.prototype = new CharClass(this.NINJA);
