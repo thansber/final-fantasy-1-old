@@ -16,15 +16,9 @@ var BattleMenuCursor = (function() {
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
-  var clearCursor = function() {
-    if ($cursor && $cursor.size() > 0) {
-      $cursor.find(".cursor").remove();
-    }
-  };
-  
   var drink = function() {
-    BattleCommands.party({action:BattleCommands.Drink});
-    console.log("drink");
+    BattleCommands.party({action:BattleCommands.Drink, source:BattleCommands.getCurrentChar()});
+    console.log("drink action not supported yet");
   };
   
   var executeCommand = function($command) {
@@ -36,9 +30,9 @@ var BattleMenuCursor = (function() {
   };
   
   var fight = function() { 
-    BattleCommands.party({action:BattleCommands.Attack});
-    clearCursor();
-    BattleEnemyCursor.startListening();
+    BattleCommands.party({action:BattleCommands.Attack, source:BattleCommands.getCurrentChar()});
+    Cursor.hide($cursor);
+    BattleEnemyCursor.startListening(self);
   };
   
   var getColumnMessage = function(columnNum, messageNum) {
@@ -54,25 +48,30 @@ var BattleMenuCursor = (function() {
   };
   
   var item = function() {
-    BattleCommands.party({action:BattleCommands.UseItem});
-    console.log("item");
+    BattleCommands.party({action:BattleCommands.UseItem, source:BattleCommands.getCurrentChar()});
+    console.log("item action not supported yet");
   };
   
   var magic = function() {
-    BattleCommands.party({action:BattleCommands.CastSpell});
-    Battle.populateSpellList();
+    var currentChar = BattleCommands.getCurrentChar();
+    if (!currentChar.canUseMagic()) {
+      KeyPressNotifier.setListener(self);
+      return;
+    }
+    BattleCommands.party({action:BattleCommands.CastSpell, source:currentChar});
     BattleSpellCursor.startListening();
+    Cursor.hide($cursor);
   };
   
   var moveCursor = function(columnNum, messageNum) {
-    clearCursor();
+    Cursor.clear($cursor);
     $cursor = getColumnMessage(columnNum, messageNum);
     $cursor.append(Cursor.createCursor());
   };
   
   var run = function() {
-    BattleCommands.party({action:BattleCommands.Run});
-    console.log("run");
+    BattleCommands.party({action:BattleCommands.Run, source:BattleCommands.getCurrentChar()});
+    console.log("run action not supported yet");
   };
   
   /* ============== */
@@ -101,7 +100,7 @@ var BattleMenuCursor = (function() {
         executeCommand($cursor);
         return false;
       case KeyPressNotifier.Esc:
-        KeyPressNotifier.clearListener();  
+        KeyPressNotifier.clearListener();
         Battle.prevChar();
         return false;
       case KeyPressNotifier.F:
@@ -124,12 +123,21 @@ var BattleMenuCursor = (function() {
     }
   };
   
-  self.startListening = function() { 
+  self.startListening = function(opt) {
+    opt = jQuery.extend(true, {reset:true}, opt);
     KeyPressNotifier.setListener(BattleMenuCursor);
-    moveCursor(0, 0);
+    if (opt.reset) {
+      moveCursor(0, 0);
+    } else {
+      Cursor.show($cursor);
+    }
   };
   
   self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
+  
+  self.toString = function() { return "BattleMenu"; };
+  
+  Cursor.register(self);
   
   return this;
 }).call({});

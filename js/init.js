@@ -4,7 +4,6 @@ $(document).ready(function() {
     
   KeyPressNotifier.init();
   Movement.init();
-  Cursor.init();
   Map.init();
   Message.init({messages:"#battle .messages"});
   Party.init({player:"#player"});
@@ -18,7 +17,7 @@ $(document).ready(function() {
   WeaponHelper.init();
   WeaponAnimationHelper.init();
   
-  Cursor.initCursors();
+  Cursor.init();
   
   $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
   

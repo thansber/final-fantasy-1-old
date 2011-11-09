@@ -3,12 +3,6 @@ var Cursor = (function() {
   var cursors = [];
   
   this.init = function() {
-    this.registerCursor(BattleMenuCursor);
-    this.registerCursor(BattleEnemyCursor);
-    this.registerCursor(BattleSpellCursor);
-  };
-  
-  this.initCursors = function() {
     for (var c in cursors) {
       cursors[c].init();
     }
@@ -18,8 +12,26 @@ var Cursor = (function() {
     return $("<div/>").addClass("cursor");
   };
   
-  this.registerCursor = function(cursorObj) {
+  this.clear = function($cursor) {
+    if ($cursor && $cursor.length > 0) {
+      $cursor.find(".cursor").remove();
+    }
+  };
+  
+  this.hide = function($cursor) {
+    if ($cursor && $cursor.length > 0) {
+      $cursor.find(".cursor").hide();
+    }
+  };
+  
+  this.register = function(cursorObj) {
     cursors.push(cursorObj);
+  };
+  
+  this.show = function($cursor) {
+    if ($cursor && $cursor.length > 0) {
+      $cursor.find(".cursor").show();
+    }
   };
   
   return this;

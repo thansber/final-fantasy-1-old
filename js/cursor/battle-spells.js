@@ -16,77 +16,128 @@ var BattleSpellCursor = (function () {
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
-  var clearCursor = function() {
-    if ($cursor && $cursor.size() > 0) {
-      $cursor.find(".cursor").remove();
+  var columnChanged = function(x) {
+    var $spells = $cursor.closest(".level").find(".spell");
+    var spellIndex = $spells.index($cursor);
+    spellIndex += x;
+    if (spellIndex < 0) {
+      spellIndex = $spells.length - 1;
+    } else if (spellIndex >= $spells.length) {
+      spellIndex = 0;
     }
+    return $spells.eq(spellIndex);
   };
   
-  var getSpell = function(columnChange, rowChange) {
-    var rowChanged = (rowChange != 0);
-    var isTransition = (rowIndex == 3 && rowChange == 1) || (rowIndex == 4 && rowChange == -1);
-    var $rows = $container.find(".spell.level");
-    rowIndex += rowChange;
-    rowIndex = rowIndex < 0 ? 0 : rowIndex;
-    var $row = $rows.eq(rowIndex);
-    
-    // Transition between spell levels 4 and 5
-    if (isTransition) {
-      $rows.slice(0, 4).toggleClass("hidden");
+  var getFirstSpell = function() {
+    var $levels = $container.find(".spell.level");
+    var $spell = $levels.find(".spell").eq(0);
+    if ($levels.index($spell.closest(".level")) > 3) {
+      $levels.slice(0, 4).toggleClass("hidden");
     }
-    
-    var $columns = $row.find(".spell");
-    if ($columns.size() == 0) {
-      $columns = $rows.eq(--rowIndex).find(".spell"); 
-    }
-    columnIndex += columnChange
-    if (rowChanged && columnIndex > $columns.size() - 1) {
-      columnIndex = $columns.size() - 1;
-    } else {
-      columnIndex = columnIndex < 0 ? $columns.size() - 1 : columnIndex % $columns.size();
-    }
-    var $column = $columns.eq(columnIndex);
-    
-    return $column;
-  };
+    return $spell;
+  }
   
   var hideSpellList = function() {
     $container.addClass("hidden");
   };
   
-  var moveCursor = function(columnNum, rowNum) {
-    clearCursor();
-    $cursor = getSpell(columnNum, rowNum);
-    $cursor.append(Cursor.createCursor());
+  var moveCursor = function(x, y) {
+    Cursor.clear($cursor);
+    if (!(x || y)) {
+      $cursor = getFirstSpell();
+    } else if (x) {
+      $cursor = columnChanged(x);
+    } else if (y) {
+      $cursor = rowChanged(y);
+    }
+    
+    if ($cursor) {
+      $cursor.append(Cursor.createCursor());
+    }
+  };
+  
+  var rowChanged = function(y) {
+    var $level = $cursor.closest(".level");
+    var $levels = $container.find(".level");
+    var levelIndex = $levels.index($level);
+    var $spells = $level.find(".spell");
+    var spellIndex = $spells.index($cursor);
+    
+    var $newSpells = [];
+    var newLevelIndex = levelIndex;
+    var newSpellIndex = spellIndex;
+    
+    while ($newSpells.length <= 0) {
+      newLevelIndex += y;
+      if (newLevelIndex < 0 || newLevelIndex >= $levels.length) {
+        newLevelIndex = levelIndex;
+      } 
+      $newSpells = $levels.eq(newLevelIndex).find(".spell");
+    }
+    
+    if (newLevelIndex == levelIndex) {
+      return $cursor;
+    }
+    
+    if (newSpellIndex >= $newSpells.length) {
+      newSpellIndex = $newSpells.length - 1;
+    }
+    
+    if (newLevelIndex < 4 && levelIndex >= 4 || newLevelIndex >= 4 && levelIndex < 4) {
+      $levels.slice(0, 4).toggleClass("hidden");
+    }
+    
+    return $newSpells.eq(newSpellIndex);
   };
   
   var selectSpell = function() {
+    if (!($cursor) || $cursor.length == 0) {
+      return false;
+    }
+    
+    var $level = $cursor.closest(".level");
+    var $levels = $container.find(".level");
+    var levelIndex = $levels.index($level);
+    var spellIndex = $level.find(".spell").index($cursor);
     var char = Party.getChar(BattleCommands.getCharIndex());
-    var spellId = char.knownSpells[rowIndex][columnIndex]; 
+    var spellId = char.knownSpells[levelIndex][spellIndex]; 
     var spell = Spell.lookup(spellId);
     if (char.canCastSpell(spell)) {
-      BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:spellId});
-      if (spell.isSameTargetGroup()) { 
-        BattleCommands.party({target:{type:BattleCommands.Party}}); 
-      } else if (spell.isOtherTargetGroup()) { 
-        BattleCommands.party({target:{type:BattleCommands.Enemy}}); 
-      }
+      BattleCommands.party({spellId:spellId});
 
+      var target = null;
+      
       if (spell.isSingleTarget()) {
-        clearCursor();
+        Cursor.hide($cursor);
         hideSpellList();
         if (spell.isSameTargetGroup()) { 
-          // TODO: add cursor for chars
+          BattlePartyCursor.startListening(self);
+          return false;
         } else if (spell.isOtherTargetGroup()) { 
-          BattleEnemyCursor.startListening(); 
+          BattleEnemyCursor.startListening(self); 
+          return false;
         }
       } else if (spell.isSelfTarget()) {
-        BattleCommands.party({target:{type:BattleCommands.Party, char:char}});
-      } 
+        target = {type:BattleCommands.Party, char:char};
+      } else {
+        if (spell.isSameTargetGroup()) { 
+          target = {type:BattleCommands.Party, affects:BattleCommands.All}; 
+        } else if (spell.isOtherTargetGroup()) { 
+          target = {type:BattleCommands.Enemy, affects:BattleCommands.All};
+        }
+      }
+      
+      if (target) {
+        BattleCommands.party({target:target});
+      }
       return true;
     }
     
     return false;
+  };
+  
+  var showSpellList = function() {
+    $container.removeClass("hidden");
   };
   
   /* ============== */
@@ -105,30 +156,43 @@ var BattleSpellCursor = (function () {
       case KeyPressNotifier.Space:
         if (selectSpell()) {
           hideSpellList();
-          clearCursor();
-          if (BattleCommands.isAllPartyCommandsEntered()) {
-            BattleCommands.generateEnemyCommands();
-          } else {
-            KeyPressNotifier.setListener(BattleMenuCursor);
-          }
+          Cursor.clear($cursor);
+          Battle.nextChar();
         }
         return false;
       case KeyPressNotifier.Esc:
-        clearCursor();
+        Cursor.clear($cursor);
         hideSpellList();
-        KeyPressNotifier.setListener(BattleMenuCursor);
+        BattleMenuCursor.startListening({reset:false});
         return false;
       default:
         console.log("Unhandled key press in spell selection: " + key);
     }
   };
   
-  self.startListening = function() { 
+  self.selectCharAsTarget = function(char) {
+    BattleCommands.party({target:{type:BattleCommands.Party, char:char}});
+    Cursor.clear($cursor);
+    Battle.nextChar();
+  };
+  
+  self.startListening = function(opt) { 
+    opt = jQuery.extend(true, {reset:true}, opt);
     KeyPressNotifier.setListener(BattleSpellCursor);
-    moveCursor(0, 0);
+    if (opt.reset) {
+      Battle.populateSpellList();
+      moveCursor(0, 0);
+    } else {
+      showSpellList();
+      Cursor.show($cursor);
+    }
   };
   
   self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
+  
+  self.toString = function() { return "BattleSpells"; };
+  
+  Cursor.register(self);
   
   return this;  
 }).call({});

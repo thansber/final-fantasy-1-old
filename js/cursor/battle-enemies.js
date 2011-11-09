@@ -3,6 +3,7 @@ var BattleEnemyCursor = (function() {
   var self = this;
   var $container = null;
   var $cursor = null;
+  var previousListener = null;
   
   /* =========== */
   /* INIT METHOD */
@@ -14,12 +15,6 @@ var BattleEnemyCursor = (function() {
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
-  var clearCursor = function() {
-    if ($cursor && $cursor.size() > 0) {
-      $cursor.find(".cursor").remove();
-    }
-  };
-  
   var columnChange = function(x) {
     var $columns = $container.find(".column");
     var $enemies = $cursor.closest(".column").find(".enemy");
@@ -105,7 +100,7 @@ var BattleEnemyCursor = (function() {
   };
   
   var moveCursor = function(x, y) {
-    clearCursor();
+    Cursor.clear($cursor);
     if (!(x || y)) {
       $cursor = getFirstAliveEnemy();
     } else if (x) {
@@ -125,7 +120,7 @@ var BattleEnemyCursor = (function() {
     var $enemies = $cursor.closest(".enemies").find("." + monsterCss);
     var monsterIndex = $enemies.index($cursor);
   
-    BattleCommands.party({source:Party.getChar(BattleCommands.getCharIndex()), target:{name:monster.name, index:monsterIndex, type:BattleCommands.Enemy}});
+    BattleCommands.party({target:{name:monster.name, index:monsterIndex, type:BattleCommands.Enemy}});
   };
   
   /* ============== */
@@ -153,23 +148,27 @@ var BattleEnemyCursor = (function() {
         KeyPressNotifier.clearListener();
         selectEnemyAsTarget();
         Battle.nextChar();
-        clearCursor();
+        Cursor.clear($cursor);
         return false;
       case KeyPressNotifier.Esc:
         KeyPressNotifier.clearListener();
-        clearCursor();
-        KeyPressNotifier.setListener(BattleMenuCursor);
-        BattleMenuCursor.startListening();
+        Cursor.clear($cursor);
+        previousListener.startListening({reset:false});
         return false;
       default:
         console.log("Unhandled key press in enemy selection: " + key);
     }
   };
   
-  self.startListening = function() { 
+  self.startListening = function(prevListener) { 
+    previousListener = prevListener;
     KeyPressNotifier.setListener(BattleEnemyCursor);
     moveCursor(0, 0);
   };
+  
+  self.toString = function() { return "BattleEnemies"; };
+  
+  Cursor.register(self);
   
   return this;
 }).call({});
