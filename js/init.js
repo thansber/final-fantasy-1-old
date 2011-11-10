@@ -16,6 +16,7 @@ $(document).ready(function() {
   SpellEffectHelper.init();
   WeaponHelper.init();
   WeaponAnimationHelper.init();
+  ActionHelper.init();
   
   Cursor.init();
   

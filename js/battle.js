@@ -9,6 +9,9 @@ var Battle = (function() {
   var $spellList = null;
 
   var enemies = {};
+  var runnable = true;
+  var preemptive = false;
+  var ambush = false;
   
   var RESTRICTIONS = {small:9, large:4, fiend:1, chaos:1, mixed:{small:6, large:2, fiend:0, chaos:0}};
   var ENEMIES_PER_COLUMN = {small:3, large:2, fiend:1};
@@ -52,6 +55,36 @@ var Battle = (function() {
       }
     });
     return sizeCounts;
+  };
+  
+  var calculateSurprise = function(enemySurprise) {
+    
+    if (!self.isRunnable()) {
+      console.log("encounter is not runnable, normal battle");
+      return;
+    }
+    
+    var leader = null; 
+    jQuery.each(Party.getChars(), function(i, char) { 
+      if (char.isAlive()) { 
+        leader = char;
+        return false;
+      } 
+    });
+    var leaderQuickness = Math.floor((leader.agility + leader.luck) / 8);
+    var r = RNG.randomUpTo(100, leaderQuickness);
+    var result = r + leaderQuickness - enemySurprise;
+    if (result < 0) {
+      result = 0;
+    }
+        
+    if (result <= 10) {
+      ambush = true;
+    } else if (result >= 90) {
+      preemptive = true;
+    }
+    
+    console.log("SURPRISE - " + (ambush ? "AMBUSH - " : preemptive ? "PREEMPTIVE - " : "") + "(leader quick + random - surprise) " + leaderQuickness + " + " + r + " - " + enemySurprise + " = " + result);
   };
   
   var cleanMonsterIndex = function(index) { return (index == null ? 0 : index); };
@@ -182,6 +215,7 @@ var Battle = (function() {
     if (result.died) {
       $char.addClass("dead");
       $("label.hp", $charStats).empty().append(Message.create("HP"));
+      $("div.hp", $charStats).empty().append(Message.create("0"));
       return;
     }
     
@@ -313,6 +347,18 @@ var Battle = (function() {
     $(".messages", $battle).toggleClass("hidden", !roundStarting);
   };
   
+  self.isAmbush = function() {
+    return ambush;
+  }
+  
+  self.isPreemptive = function() {
+    return preemptive;
+  };
+  
+  self.isRunnable = function() {
+    return runnable;
+  };
+  
   self.killEnemyUI = function(monster, index) {
     var $enemy = (index == null ? monster : self.getEnemyUI(monster, index));
     $enemy.addClass("dead");    
@@ -350,8 +396,12 @@ var Battle = (function() {
       BattleCommands.changeCharIndex(1);
       var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
       var otherChar = Party.getChar(BattleCommands.getCharIndex());
-      while (otherChar && !otherChar.canTakeAction()) {
-        BattleCommands.incapacitatedChar(otherChar);
+      while (otherChar && !otherChar.canTakeAction() && !BattleCommands.isAllPartyCommandsEntered()) {
+        if (otherChar.isAlive()) {
+          BattleCommands.incapacitatedChar(otherChar);
+        } else {
+          BattleCommands.changeCharIndex(1);
+        }
         otherChar = Party.getChar(BattleCommands.getCharIndex());
       }
       if (otherChar) {
@@ -418,35 +468,63 @@ var Battle = (function() {
     });
   };
   
+  self.resetSurprise = function() {
+    ambush = false;
+    preemptive = false;
+  };
+  
   // Called for each new battle
   // Input definition:
   // - enemies: [{name:"IMP",qty:3},...]
   // - background: background object, see Map.BattleBackgrounds
+  // - surprise: enemy formation surprise rating
+  // - runnable: whether running can even work
   self.setup = function(opt) {
     BattleCommands.clearAllCommands();
     enemies = {};
+    ambush = false;
+    preemptive = false;
     opt = opt || {};
     if (opt.background) {
       $("#battle .background").attr("class", "background " + opt.background.cssClass);
     }
+    runnable = opt.runnable;
     var battleEnemies = (opt && opt.enemies) || {};
     var moveFirstChar = !opt.doNotMove;
     setupEnemies(battleEnemies);
     setupParty(Party.getChars());
     
-    self.startRound(!opt.doNotMove);
+    calculateSurprise(opt.surprise);
+    
+    if (ambush) {
+      BattleCommands.generateEnemyCommands();
+    } else {
+      if (preemptive) {
+        self.inputMessageToggler(true);
+        var q = Animation.preBattleMessage(Animation.PREEMPTIVE);        
+        jQuery.when(q.start()).then(function() {
+          self.startRound(!opt.doNotMove);
+        });
+      } else {
+        self.startRound(!opt.doNotMove);
+      }
+    }
   };
   
   self.startRound = function(moveFirstChar) {
     self.inputMessageToggler(false);
     // Clear all commands
-    BattleCommands.init();
+    BattleCommands.clearAllCommands();
     // Start the cursor listener for the first character's action
     BattleMenuCursor.startListening();
     // First character that can select an action walks forward to indicate they are choosing an action
     if (moveFirstChar) {
       var firstChar = null;
       jQuery.each(Party.getChars(), function(i, char) {
+        if (!char.isAlive()) {
+          BattleCommands.changeCharIndex(1);
+          return true;
+        }
         if (char.canTakeAction()) {
           firstChar = char;
           return false;

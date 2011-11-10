@@ -94,4 +94,4 @@
 #debug .battleMessages p label { width:6em; float:left; text-align:right; margin-right:1em; }
 #debug .battleMessages p input { width:150px; float:left; }
 
-#debug .actions button { display:block; margin-bottom:1em; }
+#debug .actions button { display:block; margin-bottom:0.4em; }

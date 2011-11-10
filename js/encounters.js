@@ -160,7 +160,19 @@ var Encounter = (function() {
     
     return s;
   };
+
+  self.formationToEncounter = function(formation) {
+    return self.generateEnemies(parseFormation(formation));
+  };
   
+  self.generateEnemies = function(encounter) {
+    var enemies = [];
+    for (var e in encounter.enemies) {
+      var enemy = encounter.enemies[e];
+      enemies.push({name:enemy.name, qty:RNG.randomUpTo(enemy.max, enemy.min)});
+    }
+    return {enemies:enemies, surprise:encounter.surprise, runnable:encounter.runnable};
+  };
   
   self.random = function(map, area) {
     var encounters = ALL[map][area];
@@ -177,12 +189,7 @@ var Encounter = (function() {
       encounter = encounters.common[Math.floor((r - 1) / 12)];
     }
     
-    var enemies = [];
-    for (var e in encounter.enemies) {
-      var enemy = encounter.enemies[e];
-      enemies.push({name:enemy.name, qty:RNG.randomUpTo(enemy.max, enemy.min)});
-    }
-    return {enemies:enemies, surprise:encounter.surprise, runnable:encounter.runnable};
+    return self.generateEnemies(encounter);
   };
   
   return this;

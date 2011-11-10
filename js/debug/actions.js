@@ -13,12 +13,16 @@ var ActionHelper = (function() {
       callbacks.party.call();
     }
     
-    if (!(jQuery.isArray(enemies))) {
-      enemies = [enemies];
+    if (typeof enemies === "string") {
+      var encounter = Encounter.formationToEncounter(Encounter.lookupFormation(enemies));
+      Battle.setup(jQuery.extend(true, {background:Map.BattleBackgrounds.Forest}, encounter));
+    } else {
+      if (!(jQuery.isArray(enemies))) {
+        enemies = [enemies];
+      }
+      
+      Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:true});
     }
-    
-    Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:true});
-    
     if (callbacks && callbacks.monster) {
       callbacks.monster.call();
     }
@@ -188,26 +192,54 @@ var ActionHelper = (function() {
     Battle.startRound(true);
   };
   
-  var event = function($target) {
-    Party.clearChars();
-    RNG.useDefault(); // want this to be reset in case any action overrides the RNG
-    if ($target.is(".char.attack")) { charAttack(); } 
-    else if ($target.is(".monster.multi.attack")) { multipleEnemyAttack(); } 
-    else if ($target.is(".monster.attack")) { enemyAttack(); } 
-    else if ($target.is(".spell.self")) { castSpellOnSelf(); } 
-    else if ($target.is(".spell.heal.party.all")) { castHealingSpellOnEntireParty(); } 
-    else if ($target.is(".spell.party.single")) { castSpellOnPartyTarget(); } 
-    else if ($target.is(".spell.party.all")) { castSpellOnEntireParty(); } 
-    else if ($target.is(".spell.enemy")) { castSpellOnEnemy(); } 
-    else if ($target.is(".spell.enemies")) { castSpellOnEnemies(); }
-    else if ($target.is(".status.heal")) { healStatusForChar(); }
-    else if ($target.is(".monster.retarget")) { monsterRetargets(); }
-    else if ($target.is(".ineffective.attack")) { ineffectiveCharAttack(); }
-    else if ($target.is(".cursor-dead-enemy")) { cursorFunWithDeadEnemies(); }
-    else if ($target.is(".cursor-spells")) { cursorFunWithSpells(); }
+  var preemptive = function() {
+    RNG.useCustom(RNG.AlwaysFailure);
+    newBattle([CharacterClass.NINJA, CharacterClass.KNIGHT], "08-1");
   };
   
-  return {
-    event : event
+  var ambush = function() {
+    newBattle([CharacterClass.BLACK_MAGE, CharacterClass.THIEF], "0A-1");
   };
+  
+  this.event = function($target) {
+    Party.clearChars();
+    RNG.useDefault(); // want this to be reset in case any action overrides the RNG
+    
+    var buttonClasses = $target.attr("class").split(" ");
+    buttonClasses.splice(0, 1);
+    var buttonId = buttonClasses.join(".");
+    
+    if (buttons[buttonId] && buttons[buttonId].onclick) {
+      buttons[buttonId].onclick.apply();
+    }
+  };
+  
+  this.init = function() {
+    var $container = $("section.actions .container");
+    for (var b in buttons) {
+      $container.append($("<button class=\"action " + b.replace(/\./g, " ") + "\">" + buttons[b].desc + "</button>"))
+    }
+  };
+  
+  var buttons = {
+    "char.attack":{desc:"Character attack", onclick:charAttack}
+   ,"monster.multi.attack":{desc:"Monster retargets when character dies", onclick:multipleEnemyAttack} 
+   ,"monster.attack":{desc:"Monster attack", onclick:enemyAttack} 
+   ,"spell.self":{desc:"Cast spell on self", onclick:castSpellOnSelf} 
+   ,"spell.heal.party.all":{desc:"Cast healing spell on entire party", onclick:castHealingSpellOnEntireParty} 
+   ,"spell.party.single":{desc:"Cast spell on party target", onclick:castSpellOnPartyTarget} 
+   ,"spell.party.all":{desc:"Monster casts spell on entire party", onclick:castSpellOnEntireParty} 
+   ,"spell.enemy":{desc:"Cast spell on single monster", onclick:castSpellOnEnemy} 
+   ,"spell.enemies":{desc:"Cast spell on all monsters", onclick:castSpellOnEnemies}
+   ,"status.heal":{desc:"Heal a status", onclick:healStatusForChar}
+   ,"monster.retarget":{desc:"Monster retargets when character dies", onclick:monsterRetargets}
+   ,"ineffective.attack":{desc:"Character attack ineffective", onclick:ineffectiveCharAttack}
+   ,"cursor-dead-enemy":{desc:"Enemy selection cursor", onclick:cursorFunWithDeadEnemies}
+   ,"cursor-spells":{desc:"Spell list cursor", onclick:cursorFunWithSpells}
+   ,"ambush":{desc:"Ambush!", onclick:ambush}
+   ,"preemptive":{desc:"Preemptive attack", onclick:preemptive}
+  };
+  
+  
+  return this;
 })();

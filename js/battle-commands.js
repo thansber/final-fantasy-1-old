@@ -45,6 +45,9 @@ var BattleCommands = (function() {
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
   var commandToString = function(command) {
+    if (!command) {
+      return "UNDEFINED - probably a dead char";
+    }
     var isParty = command.type == CommandTypes.Party;
     var s = command.source.getName();
     switch (command.action) {
@@ -117,6 +120,7 @@ var BattleCommands = (function() {
   };
   
   self.clearAllCommands = function() {
+    charIndex = 0;
     partyCommands = [];
     enemyCommands = [];
     Animation.reset();
@@ -158,14 +162,16 @@ var BattleCommands = (function() {
     var victory = false, defeat = false;
     commandQueue = new Animation.ActionQueue();
     
+    if (Battle.isAmbush()) {
+      commandQueue.add(Animation.preBattleMessage(Animation.AMBUSH, commandQueue.chain));
+    }
+    
     jQuery.each(all, function(i, command) {
       Message.hideAllBattleMessages();
       
-      if (command.source.isDead()) {
+      if (!command || command.source.isDead()) {
         return true;
       }
-
-      // TODO: Check for various incapacitated statuses, check for healing
 
       // If a monster's target died during this round, allow the monster to retarget
       if (monsterTargetingCharThatDied(command)) {
@@ -204,6 +210,8 @@ var BattleCommands = (function() {
       }
     });
     
+    Battle.resetSurprise();
+    
     //commandQueue.chain.delay(Message.getBattlePause());
     if (defeat) {
       commandQueue.add(Animation.defeat(commandQueue.chain));
@@ -230,13 +238,17 @@ var BattleCommands = (function() {
   };
   
   self.generateEnemyCommands = function() {
-    var enemiesByName = Battle.getAllEnemies();
-    for (var n in enemiesByName) {
-      var enemies = enemiesByName[n];
-      jQuery.each(enemies, function(i, e) {
-        // TODO: Need to check for various incapacitating statuses
-        self.enemy(e);
-      });
+    // Enemies don't get to go during the first round if it is a preemptive
+    // strike, this should get reset in executeCommands
+    if (!Battle.isPreemptive()) {
+      var enemiesByName = Battle.getAllEnemies();
+      for (var n in enemiesByName) {
+        var enemies = enemiesByName[n];
+        jQuery.each(enemies, function(i, e) {
+          // TODO: Need to check for various incapacitating statuses
+          self.enemy(e);
+        });
+      }
     }
     
     self.executeCommands();
@@ -247,16 +259,8 @@ var BattleCommands = (function() {
     self.changeCharIndex(1);
   };
   
-  self.init = function() {
-      charIndex = 0;
-      partyCommands = [];
-      enemyCommands = [];
-    };
-  
   self.isAllPartyCommandsEntered = function() {
-    var numAliveChars = 0;
-    jQuery.each(Party.getChars(), function(i, char) { if (char.isAlive()) { numAliveChars++; } });
-    return charIndex >= numAliveChars;
+    return charIndex >= Party.getChars().length;
   };
   
   self.party = function(opt) {

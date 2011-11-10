@@ -1,6 +1,6 @@
 .text p { width:16px; height:16px; float:left; overflow:hidden; background-image:url(../images/font-sheet.png); background-repeat:no-repeat; }
 
-.text p.space { background-position:1000px 1000px; }
+.text p.space { background-position:1000px 1000px; width:10px; }
 .text p.newline { clear:left; }
 
 .text p.A { background-position:0 0; }

@@ -8,6 +8,7 @@ var Animation = (function() {
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
    ,Defeat : "defeat"
+   ,PreBattleMessage: "message"
    ,ShowSplash : "showSplash"
    ,SlideChar : "slideChar"
    ,SpellBackground : "spellBackground"
@@ -17,6 +18,9 @@ var Animation = (function() {
    ,Victory : "victory"
    ,WindowShake : "windowShake"
   };
+  
+  self.AMBUSH = "Monsters strike first";
+  self.PREEMPTIVE = "Chance to strike first";
   
   var CHAR_DIED_MSG = "Slain..";
   var CRITICAL_HIT_MSG = "Critical hit!!";
@@ -82,7 +86,9 @@ var Animation = (function() {
   };
   self.ActionQueue.prototype.kill = function() { 
     this.animationQueue.kill(); 
-    this.animationQueue.chain.kill(); 
+    if (this.animationQueue.chain) {
+      this.animationQueue.chain.kill();
+    }
   };
   self.ActionQueue.prototype.start = function() { return this.animationQueue.start(); };
   
@@ -423,6 +429,14 @@ var Animation = (function() {
     var firstChar = Party.getChar(0);
     q.delay(Message.getQuickPause());
     q.add(function() { Message.desc(firstChar.getName() + " party perished"); });
+    return q;
+  };
+  
+  self.preBattleMessage = function(message, queue) {
+    var q = queue || new Queue(this.Queues.PreBattleMessage);
+    q.setChain(q);
+    q.add(function() { Message.desc(message); });
+    hideMessages(q, {hideDesc:true});
     return q;
   };
   

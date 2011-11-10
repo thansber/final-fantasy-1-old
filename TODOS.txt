@@ -1,8 +1,8 @@
-- after battle victory transition back to world map
+- handle ambushes/preemptive attacks
 
+- after battle victory transition back to world map
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
 - fix HARM spells so they only work on undead
 - running away for chars
 - running away for enemies
-- char dying still had 1 hp by multiple attacks

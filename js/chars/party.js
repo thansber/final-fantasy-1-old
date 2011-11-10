@@ -116,8 +116,9 @@ var Party = (function() {
       
       KeyPressNotifier.clearListener();
       Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));
-      self.switchView("#battleView");
     }
+
+    self.switchView("#battleView");
     
     self.resetStepsUntilBattle();
   };
