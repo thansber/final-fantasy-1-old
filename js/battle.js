@@ -473,6 +473,12 @@ var Battle = (function() {
     preemptive = false;
   };
   
+  self.restoreCriticalStatus = function($char) {
+    if ($char.is(".stillCritical")) {
+      $char.removeClass("stillCritical").addClass("critical");
+    }
+  };
+  
   // Called for each new battle
   // Input definition:
   // - enemies: [{name:"IMP",qty:3},...]
@@ -488,7 +494,7 @@ var Battle = (function() {
     if (opt.background) {
       $("#battle .background").attr("class", "background " + opt.background.cssClass);
     }
-    runnable = opt.runnable;
+    runnable = opt.runnable == null ? true : opt.runnable;
     var battleEnemies = (opt && opt.enemies) || {};
     var moveFirstChar = !opt.doNotMove;
     setupEnemies(battleEnemies);
@@ -543,10 +549,9 @@ var Battle = (function() {
     }
   };
   
-  self.toggleCriticalStatus = function(char) {
-    var $char = self.getCharUI(char);
-    if ($char.is(".stillCritical")) {
-        $char.removeClass("stillCritical").addClass("critical");
+  self.suspendCriticalStatus = function($char) {
+    if ($char.is(".critical")) {
+      $char.removeClass("critical").addClass("stillCritical");
     }
   };
   

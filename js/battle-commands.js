@@ -75,11 +75,13 @@ var BattleCommands = (function() {
       s += " " + command.spellId + " on";
     }
   
-    var targets = jQuery.isArray(command.target) ? command.target : [command.target];
-    if (targets) {
-      s += " " + jQuery.map(targets, function(target) { 
-        return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
-      }).join(", ");
+    if (command.target) {
+      var targets = jQuery.isArray(command.target) ? command.target : [command.target];
+      if (targets) {
+        s += " " + jQuery.map(targets, function(target) { 
+          return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
+        }).join(", ");
+      }
     }
     
     return s;
@@ -159,7 +161,9 @@ var BattleCommands = (function() {
     console.log(commandsToString(all));
     
     Battle.inputMessageToggler(true);
-    var victory = false, defeat = false;
+    var victory = false;
+    var defeat = false;
+    var ranAway = false;
     commandQueue = new Animation.ActionQueue();
     
     if (Battle.isAmbush()) {
@@ -195,9 +199,20 @@ var BattleCommands = (function() {
             commandQueue.add(Animation.statusHeal(command, result, commandQueue.chain));
           }
           break;
+        case ActionTypes.Run:
+          result = Action.run(command.source, command.targetType);
+          commandQueue.add(Animation.run(command, result, commandQueue.chain));
+          if (result.success) {
+            ranAway = true;
+          }
+          break;
       }
       
       console.log(resultToString(result));
+      
+      if (ranAway) {
+        return false;
+      }
       
       if (Battle.areAllEnemiesDead(Battle.getAllEnemies())) {
         victory = true;
@@ -220,9 +235,13 @@ var BattleCommands = (function() {
       commandQueue.add(Animation.victory({queue:commandQueue.chain}));
     }
     
+    // What to do after all the round animations have finished
     jQuery.when(commandQueue.start()).then(function() {
       if (defeat) { console.log("party is dead - lose"); }
-      else if (victory) { console.log("enemies are dead - victory"); }
+      else if (victory || ranAway) { 
+        Movement.startListening();
+        Party.switchView("#world");
+      }
       else { 
         Battle.startRound(true);
       }

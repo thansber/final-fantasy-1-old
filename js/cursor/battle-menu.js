@@ -70,8 +70,9 @@ var BattleMenuCursor = (function() {
   };
   
   var run = function() {
-    BattleCommands.party({action:BattleCommands.Run, source:BattleCommands.getCurrentChar()});
-    console.log("run action not supported yet");
+    BattleCommands.party({action:BattleCommands.Run, source:BattleCommands.getCurrentChar(), target:{type:BattleCommands.Party}});
+    Cursor.clear($cursor);
+    Battle.nextChar();
   };
   
   /* ============== */

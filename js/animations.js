@@ -8,7 +8,8 @@ var Animation = (function() {
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
    ,Defeat : "defeat"
-   ,PreBattleMessage: "message"
+   ,PreBattleMessage : "message"
+   ,RunAway : "running"
    ,ShowSplash : "showSplash"
    ,SlideChar : "slideChar"
    ,SpellBackground : "spellBackground"
@@ -22,13 +23,15 @@ var Animation = (function() {
   self.AMBUSH = "Monsters strike first";
   self.PREEMPTIVE = "Chance to strike first";
   
-  var CHAR_DIED_MSG = "Slain..";
+  var CHAR_DIED_MSG = "Slain:";
   var CRITICAL_HIT_MSG = "Critical hit!!";
   var DAMAGE_MSG = "DMG";
   var ENEMY_DIED_MSG = "Terminated";
   var INEFFECTIVE_MSG = "Ineffective";
   var MISSED_MSG = "Missed!";
   var NUM_HITS_MSG = "Hits!";
+  var RUN_FAILURE = "Can't run";
+  var RUN_SUCCESS = "Close call::"
   var SPLASH_ORDINALS = ["one", "two", "three"];
   var STATUS_CURED = "Cured!";
   var VICTORY = "Monsters perished";
@@ -368,7 +371,7 @@ var Animation = (function() {
     self.swingWeapon(char, {queue:q.chain});
     self.slideChar(char, {queue:q.chain, direction:"backward"});
     self.walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
+    q.addToChain(function() { Battle.restoreCriticalStatus(Battle.getCharUI(char)); });
     return q;
   };
   
@@ -403,7 +406,7 @@ var Animation = (function() {
     self.spellEffect(char, spell, {queue:q.chain});
     self.slideChar(char, {queue:q.chain, direction:"backward"});
     self.walkInBattle(char, {queue:q.chain});
-    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
+    q.addToChain(function() { Battle.restoreCriticalStatus(Battle.getCharUI(char)); });
     return q;
   };
   
@@ -443,6 +446,31 @@ var Animation = (function() {
   self.reset = function() {
     $("#battle .enemies .splash").addClass("hidden");
   };
+  
+  self.run = function(command, result, queue) {
+    var q = queue || new Queue(this.Queues.RunAway);
+    var isParty = (command.type == BattleCommands.Party);
+    
+    q.setChain(q);
+    
+    if (command.source) { 
+      q.add(function() { Message.source(command.source.getName()); });
+      q.delay(Message.getQuickPause());
+    }
+    
+    if (result.success) {
+      q.add(function() { Message.desc(RUN_SUCCESS); });
+      q.delay(Message.getBattlePause());
+      // TODO: Flip all alive chars backwards to indicate "running"
+    } else {
+      q.add(function() { Message.desc(RUN_FAILURE); })
+      q.delay(Message.getBattlePause());
+    }
+    
+    hideMessages(q, {hideDesc:true, hideSource:true, initialPause:false});
+    
+    return q;
+  }
   
   self.slideChar = function(char, opt) {
     var settings = jQuery.extend({}, {speed:350, direction:"forward", queue:null}, opt);
@@ -572,6 +600,14 @@ var Animation = (function() {
     var settings = jQuery.extend({}, {numAnimations:4, pause:250, queue:null}, opt);
     var q = settings.queue || new Queue(this.Queues.Victory);
     
+    q.add(function() { 
+      jQuery.each(Party.getChars(), function(i, char) {
+        if (char.isAlive()) {
+          Battle.suspendCriticalStatus(Battle.getCharUI(char));
+        }
+      });
+    });
+    
     for (var i = 0; i < settings.numAnimations; i++) {
       q.add(function() { 
         jQuery.each(Party.getChars(), function(i, char) {
@@ -590,6 +626,14 @@ var Animation = (function() {
       });
       q.delay(settings.pause);
     }
+    
+    q.add(function() { 
+      jQuery.each(Party.getChars(), function(i, char) {
+        if (char.isAlive()) {
+          Battle.restoreCriticalStatus(Battle.getCharUI(char));
+        }
+      });
+    });
 
     var rewards = Battle.calculateRewards();
     jQuery.each(rewards.aliveChars, function(i, char) { char.addExperience(rewards.exp); });
@@ -622,11 +666,7 @@ var Animation = (function() {
     var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(this.Queues.BattleWalk);
     
-    q.add(function() {
-      if ($char.is(".critical")) {
-        $char.removeClass("critical").addClass("stillCritical");
-      }
-    });
+    q.add(function() { Battle.suspendCriticalStatus($char); });
     
     for (var i = 0; i < settings.numAnimations; i++) {
       q.add(function() { $char.addClass("swing forward"); });
@@ -642,7 +682,7 @@ var Animation = (function() {
     var settings = jQuery.extend({}, {queue:null}, opt);
     var q = settings.queue || new Queue(this.Queues.BattleWalk);
     q.moveChar(char, q.chain, opt);
-    q.addToChain(function() { Battle.toggleCriticalStatus(char); });
+    q.addToChain(function() { Battle.restoreCriticalStatus(Battle.getCharUI(char)); });
     return q;
   };
   

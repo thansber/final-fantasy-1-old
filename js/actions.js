@@ -212,6 +212,37 @@ var Action = (function() {
     return spellAction; 
   };
   
+  this.run = function(source, type) {
+    var isParty = type == BattleCommands.Party;
+    var auto = false;
+    var success = false;
+    var runLog = "";
+    
+    if (!isParty) {
+      runLog = "monster";
+      auto = true;
+      success = true;
+    } else {
+      if (Battle.isPreemptive()) {
+        auto = true;
+        runLog = "preemptive";
+        success = true;
+      } else if (!Battle.isRunnable()) {
+        auto = true;
+        runLog = "unrunnable";
+        success = false;
+      } else {
+        var r = RNG.randomUpTo(source.charLevel + 15, 0);
+        runLog = source.luck + ">" + r + " (luck>0..level+15)";
+        success = (source.luck > r);
+      }
+    }
+    
+    console.log(source.getName() + " running - " + (auto ? "AUTO " : "") + (success ? "SUCCESS" : "FAIL") + "=[" + runLog + "]");
+    
+    return {type:"R", source:source, success:success};
+  };
+  
   this.statusHeal = function(source, type) {
     var statusResult = {};
     if (source.hasStatus(Status.Paralysis)) {

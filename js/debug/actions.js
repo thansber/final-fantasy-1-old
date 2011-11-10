@@ -1,6 +1,7 @@
 var ActionHelper = (function() {
   
-  var newBattle = function(charClasses, enemies, callbacks) {
+  var newBattle = function(charClasses, enemies, opt) {
+    opt = jQuery.extend(true, {doNotMove:true}, opt);
     for (var c in charClasses) {
       var charName = "";
       for (var i = 0; i < 4; i++) { 
@@ -9,22 +10,22 @@ var ActionHelper = (function() {
       Party.addChar(Party.createNewChar(charName, charClasses[c], c));
     }
     
-    if (callbacks && callbacks.party) {
-      callbacks.party.call();
+    if (opt.party) {
+      opt.party.call();
     }
     
     if (typeof enemies === "string") {
       var encounter = Encounter.formationToEncounter(Encounter.lookupFormation(enemies));
-      Battle.setup(jQuery.extend(true, {background:Map.BattleBackgrounds.Forest}, encounter));
+      Battle.setup(jQuery.extend(true, {background:Map.BattleBackgrounds.Forest, doNotMove:opt.doNotMove}, encounter));
     } else {
       if (!(jQuery.isArray(enemies))) {
         enemies = [enemies];
       }
       
-      Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:true});
+      Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:opt.doNotMove});
     }
-    if (callbacks && callbacks.monster) {
-      callbacks.monster.call();
+    if (opt.monster) {
+      opt.monster.call();
     }
   };
   
@@ -194,11 +195,20 @@ var ActionHelper = (function() {
   
   var preemptive = function() {
     RNG.useCustom(RNG.AlwaysFailure);
-    newBattle([CharacterClass.NINJA, CharacterClass.KNIGHT], "08-1");
+    newBattle([CharacterClass.NINJA, CharacterClass.KNIGHT], "08-1", {doNotMove:false});
   };
   
   var ambush = function() {
     newBattle([CharacterClass.BLACK_MAGE, CharacterClass.THIEF], "0A-1");
+  };
+  
+  var unrunnable = function() {
+    newBattle([CharacterClass.WHITE_MAGE], "21-1");
+    var monster = Battle.lookupEnemy("EARTH");
+    var commands = [];
+    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleCommands.Run, target:{type:BattleCommands.Party}}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+    BattleCommands.executeCommands(commands);
   };
   
   this.event = function($target) {
@@ -238,6 +248,7 @@ var ActionHelper = (function() {
    ,"cursor-spells":{desc:"Spell list cursor", onclick:cursorFunWithSpells}
    ,"ambush":{desc:"Ambush!", onclick:ambush}
    ,"preemptive":{desc:"Preemptive attack", onclick:preemptive}
+   ,"unrunnable":{desc:"Unrunnable battle", onclick:unrunnable}
   };
   
   
