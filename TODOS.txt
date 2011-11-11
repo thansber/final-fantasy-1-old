@@ -1,8 +1,6 @@
-- fix HARM spells so they only work on undead
-
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
-
+- handle LIFE, LIF2, WARP, EXIT, SOFT spells
 - add images for critical/normal chars backwards for running away sprites
 - running away for enemies
 

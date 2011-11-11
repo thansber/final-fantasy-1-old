@@ -104,6 +104,13 @@ var Spell = (function() {
    ,Damage : {
      targetGroup : self.TargetGroup.Other
     ,apply : function(spell, caster, target) {
+      
+       if (!spell.affectsTarget(target)) {
+         spell.result.success.push(false);
+         console.log("INEFFECTIVE - spell only affects [" + spell.affects.join(",") + "], target has types [" + target.types.join(",") + "]");
+         return;
+       }
+      
        var maxDmg = 2 * spell.effectivity;
        var minDmg = spell.effectivity;
        
@@ -278,6 +285,7 @@ var Spell = (function() {
     var stats = opt.stats || {};
     var allowedClasses = opt.allowedClasses || [];
     var ui = jQuery.extend({effect:"", backgroundColor:"black", splash:""}, opt.ui);
+    var affects = opt.affects || [];
     
     this.spellLevel = base.level;
     this.spellId = base.name.toUpperCase();
@@ -305,6 +313,8 @@ var Spell = (function() {
     this.message = ui.message;
     this.overlay = !!ui.overlay;
     
+    this.affects = jQuery.merge([], affects);
+    
     self.ALL[this.spellId] = this;
   };
   
@@ -315,6 +325,27 @@ var Spell = (function() {
   self.SpellBase.prototype.isSelfTarget = function() { return this.targetType.id == "self"; };
   self.SpellBase.prototype.isSameTargetGroup = function() { return this.spellType.targetGroup.id == "same"; };
   self.SpellBase.prototype.isOtherTargetGroup = function() { return this.spellType.targetGroup.id == "other"; };
+  self.SpellBase.prototype.affectsTarget = function(target) {
+    // If the spell does not have any affects defined, assume the target can be affected
+    if (!this.affects || this.affects.length == 0) {
+      return true;
+    }
+    // The spell affects something specific, but the target does not have a type,
+    // assume the target will NOT be affected
+    if (!target.types || target.types.length == 0) {
+      return false;
+    }
+    
+    for (var i = 0; i < target.types.length; i++) {
+      for (var j = 0; j < this.affects.length; j++) {
+        if (this.affects[j] == target.types[i]) {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  };
   
   self.create = function(opt) {
     return new self.SpellBase(opt);

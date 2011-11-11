@@ -16,7 +16,7 @@ Spell.create({
  ,stats:{eff:20, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#0070EC", splash:"blue", overlay:true}
- // TODO: add some way to specify it only affects Undead
+ ,affects:[Monster.Types.Undead]
  });
 Spell.create({
   base:{name:"RUSE", level:1, target:Spell.TargetType.Self, type:Spell.SpellType.StatUp}
@@ -112,7 +112,7 @@ Spell.create({
  ,stats:{eff:40, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#4088FC", splash:"purple", overlay:true}
- // TODO: add some way to specify it only affects Undead
+ ,affects:[Monster.Types.Undead]
  });
 Spell.create({
   base:{name:"FIR2", level:3, target:Spell.TargetType.All, type:Spell.SpellType.Damage}
@@ -198,7 +198,7 @@ Spell.create({
  ,stats:{eff:60, acc:24}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC74B4", splash:"pink", overlay:true}
- // TODO: add some way to specify it only affects Undead
+ ,affects:[Monster.Types.Undead]
  });
 Spell.create({
   base:{name:"LIFE", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle}
@@ -289,7 +289,7 @@ Spell.create({
  ,stats:{eff:80, acc:48}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#00E8D8", splash:"turquoise", overlay:true}
- // TODO: add some way to specify it only affects Undead
+ ,affects:[Monster.Types.Undead]
  });
 Spell.create({
   base:{name:"BLND", level:7, target:Spell.TargetType.Single, type:Spell.SpellType.AddStatus300Hp}

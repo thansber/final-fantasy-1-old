@@ -124,6 +124,15 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands();
   };
   
+  var castSpellOnUndead = function() {
+    var monsterName = "ZOMBIE";
+    newBattle([CharacterClass.WHITE_WIZARD], {name:monsterName,qty:2}, {party:function() {
+      var caster = Party.getChar(0);
+      addSpellsToChar(caster, ["HARM","HRM2","HRM3","HRM4"]);
+    }});
+    Battle.startRound(true);
+  };
+  
   var castSpellOnEntireParty = function() {
     newBattle([CharacterClass.FIGHTER,CharacterClass.BLACKBELT,CharacterClass.WHITE_MAGE,CharacterClass.BLACK_MAGE]
              ,{name:"MAGE",qty:4});
@@ -241,6 +250,7 @@ var ActionHelper = (function() {
    ,"spell.party.all":{desc:"Monster casts spell on entire party", onclick:castSpellOnEntireParty} 
    ,"spell.enemy":{desc:"Cast spell on single monster", onclick:castSpellOnEnemy} 
    ,"spell.enemies":{desc:"Cast spell on all monsters", onclick:castSpellOnEnemies}
+   ,"spell.undead":{desc:"Cast spell affecting undead", onclick:castSpellOnUndead}
    ,"status.heal":{desc:"Heal a status", onclick:healStatusForChar}
    ,"monster.retarget":{desc:"Monster retargets when character dies", onclick:monsterRetargets}
    ,"ineffective.attack":{desc:"Character attack ineffective", onclick:ineffectiveCharAttack}
