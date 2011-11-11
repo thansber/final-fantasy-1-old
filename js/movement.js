@@ -26,6 +26,7 @@ var Movement = (function() {
   /* =========== */
   self.init = function(opt) {
     $view = $("#view");
+    self.registeredKeys = [KeyPressNotifier.I, KeyPressNotifier.M];
   };
 
   /* =============== */
@@ -59,6 +60,18 @@ var Movement = (function() {
   
   self.keyPressChange = function(key, isPressed) {
     keysPressed[key] = isPressed;
+    
+    if (!isPressed) {
+      switch (key) {
+        case KeyPressNotifier.I:
+        case KeyPressNotifier.M:
+          KeyPressNotifier.clearListener();
+          CharMenu.load();
+          Party.switchView(Party.MENU);
+          CharMenuCursor.startListening(self);
+          break;
+      }
+    }
   };
   
   self.refresh = function() {

@@ -240,7 +240,7 @@ var BattleCommands = (function() {
       if (defeat) { console.log("party is dead - lose"); }
       else if (victory || ranAway) { 
         Movement.startListening();
-        Party.switchView("#world");
+        Party.switchView(Party.WORLD_MAP);
       }
       else { 
         Battle.startRound(true);

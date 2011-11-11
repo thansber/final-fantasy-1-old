@@ -1,0 +1,30 @@
+#charMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+
+#charMenu .border { background-color:#2A1A87; }
+
+#charMenu .left { float:left; margin-top:26px; }
+#charMenu .right { float:left; width:350px; margin-left:8px; }
+
+#charMenu .orbs { width:87px; height:84px; margin:0 0 8px 12px; padding:20px 0 0 23px; }
+#charMenu .orbs .orb { width:32px; height:32px; float:left; background-image:url("../images/orbs.png"); background-position:-128px 0; }
+#charMenu .orbs .fire.orb.lit { background-position:0 0; }
+#charMenu .orbs .water.orb.lit { background-position:-32px 0; }
+#charMenu .orbs .wind.orb.lit { background-position:-64px 0; }
+#charMenu .orbs .earth.orb.lit { background-position:-96px 0; }
+
+#charMenu .gold { width:130px; height:36px; padding:16px 0 0 4px; margin-bottom:8px; }
+
+#charMenu .options { padding:30px 0 0 26px; width:84px; position:relative; height:167px; margin-left:12px; }
+#charMenu .options .option { height:32px; }
+#charMenu .options .option.weapon .cursor { top:-16px; }
+#charMenu .options .option.status .cursor { top:-16px; }
+#charMenu .options .option .menu.text { background-image:url("../images/font-char-menu.png"); background-repeat:no-repeat; width:100%; height:16px; }
+#charMenu .options .option .menu.text.weapon { background-position:0 0; }
+#charMenu .options .option .menu.text.status { background-position:0 -16px; }
+
+#charMenu .char.profile { width:134px; height:180px; float:left; margin:0 8px 8px 0; padding:16px 0 0 4px; position:relative; }
+#charMenu .char.profile div { overflow:auto; }
+#charMenu .char.profile .name { height:30px; }
+#charMenu .char.profile .level { height:30px; }
+#charMenu .char.profile .magic.label { margin-top:32px; }
+#charMenu .char.profile .char.class { width:34px; height:50px; top:16px; right:20px; position:absolute; padding:0; margin:0; }

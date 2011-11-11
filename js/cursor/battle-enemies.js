@@ -10,6 +10,7 @@ var BattleEnemyCursor = (function() {
   /* =========== */
   self.init = function() {
     $container = $("#battle .enemies");
+    self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   };
   
   /* =============== */

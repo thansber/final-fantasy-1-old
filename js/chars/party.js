@@ -11,6 +11,19 @@ var Party = (function() {
   var currentMap = null;
   var currentTransportation = null;
   
+  var orbsLit = [];
+  
+  var views = {
+    WORLD_MAP : "#world"
+   ,BATTLE : "#battleView"
+   ,MENU : "#charMenu"
+  };
+  
+  // Anything in the views object can be referenced via Party.WHATEVER
+  for (var v in views) {
+    self[v] = views[v];
+  }
+  
   /* =========== */
   /* INIT METHOD */
   /* =========== */
@@ -58,6 +71,7 @@ var Party = (function() {
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
   self.getGold = function() { return gold; };
+  self.getLitOrbs = function() { return orbsLit; };
   self.getMap = function() { return Map.getMap(currentMap); };
   self.getTransportation = function() { return currentTransportation; };
   
@@ -92,6 +106,10 @@ var Party = (function() {
     $player.closest("#view").css({backgroundPosition:left + "px " + top + "px"});
   };
   
+  self.lightOrb = function(orb) {
+    orbsLit.push(orb);
+  };
+  
   self.resetStepsUntilBattle = function() {
     var steps = null;
     if (self.getMap().is(Map.WORLD_MAP)) {
@@ -118,7 +136,7 @@ var Party = (function() {
       Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));
     }
 
-    self.switchView("#battleView");
+    self.switchView(self.BATTLE);
     
     self.resetStepsUntilBattle();
   };

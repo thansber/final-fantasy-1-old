@@ -11,6 +11,7 @@ var BattleMenuCursor = (function() {
   /* =========== */
   self.init = function() {
     $container = $("#battle .input .commands");
+    self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   };
   
   /* =============== */
@@ -133,8 +134,6 @@ var BattleMenuCursor = (function() {
       Cursor.show($cursor);
     }
   };
-  
-  self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   
   self.toString = function() { return "BattleMenu"; };
   

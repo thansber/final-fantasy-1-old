@@ -23,6 +23,7 @@ var Message = (function() {
    ,"?": "question"
    ,"-": "dash"
    ,":": "ellipsis"
+   ,"/": "slash"
   };
   
   var items = {
@@ -115,6 +116,20 @@ var Message = (function() {
     }
     
     return $msg;
+  };
+  
+  self.pad = function(ch, len) {
+    var a = [];
+    for (var i = 0; i < len; i++) {
+      a.push(ch);
+    }
+    return a.join("");
+  };
+  
+  self.padToLength = function(text, len, opt) {
+    opt = jQuery.extend({}, {dir:"left"}, opt);
+    var padding = self.pad(" ", len - (text + "").length);
+    return opt.dir == "left" ? padding + text : text + padding;
   };
   
   self.source = function(opt) { battleMessage(opt, $(".source.message", $messages)); };

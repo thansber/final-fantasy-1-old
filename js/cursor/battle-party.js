@@ -7,6 +7,7 @@ var BattlePartyCursor = (function() {
   
   self.init = function() {
     $container = $("#battle .party");
+    self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   };
   
   /* =============== */

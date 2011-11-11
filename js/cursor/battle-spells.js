@@ -11,6 +11,7 @@ var BattleSpellCursor = (function () {
   /* =========== */
   self.init = function() {
     $container = $("#battle .input .spells");
+    self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   };
   
   /* =============== */
@@ -187,8 +188,6 @@ var BattleSpellCursor = (function () {
       Cursor.show($cursor);
     }
   };
-  
-  self.registeredKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space, KeyPressNotifier.Esc];
   
   self.toString = function() { return "BattleSpells"; };
   

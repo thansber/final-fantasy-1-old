@@ -1,12 +1,13 @@
 var DebugHelper = (function() {
   
   var HELPERS = {
-    enemiesSplash : {view:"battleView"}
-   ,battleSetup : {view:"battleView"}
-   ,partySetup : {view:"battleView"} 
-   ,animations : {view:"battleView"} 
-   ,battleMessages : {view:"battleView", disableKeyListener:true} 
-   ,actions : {view:"battleView"}
+    enemiesSplash : {view:Party.BATTLE}
+   ,battleSetup : {view:Party.BATTLE}
+   ,partySetup : {view:Party.BATTLE} 
+   ,animations : {view:Party.BATTLE} 
+   ,battleMessages : {view:Party.BATTLE, disableKeyListener:true} 
+   ,actions : {view:Party.BATTLE}
+   ,charMenu: {view:Party.MENU}
   };
   
   var addOption = function($selector, value, text) {
@@ -17,19 +18,22 @@ var DebugHelper = (function() {
   };
   
   var loadMainView = function(helper) {
-    helper = jQuery.extend({view:"world", disableKeyListener:false}, helper);
-    Party.switchView("#" + helper.view);
+    helper = jQuery.extend({view:Party.WORLD_MAP, disableKeyListener:false}, helper);
+    Party.switchView(helper.view);
     
     KeyPressNotifier.clearListener();
     
     switch (helper.view) {
-      case "world":
+      case Party.WORLD_MAP:
         Movement.startListening();
         break;
-      case "battleView":
+      case Party.BATTLE:
         if (!helper.disableKeyListener) {
           BattleMenuCursor.startListening();
         }
+        break;
+      case Party.MENU:
+        CharMenuCursor.startListening(Movement);
         break;
     };
   };

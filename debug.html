@@ -10,6 +10,7 @@
   <link type="text/css" rel="stylesheet" href="css/battle.css"/>
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
   <link type="text/css" rel="stylesheet" href="css/characters.css"/>
+  <link type="text/css" rel="stylesheet" href="css/charMenu.css"/>
 </head>
 <body>
 
@@ -63,6 +64,31 @@
   </div>
 </div>
 
+<div id="charMenu" class="main">
+  <div class="left">
+    <div class="orbs border">
+      <p class="fire orb"></p>
+      <p class="water orb"></p>
+      <p class="wind orb"></p>
+      <p class="earth orb"></p>
+    </div>
+    <div class="gold border"></div>
+    <div class="options border">
+        <div class="item option"></div>
+        <div class="magic option"></div>
+        <div class="weapon option"></div>
+        <div class="armor option"></div>
+        <div class="status option"></div>
+    </div>
+  </div>
+  <div class="right party">
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+  </div>
+</div>
+
 <div id="debug">
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
@@ -77,6 +103,7 @@
     <li class="curve tl bl big"><a href="#" class="animations">Animations</a></li>
     <li class="curve tl bl big"><a href="#" class="battleMessages">Battle Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="actions">Actions</a></li>
+    <li class="curve tl bl big"><a href="#" class="charMenu">Menu</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -279,6 +306,12 @@
     </div>
   </section>
   
+  <section class="charMenu curve all">
+    <div class="container">
+        <button class="action load">Load character data</button>
+    </div>
+  </section>
+  
 </div>
 
 <script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
@@ -299,6 +332,7 @@
 <script type="text/javascript" src="js/target.js"></script>
 <script type="text/javascript" src="js/monster.js"></script>
 <script type="text/javascript" src="js/equipment.js"></script>
+<script type="text/javascript" src="js/charMenu.js"></script>
 <script type="text/javascript" src="js/encounters.js"></script>
 <script type="text/javascript" src="js/actions.js"></script>
 <script type="text/javascript" src="js/animations.js"></script>
@@ -312,6 +346,7 @@
 <script type="text/javascript" src="js/cursor/battle-enemies.js"></script>
 <script type="text/javascript" src="js/cursor/battle-spells.js"></script>
 <script type="text/javascript" src="js/cursor/battle-party.js"></script>
+<script type="text/javascript" src="js/cursor/char-menu.js"></script>
 <script type="text/javascript" src="js/data/spells.js"></script>
 <script type="text/javascript" src="js/data/monsters.js"></script>
 <script type="text/javascript" src="js/data/equipment.js"></script>
@@ -329,6 +364,7 @@
 <script type="text/javascript" src="js/debug/animations.js"></script>
 <script type="text/javascript" src="js/debug/battle-messages.js"></script>
 <script type="text/javascript" src="js/debug/actions.js"></script>
+<script type="text/javascript" src="js/debug/charMenu.js"></script>
 <script type="text/javascript" src="js/debug/util.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 

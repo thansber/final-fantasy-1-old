@@ -1,7 +1,17 @@
+- inventory screens
+    - weapon page
+    - armor page
+    - char status page
+    - inventory page
+
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
 - handle LIFE, LIF2, WARP, EXIT, SOFT spells
+
 - add images for critical/normal chars backwards for running away sprites
+- character sprites should have no black, it should all be transparent
+- what statuses do we show in char menu, sprites 
+
 - running away for enemies
 
 - chars w/o magic still show magic selection, when spell is selected, show desc "Nothing", wait for button to hide
