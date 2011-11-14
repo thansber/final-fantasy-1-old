@@ -16,5 +16,5 @@ h1,h2,h3,h4,h5,h6,p,ul,li { margin:0; padding:0; font-size:1em; font-weight:norm
 .curve.all.big { border-radius:16px; -moz-border-radius:16px; }
 
 
-.border { -moz-border-image:url(../images/border.png) 7 repeat; }
+.border { background-color:#2A1A87; -moz-border-image:url(../images/border.png) 7 repeat; }
 .cursor { width:32px; height:32px; background-image:url(../images/cursor.png); position:relative; left:-32px; }

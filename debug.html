@@ -10,7 +10,7 @@
   <link type="text/css" rel="stylesheet" href="css/battle.css"/>
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
   <link type="text/css" rel="stylesheet" href="css/characters.css"/>
-  <link type="text/css" rel="stylesheet" href="css/charMenu.css"/>
+  <link type="text/css" rel="stylesheet" href="css/menus.css"/>
 </head>
 <body>
 
@@ -89,6 +89,27 @@
   </div>
 </div>
 
+<div id="armorMenu" class="main">
+  <div class="title border"></div>
+  <div class="actions border"></div>
+  <div class="char">
+    <div class="overlap"><div class="name border"></div></div>
+    <div class="items border"></div>
+  </div>
+  <div class="char">
+    <div class="overlap"><div class="name border"></div></div>
+    <div class="items border"></div>
+  </div>
+  <div class="char">
+    <div class="overlap"><div class="name border"></div></div>
+    <div class="items border"></div>
+  </div>
+  <div class="char">
+    <div class="overlap"><div class="name border"></div></div>
+    <div class="items border"></div>
+  </div>
+</div>
+
 <div id="debug">
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
@@ -103,7 +124,7 @@
     <li class="curve tl bl big"><a href="#" class="animations">Animations</a></li>
     <li class="curve tl bl big"><a href="#" class="battleMessages">Battle Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="actions">Actions</a></li>
-    <li class="curve tl bl big"><a href="#" class="charMenu">Menu</a></li>
+    <li class="curve tl bl big"><a href="#" class="menus">Menus</a></li>
   </ul>
 
   <section class="world-map curve all">
@@ -306,9 +327,10 @@
     </div>
   </section>
   
-  <section class="charMenu curve all">
+  <section class="menus curve all">
     <div class="container">
         <button class="action load">Load character data</button>
+        <button class="action armor">Load/view armor menu</button>
     </div>
   </section>
   
@@ -332,7 +354,7 @@
 <script type="text/javascript" src="js/target.js"></script>
 <script type="text/javascript" src="js/monster.js"></script>
 <script type="text/javascript" src="js/equipment.js"></script>
-<script type="text/javascript" src="js/charMenu.js"></script>
+<script type="text/javascript" src="js/menus.js"></script>
 <script type="text/javascript" src="js/encounters.js"></script>
 <script type="text/javascript" src="js/actions.js"></script>
 <script type="text/javascript" src="js/animations.js"></script>
@@ -364,7 +386,7 @@
 <script type="text/javascript" src="js/debug/animations.js"></script>
 <script type="text/javascript" src="js/debug/battle-messages.js"></script>
 <script type="text/javascript" src="js/debug/actions.js"></script>
-<script type="text/javascript" src="js/debug/charMenu.js"></script>
+<script type="text/javascript" src="js/debug/menus.js"></script>
 <script type="text/javascript" src="js/debug/util.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 

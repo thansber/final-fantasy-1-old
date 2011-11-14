@@ -17,6 +17,7 @@ var Party = (function() {
     WORLD_MAP : "#world"
    ,BATTLE : "#battleView"
    ,MENU : "#charMenu"
+   ,ARMOR_MENU : "#armorMenu"
   };
   
   // Anything in the views object can be referenced via Party.WHATEVER
@@ -58,6 +59,7 @@ var Party = (function() {
   
   // TODO: remove this and anything that calls it
   self.createTestChars = function() {
+   self.clearChars();
     var charClasses = [CharacterClass.FIGHTER, CharacterClass.THIEF, CharacterClass.WHITE_MAGE, CharacterClass.BLACK_MAGE];
     for (var i = 0; i < charClasses.length; i++) {
       var name = "";

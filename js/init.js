@@ -8,7 +8,7 @@ $(document).ready(function() {
   Message.init({messages:"#battle .messages"});
   Party.init({player:"#player"});
   Battle.init();
-  CharMenu.init();
+  Menus.init();
   
   WorldMapHelper.init({tilesets:"#debug .world-map .tilesets"});
   MessageHelper.init();
@@ -21,7 +21,7 @@ $(document).ready(function() {
   
   Cursor.init();
   
-  var currentMenu = "charMenu";
+  var currentMenu = "menus";
   
   $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
   
@@ -38,7 +38,7 @@ $(document).ready(function() {
   $("#debug .animations button").click(function(event) { AnimationHelper.event($(event.target)); });
   $("#debug .battleMessages button").click(function(event) { BattleMessageHelper.event($(event.target)); });
   $("#debug .actions button").click(function(event) { ActionHelper.event($(event.target)); });
-  $("#debug .charMenu button").click(function(event) { CharMenuHelper.event($(event.target)); });
+  $("#debug .menus button").click(function(event) { MenuHelper.event($(event.target)); });
   
   $("#debug .menu a." + currentMenu).click();  
 });

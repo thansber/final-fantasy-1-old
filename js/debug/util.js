@@ -7,7 +7,7 @@ var DebugHelper = (function() {
    ,animations : {view:Party.BATTLE} 
    ,battleMessages : {view:Party.BATTLE, disableKeyListener:true} 
    ,actions : {view:Party.BATTLE}
-   ,charMenu: {view:Party.MENU}
+   ,menus: {view:Party.MENU}
   };
   
   var addOption = function($selector, value, text) {
