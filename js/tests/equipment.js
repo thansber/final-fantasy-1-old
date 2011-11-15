@@ -1,6 +1,52 @@
 $(document).ready(function() {
+  module("Adding/equipping");
+  test("adding/equipping weapons", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.weapons().add("Short[S]").add("Rapier").equip("Rapier");
+    equal(char.allWeapons.length, 2);
+    equal(char.allWeapons[0].name, "Short[S]");
+    equal(char.equippedWeaponIndex, 1);
+    equal(char.equippedWeapon().name, "Rapier");
+    
+    char.equip("Short[S]");
+    equal(char.equippedWeaponIndex, 0);
+    equal(char.equippedWeapon().name, "Short[S]");
+    
+    char.unequip();
+    equal(char.equippedWeaponIndex, -1);
+    equal(char.equippedWeapon(), null);
+  });
+  
+  test("adding/equipping armor", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0);
+    char.armor().add("Chain[A]").add("Silver[B]").equip("Silver[B]");
+    
+    equal(char.allArmor.length, 2);
+    equal(char.allArmor[0].name, "Chain[A]");
+    ok(char.equippedArmor["Silver[B]"]);
+    
+    char.equip("Chain[A]");
+    ok(!char.isArmorEquipped("Silver[B]"));
+    ok(char.isArmorEquipped("Chain[A]"));
+  });
+  
+  test("armor resistances", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0);
+    char.armor().add("Dragon[A]").add("Opal[A]").add("ProRing");
+    char.equip("ProRing").equip("Dragon[A]").equip("Opal[A]");
+    deepEqual(char.elementsProtectedFrom(), [Element.Death, Element.Lightning]);
+  });
+  
+  test("armor weight", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0);
+    char.armor().add("Steel[A]").add("Iron[H]").add("Iron[G]").equipAll();
+    equal(char.armorWeight(), 43);
+    
+    char.equip("Opal[B]");
+    equal(char.armorWeight(), 11);
+  });
+  
   module("Weapon allowed classes");
-
   test("check # of allowed classes for all weapons", function() {
     
     var numClassesPerWeapon = {

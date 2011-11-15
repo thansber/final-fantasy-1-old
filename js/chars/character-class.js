@@ -38,7 +38,7 @@ var CharacterClass = (function() {
     ALL[this.name] = this; 
   };
   CharClass.prototype.attack = function(char) { 
-    return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack : 0) + (char.strength / 2)); 
+    return Math.floor(char.spellAttack + (char.equippedWeapon() == null ? 0 : char.equippedWeapon().attack) + (char.strength / 2)); 
   };
   CharClass.prototype.defense = function(char) { 
     var d = char.spellDef;
@@ -46,7 +46,7 @@ var CharacterClass = (function() {
     return d;
   };
   CharClass.prototype.hitPercent = function(char) { 
-    return (char.baseHit + char.spellHit + (char.equippedWeapon == null ? 0 : char.equippedWeapon.hitPercent)); 
+    return (char.baseHit + char.spellHit + (char.equippedWeapon() == null ? 0 : char.equippedWeapon().hitPercent)); 
   };
   CharClass.prototype.evasion = function(char) { 
     var e = char.spellEvasion + (48 + char.agility - char.armorWeight()); 
@@ -61,7 +61,7 @@ var CharacterClass = (function() {
     return (h <= 0 ? 1 : h);
   };
   CharClass.prototype.critical = function(char) { 
-    return (char.equippedWeapon == null ? 0 : char.equippedWeapon.criticalPercent); 
+    return (char.equippedWeapon() == null ? 0 : char.equippedWeapon().criticalPercent); 
   };
   CharClass.prototype.isMartialArtist = function() { return false; }
   
@@ -74,7 +74,7 @@ var CharacterClass = (function() {
   function BlackBeltClass() {}; 
   BlackBeltClass.prototype = new CharClass(this.BLACKBELT, {canUseMagic:false});
   BlackBeltClass.prototype.attack = function(char) { 
-    return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack + (char.strength / 2) + 1 : (char.charLevel * 2))); 
+    return Math.floor(char.spellAttack + (char.equippedWeapon() == null ? (char.charLevel * 2) : char.equippedWeapon().attack + (char.strength / 2) + 1)); 
   };
   BlackBeltClass.prototype.defense = function(char) { 
     if (char.equippedArmor.length == 0) {
@@ -92,7 +92,7 @@ var CharacterClass = (function() {
     return (h <= 0 ? 1 : h);
   };
   BlackBeltClass.prototype.critical = function(char) { 
-    return (char.equippedWeapon == null ? char.charLevel * 2 : char.equippedWeapon.criticalPercent); 
+    return (char.equippedWeapon() == null ? char.charLevel * 2 : char.equippedWeapon().criticalPercent); 
   };
   BlackBeltClass.prototype.isMartialArtist = function() { return true; }
 
@@ -123,7 +123,7 @@ var CharacterClass = (function() {
   function BlackMageClass() {}; 
   BlackMageClass.prototype = new CharClass(this.BLACK_MAGE);
   BlackMageClass.prototype.attack = function(char) { 
-    return Math.floor(char.spellAttack + (char.equippedWeapon ? char.equippedWeapon.attack : 0) + (char.strength / 2) + 1); 
+    return Math.floor(char.spellAttack + (char.equippedWeapon() == null ? 0 : char.equippedWeapon().attack) + (char.strength / 2) + 1); 
   };    
   function BlackWizardClass() { 
     this.name = self.BLACK_WIZARD; 

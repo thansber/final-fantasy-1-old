@@ -1,3 +1,7 @@
+.menu .shrunk.text { background-image:url("../images/font-char-menu.png"); background-repeat:no-repeat; width:100%; height:16px; }
+.menu .shrunk.weapon.text { background-position:0 0; }
+.menu .shrunk.status.text { background-position:0 -16px; }
+
 #charMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
 
 #charMenu .left { float:left; margin-top:26px; }
@@ -16,9 +20,6 @@
 #charMenu .options .option { height:32px; }
 #charMenu .options .option.weapon .cursor { top:-16px; }
 #charMenu .options .option.status .cursor { top:-16px; }
-#charMenu .options .option .menu.text { background-image:url("../images/font-char-menu.png"); background-repeat:no-repeat; width:100%; height:16px; }
-#charMenu .options .option .menu.text.weapon { background-position:0 0; }
-#charMenu .options .option .menu.text.status { background-position:0 -16px; }
 
 #charMenu .char.profile { width:134px; height:180px; float:left; margin:0 8px 8px 0; padding:16px 0 0 4px; position:relative; }
 #charMenu .char.profile div { overflow:auto; }
@@ -28,11 +29,12 @@
 #charMenu .char.profile .char.class { width:34px; height:50px; top:16px; right:20px; position:absolute; padding:0; margin:0; }
 
 
-#armorMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
-#armorMenu .title { height:20px; width:80px; padding:20px 10px 2px 10px; float:left; margin-bottom:12px; }
-#armorMenu .actions { height:20px; width:310px; padding:20px 0 2px 30px; float:left; margin-left:6px; }
-#armorMenu .char { clear:both; margin-top:12px; overflow:auto; }
-#armorMenu .char .overlap { width:126px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
-#armorMenu .char .overlap .name { height:20px; padding:20px 0 2px 24px; width:94px; }
-#armorMenu .char .items { height:50px; width:322px; padding:20px 0 2px 20px; float:left; left:-16px; position:relative; z-index:1; }
+.equipment.menu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+.equipment.menu .title { height:20px; width:80px; padding:20px 10px 2px 10px; float:left; margin-bottom:12px; }
+.equipment.menu .actions { height:20px; width:310px; padding:20px 0 2px 30px; float:left; margin-left:6px; }
+.equipment.menu .char { clear:both; margin-top:12px; overflow:auto; }
+.equipment.menu .char .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
+.equipment.menu .char .overlap .name { height:20px; padding:20px 0 2px 24px; width:86px; }
+.equipment.menu .char .items { height:52px; width:324px; padding:18px 0 2px 18px; float:left; left:-16px; position:relative; z-index:1; margin-left:8px;}
+.equipment.menu .char .items .text { float:left; margin-right:16px; margin-bottom:10px;}
 

@@ -64,7 +64,7 @@
   </div>
 </div>
 
-<div id="charMenu" class="main">
+<div id="charMenu" class="main menu">
   <div class="left">
     <div class="orbs border">
       <p class="fire orb"></p>
@@ -89,26 +89,8 @@
   </div>
 </div>
 
-<div id="armorMenu" class="main">
-  <div class="title border"></div>
-  <div class="actions border"></div>
-  <div class="char">
-    <div class="overlap"><div class="name border"></div></div>
-    <div class="items border"></div>
-  </div>
-  <div class="char">
-    <div class="overlap"><div class="name border"></div></div>
-    <div class="items border"></div>
-  </div>
-  <div class="char">
-    <div class="overlap"><div class="name border"></div></div>
-    <div class="items border"></div>
-  </div>
-  <div class="char">
-    <div class="overlap"><div class="name border"></div></div>
-    <div class="items border"></div>
-  </div>
-</div>
+<div id="armorMenu" class="main equipment menu"><!-- populated via Javascript --></div>
+<div id="weaponMenu" class="main equipment menu"><!-- populated via Javascript --></div>
 
 <div id="debug">
   <ul class="menu">
@@ -329,8 +311,9 @@
   
   <section class="menus curve all">
     <div class="container">
-        <button class="action load">Load character data</button>
-        <button class="action armor">Load/view armor menu</button>
+      <button class="action load">Load character data</button>
+      <button class="action armor">Load/view armor menu</button>
+      <button class="action weapon">Load/view weapon menu</button>
     </div>
   </section>
   
@@ -341,6 +324,7 @@
 <script type="text/javascript" src="js/lib/jquery.effects.core.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
 <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+<script type="text/javascript" src="js/logger.js"></script>
 <script type="text/javascript" src="js/rng.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/key-press-notifier.js"></script>

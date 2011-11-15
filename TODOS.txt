@@ -1,6 +1,6 @@
 - inventory screens
-    - weapon page
-    - armor page
+    - weapon page - cursor
+    - armor page - cursor
     - char status page
     - inventory page
 

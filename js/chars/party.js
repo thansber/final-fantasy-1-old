@@ -18,6 +18,7 @@ var Party = (function() {
    ,BATTLE : "#battleView"
    ,MENU : "#charMenu"
    ,ARMOR_MENU : "#armorMenu"
+   ,WEAPON_MENU : "#weaponMenu"
   };
   
   // Anything in the views object can be referenced via Party.WHATEVER
@@ -66,8 +67,18 @@ var Party = (function() {
       for (var n = 0; n < 4; n++) { 
         name += String.fromCharCode(65 + +i); 
       }
-      self.addChar(self.createNewChar(name, charClasses[i], i));
+      var char = self.createNewChar(name, charClasses[i], i);
+      self.addChar(char);
     }
+    
+    self.getChar(0)
+      .weapons().add("Short[S]").equip("Short[S]")
+      .armor().add("Wooden[A]").add("Wooden[S]").add("Wooden[H]").equipAll();
+    self.getChar(1)
+      .weapons().add("Rapier").equip("Rapier")
+      .armor().add("Wooden[A]").equipAll();
+    self.getChar(2).weapons().add("Iron[H]").equip("Iron[H]");
+    self.getChar(3).weapons().add("Small[K]").equip("Small[K]");
   };
   
   self.getChar = function(index) { return chars[index]; };

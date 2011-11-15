@@ -1,5 +1,86 @@
 var Character = (function() {
 
+  var MAX_WEAPONS = 4;
+  var MAX_ARMOR = 4;
+  
+  var state = "";
+  var States = {
+    WEAPONS: "weapons"
+   ,ARMOR: "armor"
+  };
+  
+  /* =============== */
+  /* PRIVATE METHODS */
+  /* =============== */
+  var addArmor = function(char, armorName) {
+    var armor = Equipment.Armor.lookup(armorName);
+    if (char.allArmor.length == MAX_ARMOR) {
+      Logger.debug(char.getName() + " already has " + MAX_ARMOR + " armor pieces, cannot accept more");
+      return false;
+    }
+    
+    char.allArmor.push(armor);  
+  };
+  
+  var addWeapon = function(char, weaponName) {
+    var weapon = Equipment.Weapon.lookup(weaponName);
+    if (char.allWeapons.length == MAX_WEAPONS) {
+      Logger.debug(char.getName() + " already has " + MAX_WEAPONS + " weapons, cannot accept more");
+      return false;
+    }
+    
+    char.allWeapons.push(weapon);
+  };
+  
+  var equipArmor = function(char, armorName) {
+    if (!char.canEquip(armorName)) {
+      alert("This character's class [" + char.currentClass.name + "] is not allowed to equip " + armorName);
+      return false;
+    }
+    var armor = Equipment.Armor.lookup(armorName);
+    unequipArmorOfType(char, armor.type);
+    char.equippedArmor[armor.name] = armor;
+    resetArmorResistances(char);
+  };
+  
+  var equipWeapon = function(char, weaponName) {
+    if (!char.canEquip(weaponName)) {
+      Logger.debug("This character's class [" + char.currentClass.name + "] is not allowed to equip a " + weaponName);
+      return false;
+    }
+    for (var w = 0; w < char.allWeapons.length; w++) {
+      if (char.allWeapons[w].name == weaponName) {
+        char.equippedWeaponIndex = w;
+        return true;
+      }
+    }
+    Logger.debug(char.getName() + " tried to equip a " + weaponName + " but did not have one");
+    return false;
+  };
+  
+  var resetArmorResistances = function(char) {
+    for (var e in char.resistedElements) {
+      char.resistedElements[e] = false;
+    }
+    for (var a in char.equippedArmor) {
+      var armor = char.equippedArmor[a];
+      for (var e = 0; e < armor.element.length; e++) {
+        char.resistedElements[armor.element[e]] = true;
+      }
+    }
+  };
+  
+  var unequipArmorOfType = function(char, armorType) {
+    for (var a in char.equippedArmor) {
+      if (char.equippedArmor[a].type == armorType) {
+        char.unequip(a);
+      }
+    }
+  };
+  
+  /* ============== */
+  /* PUBLIC METHODS */
+  /* ============== */
   function Char() {
     this.currentClass = null;
     this.charName = "";
@@ -21,10 +102,10 @@ var Character = (function() {
     this.charges = [0,0,0,0,0,0,0,0];
     this.maxCharges = [0,0,0,0,0,0,0,0];
     this.knownSpells = [];
-    this.equippedWeapon = null;
-    this.weapons = [];
-    this.equippedArmor = [];
-    this.otherArmor = [];
+    this.equippedWeaponIndex = -1;
+    this.allWeapons = [];
+    this.equippedArmor = {};
+    this.allArmor = [];
     this.resistedElements = {};
     this.weakElements = {};
     this.currentStatuses = {};
@@ -58,8 +139,8 @@ var Character = (function() {
   };
   Char.prototype.attack = function() { return this.currentClass.attack(this); };
   Char.prototype.attacksWithElement = function(element) { 
-    if (this.equippedWeapon) {
-      return jQuery.inArray(element, this.equippedWeapon.elements) > -1;
+    if (this.equippedWeapon()) {
+      return jQuery.inArray(element, this.equippedWeapon().elements) > -1;
     }
     return false;
   };
@@ -78,8 +159,8 @@ var Character = (function() {
   Char.prototype.isMonsterType = function(type) { return false; };
   Char.prototype.isProtectedFrom = function(element) { return this.resistedElements[element]; };
   Char.prototype.isStrongAgainstMonsterType = function(type) { 
-    if (this.equippedWeapon) {
-      return jQuery.inArray(type, this.equippedWeapon.monsterTypes) > -1;
+    if (this.equippedWeapon()) {
+      return jQuery.inArray(type, this.equippedWeapon().monsterTypes) > -1;
     }
     return false;
   };
@@ -158,61 +239,6 @@ var Character = (function() {
     this.currentClass = CharacterClass.lookup(c); 
     return this; 
   };
-
-  Char.prototype.canEquip = function(name, type) {
-    var equippable = null;
-    switch (type) {
-      case "weapon":
-        equippable = Equipment.Weapon.lookup(name);
-        break;
-      case "armor":
-        equippable = Equipment.Armor.lookup(name);
-        break;
-    }
-    return (jQuery.inArray(this.currentClass.name, equippable.allowedClasses) > -1);
-  };
-  
-  Char.prototype.weapon = function(w, equipped) {
-    var weapon = Equipment.Weapon.lookup(w);
-    if (equipped) {
-      if (this.equippedWeapon) {
-        alert("A character can only equip at most 1 weapon, change the 2nd parameter for weapon " + w + " to false");
-        this.weapons.push(weapon); 
-        return this;
-      }
-      
-      if (!this.canEquip(w, "weapon")) {
-        alert("This character's class [" + this.currentClass.name + "] is not allowed to equip a " + w);
-        return this;
-      }
-      this.equippedWeapon = weapon;
-    } else {
-      this.weapons.push(weapon); 
-    }
-    return this; 
-  };
-  
-  Char.prototype.armor = function(a, equipped) {
-    var armor = Equipment.Armor.lookup(a);
-    if (equipped) { 
-      if (!this.canEquip(a, "armor")) {
-        alert("This character's class [" + this.currentClass.name + "] is not allowed to equip a " + w);
-        return this;
-      }
-      this.equippedArmor.push(armor);
-      for (var e in armor.element) {
-        this.resistedElements[armor.element[e]] = true;
-      }
-    } else {
-      this.otherArmor.push(armor);  
-    }
-    return this;
-  };
-  
-  Char.prototype.unequipWeapon = function() {
-    this.equippedWeapon = null;
-    return this;
-  };
   
   Char.prototype.addExperience = function(exp) {
     this.experience += exp;
@@ -223,18 +249,94 @@ var Character = (function() {
     this.charIndex = i;
     return this;
   };
+
+  /* ------------------------------------- */
+  /* EQUIPMENT methods - supports chaining */
+  /* ------------------------------------- */
+  Char.prototype.weapons = function() { state = States.WEAPONS; return this; };
+  Char.prototype.armor = function() { state = States.ARMOR; return this; };
+  Char.prototype.add = function(name) {
+    switch (state) {
+      case States.WEAPONS:
+        addWeapon(this, name);
+        break;
+      case States.ARMOR:
+        addArmor(this, name);
+        break;
+    }
+    return this;
+  };
+  Char.prototype.equip = function(name) {
+    switch (state) {
+      case States.WEAPONS:
+        equipWeapon(this, name);
+        break;
+      case States.ARMOR:
+        equipArmor(this, name);
+        break;
+    }
+    return this;
+  };
+  Char.prototype.equipAll = function() {
+    switch (state) {
+      case States.WEAPONS: // nothing to do 
+        break;
+      case States.ARMOR:
+        for (var a = 0; a < this.allArmor.length; a++) {
+          equipArmor(this, this.allArmor[a].name);
+        }
+        break;
+    }
+  return this;
+  };
+  Char.prototype.unequip = function(name) {
+    switch (state) {
+      case States.WEAPONS:
+        this.equippedWeaponIndex = -1;
+        break;
+      case States.ARMOR:
+        delete this.equippedArmor[name];
+        break;
+    }
+    return this;
+  };
+  Char.prototype.canEquip = function(name) {
+    var equippable = null;
+    switch (state) {
+      case States.WEAPONS:
+        equippable = Equipment.Weapon.lookup(name);
+        break;
+      case States.ARMOR:
+        equippable = Equipment.Armor.lookup(name);
+        break;
+    }
+    return (jQuery.inArray(this.currentClass.name, equippable.allowedClasses) > -1);
+  };
   
-  // --------------
-  // GETTER methods
-  // --------------
+  Char.prototype.equippedWeapon = function() {
+    return this.equippedWeaponIndex < 0 ? null : this.allWeapons[this.equippedWeaponIndex];
+  };
+  
   Char.prototype.armorWeight = function() {
     var totalWeight = 0;
-    jQuery(this.equippedArmor).each(function() { 
-      totalWeight += this.weight; 
+    jQuery.each(this.equippedArmor, function(i, armor) { 
+      totalWeight += armor.weight; 
     });
     return totalWeight;
   };
   
+  Char.prototype.isArmorEquipped = function(armor) {
+    for (var a in this.equippedArmor) {
+      if (armor == a) {
+        return true;
+      }
+    }
+    return false;
+  };
+  
+  // --------------
+  // GETTER methods
+  // --------------
   Char.prototype.getStatuses = function() {
     var allStatuses = [];
     for (var s in this.currentStatuses) {
@@ -295,16 +397,14 @@ var Character = (function() {
   };
   
   Char.prototype.getItemForSpell = function(spellId) {
-    var charWeapons = jQuery.merge(jQuery.merge([], [this.equippedWeapon]), this.weapons);
-    for (var w in charWeapons) {
-      var weapon = charWeapons[w];
+    for (var w in this.allWeapons) {
+      var weapon = this.allWeapons[w];
       if (weapon.hasSpell && weapon.spell == spellId) {
         return weapon;
       }
     }
-    var charArmor = jQuery.merge(jQuery.merge([], this.equippedArmor), this.otherArmor);
-    for (var a in charArmor) {
-      var armor = charArmor[a];
+    for (var a = 0; a < this.allArmor.length; a++) {
+      var armor = this.allArmor[a];
       if (armor.hasSpell && armor.spell == spellId) {
         return armor;
       }
@@ -416,10 +516,10 @@ var Character = (function() {
     s += "Critical%:" + this.critical() + "\n";
     s += "Spell Charges:" + this.spellChargesToString(this.charges) + "\n";
     s += "Max Spell Charges:" + this.spellChargesToString(this.maxCharges) + "\n";
-    s += "Equipped weapon: " + (this.equippedWeapon ? this.equippedWeapon.name : "none") + "\n";
+    s += "Equipped weapon: " + (this.equippedWeapon() != null ? this.equippedWeapon().name : "none") + "\n";
     s += "Equipped armor: " + (this.equippedArmor.length > 0 ? equippedToString(this.equippedArmor) : "none") + "\n";
-    s += "Other weapons: " + (this.weapons.length > 0 ? equippedToString(this.weapons) : "none") + ", ";
-    s += "Other armor: " + (this.otherArmor.length > 0 ? equippedToString(this.otherArmor) : "none") + "\n";
+    s += "All weapons: " + (this.allWeapons.length > 0 ? equippedToString(this.allWeapons) : "none") + ", ";
+    s += "All armor: " + (this.allArmor.length > 0 ? equippedToString(this.allArmor) : "none") + "\n";
     s += "Elements protected from: " + (this.elementsProtectedFrom().length > 0 ? this.elementsProtectedFrom().join(", ") : "none") + "\n"
     return s;
   };

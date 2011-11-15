@@ -304,8 +304,8 @@ var Battle = (function() {
   self.createCharUI = function(char) {
     var $char = $("<p/>").addClass("char").addClass(char.currentClass.name);
     var $weapon = $("<span/>").addClass("weapon hidden").appendTo($char);
-    if (char.equippedWeapon) {
-      $weapon.addClass(char.equippedWeapon.cssClasses);
+    if (char.equippedWeapon()) {
+      $weapon.addClass(char.equippedWeapon().cssClasses);
     } else if (char.currentClass.isMartialArtist()) {
       $weapon.addClass("punch");
     }

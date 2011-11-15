@@ -3,6 +3,41 @@ var Menus = (function() {
   var self = this;
   var ALL_MENUS = [];
   
+  var buildEquipmentMenu = function() {
+    var markup = [];
+    var m = 0;
+    markup[m++] = "<div class=\"title border\"></div>";
+    markup[m++] = "<div class=\"actions border\"></div>";
+    markup[m++] = "<div class=\"char\">";
+    markup[m++] =   "<div class=\"overlap\"><div class=\"name border\"></div></div>";
+    markup[m++] =   "<div class=\"items border\"></div>";
+    markup[m++] = "</div>";
+    markup[m++] = "<div class=\"char\">";
+    markup[m++] =   "<div class=\"overlap\"><div class=\"name border\"></div></div>";
+    markup[m++] =   "<div class=\"items border\"></div>";
+    markup[m++] = "</div>";
+    markup[m++] = "<div class=\"char\">";
+    markup[m++] =   "<div class=\"overlap\"><div class=\"name border\"></div></div>";
+    markup[m++] =   "<div class=\"items border\"></div>";
+    markup[m++] = "</div>";
+    markup[m++] = "<div class=\"char\">";
+    markup[m++] =   "<div class=\"overlap\"><div class=\"name border\"></div></div>";
+    markup[m++] =   "<div class=\"items border\"></div>";
+    markup[m++] = "</div>";
+    return $(markup.join(""));
+  };
+  
+  var loadNames = function($container) {
+    var chars = Party.getChars();
+    var $chars = $container.find(".char");
+  
+    for (var c = 0; c < chars.length; c++) {
+      var char = chars[c];
+      var $char = $chars.eq(c);
+      $char.find(".name").empty().append(Message.create(char.getName()));
+    }
+  };
+  
   /* ========================================= */
   /* CHARACTER MENU -------------------------- */
   /* ========================================= */
@@ -52,9 +87,9 @@ var Menus = (function() {
         .find(".options")
           .find(".item").append(Message.create("ITEM")).end()
           .find(".magic").append(Message.create("MAGIC")).end()
-          .find(".weapon").append(Message.create(null, "menu text weapon")).end()
+          .find(".weapon").append(Message.create(null, "shrunk weapon text")).end()
           .find(".armor").append(Message.create("ARMOR")).end()
-          .find(".status").append(Message.create(null, "menu text status")).end()
+          .find(".status").append(Message.create(null, "shrunk status text")).end()
           .end()
         .find(".char.profile")
           .find(".hp.label").append(Message.create("HP")).end()
@@ -85,24 +120,67 @@ var Menus = (function() {
     
     self.init = function() {
       $container = $("#armorMenu");
+      $container.append(buildEquipmentMenu());
       $container
         .find(".title").append(Message.create("ARMOR")).end()
         .find(".actions").append(Message.create("EQUIP  TRADE  DROP"));
     };
     
     self.load = function() {
-      var chars = Party.getChars();
-      var $chars = $container.find(".char");
+      loadNames($container);
       
-      for (var c = 0; c < chars.length; c++) {
-        var char = chars[c];
-        $chars.eq(c).find(".name").append(Message.create(char.getName()));
-      }
+      $container.find(".char").each(function(i) {
+        var char = Party.getChar(i);
+        var $items = $(this).find(".items");
+        $items.empty();
+        
+        for (var a = 0; a < char.allArmor.length; a++) {
+          var armor = char.allArmor[a];
+          var $markup = $("<p class=\"armor\"></p>");
+          $markup.append(Message.create((char.isArmorEquipped(armor.name) ? "E-" : "") + armor.desc));
+          $items.append($markup);
+        }
+      });
     };
     
     return this;
   }).call({});
   
+  /* =========================================== */
+  /* WEAPONS MENU ------------------------------ */
+  /* =========================================== */
+  self.Weapon = (function() {
+    
+    var self = this;
+    var $container = null;
+    
+    self.init = function() {
+      $container = $("#weaponMenu");
+      $container.append(buildEquipmentMenu());
+      $container
+        .find(".title").append(Message.create(null, "shrunk weapon text")).end()
+        .find(".actions").append(Message.create("EQUIP  TRADE  DROP"));
+    };
+    
+    self.load = function() {
+      loadNames($container);
+      
+      $container.find(".char").each(function(i) {
+        var char = Party.getChar(i);
+        var $items = $(this).find(".items");
+        $items.empty();
+        
+        for (var w = 0; w < char.allWeapons.length; w++) {
+          var weapon = char.allWeapons[w];
+          var $markup = $("<p class=\"armor\"></p>");
+          $markup.append(Message.create((char.equippedWeaponIndex == w ? "E-" : "") + weapon.desc));
+          $items.append($markup);
+        }
+      });
+    };
+    
+    return this;
+  }).call({});
   
   /* =================== */
   /* MENU INITIALIZATION */
@@ -110,6 +188,7 @@ var Menus = (function() {
   self.init = function() {
     self.Char.init();
     self.Armor.init();
+    self.Weapon.init();
   };
     
   return this;

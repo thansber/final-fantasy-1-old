@@ -36,8 +36,10 @@ var Message = (function() {
    ,"+": "potion"
    ,"@": "ring"
    ,"=": "shirt"
-   ,"|": "staff"
+   ,"_": "staff"
    ,"~": "nunchucks"
+   ,">": "shield"
+   ,"|": "sword"
   };
   
   var $messages = null;

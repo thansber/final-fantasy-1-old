@@ -1,5 +1,6 @@
 $(document).ready(function() {
   
+  Logger.enable().setLevel(Logger.DEBUG);
   RNG.useDefault();
     
   KeyPressNotifier.init();

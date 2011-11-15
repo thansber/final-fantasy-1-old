@@ -348,7 +348,7 @@ var Animation = (function() {
       // Char doing the attacking
       var $enemy = Battle.getEnemyUI(command.target, command.targetIndex);
       // unequipped chars using their fists get a gold splash effect
-      var weaponSplash = (command.source.equippedWeapon ? command.source.equippedWeapon.splash : "gold"); 
+      var weaponSplash = (command.source.equippedWeapon() ? command.source.equippedWeapon().splash : "gold"); 
       
       self.attackAnimation(command.source, q);
       if (!result.wasDead) {

@@ -12,6 +12,10 @@ var MenuHelper = (function() {
       Party.createTestChars();
       Menus.Armor.load();
       Party.switchView(Party.ARMOR_MENU);
+    } else if ($target.is(".weapon")) {
+      Party.createTestChars();
+      Menus.Weapon.load();
+      Party.switchView(Party.WEAPON_MENU);
     }
   };
   

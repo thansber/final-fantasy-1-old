@@ -12,6 +12,7 @@ var Equipment = (function() {
       
     function Weapon(opt) {
       this.name = opt.name;
+      this.desc = opt.desc;
       this.attack = opt.stats.attack;
       this.hitPercent = opt.stats.hit;
       this.criticalPercent = opt.stats.crit;
@@ -42,21 +43,24 @@ var Equipment = (function() {
   this.Armor = (function() {
     
     var self = this;
+    
       
     function Armor(opt) {
       this.name = opt.name;
+      this.desc = opt.desc;
+      this.type = opt.type;
       this.defense = opt.stats.def;
       this.weight = opt.stats.weight;
       this.element = [];
-      if (opt.extra) {
-        if (opt.extra.element) {
-          if (jQuery.isArray(opt.extra.element)) {
-            jQuery.merge(this.element, opt.extra.element);
+      if (opt.special) {
+        if (opt.special.element) {
+          if (jQuery.isArray(opt.special.element)) {
+            jQuery.merge(this.element, opt.special.element);
           } else {
-            this.element.push(opt.extra.element);
+            this.element.push(opt.special.element);
           }
         }
-        this.spell = opt.extra.spell;
+        this.spell = opt.special.spell;
       }
       this.hasSpell = (this.spell != null);
       this.allowedClasses = jQuery.merge([], opt.allowedClasses || []);
@@ -66,6 +70,12 @@ var Equipment = (function() {
     self.create = function(opt) { return new Armor(opt); };
     self.lookup = function(id) { return ALL_ARMOR[id]; };
     self.All = ALL_ARMOR;
+    self.Types = {
+      BODY: "body"
+     ,HANDS: "hands"
+     ,HEAD: "head"
+     ,SHIELD: "shield"
+    }
     
     return self;
   }).call({});

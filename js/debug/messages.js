@@ -7,7 +7,7 @@ var MessageHelper = (function() {
     $container.append(Message.create("zyxwvutsrqponmlkjihgfedcba"));
     $container.append(Message.create("0123456789  9876543210"));
     $container.append(Message.create(".,'?!:-/ /-:!?',."));
-    $container.append(Message.create("^$#%*&+@=|~   ~|=@+&*%#$^"));
+    $container.append(Message.create("^$#%*&+@=|~> >~|=@+&*%#$^"));
 
     $container.append(Message.create("This LUTE has been passed down from Queen to Princess for 2000 years. Please accept it as my gift, it just might come in handy."));
     $container.append(Message.create("And so, their journey begins::"));
