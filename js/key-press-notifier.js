@@ -10,21 +10,21 @@ var KeyPressNotifier = (function() {
   
   self.Enter = "13";
   self.Esc = "27";
-  selfSpace = "32";
+  self.Space = "32";
+  
+  for (var key in ArrowKeys) {
+    self[key] = ArrowKeys[key];
+  }
+  
+  for (var key in AlphaKeys) {
+    self[key] = AlphaKeys[key];
+  }
   
   /* =========== */
   /* INIT METHOD */
   /* =========== */
   self.init = function(opt) {
     
-    for (var key in ArrowKeys) {
-      self[key] = ArrowKeys[key];
-    }
-    
-    for (var key in AlphaKeys) {
-      self[key] = AlphaKeys[key];
-    }
-      
     $(window).keydown(function(event) {
       var key = event.keyCode + "";
       if (listener) {

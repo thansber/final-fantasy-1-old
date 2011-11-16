@@ -29,11 +29,12 @@ var DebugHelper = (function() {
         break;
       case Party.BATTLE:
         if (!helper.disableKeyListener) {
-          BattleMenuCursor.startListening();
+          Cursors.lookup(Cursors.BATTLE_MENU).startListening();
+          //BattleMenuCursor.startListening();
         }
         break;
       case Party.MENU:
-        CharMenuCursor.startListening(Movement);
+        Cursors.lookup(Cursors.CHAR_MENU).startListening({prevListener:Movement});
         break;
     };
   };

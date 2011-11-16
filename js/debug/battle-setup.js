@@ -27,10 +27,12 @@ var BattleSetupHelper = (function() {
     while (weapon != null && !char.canEquip(weapon.name, "weapon")) {
       weapon = RNG.randomArrayElement(weaponArray);
     }
+    
+    char.weapons();
     if (weapon == null) {
-      char.unequipWeapon();
+      char.unequip();
     } else {
-      char.weapon(weapon.name, true);
+      char.equip(weapon.name);
     }
   };
   

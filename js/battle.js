@@ -411,8 +411,7 @@ var Battle = (function() {
         if (BattleCommands.isAllPartyCommandsEntered()) {
           BattleCommands.generateEnemyCommands();
         } else {
-          KeyPressNotifier.setListener(BattleMenuCursor);
-          BattleMenuCursor.startListening();
+          Cursors.lookup(Cursors.BATTLE_MENU).startListening();
         }
       });
       q.start();
@@ -522,7 +521,7 @@ var Battle = (function() {
     // Clear all commands
     BattleCommands.clearAllCommands();
     // Start the cursor listener for the first character's action
-    BattleMenuCursor.startListening();
+    Cursors.lookup(Cursors.BATTLE_MENU).startListening();
     // First character that can select an action walks forward to indicate they are choosing an action
     if (moveFirstChar) {
       var firstChar = null;

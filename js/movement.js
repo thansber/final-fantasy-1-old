@@ -68,7 +68,7 @@ var Movement = (function() {
           KeyPressNotifier.clearListener();
           CharMenu.load();
           Party.switchView(Party.MENU);
-          CharMenuCursor.startListening(self);
+          Cursors.lookup(Cursors.CHAR_MENU).startListening(self);
           break;
       }
     }

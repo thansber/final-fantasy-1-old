@@ -20,7 +20,7 @@ $(document).ready(function() {
   WeaponAnimationHelper.init();
   ActionHelper.init();
   
-  Cursor.init();
+  Cursors.init();
   
   var currentMenu = "menus";
   
