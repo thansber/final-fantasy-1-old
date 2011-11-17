@@ -453,7 +453,7 @@ var Battle = (function() {
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
-      q.addToChain(function() { KeyPressNotifier.setListener(BattleMenuCursor); });
+      q.addToChain(function() { KeyPressNotifier.setListener(Cursors.lookup(Cursors.BATTLE_MENU)); });
       q.start();
     }
   };

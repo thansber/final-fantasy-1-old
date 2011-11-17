@@ -42,7 +42,7 @@ var CharacterClass = (function() {
   };
   CharClass.prototype.defense = function(char) { 
     var d = char.spellDef;
-    jQuery(char.equippedArmor).each(function() { d += this.defense; }); 
+    for (var a in char.equippedArmor) { d += char.equippedArmor[a].defense; }
     return d;
   };
   CharClass.prototype.hitPercent = function(char) { 
@@ -76,12 +76,14 @@ var CharacterClass = (function() {
   BlackBeltClass.prototype.attack = function(char) { 
     return Math.floor(char.spellAttack + (char.equippedWeapon() == null ? (char.charLevel * 2) : char.equippedWeapon().attack + (char.strength / 2) + 1)); 
   };
-  BlackBeltClass.prototype.defense = function(char) { 
-    if (char.equippedArmor.length == 0) {
+  BlackBeltClass.prototype.defense = function(char) {
+    var anyArmorEquipped = false;
+    for (var a in char.equippedArmor) { anyArmorEquipped = true; }
+    if (!anyArmorEquipped) {
       return char.charLevel + char.spellDef;
     }
     var d = char.spellDef;
-    jQuery(char.equippedArmor).each(function() { d += this.defense; }); 
+    for (var a in char.equippedArmor) { d += char.equippedArmor[a].defense; } 
     return d;
   };
   BlackBeltClass.prototype.numHits = function(char) { 

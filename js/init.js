@@ -26,6 +26,8 @@ $(document).ready(function() {
   
   $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
   
+  $("section button").click(function() { this.blur(); });
+  
   $("#debug .movement").click(function(event) { MovementHelper.event($(event.target)); });
   $("#debug .world-map").click(function(event) { WorldMapHelper.event($(event.target)); });
   $("#debug .coords button").click(function(event) { CoordsHelper.event($(event.target)); });
