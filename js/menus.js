@@ -140,10 +140,15 @@ var Menus = (function() {
         var $items = $(this).find(".items");
         $items.empty();
         
-        for (var a = 0; a < char.allArmor.length; a++) {
+        for (var a = 0; a < 4; a++) {
+          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"armor\"></div></div>");
           var armor = char.allArmor[a];
-          var $markup = $("<p class=\"armor\"></p>");
-          $markup.append(Message.create((char.isArmorEquipped(armor.name) ? "E-" : "") + armor.desc));
+          if (armor) {
+            if (char.isArmorEquipped(armor.name)) {
+              $markup.find(".equipped").append(Message.create("E-"));
+            }
+            $markup.find(".armor").append(Message.create(armor.desc));
+          }
           $items.append($markup);
         }
       });

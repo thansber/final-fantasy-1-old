@@ -570,8 +570,63 @@ var Cursors = (function() {
   };
   ArmorActionMenuCursor.prototype.xDestinations = function() { return this.$container.find(".text"); };
   
-  ArmorActionMenuCursor.prototype.equip = function() { Logger.debug("TODO: implement equip menu"); };
+  ArmorActionMenuCursor.prototype.equip = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Cursors.lookup(Cursors.ARMOR_MENU).startListening();
+  };
   ArmorActionMenuCursor.prototype.trade = function() { Logger.debug("TODO: implement trade menu"); };
   ArmorActionMenuCursor.prototype.drop = function() { Logger.debug("TODO: implement drop menu"); };
+  
+  var ArmorMenuCursor = function() {};
+  ArmorMenuCursor.prototype = new Cursor(self.ARMOR_MENU, {container:"#armorMenu"});
+  ArmorMenuCursor.prototype.back = function() {
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Cursors.lookup(Cursors.ARMOR_ACTIONS_MENU).startListening();
+  };
+  ArmorMenuCursor.prototype.columnChanged = function(y) { 
+    var $options = this.$container.find(".slot");
+    var index = $options.index(this.$cursor);
+    
+    if (y > 0) {
+      index = (index % 2 == 1) ? index - 1 : index + 1;
+    } else {
+      index = (index % 2 == 0) ? index + 1 : index - 1;
+    }
+    
+    return $options.eq(index);
+  };
+  ArmorMenuCursor.prototype.next = function() {
+    var $chars = this.$container.find(".char");
+    var charIndex = $chars.index(this.$cursor.closest(".char")); 
+    var $armor = $chars.eq(charIndex).find(".slot");
+    var armorIndex =  $armor.index(this.$cursor);
+    var char = Party.getChar(charIndex);
+    if (char) {
+      var armor = char.
+      console.log(char.getName() + " is ")
+    }
+  };
+  ArmorMenuCursor.prototype.rowChanged = function(x) {
+    var $options = this.$container.find(".slot");
+    var index = $options.index(this.$cursor);
+    
+    if (x > 0) {
+      index += 2;
+    } else {
+      index -= 2;
+    }
+    
+    if (index < 0) {
+      index = $options.length + index;
+    } else if (index >= $options.length) {
+      index = index % $options.length;
+    }
+    
+    return $options.eq(index);
+  };
+  ArmorMenuCursor.prototype.initialCursor = function() { return this.$container.find(".slot").eq(0); };
+  
   return this;
 }).call({});
