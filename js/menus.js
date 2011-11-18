@@ -3,6 +3,13 @@ var Menus = (function() {
   var self = this;
   var ALL_MENUS = [];
   
+  var buildEquipmentActions = function($container) {
+    $container.find(".actions")
+      .append(Message.create("EQUIP", "equip"))
+      .append(Message.create("TRADE", "trade"))
+      .append(Message.create("DROP", "drop"));
+  };
+  
   var buildEquipmentMenu = function() {
     var markup = [];
     var m = 0;
@@ -121,9 +128,8 @@ var Menus = (function() {
     self.init = function() {
       $container = $("#armorMenu");
       $container.append(buildEquipmentMenu());
-      $container
-        .find(".title").append(Message.create("ARMOR")).end()
-        .find(".actions").append(Message.create("EQUIP  TRADE  DROP"));
+      $container.find(".title").append(Message.create("ARMOR")).end();
+      buildEquipmentActions($container);
     };
     
     self.load = function() {
@@ -157,12 +163,8 @@ var Menus = (function() {
     self.init = function() {
       $container = $("#weaponMenu");
       $container.append(buildEquipmentMenu());
-      $container
-        .find(".title").append(Message.create(null, "shrunk weapon text")).end()
-        .find(".actions")
-          .append(Message.create("EQUIP", "equip"))
-          .append(Message.create("TRADE", "trade"))
-          .append(Message.create("DROP", "drop"));
+      $container.find(".title").append(Message.create(null, "shrunk weapon text")).end();
+      buildEquipmentActions($container);
     };
     
     self.load = function() {

@@ -10,11 +10,9 @@ var MenuHelper = (function() {
       Menus.Char.load(); 
     } else if ($target.is(".armor")) {
       Party.createTestChars();
-      Menus.Armor.load();
-      Party.switchView(Party.ARMOR_MENU);
+      Cursors.lookup(Cursors.CHAR_MENU).armor();
     } else if ($target.is(".weapon")) {
       Party.createTestChars();
-      Menus.Weapon.load();
       Cursors.lookup(Cursors.CHAR_MENU).weapon();
     }
   };
