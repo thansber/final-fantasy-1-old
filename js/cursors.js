@@ -11,6 +11,8 @@ var Cursors = (function() {
    ,BATTLE_PARTY : "battleParty"
    ,BATTLE_SPELLS : "battleSpells"
    ,CHAR_MENU : "charMenu"
+   ,WEAPON_ACTIONS_MENU : "weaponActions"
+   ,WEAPONS_MENU : "weapons"
   };
 
   for (var i in IDS) {
@@ -168,44 +170,6 @@ var Cursors = (function() {
     
     return $options.eq(index);
   };
-  
-  /* --------------------- */
-  /* CHARACTER MENU cursor */
-  /* --------------------- */
-  var CharMenuCursor = function() {};
-  var charMenuCursorOpt = {container: "#charMenu .options", otherKeys:{}};
-  charMenuCursorOpt.otherKeys[KeyPressNotifier.I] = function() { this.item(); };
-  charMenuCursorOpt.otherKeys[KeyPressNotifier.M] = function() { this.magic(); };
-  charMenuCursorOpt.otherKeys[KeyPressNotifier.W] = function() { this.weapon(); };
-  charMenuCursorOpt.otherKeys[KeyPressNotifier.A] = function() { this.armor(); };
-  charMenuCursorOpt.otherKeys[KeyPressNotifier.S] = function() { this.status(); };
-  
-  CharMenuCursor.prototype = new Cursor(self.CHAR_MENU, charMenuCursorOpt);
-  CharMenuCursor.prototype.back = function() {
-    KeyPressNotifier.clearListener();
-    this.clear();
-    Party.switchView(Party.WORLD_MAP);
-    if (this.previousListener) {
-      this.previousListener.startListening();
-    }
-  };
-  CharMenuCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
-  CharMenuCursor.prototype.next = function() {
-    //KeyPressNotifier.clearListener();
-    if (this.$cursor.is(".item")) { this.item(); }
-    else if (this.$cursor.is(".magic")) { this.magic(); }
-    else if (this.$cursor.is(".weapon")) { this.weapon(); }
-    else if (this.$cursor.is(".armor")) { this.armor(); }
-    else if (this.$cursor.is(".status")) { this.status(); }
-  };
-  CharMenuCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
-  
-  CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
-  CharMenuCursor.prototype.magic = function() { Logger.debug("TODO: implement magic menu"); };
-  CharMenuCursor.prototype.weapon = function() { Logger.debug("TODO: implement weapon menu"); };
-  CharMenuCursor.prototype.armor = function() { Logger.debug("TODO: implement armor menu"); };
-  CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
-  
   
   /* ------------------ */
   /* BATTLE MENU cursor */
@@ -504,6 +468,74 @@ var Cursors = (function() {
     this.clear();
   };
   BattlePartyCursor.prototype.yDestinations = function() { return this.$container.find(".char"); };
+  
+  
+  /* --------------------- */
+  /* CHARACTER MENU cursor */
+  /* --------------------- */
+  var CharMenuCursor = function() {};
+  var charMenuCursorOpt = {container: "#charMenu .options", otherKeys:{}};
+  charMenuCursorOpt.otherKeys[KeyPressNotifier.I] = function() { this.item(); };
+  charMenuCursorOpt.otherKeys[KeyPressNotifier.M] = function() { this.magic(); };
+  charMenuCursorOpt.otherKeys[KeyPressNotifier.W] = function() { this.weapon(); };
+  charMenuCursorOpt.otherKeys[KeyPressNotifier.A] = function() { this.armor(); };
+  charMenuCursorOpt.otherKeys[KeyPressNotifier.S] = function() { this.status(); };
+  
+  CharMenuCursor.prototype = new Cursor(self.CHAR_MENU, charMenuCursorOpt);
+  CharMenuCursor.prototype.back = function() {
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.switchView(Party.WORLD_MAP);
+    if (this.previousListener) {
+      this.previousListener.startListening();
+    }
+  };
+  CharMenuCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
+  CharMenuCursor.prototype.next = function() {
+    KeyPressNotifier.clearListener();
+    this.clear();
+    if (this.$cursor.is(".item")) { this.item(); }
+    else if (this.$cursor.is(".magic")) { this.magic(); }
+    else if (this.$cursor.is(".weapon")) { this.weapon(); }
+    else if (this.$cursor.is(".armor")) { this.armor(); }
+    else if (this.$cursor.is(".status")) { this.status(); }
+  };
+  CharMenuCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+  
+  CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
+  CharMenuCursor.prototype.magic = function() { Logger.debug("TODO: implement magic menu"); };
+  CharMenuCursor.prototype.weapon = function() { 
+    Menus.Weapon.load();
+    Party.switchView(Party.WEAPON_MENU);
+    Cursors.lookup(Cursors.WEAPON_ACTIONS_MENU).startListening();
+  };
+  CharMenuCursor.prototype.armor = function() { Logger.debug("TODO: implement armor menu"); };
+  CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
+  
+  var WeaponActionMenuCursor = function() {};
+  var weaponActionMenuCursorOpt = {container: "#weaponMenu .actions", otherKeys:{}};
+  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.equip(); };
+  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.T] = function() { this.trade(); };
+  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.D] = function() { this.drop(); };
+  WeaponActionMenuCursor.prototype = new Cursor(self.WEAPON_ACTIONS_MENU, weaponActionMenuCursorOpt);
+  WeaponActionMenuCursor.prototype.back = function() {
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.switchView(Party.MENU);
+    Cursors.lookup(Cursors.CHAR_MENU).startListening();
+  };
+  WeaponActionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".text").eq(0); };
+  WeaponActionMenuCursor.prototype.next = function() {
+    KeyPressNotifier.clearListener();
+    if (this.$cursor.is(".equip")) { this.equip(); }
+    else if (this.$cursor.is(".trade")) { this.trade(); }
+    else if (this.$cursor.is(".drop")) { this.drop(); }
+  };
+  WeaponActionMenuCursor.prototype.xDestinations = function() { return this.$container.find(".text"); };
+  
+  WeaponActionMenuCursor.prototype.equip = function() { Logger.debug("TODO: implement equip menu"); };
+  WeaponActionMenuCursor.prototype.trade = function() { Logger.debug("TODO: implement trade menu"); };
+  WeaponActionMenuCursor.prototype.drop = function() { Logger.debug("TODO: implement drop menu"); };
   
   return this;
 }).call({});

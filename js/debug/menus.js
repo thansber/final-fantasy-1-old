@@ -15,7 +15,7 @@ var MenuHelper = (function() {
     } else if ($target.is(".weapon")) {
       Party.createTestChars();
       Menus.Weapon.load();
-      Party.switchView(Party.WEAPON_MENU);
+      Cursors.lookup(Cursors.CHAR_MENU).weapon();
     }
   };
   

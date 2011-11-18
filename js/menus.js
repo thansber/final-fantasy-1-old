@@ -159,7 +159,10 @@ var Menus = (function() {
       $container.append(buildEquipmentMenu());
       $container
         .find(".title").append(Message.create(null, "shrunk weapon text")).end()
-        .find(".actions").append(Message.create("EQUIP  TRADE  DROP"));
+        .find(".actions")
+          .append(Message.create("EQUIP", "equip"))
+          .append(Message.create("TRADE", "trade"))
+          .append(Message.create("DROP", "drop"));
     };
     
     self.load = function() {
