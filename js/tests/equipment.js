@@ -3,7 +3,6 @@ $(document).ready(function() {
   test("adding/equipping weapons", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.weapons().add("Short[S]").add("Rapier").equip("Rapier");
-    equal(char.allWeapons.length, 2);
     equal(char.allWeapons[0].name, "Short[S]");
     equal(char.equippedWeaponIndex, 1);
     equal(char.equippedWeapon().name, "Rapier");
@@ -19,21 +18,43 @@ $(document).ready(function() {
   
   test("adding/equipping armor", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0);
-    char.armor().add("Chain[A]").add("Silver[B]").equip("Silver[B]");
+    char.armor().add("Chain[A]").add("Silver[B]").add("Buckler").add("Cap").equip(1);
     
-    equal(char.allArmor.length, 2);
+    equal(char.allArmor.length, 4);
     equal(char.allArmor[0].name, "Chain[A]");
-    ok(char.equippedArmor["Silver[B]"]);
+    ok(char.isArmorEquipped(1));
     
-    char.equip("Chain[A]");
-    ok(!char.isArmorEquipped("Silver[B]"));
-    ok(char.isArmorEquipped("Chain[A]"));
+    char.equip(2).equip(3);
+    ok(char.isArmorEquipped(1));
+    ok(char.isArmorEquipped(2));
+    ok(char.isArmorEquipped(3));
+    equal(char.equippedArmor()[0].name, "Silver[B]");
+    equal(char.equippedArmor()[1].name, "Buckler");
+    equal(char.equippedArmor()[2].name, "Cap");
+    
+    char.equip(0);
+    ok(char.isArmorEquipped(0));
+    ok(!char.isArmorEquipped(1));
+    ok(char.isArmorEquipped(2));
+    ok(char.isArmorEquipped(3));
+    equal(char.equippedArmor()[0].name, "Chain[A]");
+    equal(char.equippedArmor()[1].name, "Buckler");
+    equal(char.equippedArmor()[2].name, "Cap");
+  });
+  
+  test("dropping armor", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0);
+    char.armor().add("Chain[A]").add("Silver[B]").add("White[R]").drop(0);
+    
+    ok(!char.equippedArmor[0]);
+    equal(char.allArmor[1].name, "Silver[B]");
+    equal(char.allArmor[2].name, "White[R]");
   });
   
   test("armor resistances", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0);
     char.armor().add("Dragon[A]").add("Opal[A]").add("ProRing");
-    char.equip("ProRing").equip("Dragon[A]").equip("Opal[A]");
+    char.equip(2).equip(0).equip(1);
     deepEqual(char.elementsProtectedFrom(), [Element.Death, Element.Lightning]);
   });
   
@@ -42,7 +63,7 @@ $(document).ready(function() {
     char.armor().add("Steel[A]").add("Iron[H]").add("Iron[G]").equipAll();
     equal(char.armorWeight(), 43);
     
-    char.equip("Opal[B]");
+    char.add("Opal[B]").equip(3);
     equal(char.armorWeight(), 11);
   });
   

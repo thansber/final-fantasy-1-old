@@ -19,7 +19,12 @@ var Character = (function() {
       return false;
     }
     
-    char.allArmor.push(armor);  
+    for (var a = 0; a < MAX_ARMOR; a++) {
+      if (!char.allArmor[a]) {
+        char.allArmor[a] = armor;
+        return true;
+      }
+    }
   };
   
   var addWeapon = function(char, weaponName) {
@@ -29,17 +34,29 @@ var Character = (function() {
       return false;
     }
     
-    char.allWeapons.push(weapon);
+    for (var w = 0; w < MAX_WEAPONS; w++) {
+      if (!char.allWeapons[w]) {
+        char.allWeapons[w] = weapon;
+        return true;
+      }
+    }
   };
   
-  var equipArmor = function(char, armorName) {
-    if (!char.canEquip(armorName)) {
-      alert("This character's class [" + char.currentClass.name + "] is not allowed to equip " + armorName);
+  var equipArmorToggle = function(char, index) {
+    var armor = char.allArmor[index];
+    if (!armor) {
       return false;
     }
-    var armor = Equipment.Armor.lookup(armorName);
-    unequipArmorOfType(char, armor.type);
-    char.equippedArmor[armor.name] = armor;
+    if (!char.canEquip(armor.name)) {
+      alert("This character's class [" + char.currentClass.name + "] is not allowed to equip " + armor.name);
+      return false;
+    }
+    
+    // Only unequip other armor of the same type if we are equipping something
+    if (!char.isArmorEquipped(index)) {
+      unequipArmorOfType(char, armor.type);
+    }
+    char.equippedArmorIndexes ^= Math.pow(2, index);
     resetArmorResistances(char);
   };
   
@@ -48,7 +65,7 @@ var Character = (function() {
       Logger.debug("This character's class [" + char.currentClass.name + "] is not allowed to equip a " + weaponName);
       return false;
     }
-    for (var w = 0; w < char.allWeapons.length; w++) {
+    for (var w = 0; w < MAX_WEAPONS; w++) {
       if (char.allWeapons[w].name == weaponName) {
         char.equippedWeaponIndex = w;
         return true;
@@ -62,18 +79,19 @@ var Character = (function() {
     for (var e in char.resistedElements) {
       char.resistedElements[e] = false;
     }
-    for (var a in char.equippedArmor) {
-      var armor = char.equippedArmor[a];
-      for (var e = 0; e < armor.element.length; e++) {
-        char.resistedElements[armor.element[e]] = true;
+    var armor = char.equippedArmor();
+    for (var a = 0, n = armor.length; a < n; a++) {
+      for (var e = 0; e < armor[a].element.length; e++) {
+        char.resistedElements[armor[a].element[e]] = true;
       }
     }
   };
   
   var unequipArmorOfType = function(char, armorType) {
-    for (var a in char.equippedArmor) {
-      if (char.equippedArmor[a].type == armorType) {
-        char.unequip(a);
+    for (var a = 0; a < MAX_ARMOR; a++) {
+      var armor = char.allArmor[a];
+      if (armor && armor.type == armorType && char.isArmorEquipped(a)) {
+        equipArmorToggle(char, a);
       }
     }
   };
@@ -104,7 +122,7 @@ var Character = (function() {
     this.knownSpells = [];
     this.equippedWeaponIndex = -1;
     this.allWeapons = [];
-    this.equippedArmor = {};
+    this.equippedArmorIndexes = 0;
     this.allArmor = [];
     this.resistedElements = {};
     this.weakElements = {};
@@ -266,13 +284,22 @@ var Character = (function() {
     }
     return this;
   };
-  Char.prototype.equip = function(name) {
+  Char.prototype.drop = function(index) {
+    var equipment = null;
+    switch (state) {
+      case States.WEAPONS: equipment = this.allWeapons; break;
+      case States.ARMOR: equipment = this.allArmor; break;
+    }
+    equipment[index] = null;
+    return this;
+  };
+  Char.prototype.equip = function(nameOrIndex) {
     switch (state) {
       case States.WEAPONS:
-        equipWeapon(this, name);
+        equipWeapon(this, nameOrIndex);
         break;
       case States.ARMOR:
-        equipArmor(this, name);
+        equipArmorToggle(this, parseInt(nameOrIndex, 10));
         break;
     }
     return this;
@@ -283,19 +310,19 @@ var Character = (function() {
         break;
       case States.ARMOR:
         for (var a = 0; a < this.allArmor.length; a++) {
-          equipArmor(this, this.allArmor[a].name);
+          equipArmorToggle(this, a);
         }
         break;
     }
   return this;
   };
-  Char.prototype.unequip = function(name) {
+  Char.prototype.unequip = function(index) {
     switch (state) {
       case States.WEAPONS:
         this.equippedWeaponIndex = -1;
         break;
       case States.ARMOR:
-        delete this.equippedArmor[name];
+        equipArmorToggle(this, index);
         break;
     }
     return this;
@@ -316,22 +343,26 @@ var Character = (function() {
   Char.prototype.equippedWeapon = function() {
     return this.equippedWeaponIndex < 0 ? null : this.allWeapons[this.equippedWeaponIndex];
   };
+  Char.prototype.equippedArmor = function() {
+    var armor = [];
+    for (var a = 0; a < MAX_ARMOR; a++) {
+      if (this.isArmorEquipped(a)) {
+        armor.push(this.allArmor[a]);
+      }
+    }
+    return armor;
+  };
   
   Char.prototype.armorWeight = function() {
     var totalWeight = 0;
-    jQuery.each(this.equippedArmor, function(i, armor) { 
+    jQuery.each(this.equippedArmor(), function(i, armor) { 
       totalWeight += armor.weight; 
     });
     return totalWeight;
   };
   
-  Char.prototype.isArmorEquipped = function(armor) {
-    for (var a in this.equippedArmor) {
-      if (armor == a) {
-        return true;
-      }
-    }
-    return false;
+  Char.prototype.isArmorEquipped = function(index) {
+    return this.equippedArmorIndexes & Math.pow(2, index);
   };
   
   // --------------
