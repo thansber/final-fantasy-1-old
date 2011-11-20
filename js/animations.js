@@ -473,20 +473,11 @@ var Animation = (function() {
   }
   
   self.slideChar = function(char, opt) {
-    var settings = jQuery.extend({}, {speed:350, direction:"forward", queue:null}, opt);
+    var settings = jQuery.extend({}, {direction:"forward", queue:null}, opt);
     var $char = Battle.getCharUI(char);
     var q = settings.queue || new Queue(this.Queues.SlideChar);
     
-    q.add(function() {
-      switch (settings.direction) {
-        case "forward":
-          $char.addClass("advance", settings.speed);
-          break;
-        case "backward":
-          $char.removeClass("advance", settings.speed);
-          break;
-      };
-    });
+    q.add(function() { $char.toggleClass("advance", settings.direction == "forward"); });
     
     return q;
   };
