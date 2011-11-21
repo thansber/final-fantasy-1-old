@@ -274,6 +274,13 @@ var Character = (function() {
   /* ------------------------------------- */
   Char.prototype.weapons = function() { state = States.WEAPONS; return this; };
   Char.prototype.armor = function() { state = States.ARMOR; return this; };
+  Char.prototype.lookup = function(index) {
+    switch (state) {
+      case States.WEAPONS: return this.allWeapons[index];
+      case States.ARMOR: return this.allArmor[index];
+    }
+    return null;
+  };
   Char.prototype.add = function(name) {
     switch (state) {
       case States.WEAPONS:
@@ -341,7 +348,7 @@ var Character = (function() {
   };
   
   Char.prototype.equippedWeapon = function() {
-    return this.equippedWeaponIndex < 0 ? null : this.allWeapons[this.equippedWeaponIndex];
+    return this.equippedWeaponIndex < 0 ? null : this.weapons().lookup(this.equippedWeaponIndex);
   };
   Char.prototype.equippedArmor = function() {
     var armor = [];

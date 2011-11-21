@@ -624,8 +624,7 @@ var Cursors = (function() {
         this.switchMode.call(this, char);
 
         if (char) {
-          // TODO: convert this to a generic method
-          var equippable = char.allArmor[index];
+          var equippable = char.lookup(index);
           if (equippable) {
             // Confirmation of drop case
             if (this.dropping) {
