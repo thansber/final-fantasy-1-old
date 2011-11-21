@@ -140,14 +140,15 @@ var Menus = (function() {
         var $items = $(this).find(".items");
         $items.empty();
         
-        for (var a = 0; a < 4; a++) {
-          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"armor\"></div></div>");
+        char.armor();
+        for (var a = 0; a < Character.MAX_ARMOR; a++) {
+          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"equippable\"></div></div>");
           var armor = char.allArmor[a];
           if (armor) {
-            if (char.isArmorEquipped(armor.name)) {
+            if (char.isEquipped(a)) {
               $markup.find(".equipped").append(Message.create("E-"));
             }
-            $markup.find(".armor").append(Message.create(armor.desc));
+            $markup.find(".equippable").append(Message.create(armor.desc));
           }
           $items.append($markup);
         }
@@ -180,10 +181,16 @@ var Menus = (function() {
         var $items = $(this).find(".items");
         $items.empty();
         
-        for (var w = 0; w < char.allWeapons.length; w++) {
+        char.weapons();
+        for (var w = 0; w < Character.MAX_WEAPONS; w++) {
+          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"equippable\"></div></div>");
           var weapon = char.allWeapons[w];
-          var $markup = $("<p class=\"armor\"></p>");
-          $markup.append(Message.create((char.equippedWeaponIndex == w ? "E-" : "") + weapon.desc));
+          if (weapon) {
+            if (char.isEquipped(w)) {
+              $markup.find(".equipped").append(Message.create("E-"));
+            }
+            $markup.find(".equippable").append(Message.create(weapon.desc));
+          }
           $items.append($markup);
         }
       });

@@ -6,7 +6,9 @@ var Cursors = (function() {
   var ALL_BY_ID = {};
   
   var IDS = {
-    ARMOR_ACTIONS_MENU : "armorActions"
+    ABSTRACT_EQUIPMENT : "abstractEquipment"
+   ,ABSTRACT_EQUIPMENT_ACTIONS : "abstractEquipmentActions"
+   ,ARMOR_ACTIONS_MENU : "armorActions"
    ,ARMOR_MENU : "armor"
    ,BATTLE_ENEMIES : "battleEnemies"
    ,BATTLE_MENU : "battleMenu"
@@ -149,10 +151,10 @@ var Cursors = (function() {
     KeyPressNotifier.setListener(this);
     
     if (opt.reset) {
-      this.reset(true);
+      this.reset(true, opt);
       this.move(0, 0);
     } else {
-      this.reset(false);
+      this.reset(false, opt);
       this.show();
     }
   };
@@ -518,115 +520,182 @@ var Cursors = (function() {
   };
   CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
   
+  /* ------------------------ */
+  /* EQUIPMENT ACTIONS cursor */
+  /* ------------------------ */
+  // base class for weapons/armor
+  var EquipmentActionMenuCursor = function(id, opt) { 
+    this.id = id; 
+    this.action = null;
+    this.opt = {otherKeys:{}};
+    this.opt.otherKeys[KeyPressNotifier.E] = function() { this.equip(); };
+    this.opt.otherKeys[KeyPressNotifier.T] = function() { this.trade(); };
+    this.opt.otherKeys[KeyPressNotifier.D] = function() { this.drop(); };
+    jQuery.extend(true, this.opt, opt);
+    
+    var baseCursor = new Cursor(this.id, this.opt);
+    jQuery.extend(baseCursor, {
+      back : function() {
+        KeyPressNotifier.clearListener();
+        this.clear();
+        Party.switchView(Party.MENU);
+        Cursors.lookup(Cursors.CHAR_MENU).startListening();
+      },
+      initialCursor : function() { return this.$container.find(".text").eq(0); },
+      next : function() {
+        KeyPressNotifier.clearListener();
+        if (this.$cursor.is(".equip")) { this.equip(); }
+        else if (this.$cursor.is(".trade")) { this.trade(); }
+        else if (this.$cursor.is(".drop")) { this.drop(); }
+      },
+      nextCursor : opt.nextCursor,
+      toNextCursor : function() { 
+        KeyPressNotifier.clearListener();
+        this.clear();
+        Cursors.lookup(this.nextCursor).startListening({action:this.action});
+      },
+      xDestinations : function() { return this.$container.find(".text"); },
+      
+      equip : function() { this.action = "equip"; this.toNextCursor(); },
+      trade : function() { this.action = "trade"; this.toNextCursor(); },
+      drop : function() { this.action = "drop"; this.toNextCursor(); }
+    });
+    return baseCursor;
+  };
+  EquipmentActionMenuCursor.prototype = new Cursor(self.ABSTRACT_EQUIPMENT_ACTIONS);
+  
   /* --------------------- */
   /* WEAPON ACTIONS cursor */
   /* --------------------- */
   var WeaponActionMenuCursor = function() {};
-  var weaponActionMenuCursorOpt = {container: "#weaponMenu .actions", otherKeys:{}};
-  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.equip(); };
-  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.T] = function() { this.trade(); };
-  weaponActionMenuCursorOpt.otherKeys[KeyPressNotifier.D] = function() { this.drop(); };
-  WeaponActionMenuCursor.prototype = new Cursor(self.WEAPON_ACTIONS_MENU, weaponActionMenuCursorOpt);
-  WeaponActionMenuCursor.prototype.back = function() {
-    KeyPressNotifier.clearListener();
-    this.clear();
-    Party.switchView(Party.MENU);
-    Cursors.lookup(Cursors.CHAR_MENU).startListening();
-  };
-  WeaponActionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".text").eq(0); };
-  WeaponActionMenuCursor.prototype.next = function() {
-    KeyPressNotifier.clearListener();
-    if (this.$cursor.is(".equip")) { this.equip(); }
-    else if (this.$cursor.is(".trade")) { this.trade(); }
-    else if (this.$cursor.is(".drop")) { this.drop(); }
-  };
-  WeaponActionMenuCursor.prototype.xDestinations = function() { return this.$container.find(".text"); };
-  
-  WeaponActionMenuCursor.prototype.equip = function() { Logger.debug("TODO: implement equip menu"); };
-  WeaponActionMenuCursor.prototype.trade = function() { Logger.debug("TODO: implement trade menu"); };
-  WeaponActionMenuCursor.prototype.drop = function() { Logger.debug("TODO: implement drop menu"); };
+  WeaponActionMenuCursor.prototype = new EquipmentActionMenuCursor(self.WEAPON_ACTIONS_MENU, {container: "#weaponMenu .actions", nextCursor:self.WEAPONS_MENU});
   
   /* -------------------- */
   /* ARMOR ACTIONS cursor */
   /* -------------------- */
   var ArmorActionMenuCursor = function() {};
-  var armorActionMenuCursorOpt = {container: "#armorMenu .actions", otherKeys:{}};
-  armorActionMenuCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.equip(); };
-  armorActionMenuCursorOpt.otherKeys[KeyPressNotifier.T] = function() { this.trade(); };
-  armorActionMenuCursorOpt.otherKeys[KeyPressNotifier.D] = function() { this.drop(); };
-  ArmorActionMenuCursor.prototype = new Cursor(self.ARMOR_ACTIONS_MENU, armorActionMenuCursorOpt);
-  ArmorActionMenuCursor.prototype.back = function() {
-    KeyPressNotifier.clearListener();
-    this.clear();
-    Party.switchView(Party.MENU);
-    Cursors.lookup(Cursors.CHAR_MENU).startListening();
-  };
-  ArmorActionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".text").eq(0); };
-  ArmorActionMenuCursor.prototype.next = function() {
-    KeyPressNotifier.clearListener();
-    if (this.$cursor.is(".equip")) { this.equip(); }
-    else if (this.$cursor.is(".trade")) { this.trade(); }
-    else if (this.$cursor.is(".drop")) { this.drop(); }
-  };
-  ArmorActionMenuCursor.prototype.xDestinations = function() { return this.$container.find(".text"); };
+  ArmorActionMenuCursor.prototype = new EquipmentActionMenuCursor(self.ARMOR_ACTIONS_MENU, {container: "#armorMenu .actions", nextCursor:self.ARMOR_MENU});
   
-  ArmorActionMenuCursor.prototype.equip = function() { 
-    KeyPressNotifier.clearListener();
-    this.clear();
-    Cursors.lookup(Cursors.ARMOR_MENU).startListening();
+  
+  
+  var EquipmentMenuCursor = function(id, opt) {
+    this.id = id;
+    this.opt = {};
+    this.action = null;
+    this.trading = false;
+    this.dropping = false;
+    
+    jQuery.extend(true, this.opt, opt);
+    
+    var baseCursor = new Cursor(this.id, this.opt);
+    jQuery.extend(baseCursor, {
+      back : function() {
+        if (this.dropping) {
+          this.dropping = false;
+          this.toggleDropping();
+          return false;
+        } else if (this.trading) {
+          this.trading = false;
+          return false;
+        }
+        KeyPressNotifier.clearListener();
+        this.clear();
+        Cursors.lookup(this.prevCursor).startListening();
+      }
+     ,columnChanged : function(y) { 
+        var $options = this.$container.find(".slot");
+        var index = $options.index(this.$cursor);
+       
+        if (y > 0) {
+          index = (index % 2 == 1) ? index - 1 : index + 1;
+        } else {
+          index = (index % 2 == 0) ? index + 1 : index - 1;
+        }
+        return $options.eq(index);
+      }
+     ,initialCursor : function() { return this.$container.find(".slot").eq(0); }
+     ,next : function() {
+        var $chars = this.$container.find(".char");
+        var charIndex = $chars.index(this.$cursor.closest(".char")); 
+        var $equipment = $chars.eq(charIndex).find(".slot");
+        var index =  $equipment.index(this.$cursor);
+        var char = Party.getChar(charIndex);
+      
+        this.switchMode.call(this, char);
+
+        if (char) {
+          // TODO: convert this to a generic method
+          var equippable = char.allArmor[index];
+          if (equippable) {
+            // Confirmation of drop case
+            if (this.dropping) {
+              if (char.isEquipped(index)) {
+                char.unequip(index);
+              }
+              char.drop(index);
+              this.$cursor
+                .find(".cursor").removeClass("dropping").end()
+                .find(".equipped").empty().end()
+                .find(".equippable").empty();
+              this.dropping = false;
+            } else if (this.trading) {
+              this.trading = false;
+            } else {
+              switch (this.action) {
+                case "equip":
+                  var $equipped = $equipment.eq(index).find(".equipped");
+                  char.equip(index);
+                  char.isEquipped(index) ? $equipped.append(Message.create("E-")) : $equipped.empty();
+                  break;
+                case "trade":
+                  this.trading = true;
+                  break;
+                case "drop":
+                  this.dropping = true;
+                  this.toggleDropping();
+                  break;
+              }
+            }
+          }
+        }
+      }
+     ,prevCursor : opt.prevCursor
+     ,reset : function(fullReset, opt) { 
+        this.action = opt.action;
+        this.trading = false;
+        this.dropping = false;
+      }
+     ,rowChanged : function(x) {
+        var $options = this.$container.find(".slot");
+        var index = $options.index(this.$cursor);
+      
+        if (x > 0) {
+          index += 2;
+        } else {
+          index -= 2;
+        }
+      
+        if (index < 0) {
+          index = $options.length + index;
+        } else if (index >= $options.length) {
+          index = index % $options.length;
+        }
+      
+        return $options.eq(index);
+      }
+     ,switchMode : opt.switchMode
+     ,toggleDropping : function() { this.$cursor.find(".cursor").toggleClass("dropping"); }
+    });
+    return baseCursor;
   };
-  ArmorActionMenuCursor.prototype.trade = function() { Logger.debug("TODO: implement trade menu"); };
-  ArmorActionMenuCursor.prototype.drop = function() { Logger.debug("TODO: implement drop menu"); };
+  EquipmentMenuCursor.prototype = new Cursor(self.ABSTRACT_EQUIPMENT);
   
   var ArmorMenuCursor = function() {};
-  ArmorMenuCursor.prototype = new Cursor(self.ARMOR_MENU, {container:"#armorMenu"});
-  ArmorMenuCursor.prototype.back = function() {
-    KeyPressNotifier.clearListener();
-    this.clear();
-    Cursors.lookup(Cursors.ARMOR_ACTIONS_MENU).startListening();
-  };
-  ArmorMenuCursor.prototype.columnChanged = function(y) { 
-    var $options = this.$container.find(".slot");
-    var index = $options.index(this.$cursor);
-    
-    if (y > 0) {
-      index = (index % 2 == 1) ? index - 1 : index + 1;
-    } else {
-      index = (index % 2 == 0) ? index + 1 : index - 1;
-    }
-    
-    return $options.eq(index);
-  };
-  ArmorMenuCursor.prototype.next = function() {
-    var $chars = this.$container.find(".char");
-    var charIndex = $chars.index(this.$cursor.closest(".char")); 
-    var $armor = $chars.eq(charIndex).find(".slot");
-    var armorIndex =  $armor.index(this.$cursor);
-    var char = Party.getChar(charIndex);
-    if (char) {
-      var armor = char.
-      console.log(char.getName() + " is ")
-    }
-  };
-  ArmorMenuCursor.prototype.rowChanged = function(x) {
-    var $options = this.$container.find(".slot");
-    var index = $options.index(this.$cursor);
-    
-    if (x > 0) {
-      index += 2;
-    } else {
-      index -= 2;
-    }
-    
-    if (index < 0) {
-      index = $options.length + index;
-    } else if (index >= $options.length) {
-      index = index % $options.length;
-    }
-    
-    return $options.eq(index);
-  };
-  ArmorMenuCursor.prototype.initialCursor = function() { return this.$container.find(".slot").eq(0); };
+  ArmorMenuCursor.prototype = new EquipmentMenuCursor(self.ARMOR_MENU, {
+    container:"#armorMenu"
+   ,prevCursor:self.ARMOR_ACTIONS_MENU
+   ,switchMode:function(char) { char.armor(); }
+  });
   
   return this;
 }).call({});

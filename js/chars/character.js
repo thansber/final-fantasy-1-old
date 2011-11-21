@@ -1,7 +1,8 @@
 var Character = (function() {
 
-  var MAX_WEAPONS = 4;
-  var MAX_ARMOR = 4;
+  var self = this;
+  self.MAX_WEAPONS = 4;
+  self.MAX_ARMOR = 4;
   
   var state = "";
   var States = {
@@ -14,12 +15,12 @@ var Character = (function() {
   /* =============== */
   var addArmor = function(char, armorName) {
     var armor = Equipment.Armor.lookup(armorName);
-    if (char.allArmor.length == MAX_ARMOR) {
-      Logger.debug(char.getName() + " already has " + MAX_ARMOR + " armor pieces, cannot accept more");
+    if (char.allArmor.length == self.MAX_ARMOR) {
+      Logger.debug(char.getName() + " already has " + self.MAX_ARMOR + " armor pieces, cannot accept more");
       return false;
     }
     
-    for (var a = 0; a < MAX_ARMOR; a++) {
+    for (var a = 0; a < self.MAX_ARMOR; a++) {
       if (!char.allArmor[a]) {
         char.allArmor[a] = armor;
         return true;
@@ -29,12 +30,12 @@ var Character = (function() {
   
   var addWeapon = function(char, weaponName) {
     var weapon = Equipment.Weapon.lookup(weaponName);
-    if (char.allWeapons.length == MAX_WEAPONS) {
-      Logger.debug(char.getName() + " already has " + MAX_WEAPONS + " weapons, cannot accept more");
+    if (char.allWeapons.length == self.MAX_WEAPONS) {
+      Logger.debug(char.getName() + " already has " + self.MAX_WEAPONS + " weapons, cannot accept more");
       return false;
     }
     
-    for (var w = 0; w < MAX_WEAPONS; w++) {
+    for (var w = 0; w < self.MAX_WEAPONS; w++) {
       if (!char.allWeapons[w]) {
         char.allWeapons[w] = weapon;
         return true;
@@ -48,12 +49,12 @@ var Character = (function() {
       return false;
     }
     if (!char.canEquip(armor.name)) {
-      alert("This character's class [" + char.currentClass.name + "] is not allowed to equip " + armor.name);
+      alert(char.getName() + " with a class of [" + char.currentClass.name + "] is not allowed to equip " + armor.name);
       return false;
     }
     
     // Only unequip other armor of the same type if we are equipping something
-    if (!char.isArmorEquipped(index)) {
+    if (!char.isEquipped(index)) {
       unequipArmorOfType(char, armor.type);
     }
     char.equippedArmorIndexes ^= Math.pow(2, index);
@@ -62,10 +63,10 @@ var Character = (function() {
   
   var equipWeapon = function(char, weaponName) {
     if (!char.canEquip(weaponName)) {
-      Logger.debug("This character's class [" + char.currentClass.name + "] is not allowed to equip a " + weaponName);
+      Logger.debug(char.getName() + " with a class of [" + char.currentClass.name + "] is not allowed to equip a " + weaponName);
       return false;
     }
-    for (var w = 0; w < MAX_WEAPONS; w++) {
+    for (var w = 0; w < self.MAX_WEAPONS; w++) {
       if (char.allWeapons[w].name == weaponName) {
         char.equippedWeaponIndex = w;
         return true;
@@ -88,9 +89,9 @@ var Character = (function() {
   };
   
   var unequipArmorOfType = function(char, armorType) {
-    for (var a = 0; a < MAX_ARMOR; a++) {
+    for (var a = 0; a < self.MAX_ARMOR; a++) {
       var armor = char.allArmor[a];
-      if (armor && armor.type == armorType && char.isArmorEquipped(a)) {
+      if (armor && armor.type == armorType && char.isEquipped(a)) {
         equipArmorToggle(char, a);
       }
     }
@@ -287,10 +288,9 @@ var Character = (function() {
   Char.prototype.drop = function(index) {
     var equipment = null;
     switch (state) {
-      case States.WEAPONS: equipment = this.allWeapons; break;
-      case States.ARMOR: equipment = this.allArmor; break;
+      case States.WEAPONS: equipment = this.allWeapons[index] = null; break;
+      case States.ARMOR: equipment = this.allArmor[index] = null; break;
     }
-    equipment[index] = null;
     return this;
   };
   Char.prototype.equip = function(nameOrIndex) {
@@ -345,8 +345,8 @@ var Character = (function() {
   };
   Char.prototype.equippedArmor = function() {
     var armor = [];
-    for (var a = 0; a < MAX_ARMOR; a++) {
-      if (this.isArmorEquipped(a)) {
+    for (var a = 0; a < self.MAX_ARMOR; a++) {
+      if (this.isEquipped(a)) {
         armor.push(this.allArmor[a]);
       }
     }
@@ -361,8 +361,17 @@ var Character = (function() {
     return totalWeight;
   };
   
-  Char.prototype.isArmorEquipped = function(index) {
-    return this.equippedArmorIndexes & Math.pow(2, index);
+  Char.prototype.isEquipped = function(index) {
+    var equipped = false;
+    switch (state) {
+      case States.WEAPONS:
+        equipped = (this.equippedWeaponIndex == index);
+        break;
+      case States.ARMOR:
+        equipped = !!(this.equippedArmorIndexes & Math.pow(2, index));
+        break;
+    }
+    return equipped;
   };
   
   // --------------

@@ -40,5 +40,11 @@
 .equipment.menu .char .overlap .name { height:20px; padding:20px 0 2px 24px; width:86px; }
 .equipment.menu .char .items { height:52px; width:354px; padding:18px 0 2px 10px; float:left; left:-16px; position:relative; z-index:1; margin-left:8px;}
 .equipment.menu .char .items .slot { float:left; width:148px; height:16px; margin-bottom:10px; padding-left:28px; position:relative; }
+.equipment.menu .char .items .slot .equipped { width:32px; height:20px; float:left; }
 .equipment.menu .char .items .slot .cursor { position:absolute; left:-5px; top:-2px; }
+.equipment.menu .char .items .slot .cursor.dropping { -moz-animation:dropping; -moz-animation-duration:100ms; -moz-animation-iteration-count:infinite; }
 
+@-moz-keyframes dropping {
+    from { opacity:1; }
+    to { opacity:0.4; }
+}

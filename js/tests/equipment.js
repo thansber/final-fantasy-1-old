@@ -22,21 +22,21 @@ $(document).ready(function() {
     
     equal(char.allArmor.length, 4);
     equal(char.allArmor[0].name, "Chain[A]");
-    ok(char.isArmorEquipped(1));
+    ok(char.isEquipped(1));
     
     char.equip(2).equip(3);
-    ok(char.isArmorEquipped(1));
-    ok(char.isArmorEquipped(2));
-    ok(char.isArmorEquipped(3));
+    ok(char.isEquipped(1));
+    ok(char.isEquipped(2));
+    ok(char.isEquipped(3));
     equal(char.equippedArmor()[0].name, "Silver[B]");
     equal(char.equippedArmor()[1].name, "Buckler");
     equal(char.equippedArmor()[2].name, "Cap");
     
     char.equip(0);
-    ok(char.isArmorEquipped(0));
-    ok(!char.isArmorEquipped(1));
-    ok(char.isArmorEquipped(2));
-    ok(char.isArmorEquipped(3));
+    ok(char.isEquipped(0));
+    ok(!char.isEquipped(1));
+    ok(char.isEquipped(2));
+    ok(char.isEquipped(3));
     equal(char.equippedArmor()[0].name, "Chain[A]");
     equal(char.equippedArmor()[1].name, "Buckler");
     equal(char.equippedArmor()[2].name, "Cap");
