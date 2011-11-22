@@ -86,7 +86,7 @@ var Cursors = (function() {
     }
   };
   Cursor.prototype.columnChanged = function(x) { return this.wrappingMovement(x, this.xDestinations()); };
-  Cursor.prototype.create = function() { return $("<div/>").addClass("cursor"); };
+  Cursor.prototype.create = function(extra) { return $("<div/>").addClass("cursor").addClass(extra ? extra : ""); };
   Cursor.prototype.hide = function() {
     if (this.isValid()) {
       this.$cursor.find(".cursor").hide();
@@ -95,6 +95,7 @@ var Cursors = (function() {
   Cursor.prototype.init = function() {
     this.$container = $(this.container);
   };
+  Cursor.prototype.isValid = function() { return this.$cursor && this.$cursor.length > 0; };
   Cursor.prototype.keyPressChange = function(key, isPressed) {
     if (!isPressed) {
       return false; 
@@ -124,7 +125,6 @@ var Cursors = (function() {
       Logger.debug("Cursor [" + this.id + "] received an unhandled key press: " + key);
     }
   };
-  Cursor.prototype.isValid = function() { return this.$cursor && this.$cursor.length > 0; };
   Cursor.prototype.move = function(y, x) {
     this.clear();
     if (!(x || y)) {
@@ -577,7 +577,10 @@ var Cursors = (function() {
   ArmorActionMenuCursor.prototype = new EquipmentActionMenuCursor(self.ARMOR_ACTIONS_MENU, {container: "#armorMenu .actions", nextCursor:self.ARMOR_MENU});
   
   
-  
+  /* ---------------- */
+  /* EQUIPMENT cursor */
+  /* ---------------- */
+  // base class for weapons/armor
   var EquipmentMenuCursor = function(id, opt) {
     this.id = id;
     this.opt = {};
@@ -592,10 +595,17 @@ var Cursors = (function() {
       back : function() {
         if (this.dropping) {
           this.dropping = false;
-          this.toggleDropping();
+          this.toggleFlicker();
           return false;
         } else if (this.trading) {
           this.trading = false;
+          this.clear();
+          this.$container.find(".flicker").removeClass("flicker");
+          
+          var $oldCursor = this.$container.find(".originalCursor");
+          this.$cursor = $oldCursor.closest(".slot");
+          this.$cursor.append(this.create());
+          $oldCursor.remove();
           return false;
         }
         KeyPressNotifier.clearListener();
@@ -611,7 +621,13 @@ var Cursors = (function() {
         } else {
           index = (index % 2 == 0) ? index + 1 : index - 1;
         }
-        return $options.eq(index);
+        
+        var $newCursor = $options.eq(index);
+        if (this.trading) {
+          $newCursor.addClass("flicker");
+        }
+        
+        return $newCursor;
       }
      ,initialCursor : function() { return this.$container.find(".slot").eq(0); }
      ,next : function() {
@@ -632,8 +648,8 @@ var Cursors = (function() {
                 char.unequip(index);
               }
               char.drop(index);
+              this.toggleFlicker();
               this.$cursor
-                .find(".cursor").removeClass("dropping").end()
                 .find(".equipped").empty().end()
                 .find(".equippable").empty();
               this.dropping = false;
@@ -647,11 +663,15 @@ var Cursors = (function() {
                   char.isEquipped(index) ? $equipped.append(Message.create("E-")) : $equipped.empty();
                   break;
                 case "trade":
+                  this.$cursor
+                    .find(".cursor").removeClass("cursor").addClass("originalCursor");
+                  this.$cursor.append(this.create());
+                  this.toggleFlicker();
                   this.trading = true;
                   break;
                 case "drop":
                   this.dropping = true;
-                  this.toggleDropping();
+                  this.toggleFlicker();
                   break;
               }
             }
@@ -680,10 +700,15 @@ var Cursors = (function() {
           index = index % $options.length;
         }
       
-        return $options.eq(index);
+        var $newCursor = $options.eq(index);
+        if (this.trading) {
+          $newCursor.addClass("flicker");
+        }
+        
+        return $newCursor;
       }
      ,switchMode : opt.switchMode
-     ,toggleDropping : function() { this.$cursor.find(".cursor").toggleClass("dropping"); }
+     ,toggleFlicker : function() { this.$cursor.toggleClass("flicker"); }
     });
     return baseCursor;
   };
