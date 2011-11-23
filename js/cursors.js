@@ -15,6 +15,8 @@ var Cursors = (function() {
    ,BATTLE_PARTY : "battleParty"
    ,BATTLE_SPELLS : "battleSpells"
    ,CHAR_MENU : "charMenu"
+   ,CHAR_SELECTION_MENU : "charSelectionMenu"
+   ,MAGIC_MENU : "magicMenu"
    ,WEAPON_ACTIONS_MENU : "weaponActions"
    ,WEAPONS_MENU : "weapons"
   };
@@ -507,7 +509,14 @@ var Cursors = (function() {
   CharMenuCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
   
   CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
-  CharMenuCursor.prototype.magic = function() { Logger.debug("TODO: implement magic menu"); };
+  CharMenuCursor.prototype.magic = function() { 
+    this.clear();
+    Cursors.lookup(Cursors.CHAR_SELECTION_MENU).startListening();
+    // TODO: add extra cursor to select a char, for now use the last char
+    //Menus.Magic.load(Party.getChar(3));
+    //Party.switchView(Party.MAGIC_MENU);
+    //Cursors.lookup(Cursors.MAGIC_MENU).startListening();
+  };
   CharMenuCursor.prototype.weapon = function() { 
     Menus.Weapon.load();
     Party.switchView(Party.WEAPON_MENU);
@@ -519,6 +528,16 @@ var Cursors = (function() {
     Cursors.lookup(Cursors.ARMOR_ACTIONS_MENU).startListening();
   };
   CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
+  
+  var CharSelectionMenuCursor = function() {};
+  CharSelectionMenuCursor.prototype = new Cursor(self.CHAR_SELECTION_MENU, {container: "#charMenu .party", otherKeys:{}});
+  CharSelectionMenuCursor.prototype.getCursorIndex = function() { return this.$container.find(".char.profile").index(this.$cursor); };
+  CharSelectionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".char.profile").eq(0); };
+  CharSelectionMenuCursor.prototype.xDestinations = function() {
+    var startIndex = Math.floor(this.getCursorIndex() / 2) * 2; 
+    return this.$container.find(".char.profile").slice(startIndex, startIndex + 2); 
+  };
+  CharSelectionMenuCursor.prototype.yDestinations = function() { return this.$container.find(".char.profile:" + (this.getCursorIndex() % 2 == 0 ? "even" : "odd")); };
   
   /* ------------------------ */
   /* EQUIPMENT ACTIONS cursor */
@@ -807,6 +826,15 @@ var Cursors = (function() {
    ,switchMode:function(char) { char.weapons(); }
   });
 
+  var MagicMenuCursor = function() {};
+  MagicMenuCursor.prototype = new Cursor(self.MAGIC_MENU, {container: "#magicMenu .magic", otherKeys:{}});
+  MagicMenuCursor.prototype.initialCursor = function() { return this.$container.find(".spell").eq(0); };
+  MagicMenuCursor.prototype.xDestinations = function() { return this.$cursor.closest(".spells").find(".spell"); };
+  MagicMenuCursor.prototype.yDestinations = function() { 
+    var indexInLevel = this.xDestinations().index(this.$cursor);
+    // Yeah this is some crazy selection, but it works
+    return this.$container.find(".spell:nth-child(3n - " + (Character.MAX_SPELLS_PER_LEVEL - 1 - indexInLevel) + ")");
+  };
   
   return this;
 }).call({});

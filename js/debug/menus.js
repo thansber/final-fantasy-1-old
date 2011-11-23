@@ -14,6 +14,9 @@ var MenuHelper = (function() {
     } else if ($target.is(".weapon")) {
       Party.createTestChars();
       Cursors.lookup(Cursors.CHAR_MENU).weapon();
+    } else if ($target.is(".magic")) {
+      Party.createTestChars();
+      Cursors.lookup(Cursors.CHAR_MENU).magic();
     }
   };
   

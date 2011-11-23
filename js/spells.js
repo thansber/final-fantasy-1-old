@@ -347,11 +347,8 @@ var Spell = (function() {
     return false;
   };
   
-  self.create = function(opt) {
-    return new self.SpellBase(opt);
-  };
-  
-  self.lookup = function(skillId) { return self.ALL[skillId]; };
+  self.create = function(opt) { return new self.SpellBase(opt); };
+  self.lookup = function(spellId) { return self.ALL[spellId]; };
   
   return self;
 }).call({});

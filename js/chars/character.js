@@ -3,6 +3,8 @@ var Character = (function() {
   var self = this;
   self.MAX_WEAPONS = 4;
   self.MAX_ARMOR = 4;
+  self.MAX_SPELLS_PER_LEVEL = 3;
+  self.MAX_SPELL_LEVELS = 8;
   
   var state = "";
   var States = {

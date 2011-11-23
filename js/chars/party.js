@@ -19,6 +19,7 @@ var Party = (function() {
    ,MENU : "#charMenu"
    ,ARMOR_MENU : "#armorMenu"
    ,WEAPON_MENU : "#weaponMenu"
+   ,MAGIC_MENU : "#magicMenu"
   };
   
   // Anything in the views object can be referenced via Party.WHATEVER
@@ -77,8 +78,14 @@ var Party = (function() {
     self.getChar(1)
       .weapons().add("Rapier").equip("Rapier")
       .armor().add("Wooden[A]").equipAll();
-    self.getChar(2).weapons().add("Iron[H]").equip("Iron[H]");
-    self.getChar(3).weapons().add("Small[K]").equip("Small[K]");
+    self.getChar(2)
+      .weapons().add("Iron[H]").equip("Iron[H]")
+      .armor().add("Cloth").equipAll()
+      .learnSpell(Spell.lookup("CURE")).learnSpell(Spell.lookup("HARM"));
+    self.getChar(3)
+      .weapons().add("Small[K]").equip("Small[K]")
+      .armor().add("Cloth").equipAll()
+      .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
   };
   
   self.getChar = function(index) { return chars[index]; };

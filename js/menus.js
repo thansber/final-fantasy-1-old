@@ -204,6 +204,57 @@ var Menus = (function() {
     return this;
   }).call({});
   
+  self.Magic = (function() {
+    var self = this;
+    var $container = null;
+    
+    var buildMagicMenu = function() {
+      var markup = [], m = 0;
+      
+      for (var i = 0; i < Character.MAX_SPELL_LEVELS; i++) {
+        markup[m++] = "<div class=\"row\">";
+        markup[m++] = "  <div class=\"level\"></div>";
+        markup[m++] = "  <div class=\"charges\"></div>";
+        markup[m++] = "  <div class=\"spells\">";
+        for (var s = 0; s < Character.MAX_SPELLS_PER_LEVEL; s++) {
+          markup[m++] = "<div class=\"spell" + (s == 1 ? " middle" : "") + "\"></div>";
+        }
+        markup[m++] = "  </div>";
+        markup[m++] = "</div>";
+      }
+      
+      return $(markup.join(""));
+    };
+    
+    self.init = function() {
+      $container = $("#magicMenu");
+      $container.find(".magic").append(buildMagicMenu());
+    };
+    
+    self.load = function(char) {
+      $container
+        .find(".name").empty().append(Message.create(char.getName())).end();
+      
+      var $rows = $container.find(".row");
+      for (var s = 0; s < Character.MAX_SPELL_LEVELS; s++) {
+        var $row = $rows.eq(s);
+        var $spells = $row.find(".spell");
+        $row
+          .find(".level").append(Message.create("L" + (s + 1))).end()
+          .find(".charges").append(Message.create(char.charges[s] + "/" + char.maxCharges[s]));
+        
+        if (char.knownSpells[s]) {
+          for (var i = 0; i < char.knownSpells[s].length; i++) {
+            var spellText = Message.padToLength(char.knownSpells[s][i], 4, {dir:"right"});
+            $spells.eq(i).append(Message.create(spellText));
+          }
+        }
+      }
+    };
+    
+    return this;
+  }).call({});
+  
   /* =================== */
   /* MENU INITIALIZATION */
   /* =================== */
@@ -211,6 +262,7 @@ var Menus = (function() {
     self.Char.init();
     self.Armor.init();
     self.Weapon.init();
+    self.Magic.init();
   };
     
   return this;
