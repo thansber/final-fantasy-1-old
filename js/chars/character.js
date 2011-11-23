@@ -13,34 +13,44 @@ var Character = (function() {
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
-  var addArmor = function(char, armorName) {
+  var addArmor = function(char, armorName, index) {
     var armor = Equipment.Armor.lookup(armorName);
     if (char.allArmor.length == self.MAX_ARMOR) {
       Logger.debug(char.getName() + " already has " + self.MAX_ARMOR + " armor pieces, cannot accept more");
       return false;
     }
     
-    for (var a = 0; a < self.MAX_ARMOR; a++) {
-      if (!char.allArmor[a]) {
-        char.allArmor[a] = armor;
-        return true;
+    if (typeof(index) === "undefined") {
+      for (var a = 0; a < self.MAX_ARMOR; a++) {
+        if (!char.allArmor[a]) {
+          char.allArmor[a] = armor;
+          break;
+        }
       }
+    } else {
+      char.allArmor[index] = armor;
     }
+    return true;
   };
   
-  var addWeapon = function(char, weaponName) {
+  var addWeapon = function(char, weaponName, index) {
     var weapon = Equipment.Weapon.lookup(weaponName);
     if (char.allWeapons.length == self.MAX_WEAPONS) {
       Logger.debug(char.getName() + " already has " + self.MAX_WEAPONS + " weapons, cannot accept more");
       return false;
     }
     
-    for (var w = 0; w < self.MAX_WEAPONS; w++) {
-      if (!char.allWeapons[w]) {
-        char.allWeapons[w] = weapon;
-        return true;
+    if (typeof(index) === "undefined") {
+      for (var w = 0; w < self.MAX_WEAPONS; w++) {
+        if (!char.allWeapons[w]) {
+          char.allWeapons[w] = weapon;
+          break;
+        }
       }
+    } else {
+      char.allWeapons[index] = weapon;
     }
+    return true;
   };
   
   var equipArmorToggle = function(char, index) {
@@ -61,19 +71,18 @@ var Character = (function() {
     resetArmorResistances(char);
   };
   
-  var equipWeapon = function(char, weaponName) {
-    if (!char.canEquip(weaponName)) {
-      Logger.debug(char.getName() + " with a class of [" + char.currentClass.name + "] is not allowed to equip a " + weaponName);
+  var equipWeapon = function(char, index) {
+    var weapon = char.allWeapons[index];
+    if (!weapon) {
       return false;
     }
-    for (var w = 0; w < self.MAX_WEAPONS; w++) {
-      if (char.allWeapons[w].name == weaponName) {
-        char.equippedWeaponIndex = w;
-        return true;
-      }
+    if (!char.canEquip(weapon.name)) {
+      Logger.debug(char.getName() + " with a class of [" + char.currentClass.name + "] is not allowed to equip a " + weapon.name);
+      return false;
     }
-    Logger.debug(char.getName() + " tried to equip a " + weaponName + " but did not have one");
-    return false;
+    
+    char.equippedWeaponIndex = index;
+    return true;
   };
   
   var resetArmorResistances = function(char) {
@@ -281,13 +290,13 @@ var Character = (function() {
     }
     return null;
   };
-  Char.prototype.add = function(name) {
+  Char.prototype.add = function(name, index) {
     switch (state) {
       case States.WEAPONS:
-        addWeapon(this, name);
+        addWeapon(this, name, index);
         break;
       case States.ARMOR:
-        addArmor(this, name);
+        addArmor(this, name, index);
         break;
     }
     return this;
@@ -300,13 +309,13 @@ var Character = (function() {
     }
     return this;
   };
-  Char.prototype.equip = function(nameOrIndex) {
+  Char.prototype.equip = function(index) {
     switch (state) {
       case States.WEAPONS:
-        equipWeapon(this, nameOrIndex);
+        equipWeapon(this, index);
         break;
       case States.ARMOR:
-        equipArmorToggle(this, parseInt(nameOrIndex, 10));
+        equipArmorToggle(this, index);
         break;
     }
     return this;
@@ -362,6 +371,7 @@ var Character = (function() {
   
   Char.prototype.armorWeight = function() {
     var totalWeight = 0;
+    this.armor();
     jQuery.each(this.equippedArmor(), function(i, armor) { 
       totalWeight += armor.weight; 
     });

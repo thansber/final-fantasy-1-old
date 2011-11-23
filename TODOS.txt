@@ -1,6 +1,4 @@
 - inventory screens
-    - weapon page - cursor
-    - armor page - cursor
     - char status page
     - inventory page
 
@@ -17,5 +15,4 @@
 - chars w/o magic still show magic selection, when spell is selected, show desc "Nothing", wait for button to hide
 
 - refactor walk/slide animations with CSS transitions/animations
-    - transition for slide
     - animation for walk, class toggling

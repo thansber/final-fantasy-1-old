@@ -45,6 +45,23 @@ var Menus = (function() {
     }
   };
   
+  var reloadChar = function(char, $char, maxAmount) {
+    var $items = $char.find(".items");
+    $items.empty();
+    
+    for (var e = 0; e < maxAmount; e++) {
+      var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"equippable\"></div></div>");
+      var equippable = char.lookup(e);
+      if (equippable) {
+        if (char.isEquipped(e)) {
+          $markup.find(".equipped").append(Message.create("E-"));
+        }
+        $markup.find(".equippable").append(Message.create(equippable.desc));
+      }
+      $items.append($markup);
+    }
+  };
+  
   /* ========================================= */
   /* CHARACTER MENU -------------------------- */
   /* ========================================= */
@@ -136,23 +153,17 @@ var Menus = (function() {
       loadNames($container);
       
       $container.find(".char").each(function(i) {
-        var char = Party.getChar(i);
-        var $items = $(this).find(".items");
-        $items.empty();
-        
-        char.armor();
-        for (var a = 0; a < Character.MAX_ARMOR; a++) {
-          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"equippable\"></div></div>");
-          var armor = char.allArmor[a];
-          if (armor) {
-            if (char.isEquipped(a)) {
-              $markup.find(".equipped").append(Message.create("E-"));
-            }
-            $markup.find(".equippable").append(Message.create(armor.desc));
-          }
-          $items.append($markup);
-        }
+        self.reloadChar(Party.getChar(i), $(this));
       });
+    };
+    
+    self.reloadChar = function(char, $char) {
+      if (!char || !($char) || $char.length == 0) {
+        return;
+      }
+      
+      char.armor();
+      reloadChar(char, $char, Character.MAX_ARMOR);
     };
     
     return this;
@@ -177,23 +188,17 @@ var Menus = (function() {
       loadNames($container);
       
       $container.find(".char").each(function(i) {
-        var char = Party.getChar(i);
-        var $items = $(this).find(".items");
-        $items.empty();
-        
-        char.weapons();
-        for (var w = 0; w < Character.MAX_WEAPONS; w++) {
-          var $markup = $("<div class=\"slot\"><div class=\"equipped\"></div><div class=\"equippable\"></div></div>");
-          var weapon = char.allWeapons[w];
-          if (weapon) {
-            if (char.isEquipped(w)) {
-              $markup.find(".equipped").append(Message.create("E-"));
-            }
-            $markup.find(".equippable").append(Message.create(weapon.desc));
-          }
-          $items.append($markup);
-        }
+        self.reloadChar(Party.getChar(i), $(this));
       });
+    };
+    
+    self.reloadChar = function(char, $char) {
+      if (!char || !($char) || $char.length == 0) {
+        return;
+      }
+      
+      char.weapons();
+      reloadChar(char, $char, Character.MAX_WEAPONS);
     };
     
     return this;

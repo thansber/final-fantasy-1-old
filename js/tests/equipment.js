@@ -2,12 +2,12 @@ $(document).ready(function() {
   module("Adding/equipping");
   test("adding/equipping weapons", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
-    char.weapons().add("Short[S]").add("Rapier").equip("Rapier");
+    char.weapons().add("Short[S]").add("Rapier").equip(1);
     equal(char.allWeapons[0].name, "Short[S]");
     equal(char.equippedWeaponIndex, 1);
     equal(char.equippedWeapon().name, "Rapier");
     
-    char.equip("Short[S]");
+    char.equip(0);
     equal(char.equippedWeaponIndex, 0);
     equal(char.equippedWeapon().name, "Short[S]");
     
@@ -40,6 +40,20 @@ $(document).ready(function() {
     equal(char.equippedArmor()[0].name, "Chain[A]");
     equal(char.equippedArmor()[1].name, "Buckler");
     equal(char.equippedArmor()[2].name, "Cap");
+  });
+  
+  test("equipping duplicate armor", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.armor().add("Wooden[A]").add("Wooden[S]").add("Wooden[H]").add("Wooden[A]");
+    char.equip(0).equip(1).equip(2);
+
+    equal(char.equippedArmor().length, 3);
+    equal(char.equippedArmor()[0].name, "Wooden[A]");
+    
+    char.equip(3);
+    equal(char.equippedArmor().length, 3);
+    equal(char.equippedArmor()[0].name, "Wooden[S]");
+    equal(char.equippedArmor()[2].name, "Wooden[A]");
   });
   
   test("dropping armor", function() {

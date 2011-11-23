@@ -32,7 +32,7 @@ var BattleSetupHelper = (function() {
     if (weapon == null) {
       char.unequip();
     } else {
-      char.add(weapon.name).equip(weapon.name);
+      char.add(weapon.name).equip(0);
     }
   };
   

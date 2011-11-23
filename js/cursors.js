@@ -592,7 +592,18 @@ var Cursors = (function() {
     
     var baseCursor = new Cursor(this.id, this.opt);
     jQuery.extend(baseCursor, {
-      back : function() {
+      addToChar : function(equipment, targetCharIndex, targetEquipmentIndex) {
+        if (!equipment) {
+          return null;
+        }
+        var char = Party.getChar(targetCharIndex);
+        if (!char) {
+          return null;
+        }
+        
+        char.add(equipment.name, targetEquipmentIndex);
+      }
+     ,back : function() {
         if (this.dropping) {
           this.dropping = false;
           this.toggleFlicker();
@@ -600,7 +611,7 @@ var Cursors = (function() {
         } else if (this.trading) {
           this.trading = false;
           this.clear();
-          this.$container.find(".flicker").removeClass("flicker");
+          this.stopFlicker();
           
           var $oldCursor = this.$container.find(".originalCursor");
           this.$cursor = $oldCursor.closest(".slot");
@@ -629,56 +640,94 @@ var Cursors = (function() {
         
         return $newCursor;
       }
+     ,dropConfirm : function(char, index) {
+       if (char.lookup(index)) {
+         if (char.isEquipped(index)) {
+           char.unequip(index);
+         }
+         char.drop(index);
+         this.toggleFlicker();
+         this.$cursor
+           .find(".equipped").empty().end()
+           .find(".equippable").empty();
+         this.dropping = false;
+       }       
+     }
+     ,getCharFromCursor : function($cursor) { return this.$chars.index($cursor.closest(".char")); }
+     ,getEquipment : function(charIndex) { return this.$chars.eq(charIndex).find(".slot"); }
+     ,getEquipmentFromCursor : function($cursor, charIndex) { return this.getEquipment(charIndex).index($cursor); }
+     ,init : function() {
+       this.$container = $(this.container);
+       this.$chars = this.$container.find(".char");
+       this.menu = Menus[this.menuId];
+      }
+     ,initialConfirm : function(charIndex, index) {
+       switch (this.action) {
+         case "equip":
+           var char = Party.getChar(charIndex);
+           if (char && char.lookup(index)) {
+             var $equipped = this.getEquipment(charIndex).eq(index).find(".equipped");
+             char.equippedWeaponIndex == index ? char.unequip(index) : char.equip(index);
+             this.menu.reloadChar(Party.getChar(charIndex), this.$chars.eq(charIndex));
+             this.rebuildCursor(charIndex, index);
+           }
+           break;
+         case "trade":
+           this.trading = true;
+           this.$cursor.find(".cursor").removeClass("cursor").addClass("originalCursor");
+           this.$cursor.append(this.create());
+           this.toggleFlicker();
+           break;
+         case "drop":
+           var char = Party.getChar(charIndex);
+           if (char && char.lookup(index)) {
+             this.dropping = true;
+             this.toggleFlicker();
+           }
+           break;
+       }
+     }
      ,initialCursor : function() { return this.$container.find(".slot").eq(0); }
+     ,menuId : opt.menuId
      ,next : function() {
-        var $chars = this.$container.find(".char");
-        var charIndex = $chars.index(this.$cursor.closest(".char")); 
-        var $equipment = $chars.eq(charIndex).find(".slot");
-        var index =  $equipment.index(this.$cursor);
+        var charIndex = this.getCharFromCursor(this.$cursor); 
+        var index =  this.getEquipmentFromCursor(this.$cursor, charIndex);
         var char = Party.getChar(charIndex);
       
         this.switchMode.call(this, char);
 
         if (char) {
-          var equippable = char.lookup(index);
-          if (equippable) {
-            // Confirmation of drop case
-            if (this.dropping) {
-              if (char.isEquipped(index)) {
-                char.unequip(index);
-              }
-              char.drop(index);
-              this.toggleFlicker();
-              this.$cursor
-                .find(".equipped").empty().end()
-                .find(".equippable").empty();
-              this.dropping = false;
-            } else if (this.trading) {
-              this.trading = false;
-            } else {
-              switch (this.action) {
-                case "equip":
-                  var $equipped = $equipment.eq(index).find(".equipped");
-                  char.equip(index);
-                  char.isEquipped(index) ? $equipped.append(Message.create("E-")) : $equipped.empty();
-                  break;
-                case "trade":
-                  this.$cursor
-                    .find(".cursor").removeClass("cursor").addClass("originalCursor");
-                  this.$cursor.append(this.create());
-                  this.toggleFlicker();
-                  this.trading = true;
-                  break;
-                case "drop":
-                  this.dropping = true;
-                  this.toggleFlicker();
-                  break;
-              }
-            }
+          if (this.dropping) {
+            this.dropConfirm(char, index);
+          } else if (this.trading) {
+            this.tradeConfirm(charIndex, index);
+          } else {
+            this.initialConfirm(charIndex, index);
           }
         }
       }
      ,prevCursor : opt.prevCursor
+     ,rebuildCursor : function(charIndex, equipmentIndex) {
+       this.$cursor = this.getEquipment(charIndex).eq(equipmentIndex);
+       this.$cursor.append(this.create());
+     }
+     ,removeFromChar : function(charIndex, equipmentIndex) {
+       var char = Party.getChar(charIndex);
+       if (!char) {
+         return null;
+       }
+       var equipment = char.lookup(equipmentIndex);
+       if (!equipment) {
+         return null;
+       }
+       Logger.debug("unequipped/removed " + equipment.name + " from " + char.getName());
+       if (char.isEquipped(equipmentIndex)) {
+         char.unequip(equipmentIndex);
+       }
+       char.drop(equipmentIndex);
+       
+       return equipment;
+     }
      ,reset : function(fullReset, opt) { 
         this.action = opt.action;
         this.trading = false;
@@ -707,19 +756,57 @@ var Cursors = (function() {
         
         return $newCursor;
       }
+     ,stopFlicker : function() { this.$container.find(".flicker").removeClass("flicker"); }
      ,switchMode : opt.switchMode
      ,toggleFlicker : function() { this.$cursor.toggleClass("flicker"); }
+     ,tradeConfirm : function(targetCharIndex, targetEquipmentIndex) {
+       var $sourceCursor = this.$container.find(".originalCursor");
+       var sourceCharIndex = this.getCharFromCursor($sourceCursor);
+       var sourceEquipmentIndex = this.getEquipmentFromCursor($sourceCursor.closest(".slot"), sourceCharIndex);
+       
+       var sourceEquipment = this.removeFromChar(sourceCharIndex, sourceEquipmentIndex);
+       var targetEquipment = this.removeFromChar(targetCharIndex, targetEquipmentIndex);
+       
+       this.addToChar(sourceEquipment, targetCharIndex, targetEquipmentIndex);
+       this.addToChar(targetEquipment, sourceCharIndex, sourceEquipmentIndex);
+       
+       $sourceCursor.remove();
+       this.stopFlicker();
+       
+       this.menu.reloadChar(Party.getChar(sourceCharIndex), this.$chars.eq(sourceCharIndex));
+       this.menu.reloadChar(Party.getChar(targetCharIndex), this.$chars.eq(targetCharIndex));
+       
+       this.rebuildCursor(targetCharIndex, targetEquipmentIndex);
+       
+       this.trading = false;
+      }
     });
     return baseCursor;
   };
   EquipmentMenuCursor.prototype = new Cursor(self.ABSTRACT_EQUIPMENT);
   
+  /* -------------------------------------------- */
+  /* ARMOR MENU cursor - handles equip/trade/drop */
+  /* -------------------------------------------- */
   var ArmorMenuCursor = function() {};
   ArmorMenuCursor.prototype = new EquipmentMenuCursor(self.ARMOR_MENU, {
     container:"#armorMenu"
+   ,menuId:"Armor"
    ,prevCursor:self.ARMOR_ACTIONS_MENU
    ,switchMode:function(char) { char.armor(); }
   });
+  
+  /* --------------------------------------------- */
+  /* WEAPON MENU cursor - handles equip/trade/drop */
+  /* --------------------------------------------- */
+  var WeaponMenuCursor = function() {};
+  WeaponMenuCursor.prototype = new EquipmentMenuCursor(self.WEAPONS_MENU, {
+    container:"#weaponMenu"
+   ,menuId:"Weapon"
+   ,prevCursor:self.WEAPON_ACTIONS_MENU
+   ,switchMode:function(char) { char.weapons(); }
+  });
+
   
   return this;
 }).call({});
