@@ -30,6 +30,11 @@ var AnimationHelper = (function() {
     } else if ($target.is(".victory")) {
       Battle.inputMessageToggler(true);
       Animation.victory().start();
+    } else if ($target.is(".run.away")) {
+      Battle.inputMessageToggler(true);
+      var command = {type:BattleCommands.Party, source:Party.getChar(0)};
+      var result = {success:true};
+      Animation.run(command, result).start();
     }
   };
 

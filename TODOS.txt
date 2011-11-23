@@ -6,7 +6,7 @@
 - figure out what happens to a char when they are asleep
 - handle LIFE, LIF2, WARP, EXIT, SOFT spells
 
-- add images for critical/normal chars backwards for running away sprites
+- running away sprites need their colors fixed (redo at home using paint.net)
 - character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
 
@@ -16,3 +16,5 @@
 
 - refactor walk/slide animations with CSS transitions/animations
     - animation for walk, class toggling
+    
+- remove animation chain?

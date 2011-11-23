@@ -14,6 +14,8 @@
 .party .char.fighter.critical { background-position:-144px 0; }
 .party .char.fighter.stone { background-position:-180px 0; }
 .party .char.fighter.dead { background-position:-216px 0; }
+.party .char.fighter.running.critical { background-position:-268px 0; }
+.party .char.fighter.running.away { background-position:-304px 0; }
 
 .party .char.thief.swing.back { background-position:0px -50px; }
 .party .char.thief.swing.forward { background-position:-36px -50px; }
@@ -22,6 +24,8 @@
 .party .char.thief.critical { background-position:-144px -50px; }
 .party .char.thief.stone { background-position:-180px -50px; }
 .party .char.thief.dead { background-position:-216px -50px; }
+.party .char.thief.running.critical { background-position:-268px -50px; }
+.party .char.thief.running.away { background-position:-304px -50px; }
 
 .party .char.blackbelt.swing.back { background-position:0px -100px; }
 .party .char.blackbelt.swing.forward { background-position:-36px -100px; }
@@ -30,6 +34,8 @@
 .party .char.blackbelt.critical { background-position:-144px -100px; }
 .party .char.blackbelt.stone { background-position:-180px -100px; }
 .party .char.blackbelt.dead { background-position:-216px -100px; }
+.party .char.blackbelt.running.critical { background-position:-268px -100px; }
+.party .char.blackbelt.running.away { background-position:-304px -100px; }
 
 .party .char.redmage.swing.back { background-position:0px -150px; }
 .party .char.redmage.swing.forward { background-position:-36px -150px; }
@@ -38,6 +44,8 @@
 .party .char.redmage.critical { background-position:-144px -150px; }
 .party .char.redmage.stone { background-position:-180px -150px; }
 .party .char.redmage.dead { background-position:-216px -150px; }
+.party .char.redmage.running.critical { background-position:-268px -150px; }
+.party .char.redmage.running.away { background-position:-304px -150px; }
 
 .party .char.whitemage.swing.back { background-position:0px -200px; }
 .party .char.whitemage.swing.forward { background-position:-36px -200px; }
@@ -46,6 +54,8 @@
 .party .char.whitemage.critical { background-position:-144px -200px; }
 .party .char.whitemage.stone { background-position:-180px -200px; }
 .party .char.whitemage.dead { background-position:-216px -200px; }
+.party .char.whitemage.running.critical { background-position:-268px -200px; }
+.party .char.whitemage.running.away { background-position:-304px -200px; }
 
 .party .char.blackmage.swing.back { background-position:0px -250px; }
 .party .char.blackmage.swing.forward { background-position:-36px -250px; }
@@ -54,6 +64,8 @@
 .party .char.blackmage.critical { background-position:-144px -250px; }
 .party .char.blackmage.stone { background-position:-180px -250px; }
 .party .char.blackmage.dead { background-position:-216px -250px; }
+.party .char.blackmage.running.critical { background-position:-268px -250px; }
+.party .char.blackmage.running.away { background-position:-304px -250px; }
 
 .party .char.knight.swing.back { background-position:0px -300px; }
 .party .char.knight.swing.forward { background-position:-36px -300px; }
@@ -62,6 +74,8 @@
 .party .char.knight.critical { background-position:-144px -300px; }
 .party .char.knight.stone { background-position:-180px -300px; }
 .party .char.knight.dead { background-position:-216px -300px; }
+.party .char.knight.running.critical { background-position:-268px -300px; }
+.party .char.knight.running.away { background-position:-304px -300px; }
 
 .party .char.ninja.swing.back { background-position:0px -350px; }
 .party .char.ninja.swing.forward { background-position:-36px -350px; }
@@ -70,6 +84,8 @@
 .party .char.ninja.critical { background-position:-144px -350px; }
 .party .char.ninja.stone { background-position:-180px -350px; }
 .party .char.ninja.dead { background-position:-216px -350px; }
+.party .char.ninja.running.critical { background-position:-268px -350px; }
+.party .char.ninja.running.away { background-position:-304px -350px; }
 
 .party .char.master.swing.back { background-position:0px -400px; }
 .party .char.master.swing.forward { background-position:-36px -400px; }
@@ -78,6 +94,8 @@
 .party .char.master.critical { background-position:-144px -400px; }
 .party .char.master.stone { background-position:-180px -400px; }
 .party .char.master.dead { background-position:-216px -400px; }
+.party .char.master.running.critical { background-position:-268px -400px; }
+.party .char.master.running.away { background-position:-304px -400px; }
 
 .party .char.redwizard.swing.back { background-position:0px -450px; }
 .party .char.redwizard.swing.forward { background-position:-36px -450px; }
@@ -86,6 +104,8 @@
 .party .char.redwizard.critical { background-position:-144px -450px; }
 .party .char.redwizard.stone { background-position:-180px -450px; }
 .party .char.redwizard.dead { background-position:-216px -450px; }
+.party .char.redwizard.running.critical { background-position:-268px -450px; }
+.party .char.redwizard.running.away { background-position:-304px -450px; }
 
 .party .char.whitewizard.swing.back { background-position:0px -500px; }
 .party .char.whitewizard.swing.forward { background-position:-36px -500px; }
@@ -94,6 +114,8 @@
 .party .char.whitewizard.critical { background-position:-144px -500px; }
 .party .char.whitewizard.stone { background-position:-180px -500px; }
 .party .char.whitewizard.dead { background-position:-216px -500px; }
+.party .char.whitewizard.running.critical { background-position:-268px -500px; }
+.party .char.whitewizard.running.away { background-position:-304px -500px; }
 
 .party .char.blackwizard.swing.back { background-position:0px -550px; }
 .party .char.blackwizard.swing.forward { background-position:-36px -550px; }
@@ -102,5 +124,5 @@
 .party .char.blackwizard.critical { background-position:-144px -550px; }
 .party .char.blackwizard.stone { background-position:-180px -550px; }
 .party .char.blackwizard.dead { background-position:-216px -550px; }
-
-
+.party .char.blackwizard.running.critical { background-position:-268px -550px; }
+.party .char.blackwizard.running.away { background-position:-304px -550px; }

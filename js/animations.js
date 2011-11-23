@@ -38,6 +38,8 @@ var Animation = (function() {
   var VICTORY_EXP = "EXP up";
   var VICTORY_GOLD = "GOLD";
   
+  var RUN_DELAY = 300;
+  
   /* ======================================================== */
   /* QUEUE object ------------------------------------------- */ 
   /* ======================================================== */
@@ -461,7 +463,18 @@ var Animation = (function() {
     if (result.success) {
       q.add(function() { Message.desc(RUN_SUCCESS); });
       q.delay(Message.getBattlePause());
-      // TODO: Flip all alive chars backwards to indicate "running"
+      jQuery.each(Party.getChars(), function(i, char) {
+        if (char.isAlive()) {
+          q.add(function() {
+            var $char = Battle.getCharUI(char);
+            $char.addClass("running");
+            if (!($char.hasClass("critical"))) {
+              $char.addClass("away");
+            }
+          });
+          q.delay(RUN_DELAY);
+        }
+      });
     } else {
       q.add(function() { Message.desc(RUN_FAILURE); })
       q.delay(Message.getBattlePause());
