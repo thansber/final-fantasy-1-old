@@ -511,7 +511,7 @@ var Cursors = (function() {
   CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
   CharMenuCursor.prototype.magic = function() { 
     this.clear();
-    Cursors.lookup(Cursors.CHAR_SELECTION_MENU).startListening();
+    Cursors.lookup(Cursors.CHAR_SELECTION_MENU).startListening({prevListener:this});
     // TODO: add extra cursor to select a char, for now use the last char
     //Menus.Magic.load(Party.getChar(3));
     //Party.switchView(Party.MAGIC_MENU);
@@ -529,10 +529,24 @@ var Cursors = (function() {
   };
   CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
   
+  /* --------------------- */
+  /* CHAR SELECTION cursor */
+  /* --------------------- */
   var CharSelectionMenuCursor = function() {};
   CharSelectionMenuCursor.prototype = new Cursor(self.CHAR_SELECTION_MENU, {container: "#charMenu .party", otherKeys:{}});
+  CharSelectionMenuCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Cursors.lookup(Cursors.CHAR_MENU).startListening();
+  };
   CharSelectionMenuCursor.prototype.getCursorIndex = function() { return this.$container.find(".char.profile").index(this.$cursor); };
   CharSelectionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".char.profile").eq(0); };
+  CharSelectionMenuCursor.prototype.next = function() { 
+    KeyPressNotifier.clearListener();
+    Menus.Magic.load(Party.getChar(this.getCursorIndex()));
+    Party.switchView(Party.MAGIC_MENU);
+    Cursors.lookup(Cursors.MAGIC_MENU).startListening({prevListener:this});
+  };
   CharSelectionMenuCursor.prototype.xDestinations = function() {
     var startIndex = Math.floor(this.getCursorIndex() / 2) * 2; 
     return this.$container.find(".char.profile").slice(startIndex, startIndex + 2); 
@@ -828,6 +842,14 @@ var Cursors = (function() {
 
   var MagicMenuCursor = function() {};
   MagicMenuCursor.prototype = new Cursor(self.MAGIC_MENU, {container: "#magicMenu .magic", otherKeys:{}});
+  MagicMenuCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.switchView(Party.MENU);
+    if (this.previousListener) {
+      this.previousListener.startListening({reset:false});
+    }
+  };
   MagicMenuCursor.prototype.initialCursor = function() { return this.$container.find(".spell").eq(0); };
   MagicMenuCursor.prototype.xDestinations = function() { return this.$cursor.closest(".spells").find(".spell"); };
   MagicMenuCursor.prototype.yDestinations = function() { 

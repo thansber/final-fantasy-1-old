@@ -240,15 +240,17 @@ var Menus = (function() {
         var $row = $rows.eq(s);
         var $spells = $row.find(".spell");
         $row
-          .find(".level").append(Message.create("L" + (s + 1))).end()
-          .find(".charges").append(Message.create(char.charges[s] + "/" + char.maxCharges[s]));
+          .find(".level").empty().append(Message.create("L" + (s + 1))).end()
+          .find(".charges").empty().append(Message.create(char.charges[s] + "/" + char.maxCharges[s]));
         
-        if (char.knownSpells[s]) {
-          for (var i = 0; i < char.knownSpells[s].length; i++) {
+        $spells.each(function(i) {
+          var $spell = $(this);
+          $spell.empty();
+          if (char.knownSpells[s] && char.knownSpells[s][i]) {
             var spellText = Message.padToLength(char.knownSpells[s][i], 4, {dir:"right"});
-            $spells.eq(i).append(Message.create(spellText));
+            $spell.append(Message.create(spellText));            
           }
-        }
+        });
       }
     };
     
