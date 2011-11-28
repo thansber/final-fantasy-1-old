@@ -1,6 +1,5 @@
 - inventory screens
-    - char status page
-    - inventory page
+    - inventory/items page
 
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
@@ -18,3 +17,15 @@
     - animation for walk, class toggling
     
 - remove animation chain?
+
+TOWNS
+-----
+- get image for Coneria town
+- allow transitions on map, coordinate based
+- transitions in town to leave and to enter shops
+- pressing Enter/Space in town displays message
+- add people in town initially not moving
+- add NPC object to track initial position, sprite, and conversations
+- message display in town check if person is in front of user, if so display conversation text
+- add shop object to track sprite(s) and what they offer
+- animation for transition from world map to town (CSS3)
