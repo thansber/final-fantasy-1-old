@@ -75,6 +75,7 @@
 .text p.dash { background-position:-240px -32px; }
 .text p.ellipsis { background-position:-256px -32px; }
 .text p.slash { background-position:-272px -32px; }
+.text p.percent { background-position:-288px -32px; }
 
 .text p.dagger { background-position:0 -48px; }
 .text p.hammer { background-position:-16px -48px; }

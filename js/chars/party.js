@@ -20,6 +20,7 @@ var Party = (function() {
    ,ARMOR_MENU : "#armorMenu"
    ,WEAPON_MENU : "#weaponMenu"
    ,MAGIC_MENU : "#magicMenu"
+   ,STATUS_MENU : "#statusMenu"
   };
   
   // Anything in the views object can be referenced via Party.WHATEVER

@@ -24,13 +24,14 @@ var Message = (function() {
    ,"-": "dash"
    ,":": "ellipsis"
    ,"/": "slash"
+   ,"%": "percent"
   };
   
   var items = {
     "^": "dagger"
    ,"$": "hammer"
    ,"#": "armor"
-   ,"%": "axe"
+   ,"[": "axe"
    ,"*": "gauntlet"
    ,"&": "helmet"
    ,"+": "potion"
@@ -83,7 +84,8 @@ var Message = (function() {
       $msg.addClass(jQuery.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
     }
     var newline = false;
-    if (text) {
+    if (text != null) {
+      text += "";
       for (var i = 0; i < text.length; i++) {
         var currentChar = text.charAt(i);
         var $msgChar = $("<p/>");

@@ -17,6 +17,7 @@ var Cursors = (function() {
    ,CHAR_MENU : "charMenu"
    ,CHAR_SELECTION_MENU : "charSelectionMenu"
    ,MAGIC_MENU : "magicMenu"
+   ,STATUS_MENU : "statusMenu"
    ,WEAPON_ACTIONS_MENU : "weaponActions"
    ,WEAPONS_MENU : "weapons"
   };
@@ -479,7 +480,7 @@ var Cursors = (function() {
   /* --------------------- */
   /* CHARACTER MENU cursor */
   /* --------------------- */
-  var CharMenuCursor = function() {};
+  var CharMenuCursor = function() { this.mode = null; };
   var charMenuCursorOpt = {container: "#charMenu .options", otherKeys:{}};
   charMenuCursorOpt.otherKeys[KeyPressNotifier.I] = function() { this.item(); };
   charMenuCursorOpt.otherKeys[KeyPressNotifier.M] = function() { this.magic(); };
@@ -511,11 +512,8 @@ var Cursors = (function() {
   CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
   CharMenuCursor.prototype.magic = function() { 
     this.clear();
+    this.mode = "magic";
     Cursors.lookup(Cursors.CHAR_SELECTION_MENU).startListening({prevListener:this});
-    // TODO: add extra cursor to select a char, for now use the last char
-    //Menus.Magic.load(Party.getChar(3));
-    //Party.switchView(Party.MAGIC_MENU);
-    //Cursors.lookup(Cursors.MAGIC_MENU).startListening();
   };
   CharMenuCursor.prototype.weapon = function() { 
     Menus.Weapon.load();
@@ -527,7 +525,11 @@ var Cursors = (function() {
     Party.switchView(Party.ARMOR_MENU);
     Cursors.lookup(Cursors.ARMOR_ACTIONS_MENU).startListening();
   };
-  CharMenuCursor.prototype.status = function() { Logger.debug("TODO: implement status menu"); };
+  CharMenuCursor.prototype.status = function() {
+    this.clear();
+    this.mode = "status";
+    Cursors.lookup(Cursors.CHAR_SELECTION_MENU).startListening({prevListener:this});
+  };
   
   /* --------------------- */
   /* CHAR SELECTION cursor */
@@ -543,9 +545,15 @@ var Cursors = (function() {
   CharSelectionMenuCursor.prototype.initialCursor = function() { return this.$container.find(".char.profile").eq(0); };
   CharSelectionMenuCursor.prototype.next = function() { 
     KeyPressNotifier.clearListener();
-    Menus.Magic.load(Party.getChar(this.getCursorIndex()));
-    Party.switchView(Party.MAGIC_MENU);
-    Cursors.lookup(Cursors.MAGIC_MENU).startListening({prevListener:this});
+    if (this.previousListener.mode == "magic") {
+      Menus.Magic.load(Party.getChar(this.getCursorIndex()));
+      Party.switchView(Party.MAGIC_MENU);
+      Cursors.lookup(Cursors.MAGIC_MENU).startListening({prevListener:this});
+    } else if (this.previousListener.mode == "status") {
+      Menus.Status.load(Party.getChar(this.getCursorIndex()));
+      Party.switchView(Party.STATUS_MENU);
+      Cursors.lookup(Cursors.STATUS_MENU).startListening({prevListener:this});
+    }
   };
   CharSelectionMenuCursor.prototype.xDestinations = function() {
     var startIndex = Math.floor(this.getCursorIndex() / 2) * 2; 
@@ -840,6 +848,9 @@ var Cursors = (function() {
    ,switchMode:function(char) { char.weapons(); }
   });
 
+  /* ----------------- */
+  /* MAGIC MENU cursor */
+  /* ----------------- */
   var MagicMenuCursor = function() {};
   MagicMenuCursor.prototype = new Cursor(self.MAGIC_MENU, {container: "#magicMenu .magic", otherKeys:{}});
   MagicMenuCursor.prototype.back = function() { 
@@ -847,7 +858,7 @@ var Cursors = (function() {
     this.clear();
     Party.switchView(Party.MENU);
     if (this.previousListener) {
-      this.previousListener.startListening({reset:false});
+      this.previousListener.startListening({prevListener:this.previousListener.previousListener, reset:false});
     }
   };
   MagicMenuCursor.prototype.initialCursor = function() { return this.$container.find(".spell").eq(0); };
@@ -857,6 +868,22 @@ var Cursors = (function() {
     // Yeah this is some crazy selection, but it works
     return this.$container.find(".spell:nth-child(3n - " + (Character.MAX_SPELLS_PER_LEVEL - 1 - indexInLevel) + ")");
   };
+  
+  /* ------------------ */
+  /* STATUS MENU cursor */
+  /* ------------------ */
+  var StatusMenuCursor = function() {};
+  StatusMenuCursor.prototype = new Cursor(self.STATUS_MENU, {otherKeys:{}});
+  StatusMenuCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.switchView(Party.MENU);
+    if (this.previousListener) {
+      this.previousListener.startListening({prevListener:this.previousListener.previousListener, reset:false});
+    }
+  };
+  StatusMenuCursor.prototype.next = function() { this.back(); } 
+  
   
   return this;
 }).call({});

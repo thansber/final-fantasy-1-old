@@ -257,6 +257,63 @@ var Menus = (function() {
     return this;
   }).call({});
   
+  self.Status = (function() {
+    var self = this;
+    var $container = null;
+    
+    var buildLabels = function() {
+      $container
+        .find(".level").append(Message.create("LEV", "label")).end()
+        .find(".exp")
+          .append(Message.create("EXP.POINTS", "current"))
+          .append(Message.create("FOR LEV UP", "next")).end()
+        .find(".primary.stats")
+          .append(Message.create("STR.", "label str"))
+          .append(Message.create("AGL.", "label agi"))
+          .append(Message.create("VIT.", "label vit"))
+          .append(Message.create("INT.", "label int"))
+          .append(Message.create("LUCK", "label luck")).end()
+        .find(".secondary.stats")
+          .append(Message.create("DAMAGE", "label dmg"))
+          .append(Message.create("HIT %", "label hit"))
+          .append(Message.create("ABSORB", "label absorb"))
+          .append(Message.create("EVADE %", "label evade"));
+    };
+    
+    var loadValue = function(selector, value) {
+      $container.find(selector)
+        .next(".value").remove().end()
+        .after(Message.create(value, "value"));
+    };
+    
+    self.init = function() {
+      $container = $("#statusMenu");
+      buildLabels();
+    };
+    
+    self.load = function(char) {
+      $container
+        .find(".name").empty().append(Message.create(char.getName())).end()
+        .find(".charClass").empty()
+          .append($("<div/>").addClass("char " + char.currentClass.name))
+          .append(Message.create(CharacterClass.descriptions[char.currentClass.name], "value"));
+      loadValue(".level .label", char.charLevel);
+      loadValue(".exp .current", char.experience);
+      loadValue(".exp .next", CharacterGrowth.experienceForNextLevel(char));
+      loadValue(".primary.stats .str", char.strength);
+      loadValue(".primary.stats .agi", char.agility);
+      loadValue(".primary.stats .vit", char.vitality);
+      loadValue(".primary.stats .int", char.intelligence);
+      loadValue(".primary.stats .luck", char.luck);      
+      loadValue(".secondary.stats .dmg", char.attack());
+      loadValue(".secondary.stats .hit", char.hitPercent());
+      loadValue(".secondary.stats .absorb", char.defense());
+      loadValue(".secondary.stats .evade", char.evasion());
+    };
+    
+    return this;
+  }).call({});
+  
   /* =================== */
   /* MENU INITIALIZATION */
   /* =================== */
@@ -265,6 +322,7 @@ var Menus = (function() {
     self.Armor.init();
     self.Weapon.init();
     self.Magic.init();
+    self.Status.init();
   };
     
   return this;

@@ -31,6 +31,20 @@ var CharacterClass = (function() {
   this.fullClassNames[this.BLACK_MAGE] = "Black Mage";
   this.fullClassNames[this.BLACK_WIZARD] = "Black Wizard";
   
+  this.descriptions = {};
+  this.descriptions[this.FIGHTER] = "FIGHTER";
+  this.descriptions[this.KNIGHT] = "KNIGHT";
+  this.descriptions[this.THIEF] = "THIEF";
+  this.descriptions[this.NINJA] = "NINJA";
+  this.descriptions[this.BLACKBELT] = "Bl.BELT";
+  this.descriptions[this.MASTER] = "MASTER";
+  this.descriptions[this.RED_MAGE] = "RedMAGE";
+  this.descriptions[this.RED_WIZARD] = "RedWiz";
+  this.descriptions[this.WHITE_MAGE] = "Wh.MAGE";
+  this.descriptions[this.WHITE_WIZARD] = "Wh.Wiz";
+  this.descriptions[this.BLACK_MAGE] = "Bl.MAGE";
+  this.descriptions[this.BLACK_WIZARD] = "Bl.Wiz";
+  
   function CharClass(name, opt) {
     opt = jQuery.extend(true, {canUseMagic:true}, opt);
     this.name = name;

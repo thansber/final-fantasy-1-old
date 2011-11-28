@@ -57,3 +57,22 @@
 #magicMenu .magic .spells .spell { display:inline-block; position:relative; width:64px; height:16px; }
 #magicMenu .magic .spells .spell.middle { padding:0 16px 0 32px; }
 #magicMenu .magic .spells .spell.middle .cursor { left:0px; }
+
+
+#statusMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+#statusMenu .name { height:20px; padding:20px 0 20px 24px; width:86px; float:left; margin-bottom:12px;}
+#statusMenu .charClass { height:54px; padding:4px 0 2px 16px; width:186px; float:left; margin:0 8px; }
+#statusMenu .charClass .char { float:left; }
+#statusMenu .charClass .value { float:right; padding-right:16px; padding-top:16px; }
+#statusMenu .level { height:20px; padding:20px 0 20px 8px; width:102px; float:left; }
+#statusMenu .level .value { float:right; padding-right:8px; }
+#statusMenu .exp { height:48px; padding:20px 0 20px 24px; width:326px; clear:left; margin-left:50px; margin-bottom:12px; }
+#statusMenu .exp .text { float:left; }
+#statusMenu .exp .text.next { float:left; clear:both; margin-top:16px; }
+#statusMenu .exp .value { float:right; padding-right:20px; }
+#statusMenu .exp .next + .value { margin-top:16px; }
+#statusMenu .stats { float:left; height:148px; width:170px; padding:16px 20px; }
+#statusMenu .stats .label { float:left; clear:left; margin-bottom:16px; }
+#statusMenu .stats .value { float:right; }
+#statusMenu .stats.primary { clear:both; margin-right:8px; }
+#statusMenu .stats.secondary { width:186px; }
