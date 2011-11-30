@@ -35,7 +35,7 @@ var Party = (function() {
     $player = $(opt.player);
     currentMap = Map.WORLD_MAP;
     currentTransportation = Movement.Transportation.FOOT;
-    worldMapPosition = new Map.Coords(5, 4, 4, 24).toAbsolute();
+    worldMapPosition = new Map.Coords(5, 4, 4, 24).toAbsolute(WorldMap.Config);
     self.createTestChars(); // TODO: remove this
     self.jumpTo(worldMapPosition);
     self.resetStepsUntilBattle();
@@ -111,7 +111,7 @@ var Party = (function() {
           self.startBattle();
         }
       }
-      console.log("# steps till battle=" + stepsUntilBattle + " - " + worldMapPosition.toString() + " - " + worldMapPosition.toCoords().toString());
+      Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + worldMapPosition.toString());
       return passable;
     }
   };
@@ -147,7 +147,7 @@ var Party = (function() {
   self.startBattle = function() {
     var map = self.getMap();
     if (map.is(Map.WORLD_MAP)) {
-      var coords = worldMapPosition.toCoords();
+      var coords = worldMapPosition.toCoords(WorldMap.Config);
       var encounter = Encounter.random(map.id, coords.tilesetX() + "-" + coords.tilesetY());
       var config = WorldMap.Config;
       var tileMapping = config.getParentTileMapping(config.getTile(coords));
