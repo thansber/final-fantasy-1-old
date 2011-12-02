@@ -10,6 +10,12 @@ var Map = (function() {
   self.OCEAN = "ocean";
   self.CONERIA = "coneria";
   self.PRAVOKA = "pravoka";
+  self.ELFLAND = "elfland";
+  self.MELMOND = "melmond";
+  self.CRESCENT_LAKE = "crescent lake";
+  self.ONRAC = "onrac";
+  self.GAIA = "gaia";
+  self.LEFEIN = "lefein";
   
   self.TILE_SIZE = 16;
   
@@ -213,7 +219,7 @@ var Map = (function() {
       var stackMatches = mapping.stack.match.split(" ");
       for (var i = 0; i < stackMatches.length; i++) {
         if (this.isTileOfType(surrounding[stackMatches[i]], mapping.borderTile)) {
-          return stackMatches[i];
+          return mapping.stack.cssClasses;
         }
       }
     }
