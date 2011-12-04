@@ -1,6 +1,8 @@
-#world { width:50%; height:100%; float:left; overflow:auto; }
-#view { background-color:blue; margin:2em; width:302px; height:302px; overflow:hidden; background-image:url(../images/world-map.png); }
+#map { width:50%; height:100%; float:left; overflow:auto; }
+#view { background-color:blue; margin:2em; width:302px; height:302px; overflow:hidden; }
 /* #view { background:none; }  remove this to show the world map */
+#view.world-map { background-image:url(../images/world-map.png); }
+
 #player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px; }
 
 #view.zoom.two { width:512px; height:512px; }

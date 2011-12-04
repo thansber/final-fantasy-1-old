@@ -50,8 +50,9 @@ var Map = (function() {
   /* MAP CONFIG */
   /* ========== */
   self.Config = function(opt) {
-    opt = opt || {};
+    opt = $.extend({hasBattles:true}, opt);
     this.id = opt.id;
+    this.hasBattles = opt.hasBattles;
     this.tilesets = [];
     this.tilesPerArea = opt.tilesPerArea;
     this.numTilesets = opt.numTilesets;
@@ -392,6 +393,9 @@ var Map = (function() {
     if (this.x > this.maxIndex) { this.x = 0; }
     return this;
   };
+  self.AbsoluteCoords.prototype.equals = function(other) {
+    return this.y == other.y && this.x == other.x;
+  };
   self.AbsoluteCoords.prototype.toCoords = function(config) {
     return new self.Coords(Math.floor(this.y / config.tilesPerArea), 
                            Math.floor(this.x / config.tilesPerArea), 
@@ -400,6 +404,50 @@ var Map = (function() {
   };
   self.AbsoluteCoords.prototype.toString = function() {
     return "[" + this.y + "," + this.x + "]";
+  };
+  
+  /* ===================================== */
+  /* ------------ TRANSITIONS ------------ */
+  /* ===================================== */
+  var ALL_TRANSITIONS = {};
+  
+  self.Transition = function(from, fromCoords, to, toCoords) {
+    this.from = from;
+    this.fromCoords = new self.AbsoluteCoords(fromCoords);
+    this.to = to;
+    this.toCoords = new self.AbsoluteCoords(toCoords);
+    
+    var transitionsForFrom = ALL_TRANSITIONS[this.from];
+    if (!transitionsForFrom) {
+      transitionsForFrom = [];
+      ALL_TRANSITIONS[this.from] = transitionsForFrom;
+    }
+    transitionsForFrom.push(this);
+  };
+  
+  self.findTransition = function(map, coords) {
+    var transitions = ALL_TRANSITIONS[map];
+    if (!transitions || transitions.length == 0) {
+      Logger.error("No map transitions were found for map [" + map + "], you sure you have any setup?");
+      return null;
+    }
+    
+    for (var t = 0; t < transitions.length; t++) {
+      if (coords.equals(transitions[t].fromCoords)) {
+        return transitions[t];
+      }
+    }
+    return null;
+  };
+  
+  self.showAllTransitions = function() {
+    for (var from in ALL_TRANSITIONS) {
+      var transitions = ALL_TRANSITIONS[from];
+      for (var t = 0; t < transitions.length; t++) {
+        var transition = transitions[t];
+        Logger.debug("transition from " + from + " at " + transition.fromCoords.toString() + " to " + transition.to + " at " + transition.toCoords.toString());
+      }
+    }
   };
 
   return this;

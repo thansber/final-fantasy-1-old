@@ -22,7 +22,7 @@ $(document).ready(function() {
   
   Cursors.init();
   
-  var currentMenu = "menus";
+  var currentMenu = "world-map";
   
   $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
   

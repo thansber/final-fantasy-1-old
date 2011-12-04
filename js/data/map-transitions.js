@@ -1,0 +1,1 @@
+new Map.Transition(Map.WORLD_MAP, {y:162, x:151}, Map.CONERIA, {y:17, x:23});

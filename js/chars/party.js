@@ -7,14 +7,14 @@ var Party = (function() {
   var stepsUntilBattle = -1;
   
   var $player = null;
-  var worldMapPosition = null;
+  var currentPosition = null;
   var currentMap = null;
   var currentTransportation = null;
   
   var orbsLit = [];
   
   var views = {
-    WORLD_MAP : "#world"
+    WORLD_MAP : "#map"
    ,BATTLE : "#battleView"
    ,MENU : "#charMenu"
    ,ARMOR_MENU : "#armorMenu"
@@ -33,11 +33,9 @@ var Party = (function() {
   /* =========== */
   self.init = function(opt) {
     $player = $(opt.player);
-    currentMap = Map.WORLD_MAP;
     currentTransportation = Movement.Transportation.FOOT;
-    worldMapPosition = new Map.Coords(5, 4, 4, 24).toAbsolute(WorldMap.Config);
     self.createTestChars(); // TODO: remove this
-    self.jumpTo(worldMapPosition);
+    self.jumpTo(Map.WORLD_MAP, new Map.AbsoluteCoords(165, 153));
     self.resetStepsUntilBattle();
   };
   
@@ -97,46 +95,52 @@ var Party = (function() {
   self.getTransportation = function() { return currentTransportation; };
   
   self.isDestinationPassable = function(yChange, xChange) {
-    if (self.getMap().is(Map.WORLD_MAP)) {
-      var oldPos = new Map.AbsoluteCoords(worldMapPosition);
-      worldMapPosition.adjust(yChange, xChange);
-      var tile = WorldMap.Config.getTileAbsolute(worldMapPosition);
-      var mapping = WorldMap.Config.getParentTileMapping(tile);
-      var passable = mapping.isPassableUsing(currentTransportation);
-      if (!passable) {
-        worldMapPosition = oldPos;
-      } else if (mapping.decrementBattleSteps) {
-        stepsUntilBattle--;
-        if (stepsUntilBattle <= 0) {
-          self.startBattle();
-        }
+    var mapConfig = self.getMap();
+    var oldPos = new Map.AbsoluteCoords(currentPosition);
+    
+    currentPosition.adjust(yChange, xChange);
+    
+    var tile = mapConfig.getTileAbsolute(currentPosition);
+    var mapping = mapConfig.getParentTileMapping(tile);
+    var passable = mapping.isPassableUsing(currentTransportation);
+    var transition = Map.findTransition(currentMap, currentPosition);
+    
+    if (!passable) {
+      currentPosition = oldPos;
+    } else if (!!transition) {
+      // TODO: show CSS transition from place to place
+      self.jumpTo(transition.to, transition.toCoords);
+    } else if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
+      stepsUntilBattle--;
+      if (stepsUntilBattle <= 0) {
+        self.startBattle();
       }
-      Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + worldMapPosition.toString());
-      return passable;
-    }
+    } 
+    Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
+    return passable;
   };
   
-  self.jumpTo = function(absoluteCoords) {
-    worldMapPosition = absoluteCoords;
+  self.jumpTo = function(map, coords) {
+    currentMap = map;
+    currentPosition = coords;
+    self.switchMap(currentMap);
     var playerTop = Util.cssNumericValue($player.css("marginTop"));
     var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
-    var top = (absoluteCoords.y * Map.TILE_SIZE) - playerTop;
-    var left = (absoluteCoords.x * Map.TILE_SIZE) - playerLeft;
+    var top = (currentPosition.y * Map.TILE_SIZE) - playerTop;
+    var left = (currentPosition.x * Map.TILE_SIZE) - playerLeft;
     top *= -1;
     left *= -1;
     $player.closest("#view").css({backgroundPosition:left + "px " + top + "px"});
   };
   
-  self.lightOrb = function(orb) {
-    orbsLit.push(orb);
-  };
+  self.lightOrb = function(orb) { orbsLit.push(orb); };
   
   self.resetStepsUntilBattle = function() {
     var steps = null;
     if (self.getMap().is(Map.WORLD_MAP)) {
       steps = Encounter.Steps[Map.WORLD_MAP];
     } else {
-      console.error("Player is in an unsupported map [" + map + "]");
+      Logger.error("Player is in an unsupported map [" + currentMap + "]");
     }
     
     if (steps) {
@@ -145,21 +149,21 @@ var Party = (function() {
   };
   
   self.startBattle = function() {
-    var map = self.getMap();
-    if (map.is(Map.WORLD_MAP)) {
-      var coords = worldMapPosition.toCoords(WorldMap.Config);
-      var encounter = Encounter.random(map.id, coords.tilesetX() + "-" + coords.tilesetY());
-      var config = WorldMap.Config;
-      var tileMapping = config.getParentTileMapping(config.getTile(coords));
-      //console.log(encounter);
-      
-      KeyPressNotifier.clearListener();
-      Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));
-    }
+    var mapConfig = self.getMap();
+    var coords = currentPosition.toCoords(mapConfig);
+    var encounter = Encounter.random(currentMap, coords.tilesetX() + "-" + coords.tilesetY());
+    var tileMapping = mapConfig.getParentTileMapping(mapConfig.getTile(coords));
+    Logger.debug(encounter.toString());
+    
+    KeyPressNotifier.clearListener();
+    Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));
 
     self.switchView(self.BATTLE);
-    
     self.resetStepsUntilBattle();
+  };
+  
+  self.switchMap = function(map) {
+    $("#view").removeClass().addClass(map);
   };
   
   self.switchView = function(view) {
