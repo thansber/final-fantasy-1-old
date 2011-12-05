@@ -1,7 +1,8 @@
-#map { width:50%; height:100%; float:left; overflow:auto; }
-#view { background-color:blue; margin:2em; width:302px; height:302px; overflow:hidden; }
-/* #view { background:none; }  remove this to show the world map */
-#view.world-map { background-image:url(../images/world-map.png); }
+#map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em; }
+#map.coneria .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
+#view { width:302px; height:302px; overflow:hidden; }
+#map.world-map #view { background-image:url(../images/world-map.png); background-color:black; }
+#map.coneria #view { background-image:url(../images/coneria.png); background-repeat:no-repeat; }
 
 #player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px; }
 

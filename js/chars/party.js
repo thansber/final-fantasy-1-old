@@ -110,6 +110,7 @@ var Party = (function() {
     } else if (!!transition) {
       // TODO: show CSS transition from place to place
       self.jumpTo(transition.to, transition.toCoords);
+      return false;
     } else if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
@@ -163,7 +164,7 @@ var Party = (function() {
   };
   
   self.switchMap = function(map) {
-    $("#view").removeClass().addClass(map);
+    $("#map").removeClass().addClass(map);
   };
   
   self.switchView = function(view) {
