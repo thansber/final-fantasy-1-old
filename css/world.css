@@ -1,7 +1,7 @@
 #map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em;  }
 #map .background { position:relative; }
 #map.coneria .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
-#map .background .transition { background-color:black; width:302px; height:151px; position:absolute; -moz-transition:top 1s linear; -moz-transition:bottom 1s linear; }
+#map .background .transition { background-color:black; width:302px; height:151px; position:absolute; }
 #map .background .transition.top { top:-151px; }
 #map .background .transition.top.displayed { top:0; }
 #map .background .transition.bottom { bottom:-151px; }
@@ -14,3 +14,9 @@
 
 #view.zoom.two { width:512px; height:512px; }
 #view.zoom.two #player { margin-top:288px; margin-left:288px; }
+
+#map .background .transition {
+  -moz-transition-property: top, bottom;  
+  -moz-transition-duration: 1s;
+  -moz-transition-timing-function: linear;
+}
