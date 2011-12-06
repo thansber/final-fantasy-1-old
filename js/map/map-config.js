@@ -120,7 +120,7 @@ var Map = (function() {
   self.Config.prototype.getTileMapping = function(tile) { return this.mapping[tile]; };
   self.Config.prototype.getParentTileMapping = function(tile) {
     var mapping = this.getTileMapping(tile);
-    while (mapping.inheritsFrom) {
+    while (mapping && mapping.inheritsFrom) {
       mapping = this.getParentTileMapping(mapping.inheritsFrom);
     }
     return mapping;
@@ -298,8 +298,14 @@ var Map = (function() {
     return true;
   };
   
-  self.Config.prototype.isOutsideMap = function(coords) {
-    
+  self.Config.prototype.isOutsideTownMap = function(coords) {
+    if (!this.exitOnOutOfBounds) {
+      return false;
+    }
+    if (coords.x < 0 || coords.y < 0) {
+      return true;
+    }
+    return coords.x > this.width || coords.y > this.height;
   };
   
   /* =========== */
@@ -433,16 +439,17 @@ var Map = (function() {
   };
   
   self.findTransition = function(map, coords) {
-    var mapConfig = Map.getMap(map);
-    if (mapConfig.exitOnOutOfBounds) {
-      
-    }
     var transitions = ALL_TRANSITIONS[map];
     if (!transitions || transitions.length == 0) {
       Logger.error("No map transitions were found for map [" + map + "], you sure you have any setup?");
       return null;
     }
-    
+
+    var mapConfig = Map.getMap(map);
+    if (mapConfig.exitOnOutOfBounds && mapConfig.isOutsideTownMap(coords)) {
+      return transitions[0];
+    }
+
     for (var t = 0; t < transitions.length; t++) {
       if (coords.equals(transitions[t].fromCoords)) {
         return transitions[t];

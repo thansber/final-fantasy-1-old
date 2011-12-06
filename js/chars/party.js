@@ -99,35 +99,42 @@ var Party = (function() {
     var oldPos = new Map.AbsoluteCoords(currentPosition);
     
     currentPosition.adjust(yChange, xChange);
-    
-    var tile = mapConfig.getTileAbsolute(currentPosition);
-    var mapping = mapConfig.getParentTileMapping(tile);
-    var passable = mapping.isPassableUsing(currentTransportation);
+    Logger.debug("moved to " + currentPosition.toString());
     var transition = Map.findTransition(currentMap, currentPosition);
     
-    if (!passable) {
-      currentPosition = oldPos;
-    } else if (!!transition) {
+    // Transition check needs to be first since we can get a null mapping when we leave a town
+    if (!!transition) {
+      Movement.stopListening();
       return function() { 
         var q = Animation.areaTransition(true);
         q.delay(1100);
         q.add(function() { self.jumpTo(transition.to, transition.toCoords); });
         Animation.areaTransition(false, q);
+        q.delay(1100);
+        q.add(function() { Movement.startListening(); });
         q.start();
       };
+    } 
+    
+    var tile = mapConfig.getTileAbsolute(currentPosition);
+    var mapping = mapConfig.getParentTileMapping(tile);
+    var passable = mapping.isPassableUsing(currentTransportation);
+    if (!passable) {
+      currentPosition = oldPos;
     } else if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
         self.startBattle();
       }
+      Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
     } 
-    Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
     return passable;
   };
   
   self.jumpTo = function(map, coords) {
     currentMap = map;
-    currentPosition = coords;
+    currentPosition = jQuery.extend({}, coords);
+    Logger.debug("jumped to map [" + map + "], coords [" + currentPosition.toString() + "]");
     self.switchMap(currentMap);
     var playerTop = Util.cssNumericValue($player.css("marginTop"));
     var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
