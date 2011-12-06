@@ -50,13 +50,14 @@ var Map = (function() {
   /* MAP CONFIG */
   /* ========== */
   self.Config = function(opt) {
-    opt = $.extend({hasBattles:true}, opt);
+    opt = $.extend({hasBattles:true, exitOnOutOfBounds:false}, opt);
     this.id = opt.id;
     this.hasBattles = opt.hasBattles;
     this.tilesets = [];
     this.height = opt.height;
     this.width = opt.width;
     this.numTilesets = opt.numTilesets;
+    this.exitOnOutOfBounds = opt.exitOnOutOfBounds
     this.maxWidth = this.width * this.numTilesets - 1;
     this.maxHeight = this.height * this.numTilesets - 1;
     this.mapping = $.extend(true, {}, opt.mapping);
@@ -295,7 +296,11 @@ var Map = (function() {
     }
     
     return true;
-  }
+  };
+  
+  self.Config.prototype.isOutsideMap = function(coords) {
+    
+  };
   
   /* =========== */
   /* TILE object */
@@ -428,6 +433,10 @@ var Map = (function() {
   };
   
   self.findTransition = function(map, coords) {
+    var mapConfig = Map.getMap(map);
+    if (mapConfig.exitOnOutOfBounds) {
+      
+    }
     var transitions = ALL_TRANSITIONS[map];
     if (!transitions || transitions.length == 0) {
       Logger.error("No map transitions were found for map [" + map + "], you sure you have any setup?");

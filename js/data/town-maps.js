@@ -48,7 +48,7 @@ var TownMaps = (function() {
   };
   
   self.Coneria = (function() {
-    this.Config = new Map.Config({id:Map.CONERIA, numTilesets:1, height:33, width:32, hasBattles:false});
+    this.Config = new Map.Config({id:Map.CONERIA, numTilesets:1, height:33, width:32, exitOnOutOfBounds:true, hasBattles:false});
     // 35x26
     this.Config.addTileset([
       "xwwwwwwwwwwwwwwtrtwwwwwwwwwwwwwx"
@@ -80,7 +80,7 @@ var TownMaps = (function() {
   }).call({});
   
   self.Pravoka = (function() {
-    this.Config = new Map.Config({id:Map.PRAVOKA, numTilesets:1, height:32, width:38, hasBattles:false});
+    this.Config = new Map.Config({id:Map.PRAVOKA, numTilesets:1, height:32, width:38, exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "vwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx" 
      ,"vmssssssssssssssRRRRRRRsssssssssssssss|" 
@@ -120,7 +120,7 @@ var TownMaps = (function() {
   }).call({});
   
   self.Elfland = (function() {
-   this.Config = new Map.Config({id:Map.ELFLAND, numTilesets:1, height:32, width:43, hasBattles:false});
+   this.Config = new Map.Config({id:Map.ELFLAND, numTilesets:1, height:32, width:43, exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
       " ttttttttttttttt               tttttttt   "
      ,"tttttttttssssssssss                     tt" 
@@ -160,7 +160,7 @@ var TownMaps = (function() {
   }).call({});
   
   self.Melmond = (function() {
-   this.Config = new Map.Config({id:Map.MELMOND, numTilesets:1, height:30, width:33, hasBattles:false});
+   this.Config = new Map.Config({id:Map.MELMOND, numTilesets:1, height:30, width:33, exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
      "                             s   "
     ,"        vwwwwwwwwwwwwxgggggg s   "
@@ -198,7 +198,7 @@ var TownMaps = (function() {
   }).call({});
   
   self.CrescentLake = (function() {
-    this.Config = new Map.Config({id:Map.CRESCENT_LAKE, numTilesets:1, height:25, width:48, hasBattles:false});
+    this.Config = new Map.Config({id:Map.CRESCENT_LAKE, numTilesets:1, height:25, width:48, exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "                    ttttttttttttttttttttttt     "     
      ,"vwwwwwwwwwwwwwwwwww tttttttttttttttttttttttt    "
@@ -231,8 +231,7 @@ var TownMaps = (function() {
   }).call({});
   
   self.Onrac = (function() {
-   this.Config = new Map.Config({id:Map.ONRAC, numTilesets:1, height:40, width:51, hasBattles:false});
-   // 52x38
+   this.Config = new Map.Config({id:Map.ONRAC, numTilesets:1, height:40, width:51, exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
      "ttttttttttttttttttttttttttttttttttttttttttttttttsss"
     ,"ttttttttttttttttttttttttttttttttttttttttttttttttsss"
@@ -274,14 +273,13 @@ var TownMaps = (function() {
     ,"tttttttttttttttt  tttttttttttttttttttttttttttttttts"
     ,"tttttttttttttttt  tttttttttttttttttttttttttttttttts"
     ,"tttttttttttttttt  tttttttttttttttttttttttttttttttts"
-    ,"                                                  s"
-   ]);
+    ,"                                                  s"]);
    this.Config.setMapping(townMapping);
    return this;
   }).call({});
   
   self.Gaia = (function() {
-   this.Config = new Map.Config({id:Map.GAIA, numTilesets:1, height:55, width:55, hasBattles:false});
+   this.Config = new Map.Config({id:Map.GAIA, numTilesets:1, height:55, width:55, exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "               tttttttttttttttttttttttttttttttttttttttt"
      ,"         tttttttttttttttttttttttttttttttttttttttttttttt"
@@ -343,9 +341,8 @@ var TownMaps = (function() {
   }).call({});
   
   self.Lefein = (function() {
-   this.Config = new Map.Config({id:Map.LEFEIN, numTilesets:1, height:24, width:57, hasBattles:false});
-    // 
-    this.Config.addTileset([
+   this.Config = new Map.Config({id:Map.LEFEIN, numTilesets:1, height:24, width:57, exitOnOutOfBounds:true, hasBattles:false});
+   this.Config.addTileset([
       "                                                 t       "             
      ,"                               u u             uu RRRR u "
      ,"vwwwwwwwwwwwwwx     vwwwwwwwwwttuut           tut ^HB^.ut"
