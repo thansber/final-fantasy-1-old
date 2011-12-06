@@ -3,7 +3,8 @@ var Animation = (function() {
   var self = this;
   
   this.Queues = {
-    Attack : "attack"
+    AreaTransition : "areaTransition"
+   ,Attack : "attack"
    ,BattleWalk : "walkInBattle"
    ,CastSpell : "castSpell"
    ,CharFlicker : "charFlicker"
@@ -331,6 +332,12 @@ var Animation = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
+  self.areaTransition = function(displayToggle, queue) {
+    var q = queue || new Queue(this.Queues.AreaTransition);
+    q.add(function() { $("#map .transition").toggleClass("displayed", displayToggle); });
+    return q;    
+  };
+  
   self.attack = function(command, result, queue) {
     var q = queue || new Queue(this.Queues.Attack);
     var isParty = (command.type == BattleCommands.Party);

@@ -7,9 +7,9 @@ var MapBuilder = (function() {
       markup[m++] = "<div class=\"tileset row\">";
       for (var x = 0; x < config.maxTilesetX(); x++) {
         markup[m++] = "<div class=\"tileset\">";
-        for (var j = 0; j < config.tilesPerArea; j++) {
+        for (var j = 0; j < config.height; j++) {
           markup[m++] = "<div class=\"row\">";
-          for (var i = 0; i < config.tilesPerArea; i++) {
+          for (var i = 0; i < config.width; i++) {
             var tileClasses = config.getTileClasses(new Map.Coords(y, x, j, i));
             markup[m++] = "<p class=\"tile " + tileClasses + "\">&nbsp;</p>";
           }

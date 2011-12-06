@@ -1,6 +1,12 @@
-#map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em; }
+#map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em;  }
+#map .background { position:relative; }
 #map.coneria .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
-#view { width:302px; height:302px; overflow:hidden; }
+#map .background .transition { background-color:black; width:302px; height:151px; position:absolute; -moz-transition:top 1s linear; -moz-transition:bottom 1s linear; }
+#map .background .transition.top { top:-151px; }
+#map .background .transition.top.displayed { top:0; }
+#map .background .transition.bottom { bottom:-151px; }
+#map .background .transition.bottom.displayed { bottom:0px; }
+#map #view { width:302px; height:302px; overflow:hidden; }
 #map.world-map #view { background-image:url(../images/world-map.png); background-color:black; }
 #map.coneria #view { background-image:url(../images/coneria.png); background-repeat:no-repeat; }
 

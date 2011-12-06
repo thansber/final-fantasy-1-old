@@ -54,9 +54,11 @@ var Map = (function() {
     this.id = opt.id;
     this.hasBattles = opt.hasBattles;
     this.tilesets = [];
-    this.tilesPerArea = opt.tilesPerArea;
+    this.height = opt.height;
+    this.width = opt.width;
     this.numTilesets = opt.numTilesets;
-    this.maxIndex = this.tilesPerArea * this.numTilesets - 1;
+    this.maxWidth = this.width * this.numTilesets - 1;
+    this.maxHeight = this.height * this.numTilesets - 1;
     this.mapping = $.extend(true, {}, opt.mapping);
     this.rowIndex = 0;
     allMaps[this.id] = this;
@@ -191,8 +193,8 @@ var Map = (function() {
     absoluteCoords.y -= (mapping.block.height - 1);
     absoluteCoords.x -= (mapping.block.width - 1);
     
-    var topBlock = this.maxIndex + 1;
-    var leftBlock = this.maxIndex + 1;
+    var topBlock = this.maxHeight + 1;
+    var leftBlock = this.maxWidth + 1;
     
     var minY = absoluteCoords.y, maxY = absoluteCoords.y + (mapping.block.height * 2);
     var minX = absoluteCoords.x, maxX = absoluteCoords.x + (mapping.block.width * 2);
@@ -280,14 +282,14 @@ var Map = (function() {
       alert("No tileset exists at [" + y + "][" + x + "]");
       return false;
     }
-    if (tileset.length != this.tilesPerArea) {
-      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + this.tilesPerArea);
+    if (tileset.length != this.height) {
+      alert("Tileset[" + y + "][" + x + "] has " + tileset.length + " rows, it should have " + this.height);
       return false;
     }
     
-    for (var i = 0; i < this.tilesPerArea; i++) {
-      if (tileset[i].length != this.tilesPerArea) {
-        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + this.tilesPerArea);
+    for (var i = 0; i < this.height; i++) {
+      if (tileset[i].length != this.width) {
+        alert("Tileset[" + x + "][" + y + "], row " + i + " has " + tileset[i].length + " cols, it should have " + this.width);
         return false;
       }
     }
@@ -357,8 +359,8 @@ var Map = (function() {
 
   self.Coords.prototype.toAbsolute = function(config) {
     return new self.AbsoluteCoords({
-      y : this.tilesetY() * config.tilesPerArea + this.tileY()
-     ,x: this.tilesetX() * config.tilesPerArea + this.tileX()
+      y : this.tilesetY() * config.height + this.tileY()
+     ,x: this.tilesetX() * config.width + this.tileX()
     });
   };
   
@@ -387,20 +389,20 @@ var Map = (function() {
   self.AbsoluteCoords.prototype.adjust = function(yChange, xChange) {
     this.y += yChange;
     this.x += xChange;
-    if (this.y < 0) { this.y = this.maxIndex; }
-    if (this.x < 0) { this.x = this.maxIndex; }
-    if (this.y > this.maxIndex) { this.y = 0; }
-    if (this.x > this.maxIndex) { this.x = 0; }
+    if (this.y < 0) { this.y = this.maxHeight; }
+    if (this.x < 0) { this.x = this.maxWidth; }
+    if (this.y > this.maxHeight) { this.y = 0; }
+    if (this.x > this.maxWidth) { this.x = 0; }
     return this;
   };
   self.AbsoluteCoords.prototype.equals = function(other) {
     return this.y == other.y && this.x == other.x;
   };
   self.AbsoluteCoords.prototype.toCoords = function(config) {
-    return new self.Coords(Math.floor(this.y / config.tilesPerArea), 
-                           Math.floor(this.x / config.tilesPerArea), 
-                           this.y % config.tilesPerArea, 
-                           this.x % config.tilesPerArea);
+    return new self.Coords(Math.floor(this.y / config.height), 
+                           Math.floor(this.x / config.width), 
+                           this.y % config.height, 
+                           this.x % config.width);
   };
   self.AbsoluteCoords.prototype.toString = function() {
     return "[" + this.y + "," + this.x + "]";

@@ -1,6 +1,6 @@
   
 var WorldMap = (function() {
-  var Config = new Map.Config({id:Map.WORLD_MAP, numTilesets:8, tilesPerArea:32});
+  var Config = new Map.Config({id:Map.WORLD_MAP, numTilesets:8, width:32, height:32});
   
   // 0,0
   Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"

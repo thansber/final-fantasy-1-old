@@ -108,9 +108,13 @@ var Party = (function() {
     if (!passable) {
       currentPosition = oldPos;
     } else if (!!transition) {
-      // TODO: show CSS transition from place to place
-      self.jumpTo(transition.to, transition.toCoords);
-      return false;
+      return function() { 
+        var q = Animation.areaTransition(true);
+        q.delay(1100);
+        q.add(function() { self.jumpTo(transition.to, transition.toCoords); });
+        Animation.areaTransition(false, q);
+        q.start();
+      };
     } else if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {

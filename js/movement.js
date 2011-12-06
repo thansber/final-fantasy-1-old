@@ -43,13 +43,20 @@ var Movement = (function() {
     if (!moveValid) {
       return;
     }
+    
+    var callback = function() {
+      isMoving = false;
+      if (moveValid && typeof(moveValid) === "function") {
+        moveValid();
+      }
+    };
     isMoving = true;
     var oldPos = $view.css("backgroundPosition").split(" ");
     var oldX = parseInt(oldPos[0].replace("px", ""));
     var oldY = parseInt(oldPos[1].replace("px", ""));
     var newPos = (oldX + (xChange * moveDistance * -1)) + "px " + (oldY + (yChange * moveDistance * -1)) + "px";
     var speed = MOVE_SCROLL_SPEEDS[Party.getTransportation()];
-    $view.stop().animate({backgroundPosition:newPos}, speed, "linear", function() { isMoving = false; });
+    $view.stop().animate({backgroundPosition:newPos}, speed, "linear", callback);
   };
   
   self.left = function() { self.move(-1, 0); };
