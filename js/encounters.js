@@ -86,7 +86,7 @@ var Encounter = (function() {
   };
   
   self.Steps = {};
-  self.Steps["world-map"] = {min:3, max:7}; //{min:11, max:40};
+  self.Steps["world-map"] = {min:2223, max:2227}; //{min:11, max:40};
   self.Steps["ocean"] = {min:30, max:124};
   self.Steps["dungeon"] = {min:11, max:46};
   

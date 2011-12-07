@@ -245,7 +245,7 @@ new Encounter.Formation("7F-1", ["GARLAND"], {runnable:false});
 new Encounter.Formation("7F-2", ["IronGOL 1-2"], {runnable:false});
 
 
-// All coordinates are opposite of how I do it in world map, BEWARE!!!
+// All area coordinates are opposite of how I do it in world map, BEWARE!!!
 Encounter.create(Map.WORLD_MAP)
   .area("0-0").common(["63-2","31-1","70-1","2E-1"]).uncommon(["70-1","60-1"]).rare("36-1").veryrare("1F-2")
   .area("0-1").common(["71-1","19-2","71-1","19-2"]).uncommon(["22-2","22-2"]).rare("37-2").veryrare("31-2")

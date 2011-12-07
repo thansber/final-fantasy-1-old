@@ -82,7 +82,7 @@ var TownMaps = (function() {
   
   self.Pravoka = (function() {
     this.Config = new Map.Config({id:Map.PRAVOKA, numTilesets:1, height:32, width:38, 
-                                  start:new Map.AbsoluteCoords(31, 19), worldMapExit:new Map.AbsoluteCoords(162, 151),
+                                  start:new Map.AbsoluteCoords(31, 19), worldMapExit:new Map.AbsoluteCoords(150, 209),
                                   exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "vwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx" 
@@ -123,7 +123,8 @@ var TownMaps = (function() {
   }).call({});
   
   self.Elfland = (function() {
-   this.Config = new Map.Config({id:Map.ELFLAND, numTilesets:1, height:32, width:42, 
+   this.Config = new Map.Config({id:Map.ELFLAND, numTilesets:1, height:32, width:42,
+                                 start:new Map.AbsoluteCoords(22, 41), worldMapExit:new Map.AbsoluteCoords(222, 134),
                                  exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
       " ttttttttttttttt               tttttttt   "
@@ -165,6 +166,7 @@ var TownMaps = (function() {
   
   self.Melmond = (function() {
    this.Config = new Map.Config({id:Map.MELMOND, numTilesets:1, height:30, width:33, 
+                                 start:new Map.AbsoluteCoords(17, 0), worldMapExit:new Map.AbsoluteCoords(160, 80),
                                  exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
      "                             s   "
@@ -203,7 +205,8 @@ var TownMaps = (function() {
   }).call({});
   
   self.CrescentLake = (function() {
-    this.Config = new Map.Config({id:Map.CRESCENT_LAKE, numTilesets:1, height:25, width:48, 
+    this.Config = new Map.Config({id:Map.CRESCENT_LAKE, numTilesets:1, height:25, width:48,
+                                  start:new Map.AbsoluteCoords(24, 11), worldMapExit:new Map.AbsoluteCoords(218, 218),
                                   exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "                    ttttttttttttttttttttttt     "     
@@ -238,6 +241,7 @@ var TownMaps = (function() {
   
   self.Onrac = (function() {
    this.Config = new Map.Config({id:Map.ONRAC, numTilesets:1, height:40, width:51, 
+                                 start:new Map.AbsoluteCoords(39, 16), worldMapExit:new Map.AbsoluteCoords(58, 61),
                                  exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
      "ttttttttttttttttttttttttttttttttttttttttttttttttsss"
@@ -286,7 +290,8 @@ var TownMaps = (function() {
   }).call({});
   
   self.Gaia = (function() {
-   this.Config = new Map.Config({id:Map.GAIA, numTilesets:1, height:55, width:55, 
+   this.Config = new Map.Config({id:Map.GAIA, numTilesets:1, height:55, width:55,
+                                 start:new Map.AbsoluteCoords(54, 54), worldMapExit:new Map.AbsoluteCoords(28, 221),
                                  exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "               tttttttttttttttttttttttttttttttttttttttt"
@@ -350,6 +355,7 @@ var TownMaps = (function() {
   
   self.Lefein = (function() {
    this.Config = new Map.Config({id:Map.LEFEIN, numTilesets:1, height:24, width:57, 
+                                 start:new Map.AbsoluteCoords(23, 17), worldMapExit:new Map.AbsoluteCoords(99, 234),
                                  exitOnOutOfBounds:true, hasBattles:false});
    this.Config.addTileset([
       "                                                 t       "             
@@ -379,7 +385,6 @@ var TownMaps = (function() {
     this.Config.setMapping(townMapping);
     return this;
   }).call({});
-  
   
   return this;
 }).call({});

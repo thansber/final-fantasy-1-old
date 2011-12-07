@@ -166,7 +166,7 @@ var Party = (function() {
   };
   
   self.switchMap = function(map) {
-    $("#map").removeClass().addClass(map);
+    $("#map").removeClass().addClass(map).addClass("town main");
   };
   
   self.switchView = function(view) {
