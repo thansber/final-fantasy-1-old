@@ -1,4 +1,4 @@
-var WeaponHelper = (function() {
+var LocationJumperHelper = (function() {
   
   var $debug = null;
   

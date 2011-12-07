@@ -332,9 +332,15 @@ var Animation = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  self.areaTransition = function(displayToggle, queue) {
+  self.areaTransition = function(transition, queue) {
     var q = queue || new Queue(this.Queues.AreaTransition);
-    q.add(function() { $("#map .transition").toggleClass("displayed", displayToggle); });
+    Movement.stopListening();
+    q.add(function() { $("#map .transition").toggleClass("displayed", true); });
+    q.delay(1100);
+    q.add(function() { Party.jumpTo(transition.to, transition.toCoords); });
+    q.add(function() { $("#map .transition").toggleClass("displayed", false); });
+    q.delay(1100);
+    q.add(function() { Movement.startListening(); });
     return q;    
   };
   

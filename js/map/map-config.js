@@ -50,14 +50,18 @@ var Map = (function() {
   /* MAP CONFIG */
   /* ========== */
   self.Config = function(opt) {
-    opt = $.extend({hasBattles:true, exitOnOutOfBounds:false}, opt);
+    opt = $.extend({hasBattles:true, exitOnOutOfBounds:false, wrapsX:false, wrapsY:false}, opt);
     this.id = opt.id;
     this.hasBattles = opt.hasBattles;
     this.tilesets = [];
     this.height = opt.height;
     this.width = opt.width;
     this.numTilesets = opt.numTilesets;
-    this.exitOnOutOfBounds = opt.exitOnOutOfBounds
+    this.wrapsY = opt.wrapsY;
+    this.wrapsX = opt.wrapsX;
+    this.exitOnOutOfBounds = opt.exitOnOutOfBounds;
+    this.start = opt.start;
+    this.worldMapExit = opt.worldMapExit;
     this.maxWidth = this.width * this.numTilesets - 1;
     this.maxHeight = this.height * this.numTilesets - 1;
     this.mapping = $.extend(true, {}, opt.mapping);
@@ -305,7 +309,7 @@ var Map = (function() {
     if (coords.x < 0 || coords.y < 0) {
       return true;
     }
-    return coords.x > this.width || coords.y > this.height;
+    return coords.x >= this.width || coords.y >= this.height;
   };
   
   /* =========== */
@@ -397,13 +401,13 @@ var Map = (function() {
       this.x = opt.x;
     }
   };
-  self.AbsoluteCoords.prototype.adjust = function(yChange, xChange) {
+  self.AbsoluteCoords.prototype.adjust = function(yChange, xChange, config) {
     this.y += yChange;
     this.x += xChange;
-    if (this.y < 0) { this.y = this.maxHeight; }
-    if (this.x < 0) { this.x = this.maxWidth; }
-    if (this.y > this.maxHeight) { this.y = 0; }
-    if (this.x > this.maxWidth) { this.x = 0; }
+    if (config.wrapsY && this.y < 0) { this.y = config.maxHeight; }
+    if (config.wrapsX && this.x < 0) { this.x = config.maxWidth; }
+    if (config.wrapsY && this.y > config.maxHeight) { this.y = 0; }
+    if (config.wrapsX && this.x > config.maxWidth) { this.x = 0; }
     return this;
   };
   self.AbsoluteCoords.prototype.equals = function(other) {
@@ -424,11 +428,15 @@ var Map = (function() {
   /* ===================================== */
   var ALL_TRANSITIONS = {};
   
-  self.Transition = function(from, fromCoords, to, toCoords) {
+  self.Transition = function(from, to, fromCoords, toCoords) {
     this.from = from;
-    this.fromCoords = new self.AbsoluteCoords(fromCoords);
     this.to = to;
-    this.toCoords = new self.AbsoluteCoords(toCoords);
+    if (!fromCoords) {
+        this.toCoords = self.getMap(from).worldMapExit;
+    } else {
+        this.fromCoords = new self.AbsoluteCoords(fromCoords);
+        this.toCoords = toCoords ? new self.AbsoluteCoords(toCoords) : self.getMap(to).start;
+    }
     
     var transitionsForFrom = ALL_TRANSITIONS[this.from];
     if (!transitionsForFrom) {
@@ -446,13 +454,15 @@ var Map = (function() {
     }
 
     var mapConfig = Map.getMap(map);
-    if (mapConfig.exitOnOutOfBounds && mapConfig.isOutsideTownMap(coords)) {
-      return transitions[0];
-    }
-
-    for (var t = 0; t < transitions.length; t++) {
-      if (coords.equals(transitions[t].fromCoords)) {
-        return transitions[t];
+    if (mapConfig.exitOnOutOfBounds) {
+      if (mapConfig.isOutsideTownMap(coords)) {
+        return transitions[0];
+      }
+    } else {
+      for (var t = 0; t < transitions.length; t++) {
+        if (coords.equals(transitions[t].fromCoords)) {
+          return transitions[t];
+        }
       }
     }
     return null;

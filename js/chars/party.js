@@ -98,22 +98,13 @@ var Party = (function() {
     var mapConfig = self.getMap();
     var oldPos = new Map.AbsoluteCoords(currentPosition);
     
-    currentPosition.adjust(yChange, xChange);
+    currentPosition.adjust(yChange, xChange, mapConfig);
     Logger.debug("moved to " + currentPosition.toString());
     var transition = Map.findTransition(currentMap, currentPosition);
     
     // Transition check needs to be first since we can get a null mapping when we leave a town
     if (!!transition) {
-      Movement.stopListening();
-      return function() { 
-        var q = Animation.areaTransition(true);
-        q.delay(1100);
-        q.add(function() { self.jumpTo(transition.to, transition.toCoords); });
-        Animation.areaTransition(false, q);
-        q.delay(1100);
-        q.add(function() { Movement.startListening(); });
-        q.start();
-      };
+      return function() { Animation.areaTransition(transition).start(); };
     } 
     
     var tile = mapConfig.getTileAbsolute(currentPosition);

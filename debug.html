@@ -114,6 +114,7 @@
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
     <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
+    <li class="curve tl bl big"><a href="#" class="locationJumper">Location Jumper</a></li>
     <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="enemiesSplash">Enemies/Splash</a></li>
@@ -160,6 +161,13 @@
     </div>
     <button class="start listening">Start listening</button>
     <button class="stop listening">Stop listening</button>
+  </section>
+  
+  <section class="locationJumper curve all">
+    <select class="location selector">
+      <option value="">--Select a location--</option>
+    </select>
+    <button class="go">Go there!</button>
   </section>
   
   <section class="coords curve all">
@@ -377,6 +385,7 @@
 <script type="text/javascript" src="js/data/map-transitions.js"></script>
 <script type="text/javascript" src="js/debug/world-map.js"></script>
 <script type="text/javascript" src="js/debug/movement.js"></script>
+<script type="text/javascript" src="js/debug/locationJumper.js"></script>
 <script type="text/javascript" src="js/debug/coordinates.js"></script>
 <script type="text/javascript" src="js/debug/messages.js"></script>
 <script type="text/javascript" src="js/debug/enemies.js"></script>

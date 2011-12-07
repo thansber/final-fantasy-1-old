@@ -48,7 +48,9 @@ var TownMaps = (function() {
   };
   
   self.Coneria = (function() {
-    this.Config = new Map.Config({id:Map.CONERIA, numTilesets:1, height:23, width:32, exitOnOutOfBounds:true, hasBattles:false});
+    this.Config = new Map.Config({id:Map.CONERIA, numTilesets:1, height:24, width:32, 
+                                  start:new Map.AbsoluteCoords(23, 16), worldMapExit:new Map.AbsoluteCoords(162, 151), 
+                                  exitOnOutOfBounds:true, hasBattles:false});
     this.Config.addTileset([
       "xwwwwwwwwwwwwwwtrtwwwwwwwwwwwwwx"
      ,"|tuu       tututrttttttuuuttttt|"

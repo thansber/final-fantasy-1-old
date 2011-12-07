@@ -17,7 +17,7 @@ var Movement = (function() {
 
   var TIMER_LABEL = "movement";
   var MOVE_SCROLL_SPEEDS = {};
-  MOVE_SCROLL_SPEEDS[Transportation.Foot] = 250;
+  MOVE_SCROLL_SPEEDS[Transportation.Foot] = 150;
 
   self.Transportation = Transportation;
   
