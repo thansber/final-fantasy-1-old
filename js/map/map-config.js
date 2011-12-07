@@ -254,19 +254,19 @@ var Map = (function() {
   };
   
   self.Config.prototype.getCoordsToLeft = function(coords) {
-    return coords.toAbsolute(this).adjust(0, -1).toCoords(this);
+    return coords.toAbsolute(this).adjust(0, -1, this).toCoords(this);
   };
 
   self.Config.prototype.getCoordsToRight = function(coords) {
-    return coords.toAbsolute(this).adjust(0, 1).toCoords(this);
+    return coords.toAbsolute(this).adjust(0, 1, this).toCoords(this);
   };
   
   self.Config.prototype.getCoordsAbove = function(coords) {
-    return coords.toAbsolute(this).adjust(-1, 0).toCoords(this);
+    return coords.toAbsolute(this).adjust(-1, 0, this).toCoords(this);
   };
   
   self.Config.prototype.getCoordsBelow = function(coords) {
-    return coords.toAbsolute(this).adjust(1, 0).toCoords(this);
+    return coords.toAbsolute(this).adjust(1, 0, this).toCoords(this);
   };
   
   self.Config.prototype.isTileOfType = function(tile, type) { 

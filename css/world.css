@@ -1,6 +1,6 @@
 #map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em;  }
 #map .background { position:relative; }
-#map.coneria .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
+#map.town .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
 #map .background .transition { background-color:black; width:302px; height:151px; position:absolute; }
 #map .background .transition.top { top:-151px; }
 #map .background .transition.top.displayed { top:0; }
@@ -8,7 +8,15 @@
 #map .background .transition.bottom.displayed { bottom:0px; }
 #map #view { width:302px; height:302px; overflow:hidden; }
 #map.world-map #view { background-image:url(../images/world-map.png); background-color:black; }
-#map.coneria #view { background-image:url(../images/coneria.png); background-repeat:no-repeat; }
+#map.town #view { background-repeat:no-repeat; }
+#map.town.coneria #view { background-image:url(../images/towns/coneria.png); }
+#map.town.pravoka #view { background-image:url(../images/towns/pravoka.png); }
+#map.town.elfland #view { background-image:url(../images/towns/elfland.png); }
+#map.town.melmond #view { background-image:url(../images/towns/melmond.png); }
+#map.town.crescent.lake #view { background-image:url(../images/towns/crescent-lake.png); }
+#map.town.onrac #view { background-image:url(../images/towns/onrac.png); }
+#map.town.gaia #view { background-image:url(../images/towns/gaia.png); }
+#map.town.lefein #view { background-image:url(../images/towns/lefein.png); }
 
 #player { width:16px; height:16px; background-color:red; margin-top:144px; margin-left:144px; }
 

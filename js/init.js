@@ -19,6 +19,7 @@ $(document).ready(function() {
   WeaponHelper.init();
   WeaponAnimationHelper.init();
   ActionHelper.init();
+  LocationJumperHelper.init();
   
   Cursors.init();
   
@@ -30,6 +31,7 @@ $(document).ready(function() {
   
   $("#debug .movement").click(function(event) { MovementHelper.event($(event.target)); });
   $("#debug .world-map").click(function(event) { WorldMapHelper.event($(event.target)); });
+  $("#debug .locationJumper button").click(function(event) { LocationJumperHelper.event($(event.target)); });
   $("#debug .coords button").click(function(event) { CoordsHelper.event($(event.target)); });
   $("#debug .enemiesSplash select").change(function(event) { EnemyHelper.event($(event.target)); });
   $("#debug .enemiesSplash button").click(function(event) { EnemyHelper.event($(event.target)); });
