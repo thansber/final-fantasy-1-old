@@ -55,13 +55,27 @@ var Shops = (function() {
     return this;
   };
   Shop.prototype.npcSays = function(dialog) { $shop.find(".npc.dialog").empty().append(Message.create(dialog)); return this; };
-  Shop.prototype.offers = function(option) { $shop.find(".menu").append($("<div/>").addClass("option").append(Message.create(options))); return this; };
-  Shop.prototype.signShows = function(text) { $shop.find(".type").append(Message.create(this.heading)); return this; };
+  Shop.prototype.offers = function(option) { $shop.find(".menu").append($("<div/>").addClass("option").append(Message.create(option))); return this; };
+  Shop.prototype.offersCharNames = function() {
+    var chars = Party.getChars();
+    for (var i = 0, n = chars.length; i < n; i++) {
+      this.offers(chars[i].getName());
+    }
+    return this;
+  };
+  Shop.prototype.signShows = function(text) { $shop.find(".type").append(Message.create(text)); return this; };
   
   var ArmorShop = function() {};
   ArmorShop.prototype = new Shop(self.Types.Armor);
   ArmorShop.prototype.displayInit = function() { 
     this.signShows("ARMOR").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
+    $shop.find(".menu").show();
+  };
+  
+  var BlackMagicShop = function() {};
+  BlackMagicShop.prototype = new Shop(self.Types.BlackMagic);
+  BlackMagicShop.prototype.displayInit = function() {   
+    this.signShows("BMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames();
     $shop.find(".menu").show();
   };
   
@@ -86,10 +100,31 @@ var Shops = (function() {
     $shop.find(".menu").toggle(anyCharactersDead).end();
   };
   
+  var ItemShop = function() {};
+  ItemShop.prototype = new Shop(self.Types.Item);
+  ItemShop.prototype.displayInit = function() {   
+    this.signShows(" ITEM").npcSays("Welcome").offers("Buy").offers("Exit");
+    $shop.find(".menu").show();
+  };
+  
+  var Inn = function() {};
+  Inn.prototype = new Shop(self.Types.Inn);
+  Inn.prototype.displayInit = function() {   
+    this.signShows(" INN").npcSays("Welcome\n  ::\nStay,\nto save\nyour\ndata").offers("Yes").offers("No");
+    $shop.find(".menu").show();
+  };
+  
   var WeaponShop = function() {};
   WeaponShop.prototype = new Shop(self.Types.Weapon);
   WeaponShop.prototype.displayInit = function() {   
     this.signShows("WEAPON").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
+    $shop.find(".menu").show();
+  };
+  
+  var WhiteMagicShop = function() {};
+  WhiteMagicShop.prototype = new Shop(self.Types.WhiteMagic);
+  WhiteMagicShop.prototype.displayInit = function() {   
+    this.signShows("WMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames();
     $shop.find(".menu").show();
   };
   

@@ -14,3 +14,6 @@
 #shop .clinic .npc.sprite { background-position:-94px 0; }
 #shop .inn .npc.sprite { background-position:-188px 0; }
 #shop .weapon .npc.sprite { background-position:-282px 0; }
+#shop .item .npc.sprite { background-position:-376px 0; }
+#shop .black-magic .npc.sprite { background-position:-470px 0; }
+#shop .white-magic .npc.sprite { background-position:-564px 0; }
