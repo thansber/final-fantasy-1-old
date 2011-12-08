@@ -1,4 +1,4 @@
-var TownMaps = (function() {
+var Towns = (function() {
   
   var self = this;
   

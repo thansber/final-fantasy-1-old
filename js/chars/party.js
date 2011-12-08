@@ -87,6 +87,12 @@ var Party = (function() {
       .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
   };
   
+  self.enterShop = function(shopType) {
+    $("#shop section").removeClass().addClass(shopType);
+    Shops.lookup(shopType).display();
+    self.switchView("#shop");
+  };
+  
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
   self.getGold = function() { return gold; };

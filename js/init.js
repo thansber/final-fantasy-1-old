@@ -10,6 +10,7 @@ $(document).ready(function() {
   Party.init({player:"#player"});
   Battle.init();
   Menus.init();
+  Shops.init();
   
   WorldMapHelper.init({tilesets:"#debug .world-map .tilesets"});
   MessageHelper.init();

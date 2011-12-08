@@ -11,6 +11,7 @@
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
   <link type="text/css" rel="stylesheet" href="css/characters.css"/>
   <link type="text/css" rel="stylesheet" href="css/menus.css"/>
+  <link type="text/css" rel="stylesheet" href="css/shops.css"/>
 </head>
 <body>
 
@@ -110,11 +111,24 @@
   <div class="stats secondary border"></div>
 </div>
 
+<div id="shop" class="main">
+  <section>
+    <h1 class="type border"></h1>
+    <div class="npc dialog border"></div>
+    <div class="npc sprite"></div>
+    <div class="party"></div>
+    <div class="prices border"></div>
+    <div class="menu border"></div>
+    <div class="gold border"></div>
+  </section>
+</div>
+
 <div id="debug">
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
     <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
     <li class="curve tl bl big"><a href="#" class="locationJumper">Location Jumper</a></li>
+    <li class="curve tl bl big"><a href="#" class="shops">Shops</a></li>
     <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
     <li class="curve tl bl big"><a href="#" class="enemiesSplash">Enemies/Splash</a></li>
@@ -164,10 +178,14 @@
   </section>
   
   <section class="locationJumper curve all">
-    <select class="location selector">
-      <option value="">--Select a location--</option>
-    </select>
-    <button class="go">Go there!</button>
+    <div class="town row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+    </div>
+    <div class="shop row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+    </div>
   </section>
   
   <section class="coords curve all">
@@ -371,6 +389,7 @@
 <script type="text/javascript" src="js/encounters.js"></script>
 <script type="text/javascript" src="js/actions.js"></script>
 <script type="text/javascript" src="js/animations.js"></script>
+<script type="text/javascript" src="js/shops.js"></script>
 <script type="text/javascript" src="js/map/map-config.js"></script>
 <script type="text/javascript" src="js/chars/character-class.js"></script>
 <script type="text/javascript" src="js/chars/character.js"></script>

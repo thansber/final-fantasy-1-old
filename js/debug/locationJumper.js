@@ -5,23 +5,21 @@ var LocationJumperHelper = (function() {
   
   self.init = function() {
     $debug = $("#debug section.locationJumper");
-    initLocationSelector();
+    initTownSelector();
+    initShopSelector();
   };
   
   self.event = function($target) {
     if ($target.is(".go")) {
-      var map = $(".selector", $debug).val();
-      if (map.length > 0) {
-        var mapConfig = Map.getMap(map);
-        var destination = new Map.AbsoluteCoords(mapConfig.worldMapExit.y, mapConfig.worldMapExit.x);
-        destination.adjust(0, 1, Map.getMap(Map.WORLD_MAP));
-        Party.jumpTo(Map.WORLD_MAP, destination);
-      }
+      var $row = $target.closest(".row");
+      if ($row.is(".town")) { jumpToTown($row); } 
+      else if ($row.is(".shop")) { jumpToShop($row); }
     } 
   };
   
-  var initLocationSelector = function() {
-    var $selector = $(".selector", $debug);
+  var initTownSelector = function() {
+    var $selector = $(".town .selector", $debug);
+    DebugHelper.addOption($selector, "", "--Select a town--");
     DebugHelper.addOption($selector, Map.CONERIA, "Coneria");
     DebugHelper.addOption($selector, Map.PRAVOKA, "Pravoka");
     DebugHelper.addOption($selector, Map.ELFLAND, "Elfland");
@@ -32,7 +30,28 @@ var LocationJumperHelper = (function() {
     DebugHelper.addOption($selector, Map.LEFEIN, "Lefein");
   };
   
+  var initShopSelector = function() {
+    var $selector = $(".shop .selector", $debug);
+    DebugHelper.addOption($selector, "", "--Select a shop--");
+    for (var s in Shops.Types) {
+      DebugHelper.addOption($selector, Shops.Types[s], Shops.Types[s]);
+    }
+  };
   
+  var jumpToTown = function($row) {
+    var map = $(".selector", $row).val();
+    if (map.length > 0) {
+      var mapConfig = Map.getMap(map);
+      var destination = new Map.AbsoluteCoords(mapConfig.worldMapExit.y, mapConfig.worldMapExit.x);
+      destination.adjust(0, 1, Map.getMap(Map.WORLD_MAP));
+      Party.jumpTo(Map.WORLD_MAP, destination);
+    }
+  };
+  
+  var jumpToShop = function($row) {
+    var shopType = $(".selector", $row).val();
+    Party.enterShop(shopType);
+  };
   
   return this;
 }).call({});
