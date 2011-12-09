@@ -49,6 +49,7 @@ var LocationJumperHelper = (function() {
   };
   
   var jumpToShop = function($row) {
+    Party.jumpTo(Map.CONERIA, Towns.Coneria.Config.start);
     var shopType = $(".selector", $row).val();
     Party.enterShop(shopType);
   };

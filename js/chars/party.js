@@ -88,11 +88,13 @@ var Party = (function() {
   };
   
   self.enterShop = function(shopType) {
+    Movement.stopListening();
     $("#shop section").removeClass().addClass(shopType);
     Shops.lookup(shopType).display();
     self.switchView("#shop");
   };
   
+  self.exitShop = function() { self.switchView("#map"); Movement.startListening(); };
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
   self.getGold = function() { return gold; };

@@ -16,7 +16,12 @@ var Cursors = (function() {
    ,BATTLE_SPELLS : "battleSpells"
    ,CHAR_MENU : "charMenu"
    ,CHAR_SELECTION_MENU : "charSelectionMenu"
+   ,CLINIC : "clinic"
+   ,EQUIPMENT_SHOP : "equipmentShop"
+   ,INN : "inn"
+   ,ITEM_SHOP : "itemShop"
    ,MAGIC_MENU : "magicMenu"
+   ,MAGIC_SHOP : "magicShop"
    ,STATUS_MENU : "statusMenu"
    ,WEAPON_ACTIONS_MENU : "weaponActions"
    ,WEAPONS_MENU : "weapons"
@@ -884,6 +889,28 @@ var Cursors = (function() {
   };
   StatusMenuCursor.prototype.next = function() { this.back(); } 
   
+  /* --------------------- */
+  /* EQUIPMENT SHOP cursor */
+  /* --------------------- */
+  var EquipmentShopCursor = function() {};
+  var equipmentShopCursorOpt = {container: "#shop .menu", otherKeys:{}};
+  equipmentShopCursorOpt.otherKeys[KeyPressNotifier.B] = function() { this.buy(); };
+  equipmentShopCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.exit(); };
+  equipmentShopCursorOpt.otherKeys[KeyPressNotifier.S] = function() { this.sell(); };
+  equipmentShopCursorOpt.otherKeys[KeyPressNotifier.X] = function() { this.exit(); };
+  EquipmentShopCursor.prototype = new Cursor(self.EQUIPMENT_SHOP, equipmentShopCursorOpt);
+  EquipmentShopCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.exitShop();
+  };
+  EquipmentShopCursor.prototype.buy = function() { this.back(); }
+  EquipmentShopCursor.prototype.exit = function() { this.back(); }
+  EquipmentShopCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
+  EquipmentShopCursor.prototype.next = function() { this.back(); } 
+  EquipmentShopCursor.prototype.sell = function() { this.back(); }
+  EquipmentShopCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+
   
   return this;
 }).call({});

@@ -1,6 +1,7 @@
 var Shops = (function() {
   var self = this;
   var ALL = {};
+  var INVENTORIES = {};
   var $shop = null;
   
   self.Types = {
@@ -12,6 +13,36 @@ var Shops = (function() {
    ,Weapon : "weapon"
    ,WhiteMagic : "white-magic"
   };
+  
+  self.Inventory = (function() {
+    var self = this;
+    
+    var ShopInventory = function(town, shopType, itemDisplayName, price) {
+      this.town = town;
+      this.shopType = shopType;
+      this.itemDisplayName = itemDisplayName;
+      this.price = price;
+      
+      var townShops = INVENTORIES[town];
+      if (!townShops) {
+        townShops = {};
+        INVENTORIES[town] = townShops;
+      }
+      
+      var shopInventory = townShops[shopType];
+      if (!shopInventory) {
+        shopInventory = [];
+        townShops[shopType] = shopInventory;
+      }
+      shopInventory.push(this);
+    };
+    
+    self.create = function(town, shopType, itemDisplayName, price) {
+      return new ShopInventory(town, shopType, itemDisplayName, price);
+    };
+    
+    return this;
+  }).call({});
   
   self.create = function(id) {
     return new Shop(id);
@@ -36,6 +67,7 @@ var Shops = (function() {
       .find(".prices").empty().hide().end()
       .find(".menu").empty().hide().end();
     this.displayInit();
+    this.populateInventory();
     this.party().gold();
   };
   Shop.prototype.displayInit = function() { /* intentionally left empty for sub-classes to override */  };
@@ -63,6 +95,10 @@ var Shops = (function() {
     }
     return this;
   };
+  Shop.prototype.populateInventory = function() {
+    var inventory = INVENTORIES[Party.getMap().id][this.id];
+    console.log(inventory);
+  };
   Shop.prototype.signShows = function(text) { $shop.find(".type").append(Message.create(text)); return this; };
   
   var ArmorShop = function() {};
@@ -70,6 +106,7 @@ var Shops = (function() {
   ArmorShop.prototype.displayInit = function() { 
     this.signShows("ARMOR").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
     $shop.find(".menu").show();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
   
   var BlackMagicShop = function() {};
@@ -119,6 +156,7 @@ var Shops = (function() {
   WeaponShop.prototype.displayInit = function() {   
     this.signShows("WEAPON").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
     $shop.find(".menu").show();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
   
   var WhiteMagicShop = function() {};
