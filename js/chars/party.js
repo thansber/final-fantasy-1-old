@@ -9,6 +9,7 @@ var Party = (function() {
   var $player = null;
   var currentPosition = null;
   var currentMap = null;
+  var currentShop = null;
   var currentTransportation = null;
   
   var orbsLit = [];
@@ -46,7 +47,7 @@ var Party = (function() {
   /* PUBLIC METHODS */
   /* ============== */
   self.addChar = function(c) { chars.push(c); };
-  self.addGold = function(gp) { gold += gp; };
+  self.addGold = function(gp) { gold += gp; if (gold < 0) { gold = 0; } };
   self.clearChars = function() { chars = []; };
   
   self.createNewChar = function(name, charClass, index) {
@@ -85,21 +86,29 @@ var Party = (function() {
       .weapons().add("Small[K]").equip("Small[K]")
       .armor().add("Cloth").equipAll()
       .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
+    
+    self.addGold(400);
   };
   
   self.enterShop = function(shopType) {
     Movement.stopListening();
     $("#shop section").removeClass().addClass(shopType);
     Shops.lookup(shopType).display();
+    currentShop = Shops.lookup(shopType);
     self.switchView("#shop");
   };
   
-  self.exitShop = function() { self.switchView("#map"); Movement.startListening(); };
+  self.exitShop = function() { 
+    currentShop = null; 
+    self.switchView("#map"); 
+    Movement.startListening(); 
+  };
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
   self.getGold = function() { return gold; };
   self.getLitOrbs = function() { return orbsLit; };
   self.getMap = function() { return Map.getMap(currentMap); };
+  self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
   
   self.isDestinationPassable = function(yChange, xChange) {

@@ -17,10 +17,10 @@ var Shops = (function() {
   self.Inventory = (function() {
     var self = this;
     
-    var ShopInventory = function(town, shopType, itemDisplayName, price) {
+    var ShopInventory = function(town, shopType, item, price) {
       this.town = town;
       this.shopType = shopType;
-      this.itemDisplayName = itemDisplayName;
+      this.item = item;
       this.price = price;
       
       var townShops = INVENTORIES[town];
@@ -37,8 +37,8 @@ var Shops = (function() {
       shopInventory.push(this);
     };
     
-    self.create = function(town, shopType, itemDisplayName, price) {
-      return new ShopInventory(town, shopType, itemDisplayName, price);
+    self.create = function(town, shopType, item, price) {
+      return new ShopInventory(town, shopType, item, price);
     };
     
     return this;
@@ -61,33 +61,31 @@ var Shops = (function() {
     ALL[id] = this;
   };
   
+  Shop.prototype.clear = function(whatToClear) { $shop.find(whatToClear).empty(); return this; };
   Shop.prototype.display = function() { 
-    $shop
-      .find(".type").empty().end()
-      .find(".prices").empty().hide().end()
-      .find(".menu").empty().hide().end();
+    this.clear(".type, .prices, .menu");
+    this.hide(".prices");
     this.displayInit();
     this.populateInventory();
     this.party().gold();
   };
   Shop.prototype.displayInit = function() { /* intentionally left empty for sub-classes to override */  };
-  Shop.prototype.party = function() {
-    var $party = $shop.find(".party");
-    var chars = Party.getChars();
-    
-    $party.empty();
-    for (var i = 0, n = chars.length; i < n; i++) {
-      $party.append($("<div/>").addClass("char").addClass(chars[i].currentClass.name).toggleClass("first", i == 0));
-    }
-    return this;
-  };
   Shop.prototype.gold = function() {
     var partyGold = Message.padToLength(Party.getGold(), 6);
-    $shop.find(".gold").empty().append(Message.create(partyGold + " G"));
+    this.clear(".gold");
+    $shop.find(".gold").append(Message.create(partyGold + " G"));
     return this;
   };
-  Shop.prototype.npcSays = function(dialog) { $shop.find(".npc.dialog").empty().append(Message.create(dialog)); return this; };
-  Shop.prototype.offers = function(option) { $shop.find(".menu").append($("<div/>").addClass("option").append(Message.create(option))); return this; };
+  Shop.prototype.hide = function(what) { $shop.find(what).hide(); return false; };
+  Shop.prototype.lookupInventory = function(index) { return INVENTORIES[Party.getMap().id][this.id][index]; };
+  Shop.prototype.npcSays = function(dialog, append) { 
+    if (!append) {
+      this.clear(".npc.dialog");
+    }
+    $shop.find(".npc.dialog").append(Message.create(dialog, "append")); 
+    return this; 
+  };
+  Shop.prototype.offers = function(option, cssClasses) { $shop.find(".menu").append($("<div/>").addClass("option").addClass(cssClasses).append(Message.create(option))); return this; };
   Shop.prototype.offersCharNames = function() {
     var chars = Party.getChars();
     for (var i = 0, n = chars.length; i < n; i++) {
@@ -95,25 +93,40 @@ var Shops = (function() {
     }
     return this;
   };
-  Shop.prototype.populateInventory = function() {
-    var inventory = INVENTORIES[Party.getMap().id][this.id];
-    console.log(inventory);
+  Shop.prototype.party = function() {
+    var $party = $shop.find(".party");
+    var chars = Party.getChars();
+    
+    this.clear(".party");
+    for (var i = 0, n = chars.length; i < n; i++) {
+      $party.append($("<div/>").addClass("char").addClass(chars[i].currentClass.name).toggleClass("first", i == 0));
+    }
+    return this;
   };
-  Shop.prototype.signShows = function(text) { $shop.find(".type").append(Message.create(text)); return this; };
+  Shop.prototype.populateInventory = function() {
+    var shopInventory = INVENTORIES[Party.getMap().id][this.id];
+    var $prices = $shop.find(".prices");
+    for (var i = 0; i < shopInventory.length; i++) {
+      var inventoryItem = shopInventory[i];
+      var itemDisplayPrice = Message.padToLength(inventoryItem.price, 7);
+      $prices.append($("<div/>").addClass("item").append(Message.create(inventoryItem.item.desc)));
+      $prices.append($("<div/>").addClass("price").append(Message.create(itemDisplayPrice)));
+    }
+  };
+  Shop.prototype.show = function(what) { $shop.find(what).show(); return this; };
+  Shop.prototype.signShows = function(text) { $shop.find(".type").empty().append(Message.create(text)); return this; };
   
   var ArmorShop = function() {};
   ArmorShop.prototype = new Shop(self.Types.Armor);
   ArmorShop.prototype.displayInit = function() { 
-    this.signShows("ARMOR").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
-    $shop.find(".menu").show();
+    this.signShows("ARMOR").npcSays("Welcome").offers("Buy", "buy").offers("Sell", "sell").offers("Exit", "exit").show(".menu");
     Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
   
   var BlackMagicShop = function() {};
   BlackMagicShop.prototype = new Shop(self.Types.BlackMagic);
   BlackMagicShop.prototype.displayInit = function() {   
-    this.signShows("BMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames();
-    $shop.find(".menu").show();
+    this.signShows("BMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames().show(".menu");
   };
   
   var Clinic = function() {};
@@ -140,30 +153,26 @@ var Shops = (function() {
   var ItemShop = function() {};
   ItemShop.prototype = new Shop(self.Types.Item);
   ItemShop.prototype.displayInit = function() {   
-    this.signShows(" ITEM").npcSays("Welcome").offers("Buy").offers("Exit");
-    $shop.find(".menu").show();
+    this.signShows(" ITEM").npcSays("Welcome").offers("Buy").offers("Exit").show(".menu");
   };
   
   var Inn = function() {};
   Inn.prototype = new Shop(self.Types.Inn);
   Inn.prototype.displayInit = function() {   
-    this.signShows(" INN").npcSays("Welcome\n  ::\nStay,\nto save\nyour\ndata").offers("Yes").offers("No");
-    $shop.find(".menu").show();
+    this.signShows(" INN").npcSays("Welcome\n  ::\nStay,\nto save\nyour\ndata").offers("Yes").offers("No").show(".menu");
   };
   
   var WeaponShop = function() {};
   WeaponShop.prototype = new Shop(self.Types.Weapon);
   WeaponShop.prototype.displayInit = function() {   
-    this.signShows("WEAPON").npcSays("Welcome").offers("Buy").offers("Sell").offers("Exit");
-    $shop.find(".menu").show();
+    this.signShows("WEAPON").npcSays("Welcome").offers("Buy", "buy").offers("Sell", "sell").offers("Exit", "exit").show(".menu");
     Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
   
   var WhiteMagicShop = function() {};
   WhiteMagicShop.prototype = new Shop(self.Types.WhiteMagic);
   WhiteMagicShop.prototype.displayInit = function() {   
-    this.signShows("WMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames();
-    $shop.find(".menu").show();
+    this.signShows("WMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames().show(".menu");
   };
   
   return this;

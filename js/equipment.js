@@ -43,7 +43,6 @@ var Equipment = (function() {
   this.Armor = (function() {
     
     var self = this;
-    
       
     function Armor(opt) {
       this.name = opt.name;

@@ -5,7 +5,6 @@
 - figure out what happens to a char when they are asleep
 - handle LIFE, LIF2, WARP, EXIT, SOFT spells
 
-- running away sprites need their colors fixed (redo at home using paint.net)
 - character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
 
@@ -21,7 +20,8 @@
 
 TOWNS
 -----
-- create images for each town
+- add inventory for all shops
+- figure out how to track item selected when buying (cursors)
 - allow transitions on map, coordinate based
     - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 - encode castles (Coneria/Elfland)
@@ -30,4 +30,3 @@ TOWNS
 - add people in town initially not moving
 - add NPC object to track initial position, sprite, and conversations
 - message display in town - check if person is in front of user, if so display conversation text
-- add shop object to track sprite(s) and what they offer

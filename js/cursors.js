@@ -18,6 +18,8 @@ var Cursors = (function() {
    ,CHAR_SELECTION_MENU : "charSelectionMenu"
    ,CLINIC : "clinic"
    ,EQUIPMENT_SHOP : "equipmentShop"
+   ,EQUIPMENT_SHOP_BUY_CONFIRM : "equipmentShopBuyConfirm"
+   ,EQUIPMENT_SHOP_ITEM : "equipmentShopItem"
    ,INN : "inn"
    ,ITEM_SHOP : "itemShop"
    ,MAGIC_MENU : "magicMenu"
@@ -904,13 +906,71 @@ var Cursors = (function() {
     this.clear();
     Party.exitShop();
   };
-  EquipmentShopCursor.prototype.buy = function() { this.back(); }
-  EquipmentShopCursor.prototype.exit = function() { this.back(); }
+  EquipmentShopCursor.prototype.buy = function() { 
+    Party.getShop().npcSays("What do\nyou\nwant?");
+    $("#shop")
+      .find(".menu").hide().end()
+      .find(".prices").show();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_ITEM).startListening();
+  };
+  EquipmentShopCursor.prototype.exit = function() { this.back(); };
   EquipmentShopCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
-  EquipmentShopCursor.prototype.next = function() { this.back(); } 
-  EquipmentShopCursor.prototype.sell = function() { this.back(); }
+  EquipmentShopCursor.prototype.next = function() { 
+    var $option = this.$cursor.closest(".option");
+    if ($option.is(".buy")) { this.buy(); }
+    if ($option.is(".sell")) { this.sell(); }
+    if ($option.is(".exit")) { this.exit(); }
+  };
+  EquipmentShopCursor.prototype.sell = function() { this.back(); };
   EquipmentShopCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+  
+  /* -------------------------- */
+  /* EQUIPMENT SHOP ITEM cursor */
+  /* -------------------------- */
+  var EquipmentShopItemCursor = function() {};
+  EquipmentShopItemCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_ITEM, {container: "#shop .prices", otherKeys:{}});
+  EquipmentShopItemCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.getShop().npcSays("Welcome").hide(".prices").show(".menu");
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+  };
+  EquipmentShopItemCursor.prototype.initialCursor = function() { return this.$container.find(".item").eq(0); };
+  EquipmentShopItemCursor.prototype.next = function() { 
+    var shop = Party.getShop();
+    var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
+    var item = shop.lookupInventory(index);
+    var displayPrice = Message.padToLength(item.price, 5);
+    shop
+      .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
+      .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
+    this.clear();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:item});
+  };
+  EquipmentShopItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
 
+  /* -------------------------------------- */
+  /* EQUIPMENT SHOP BUY CONFIRMATION cursor */
+  /* -------------------------------------- */
+  var EquipmentShopBuyConfirmCursor = function() {
+    this.inventoryItem = null;
+  };
+  var equipmentShopBuyConfirmOpt = {container: "#shop .menu", otherKeys:{}};
+  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
+  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.cancel(); };
+  EquipmentShopBuyConfirmCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_CONFIRM, equipmentShopBuyConfirmOpt);
+  EquipmentShopBuyConfirmCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").displayInit();
+  };
+  EquipmentShopBuyConfirmCursor.prototype.cancel = function() { this.back(); };
+  EquipmentShopBuyConfirmCursor.prototype.confirm = function() {  }
+  EquipmentShopBuyConfirmCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
+  EquipmentShopBuyConfirmCursor.prototype.next = function() {
+    
+  };
+  EquipmentShopBuyConfirmCursor.prototype.reset = function(fullReset, opt) { this.inventoryItem = opt.item; };
+  EquipmentShopBuyConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
   
   return this;
 }).call({});
