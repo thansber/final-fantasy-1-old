@@ -26,6 +26,7 @@ var Equipment = (function() {
       this.elements = jQuery.merge([], opt.elements || []);
       this.monsterTypes = jQuery.merge([], opt.monsterTypes || []);
       this.allowedClasses = jQuery.merge([], opt.allowedClasses || []);
+      this.price = opt.price;
       ALL_WEAPONS[this.name] = this;
     };
     
@@ -63,6 +64,7 @@ var Equipment = (function() {
       }
       this.hasSpell = (this.spell != null);
       this.allowedClasses = jQuery.merge([], opt.allowedClasses || []);
+      this.price = opt.price;
       ALL_ARMOR[this.name] = this;
     };
     

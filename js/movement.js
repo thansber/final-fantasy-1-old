@@ -73,9 +73,9 @@ var Movement = (function() {
         case KeyPressNotifier.I:
         case KeyPressNotifier.M:
           KeyPressNotifier.clearListener();
-          CharMenu.load();
+          Menus.Char.load();
           Party.switchView(Party.MENU);
-          Cursors.lookup(Cursors.CHAR_MENU).startListening(self);
+          Cursors.lookup(Cursors.CHAR_MENU).startListening({prevListener:self});
           break;
       }
     }

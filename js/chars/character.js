@@ -393,6 +393,18 @@ var Character = (function() {
     return equipped;
   };
   
+  Char.prototype.getEquipment = function() {
+    switch (state) {
+      case States.WEAPONS:
+        return this.allWeapons;
+        break;
+      case States.ARMOR:
+        return this.allArmor;
+        break;
+    }
+    return null;
+  };
+  
   // --------------
   // GETTER methods
   // --------------

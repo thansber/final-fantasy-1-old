@@ -225,15 +225,15 @@ Equipment.Weapon.create({
 // ARMOR
 // ===================================
 Equipment.Armor.create({
-  name:"Cloth",desc:"Cloth",type:Equipment.Armor.Types.BODY
+  name:"Cloth",desc:"Cloth",type:Equipment.Armor.Types.BODY,price:10
  ,stats:{def:1,weight:3}
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
 Equipment.Armor.create({
-  name:"Wooden[A]",desc:"Wooden#",type:Equipment.Armor.Types.BODY
+  name:"Wooden[A]",desc:"Wooden#",type:Equipment.Armor.Types.BODY,price:50
  ,stats:{def:4,weight:8}
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD]});
 Equipment.Armor.create({
-  name:"Chain[A]",desc:"Chain #",type:Equipment.Armor.Types.BODY
+  name:"Chain[A]",desc:"Chain #",type:Equipment.Armor.Types.BODY,price:80
  ,stats:{def:15,weight:15}
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD]});
 Equipment.Armor.create({

@@ -20,12 +20,14 @@
 
 TOWNS
 -----
+- finish equipment sell flow
 - add inventory for all shops
-- figure out how to track item selected when buying (cursors)
+- add prices for all items
 - allow transitions on map, coordinate based
     - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
+- add "door" transitions for use in castles/dungeons
 - encode castles (Coneria/Elfland)
-- transitions in town to leave and to enter shops
+- CSS transitions in town to leave and to enter shops
 - pressing Enter/Space in town displays message
 - add people in town initially not moving
 - add NPC object to track initial position, sprite, and conversations

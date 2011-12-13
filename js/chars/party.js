@@ -48,6 +48,7 @@ var Party = (function() {
   /* ============== */
   self.addChar = function(c) { chars.push(c); };
   self.addGold = function(gp) { gold += gp; if (gold < 0) { gold = 0; } };
+  self.buy = function(gp) { self.addGold(-1 * gp); };
   self.clearChars = function() { chars = []; };
   
   self.createNewChar = function(name, charClass, index) {
@@ -110,7 +111,7 @@ var Party = (function() {
   self.getMap = function() { return Map.getMap(currentMap); };
   self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
-  
+  self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
   self.isDestinationPassable = function(yChange, xChange) {
     var mapConfig = self.getMap();
     var oldPos = new Map.AbsoluteCoords(currentPosition);

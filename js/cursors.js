@@ -19,7 +19,10 @@ var Cursors = (function() {
    ,CLINIC : "clinic"
    ,EQUIPMENT_SHOP : "equipmentShop"
    ,EQUIPMENT_SHOP_BUY_CONFIRM : "equipmentShopBuyConfirm"
-   ,EQUIPMENT_SHOP_ITEM : "equipmentShopItem"
+   ,EQUIPMENT_SHOP_BUY_END : "equipmentShopBuyEnd"
+   ,EQUIPMENT_SHOP_BUY_ITEM : "equipmentShopItem"
+   ,EQUIPMENT_SHOP_SELL : "equipmentSell"
+   ,EQUIPMENT_SHOP_SELL_ITEM : "equipmentSellItem"
    ,INN : "inn"
    ,ITEM_SHOP : "itemShop"
    ,MAGIC_MENU : "magicMenu"
@@ -500,6 +503,7 @@ var Cursors = (function() {
     KeyPressNotifier.clearListener();
     this.clear();
     Party.switchView(Party.WORLD_MAP);
+    Party.switchMap(Party.getMap().id);
     if (this.previousListener) {
       this.previousListener.startListening();
     }
@@ -907,11 +911,8 @@ var Cursors = (function() {
     Party.exitShop();
   };
   EquipmentShopCursor.prototype.buy = function() { 
-    Party.getShop().npcSays("What do\nyou\nwant?");
-    $("#shop")
-      .find(".menu").hide().end()
-      .find(".prices").show();
-    Cursors.lookup(Cursors.EQUIPMENT_SHOP_ITEM).startListening();
+    Party.getShop().npcSays("What do\nyou\nwant?").hide(".menu").show(".prices");
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_ITEM).startListening();
   };
   EquipmentShopCursor.prototype.exit = function() { this.back(); };
   EquipmentShopCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
@@ -921,22 +922,25 @@ var Cursors = (function() {
     if ($option.is(".sell")) { this.sell(); }
     if ($option.is(".exit")) { this.exit(); }
   };
-  EquipmentShopCursor.prototype.sell = function() { this.back(); };
+  EquipmentShopCursor.prototype.sell = function() {
+    this.clear();
+    Party.getShop().npcSays("Whose\nitem\ndo you\nwant to\nsell?").clear(".menu").offersCharNames();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL).startListening();
+  };
   EquipmentShopCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
   
-  /* -------------------------- */
-  /* EQUIPMENT SHOP ITEM cursor */
-  /* -------------------------- */
-  var EquipmentShopItemCursor = function() {};
-  EquipmentShopItemCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_ITEM, {container: "#shop .prices", otherKeys:{}});
-  EquipmentShopItemCursor.prototype.back = function() { 
-    KeyPressNotifier.clearListener();
+  /* ------------------------------ */
+  /* EQUIPMENT SHOP BUY ITEM cursor */
+  /* ------------------------------ */
+  var EquipmentShopBuyItemCursor = function() {};
+  EquipmentShopBuyItemCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_ITEM, {container: "#shop .prices", otherKeys:{}});
+  EquipmentShopBuyItemCursor.prototype.back = function() { 
     this.clear();
     Party.getShop().npcSays("Welcome").hide(".prices").show(".menu");
     Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
-  EquipmentShopItemCursor.prototype.initialCursor = function() { return this.$container.find(".item").eq(0); };
-  EquipmentShopItemCursor.prototype.next = function() { 
+  EquipmentShopBuyItemCursor.prototype.initialCursor = function() { return this.$container.find(".item").eq(0); };
+  EquipmentShopBuyItemCursor.prototype.next = function() { 
     var shop = Party.getShop();
     var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
     var item = shop.lookupInventory(index);
@@ -947,7 +951,7 @@ var Cursors = (function() {
     this.clear();
     Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:item});
   };
-  EquipmentShopItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
+  EquipmentShopBuyItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
 
   /* -------------------------------------- */
   /* EQUIPMENT SHOP BUY CONFIRMATION cursor */
@@ -961,16 +965,103 @@ var Cursors = (function() {
   EquipmentShopBuyConfirmCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_CONFIRM, equipmentShopBuyConfirmOpt);
   EquipmentShopBuyConfirmCursor.prototype.back = function() { 
     this.clear();
-    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").displayInit();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
   EquipmentShopBuyConfirmCursor.prototype.cancel = function() { this.back(); };
   EquipmentShopBuyConfirmCursor.prototype.confirm = function() {  }
   EquipmentShopBuyConfirmCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
   EquipmentShopBuyConfirmCursor.prototype.next = function() {
-    
+    this.clear();
+    Party.getShop().npcSays("Who\nwill\ntake\nit?").clear(".menu").offersCharNames();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_END).startListening({item:this.inventoryItem});
   };
   EquipmentShopBuyConfirmCursor.prototype.reset = function(fullReset, opt) { this.inventoryItem = opt.item; };
   EquipmentShopBuyConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+  
+  /* ------------------------------- */
+  /* EQUIPMENT SHOP BUY FINAL cursor */
+  /* ------------------------------- */
+  var EquipmentShopBuyEndCursor = function() { this.inventoryItem = null; };
+  EquipmentShopBuyEndCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_END, {container:"#shop .menu", otherKeys:{}});
+  EquipmentShopBuyEndCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+  };
+  EquipmentShopBuyEndCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
+  EquipmentShopBuyEndCursor.prototype.next = function() {
+    var index = this.$container.find(".option").index(this.$cursor.closest(".option"));
+    var shop = Party.getShop();
+    var char = Party.getChar(index);
+    
+    this.clear();
+    if (!Party.hasEnoughGoldFor(this.inventoryItem.price)) {
+      shop.npcSays("You\ncan't\nafford\nthat.").clear(".menu").resetOffers();
+      Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+      return false;
+    } else if (false) {
+      // TODO: has too many things
+    }
+    Party.getShop().toggleEquipmentMode(char);
+    char.add(this.inventoryItem.item.name);
+    Party.buy(this.inventoryItem.item.price);
+    Logger.debug(char.getName() + " just bought a " + this.inventoryItem.item.name);
+  };
+  EquipmentShopBuyEndCursor.prototype.reset = function(fullReset, opt) { this.inventoryItem = opt.item; };
+  EquipmentShopBuyEndCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+ 
+  /* -------------------------- */
+  /* EQUIPMENT SHOP SELL cursor */
+  /* -------------------------- */
+  var EquipmentShopSellCursor = function() {};
+  EquipmentShopSellCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_SELL, {container:"#shop .menu", otherKeys:{}});
+  EquipmentShopSellCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+  };
+  EquipmentShopSellCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); };
+  EquipmentShopSellCursor.prototype.next = function() {
+    var index = this.$container.find(".option").index(this.$cursor.closest(".option"));
+    var char = Party.getChar(index);
+    var shop = Party.getShop();
+    
+    shop.toggleEquipmentMode(char).clear(".prices");
+    var equipment = char.getEquipment();
+    for (var i = 0; i < equipment.length; i++) {
+      shop.addInventory(equipment[i]);
+    }
+    
+    this.clear();
+    shop.show(".prices");
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL_ITEM).startListening();
+  };
+  EquipmentShopSellCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+ 
+  /* ------------------------------ */
+  /* EQUIPMENT SHOP SELL ITEM cursor */
+  /* ------------------------------ */
+  var EquipmentShopSellItemCursor = function() {};
+  EquipmentShopSellItemCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_SELL_ITEM, {container: "#shop .prices", otherKeys:{}});
+  EquipmentShopSellItemCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+  };
+  EquipmentShopSellItemCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); };
+  EquipmentShopSellItemCursor.prototype.next = function() { 
+    var shop = Party.getShop();
+    var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
+    var item = shop.lookupInventory(index);
+    var displayPrice = Message.padToLength(item.price, 5);
+    shop
+      .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
+      .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
+    this.clear();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:item});
+  };
+  EquipmentShopSellItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
   
   return this;
 }).call({});
