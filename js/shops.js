@@ -7,11 +7,13 @@ var Shops = (function() {
   self.Types = {
     Armor : "armor"
    ,BlackMagic : "black-magic"
+   ,BlackMagic2 : "black-magic2"
    ,Clinic : "clinic"
    ,Inn : "inn"
    ,Item : "item"
    ,Weapon : "weapon"
    ,WhiteMagic : "white-magic"
+   ,WhiteMagic2 : "white-magic2"
   };
   
   self.Inventory = (function() {
@@ -65,6 +67,7 @@ var Shops = (function() {
     var itemDisplayPrice = Message.padToLength(item.price, 7);
     $prices.append($("<div/>").addClass("item").append(Message.create(item.desc)));
     $prices.append($("<div/>").addClass("price").append(Message.create(itemDisplayPrice)));
+    return this;
   };
   Shop.prototype.clear = function(whatToClear) { $shop.find(whatToClear).empty(); return this; };
   Shop.prototype.display = function() { 
@@ -82,7 +85,7 @@ var Shops = (function() {
     $shop.find(".gold").append(Message.create(partyGold + " G"));
     return this;
   };
-  Shop.prototype.hide = function(what) { $shop.find(what).hide(); return false; };
+  Shop.prototype.hide = function(what) { $shop.find(what).hide(); return this; };
   Shop.prototype.lookupInventory = function(index) { return INVENTORIES[Party.getMap().id][this.id][index]; };
   Shop.prototype.npcSays = function(dialog, append) { 
     if (!append) {
@@ -115,6 +118,7 @@ var Shops = (function() {
       var inventoryItem = shopInventory[i];
       this.addInventory(inventoryItem.item);
     }
+    return this;
   };
   Shop.prototype.resetOffers = function() { /* intentionally left empty for sub-classes to override */ return this; };
   Shop.prototype.show = function(what) { $shop.find(what).show(); return this; };
@@ -148,6 +152,12 @@ var Shops = (function() {
     this.signShows("BMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames().show(".menu");
   };
   
+  var BlackMagicShop2 = function() {
+    this.id = self.Types.BlackMagic2;
+    ALL[this.id] = this;
+  };
+  BlackMagicShop2.prototype = new BlackMagicShop();
+  
   var Clinic = function() {};
   Clinic.prototype = new Shop(self.Types.Clinic);
   Clinic.prototype.displayInit = function() { 
@@ -178,7 +188,8 @@ var Shops = (function() {
   var Inn = function() {};
   Inn.prototype = new Shop(self.Types.Inn);
   Inn.prototype.displayInit = function() {   
-    this.signShows(" INN").npcSays("Welcome\n  ::\nStay,\nto save\nyour\ndata").offers("Yes").offers("No").show(".menu");
+    this.signShows(" INN").npcSays("Welcome\n  ::\nStay,\nto save\nyour\ndata").offers("Yes", "yes").offers("No", "no").show(".menu");
+    Cursors.lookup(Cursors.INN).startListening();
   };
   
   var WeaponShop = function() {};
@@ -196,6 +207,12 @@ var Shops = (function() {
   WhiteMagicShop.prototype.displayInit = function() {   
     this.signShows("WMAGIC").npcSays("Who\nwill\nlearn\nthe\nspell?").offersCharNames().show(".menu");
   };
+  
+  var WhiteMagicShop2 = function() {
+    this.id = self.Types.WhiteMagic2;
+    ALL[this.id] = this;
+  };
+  WhiteMagicShop2.prototype = new WhiteMagicShop();
   
   return this;
 }).call({});

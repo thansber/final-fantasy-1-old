@@ -3,6 +3,8 @@ var Equipment = (function() {
   var ALL_WEAPONS = {};
   var ALL_ARMOR = {};
   
+  this.sellsFor = function(equipment) { return Math.floor(equipment.price / 2); };
+  
   // ==============================================================
   // WEAPON -------------------------------------------------------
   // ==============================================================
@@ -70,6 +72,7 @@ var Equipment = (function() {
     
     self.create = function(opt) { return new Armor(opt); };
     self.lookup = function(id) { return ALL_ARMOR[id]; };
+
     self.All = ALL_ARMOR;
     self.Types = {
       BODY: "body"

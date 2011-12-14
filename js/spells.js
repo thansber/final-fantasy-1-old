@@ -292,6 +292,7 @@ var Spell = (function() {
     this.spellType = base.type;
     this.targetType = base.target;
     this.isSkill = base.isSkill;
+    this.price = base.price;
 
     this.effectivity = stats.eff;
     this.accuracy = stats.acc;

@@ -405,6 +405,29 @@ var Character = (function() {
     return null;
   };
   
+  Char.prototype.hasEquipment = function() {
+    var equipment = null;
+    switch (state) {
+      case States.WEAPONS:
+        equipment = this.allWeapons;
+          break;
+        case States.ARMOR:
+          equipment = this.allArmor;
+          break;
+    }
+    
+    if (!equipment || equipment.length == 0) {
+      return false;
+    }
+    
+    for (var i = 0; i < equipment.length; i++) {
+      if (!!equipment[i]) {
+        return true;
+      }
+    }
+    return false;
+  };
+  
   // --------------
   // GETTER methods
   // --------------

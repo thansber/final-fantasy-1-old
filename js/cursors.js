@@ -8,6 +8,7 @@ var Cursors = (function() {
   var IDS = {
     ABSTRACT_EQUIPMENT : "abstractEquipment"
    ,ABSTRACT_EQUIPMENT_ACTIONS : "abstractEquipmentActions"
+   ,ABSTRACT_INN : "abstractInn"
    ,ARMOR_ACTIONS_MENU : "armorActions"
    ,ARMOR_MENU : "armor"
    ,BATTLE_ENEMIES : "battleEnemies"
@@ -22,6 +23,7 @@ var Cursors = (function() {
    ,EQUIPMENT_SHOP_BUY_END : "equipmentShopBuyEnd"
    ,EQUIPMENT_SHOP_BUY_ITEM : "equipmentShopItem"
    ,EQUIPMENT_SHOP_SELL : "equipmentSell"
+   ,EQUIPMENT_SHOP_SELL_CONFIRM : "equipmentSellConfirm"
    ,EQUIPMENT_SHOP_SELL_ITEM : "equipmentSellItem"
    ,INN : "inn"
    ,ITEM_SHOP : "itemShop"
@@ -911,7 +913,7 @@ var Cursors = (function() {
     Party.exitShop();
   };
   EquipmentShopCursor.prototype.buy = function() { 
-    Party.getShop().npcSays("What do\nyou\nwant?").hide(".menu").show(".prices");
+    Party.getShop().npcSays("What do\nyou\nwant?").hide(".menu").clear(".prices").populateInventory().show(".prices");
     Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_ITEM).startListening();
   };
   EquipmentShopCursor.prototype.exit = function() { this.back(); };
@@ -943,38 +945,39 @@ var Cursors = (function() {
   EquipmentShopBuyItemCursor.prototype.next = function() { 
     var shop = Party.getShop();
     var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
-    var item = shop.lookupInventory(index);
-    var displayPrice = Message.padToLength(item.price, 5);
+    var inventoryItem = shop.lookupInventory(index);
+    var displayPrice = Message.padToLength(inventoryItem.item.price, 5);
     shop
       .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
       .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
     this.clear();
-    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:item});
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:inventoryItem.item});
   };
   EquipmentShopBuyItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
 
   /* -------------------------------------- */
   /* EQUIPMENT SHOP BUY CONFIRMATION cursor */
   /* -------------------------------------- */
-  var EquipmentShopBuyConfirmCursor = function() {
-    this.inventoryItem = null;
-  };
+  var EquipmentShopBuyConfirmCursor = function() { this.inventoryItem = null; };
   var equipmentShopBuyConfirmOpt = {container: "#shop .menu", otherKeys:{}};
-  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
-  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.cancel(); };
+  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
+  equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
   EquipmentShopBuyConfirmCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_CONFIRM, equipmentShopBuyConfirmOpt);
   EquipmentShopBuyConfirmCursor.prototype.back = function() { 
     this.clear();
     Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
     Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
   };
-  EquipmentShopBuyConfirmCursor.prototype.cancel = function() { this.back(); };
-  EquipmentShopBuyConfirmCursor.prototype.confirm = function() {  }
   EquipmentShopBuyConfirmCursor.prototype.initialCursor = function() { return this.$container.find(".option").eq(0); };
   EquipmentShopBuyConfirmCursor.prototype.next = function() {
-    this.clear();
-    Party.getShop().npcSays("Who\nwill\ntake\nit?").clear(".menu").offersCharNames();
-    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_END).startListening({item:this.inventoryItem});
+    var $option = this.$cursor.closest(".option");
+    if ($option.is(".yes")) {
+      this.clear();
+      Party.getShop().npcSays("Who\nwill\ntake\nit?").clear(".menu").offersCharNames();
+      Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_END).startListening({item:this.inventoryItem});
+    } else if ($option.is(".no")) {
+      this.back();
+    }
   };
   EquipmentShopBuyConfirmCursor.prototype.reset = function(fullReset, opt) { this.inventoryItem = opt.item; };
   EquipmentShopBuyConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
@@ -982,7 +985,7 @@ var Cursors = (function() {
   /* ------------------------------- */
   /* EQUIPMENT SHOP BUY FINAL cursor */
   /* ------------------------------- */
-  var EquipmentShopBuyEndCursor = function() { this.inventoryItem = null; };
+  var EquipmentShopBuyEndCursor = function() { this.item = null; };
   EquipmentShopBuyEndCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_BUY_END, {container:"#shop .menu", otherKeys:{}});
   EquipmentShopBuyEndCursor.prototype.back = function() { 
     this.clear();
@@ -996,19 +999,25 @@ var Cursors = (function() {
     var char = Party.getChar(index);
     
     this.clear();
-    if (!Party.hasEnoughGoldFor(this.inventoryItem.price)) {
+    if (!Party.hasEnoughGoldFor(this.item.price)) {
       shop.npcSays("You\ncan't\nafford\nthat.").clear(".menu").resetOffers();
       Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
       return false;
     } else if (false) {
       // TODO: has too many things
+      return false;
     }
-    Party.getShop().toggleEquipmentMode(char);
-    char.add(this.inventoryItem.item.name);
-    Party.buy(this.inventoryItem.item.price);
-    Logger.debug(char.getName() + " just bought a " + this.inventoryItem.item.name);
+    
+    shop.toggleEquipmentMode(char);
+    char.add(this.item.name);
+    Party.buy(this.item.price);
+    
+    shop.npcSays("Thank\nyou!\nWhat\nelse?").gold().clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+
+    Logger.debug(char.getName() + " just bought a " + this.item.name + " for " + this.item.price + "G");
   };
-  EquipmentShopBuyEndCursor.prototype.reset = function(fullReset, opt) { this.inventoryItem = opt.item; };
+  EquipmentShopBuyEndCursor.prototype.reset = function(fullReset, opt) { this.item = opt.item; };
   EquipmentShopBuyEndCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
  
   /* -------------------------- */
@@ -1029,20 +1038,26 @@ var Cursors = (function() {
     
     shop.toggleEquipmentMode(char).clear(".prices");
     var equipment = char.getEquipment();
-    for (var i = 0; i < equipment.length; i++) {
-      shop.addInventory(equipment[i]);
-    }
-    
+
     this.clear();
-    shop.show(".prices");
-    Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL_ITEM).startListening();
+    if (!char.hasEquipment()) {
+      shop.npcSays("You\nhave\nnothing\nto sell\n  ::\nAny-\nthing\nelse?").clear(".menu").resetOffers().hide(".prices");
+      Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+    } else {
+      for (var i = 0; i < equipment.length; i++) {
+        shop.addInventory(equipment[i]);
+      }
+      
+      shop.show(".prices");
+      Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL_ITEM).startListening({char:char});
+    }
   };
   EquipmentShopSellCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
  
-  /* ------------------------------ */
+  /* ------------------------------- */
   /* EQUIPMENT SHOP SELL ITEM cursor */
-  /* ------------------------------ */
-  var EquipmentShopSellItemCursor = function() {};
+  /* ------------------------------- */
+  var EquipmentShopSellItemCursor = function() { this.char = null; };
   EquipmentShopSellItemCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_SELL_ITEM, {container: "#shop .prices", otherKeys:{}});
   EquipmentShopSellItemCursor.prototype.back = function() { 
     this.clear();
@@ -1053,15 +1068,104 @@ var Cursors = (function() {
   EquipmentShopSellItemCursor.prototype.next = function() { 
     var shop = Party.getShop();
     var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
-    var item = shop.lookupInventory(index);
-    var displayPrice = Message.padToLength(item.price, 5);
+    shop.toggleEquipmentMode(this.char);
+    var item = this.char.getEquipment()[index];
+    var displayPrice = Message.padToLength(Equipment.sellsFor(item), 5);
     shop
       .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
       .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
     this.clear();
-    Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:item});
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL_CONFIRM).startListening({char:this.char, item:item, itemIndex:index});
   };
+  EquipmentShopSellItemCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; };
   EquipmentShopSellItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); };
+
+  /* ---------------------------------- */
+  /* EQUIPMENT SHOP SELL CONFIRM cursor */
+  /* ---------------------------------- */
+  var EquipmentShopSellConfirmCursor = function() { this.char = null; this.item = null; this.itemIndex = null; };
+  var equipmentShopSellConfirmOpt = {container: "#shop .menu", otherKeys:{}};
+  equipmentShopSellConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
+  equipmentShopSellConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
+  EquipmentShopSellConfirmCursor.prototype = new Cursor(self.EQUIPMENT_SHOP_SELL_CONFIRM, equipmentShopSellConfirmOpt);
+  EquipmentShopSellConfirmCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers();
+    Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+  };
+  EquipmentShopSellConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); };
+  EquipmentShopSellConfirmCursor.prototype.next = function() { 
+    var $option = this.$cursor.closest(".option");
+    if ($option.is(".yes")) {
+      if (this.char.isEquipped(this.itemIndex)) {
+        this.char.unequip(this.itemIndex);
+      }
+      this.char.drop(this.itemIndex);
+      Party.addGold(Equipment.sellsFor(this.item));
+
+      this.clear();
+      Party.getShop().npcSays("Thank\nyou!\nWhat\nelse?").gold().clear(".menu").resetOffers();
+      Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
+      Logger.debug(this.char.getName() + " sold a " + this.item.name + " at index " + this.itemIndex + " for " + Equipment.sellsFor(this.item) + "G");
+    } else if ($option.is(".no")) {
+      this.back();
+    }
+  };
+  EquipmentShopSellConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.item = opt.item; this.itemIndex = opt.itemIndex; };
+  EquipmentShopSellConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+
+  /* ---------- */
+  /* INN CURSOR */
+  /* ---------- */
+  var AbstractInnCursor = function(id) {
+    this.id = id;
+    this.opt = {container: "#shop .menu", otherKeys:{}};
+    this.opt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
+    this.opt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
+    
+    var baseCursor = new Cursor(this.id, this.opt);
+    jQuery.extend(baseCursor, {
+      back : function() { 
+        if (this.leaving) {
+          this.exit();
+        } else {
+          this.leaving = true;
+          Party.getShop().npcSays("Hold\nRESET\nwhile\nyou\nturn\nPOWER\noff!!").hide(".menu");
+        }
+      },
+      exit : function() {
+        KeyPressNotifier.clearListener();
+        this.clear();
+        Party.exitShop();
+      },
+      initialCursor : function() { return this.yDestinations().eq(0); },
+      justEntered : true, 
+      leaving : false, 
+      next : function() {
+        var $option = this.$cursor.closest(".option");
+        if ($option.is(".yes")) {
+          var shop = Party.getShop();
+          var price = shop.lookupInventory(0).item.price;
+          
+          if (this.justEntered) {
+            shop.npcSays(Message.padToLength(price, 5)).npcSays("Gold", true).npcSays("OK?", true);
+            this.justEntered = false;
+          } else {
+            
+          }
+        } else if ($option.is(".no")) {
+          this.back();
+        }
+      },
+      yDestinations : function() { return this.$container.find(".option"); }
+    });
+    
+    return baseCursor;
+  };
+  AbstractInnCursor.prototype = new Cursor(self.ABSTRACT_INN);
   
+  var InnCursor = function() {};
+  InnCursor.prototype = new AbstractInnCursor(self.INN);
+
   return this;
 }).call({});

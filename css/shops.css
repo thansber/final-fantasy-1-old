@@ -7,7 +7,7 @@
 #shop .party .char { float:left; }
 #shop .party .char.first { margin-top:50px; margin-bottom:36px;}
 #shop .prices { position:absolute; left:338px; top:0; height:302px; padding:20px 8px 2px 8px; }
-#shop .prices .item { height:32px; }
+#shop .prices .item { height:30px; }
 #shop .prices .price { height:32px; }
 #shop .menu { clear:left; float:left; width:116px; height:110px; padding:20px 0px 2px 8px; margin-left:80px; margin-top:20px;}
 #shop .menu .option { height:30px; }
