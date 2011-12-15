@@ -240,6 +240,17 @@ var Character = (function() {
     return this; 
   };
   
+  Char.prototype.healFully = function() {
+    this.hitPoints = this.maxHitPoints;
+    return this;
+  };
+  
+  Char.prototype.resurrect = function() {
+    this.removeStatus(Status.Dead);
+    this.hitPoints = 1;
+    return this;
+  };
+  
   Char.prototype.stats = function(s) { 
     setStats(this, s); 
     return this; 

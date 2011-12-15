@@ -2,6 +2,7 @@ var Equipment = (function() {
   
   var ALL_WEAPONS = {};
   var ALL_ARMOR = {};
+  var ALL_ITEMS = {}
   
   this.sellsFor = function(equipment) { return Math.floor(equipment.price / 2); };
   
@@ -83,6 +84,29 @@ var Equipment = (function() {
     
     return self;
   }).call({});
+  
+  // =============================================================
+  // ITEM --------------------------------------------------------
+  // =============================================================
+  this.Item = (function() {
+    
+    var self = this;
+      
+    function Item(opt) {
+      this.name = opt.name;
+      this.desc = opt.desc;
+      this.price = opt.price;
+      ALL_ITEMS[this.name] = this;
+    };
+    
+    self.create = function(opt) { return new Item(opt); };
+    self.lookup = function(id) { return ALL_ITEMS[id]; };
+
+    self.All = ALL_ITEMS;
+    
+    return self;
+  }).call({});
+  
   
   return this;
 }).call({});

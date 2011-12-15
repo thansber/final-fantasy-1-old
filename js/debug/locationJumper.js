@@ -51,6 +51,10 @@ var LocationJumperHelper = (function() {
   var jumpToShop = function($row) {
     Party.jumpTo(Map.CONERIA, Towns.Coneria.Config.start);
     var shopType = $(".selector", $row).val();
+    if (shopType == Shops.Types.Clinic) {
+      Party.getChar(0).addStatus(Status.Dead);
+      Party.getChar(2).addStatus(Status.Dead);
+    }
     Party.enterShop(shopType);
   };
   

@@ -10,6 +10,7 @@ var Animation = (function() {
    ,CharFlicker : "charFlicker"
    ,Defeat : "defeat"
    ,PreBattleMessage : "message"
+   ,RestAtInn : "resting"
    ,RunAway : "running"
    ,ShowSplash : "showSplash"
    ,SlideChar : "slideChar"
@@ -460,6 +461,14 @@ var Animation = (function() {
   
   self.reset = function() {
     $("#battle .enemies .splash").addClass("hidden");
+  };
+  
+  self.restingAtInn = function(resting, queue) {
+    var q = queue || new Queue(this.Queues.RestAtInn);
+    var $shopParty = $("#shop .party");
+    q.add(function() { $shopParty.toggleClass("resting", resting); });
+    q.delay(1000);
+    return q;    
   };
   
   self.run = function(command, result, queue) {

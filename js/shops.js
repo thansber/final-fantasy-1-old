@@ -104,7 +104,7 @@ var Shops = (function() {
   };
   Shop.prototype.party = function() {
     var $party = $shop.find(".party");
-    var chars = Party.getChars();
+    var chars = Party.getAliveChars();
     
     this.clear(".party");
     for (var i = 0, n = chars.length; i < n; i++) {
@@ -114,9 +114,11 @@ var Shops = (function() {
   };
   Shop.prototype.populateInventory = function() {
     var shopInventory = INVENTORIES[Party.getMap().id][this.id];
-    for (var i = 0; i < shopInventory.length; i++) {
-      var inventoryItem = shopInventory[i];
-      this.addInventory(inventoryItem.item);
+    if (shopInventory) {
+      for (var i = 0; i < shopInventory.length; i++) {
+        var inventoryItem = shopInventory[i];
+        this.addInventory(inventoryItem.item);
+      }
     }
     return this;
   };
@@ -168,15 +170,15 @@ var Shops = (function() {
     for (var i = 0, n = chars.length; i < n; i++) {
       if (chars[i].isDead()) {
         anyCharactersDead = true;
+        this.offers(chars[i].getName());
       }
     }
     
-    if (!anyCharactersDead) {
-      welcomeMessage = "You do\nnot\nneed my\nhelp\nnow.";
-    }
+    welcomeMessage = anyCharactersDead ? "Who\nshall\nbe\nrevived\n::" : "You do\nnot\nneed my\nhelp\nnow.";
     
     this.signShows("CLINIC").npcSays(welcomeMessage);
-    $shop.find(".menu").toggle(anyCharactersDead).end();
+    $shop.find(".menu").toggle(anyCharactersDead);
+    Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:!anyCharactersDead});
   };
   
   var ItemShop = function() {};

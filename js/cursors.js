@@ -18,6 +18,8 @@ var Cursors = (function() {
    ,CHAR_MENU : "charMenu"
    ,CHAR_SELECTION_MENU : "charSelectionMenu"
    ,CLINIC : "clinic"
+   ,CLINIC_CHAR : "clinicChar"
+   ,CLINIC_CONFIRM : "clinicConfirm"
    ,EQUIPMENT_SHOP : "equipmentShop"
    ,EQUIPMENT_SHOP_BUY_CONFIRM : "equipmentShopBuyConfirm"
    ,EQUIPMENT_SHOP_BUY_END : "equipmentShopBuyEnd"
@@ -1128,9 +1130,14 @@ var Cursors = (function() {
       back : function() { 
         if (this.leaving) {
           this.exit();
+        } else if (this.resting) {
+          this.leavingMessage();
+          Animation.restingAtInn(false).start();
+          this.leaving = true;
+          this.resting = false;
         } else {
           this.leaving = true;
-          Party.getShop().npcSays("Hold\nRESET\nwhile\nyou\nturn\nPOWER\noff!!").hide(".menu");
+          this.leavingMessage();
         }
       },
       exit : function() {
@@ -1139,9 +1146,21 @@ var Cursors = (function() {
         Party.exitShop();
       },
       initialCursor : function() { return this.yDestinations().eq(0); },
-      justEntered : true, 
-      leaving : false, 
+      leavingMessage : function() {
+        Party.getShop().npcSays("Hold\nRESET\nwhile\nyou\nturn\nPOWER\noff!!").hide(".menu");
+      },
       next : function() {
+        var self = this;
+        if (this.leaving) {
+          this.exit();
+          return false;
+        } else if (this.resting) {
+          var q = Animation.restingAtInn(false);
+          q.add(function() { self.leavingMessage(); self.leaving = true; self.resting = false; });
+          q.start();
+          return false;
+        }
+        
         var $option = this.$cursor.closest(".option");
         if ($option.is(".yes")) {
           var shop = Party.getShop();
@@ -1151,12 +1170,20 @@ var Cursors = (function() {
             shop.npcSays(Message.padToLength(price, 5)).npcSays("Gold", true).npcSays("OK?", true);
             this.justEntered = false;
           } else {
-            
+            shop.npcSays("Don't\nforget,\nif you\nleave\nyour\ngame,").hide(".menu");
+            Party.buy(price);
+            var aliveChars = Party.getAliveChars();
+            // TODO: determine what statuses get healed
+            for (var i = 0; i < aliveChars.length; i++) {
+              aliveChars[i].healFully();
+            }
+            jQuery.when(Animation.restingAtInn(true).start()).then(function() { self.resting = true; });
           }
         } else if ($option.is(".no")) {
           this.back();
         }
       },
+      reset : function(fullReset, opt) { this.justEntered = true; this.leaving = false; this.resting = false; },
       yDestinations : function() { return this.$container.find(".option"); }
     });
     
@@ -1167,5 +1194,85 @@ var Cursors = (function() {
   var InnCursor = function() {};
   InnCursor.prototype = new AbstractInnCursor(self.INN);
 
+  /* ------------- */
+  /* CLINIC cursor */
+  /* ------------- */
+  var ClinicCursor = function() { this.notNeeded = false; };
+  ClinicCursor.prototype = new Cursor(self.CLINIC, {container:"#shop .menu", otherKeys:{}});
+  ClinicCursor.prototype.back = function() { 
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.exitShop();
+  };
+  ClinicCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  ClinicCursor.prototype.next = function() {
+    if (this.notNeeded) {
+      this.back();
+      return false;
+    }
+    
+    var index = this.yDestinations().index(this.$cursor.closest(".option"));
+    var chars = Party.getChars();
+    var deadCharIndex = -1;
+    var charToRevive = null;
+    for (var i = 0; i < chars.length; i++) {
+      if (chars[i].isDead()) {
+        deadCharIndex++;
+        if (deadCharIndex == index) {
+          charToRevive = chars[i];
+        }
+      }
+    }
+    
+    var shop = Party.getShop();
+    var price = Message.padToLength(shop.lookupInventory(0).item.price, 5);
+    shop.npcSays(price).npcSays("Gold", true).npcSays("OK?", true).clear(".menu").offers("Yes", "yes").offers("No", "no");
+    Cursors.lookup(Cursors.CLINIC_CONFIRM).startListening({char:charToRevive});
+    Logger.debug("reviving char " + index);
+  };
+  ClinicCursor.prototype.reset = function(fullReset, opt) { this.notNeeded = opt.notNeeded; }; 
+  ClinicCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+  
+  /* ---------------------- */
+  /* CLINIC COBNFIRM cursor */
+  /* ---------------------- */
+  var ClinicConfirmCursor = function() { this.char = null; this.justRevived = false; };
+  ClinicConfirmCursor.prototype = new Cursor(self.CLINIC_CONFIRM, {container:"#shop .menu", otherKeys:{}});
+  ClinicConfirmCursor.prototype.back = function() { 
+    if (this.justRevived) {
+      this.resetShop();
+      return false;
+    }
+
+    KeyPressNotifier.clearListener();
+    this.clear();
+    Party.getShop().displayInit();
+    Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:false});
+  };
+  ClinicConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  ClinicConfirmCursor.prototype.next = function() {
+    if (this.justRevived) {
+      this.resetShop();
+      return false;
+    }
+    var $option = this.$cursor.closest(".option");
+    if ($option.is(".yes")) {
+      var shop = Party.getShop();
+      shop.npcSays("WARRIOR\n::\nReturn\nto\nlife!").hide(".menu");
+      Party.buy(shop.lookupInventory(0).item.price);
+      this.char.resurrect();
+      shop.party().gold().hide(".menu").clear(".menu");
+      this.justRevived = true;
+    } else if ($option.is(".no")) {
+      this.back();
+    }
+  };
+  ClinicConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.justRevived = false; }; 
+  ClinicConfirmCursor.prototype.resetShop = function() {
+    Party.getShop().displayInit();
+    Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:Party.getAliveChars().length == Party.getChars().length});
+  };
+  ClinicConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+  
   return this;
 }).call({});

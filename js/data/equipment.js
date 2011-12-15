@@ -399,3 +399,11 @@ Equipment.Armor.create({
  ,stats:{def:8,weight:1}
  ,special:{element:Element.Death}
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
+
+// ITEMS
+Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60});
+Equipment.Item.create({name:"PurePotion", desc:"PURE+", price:75});
+Equipment.Item.create({name:"SoftPotion", desc:"SOFT+", price:300});
+Equipment.Item.create({name:"Tent", desc:"TENT", price:75});
+Equipment.Item.create({name:"Cabin", desc:"CABIN", price:300});
+Equipment.Item.create({name:"House", desc:"HOUSE", price:3000});

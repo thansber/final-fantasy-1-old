@@ -20,11 +20,12 @@
 
 TOWNS
 -----
-- finish equipment sell flow
-- add inventory for all shops
-- add prices for all items
-- allow transitions on map, coordinate based
-    - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
+- implement item usage (heal potion heals 30hp outside of battle, random amount in, tents/cabins/houses)
+- item shop flow
+- black magic shop flow (same as white magic?)
+- what happens to stoned chars when in clinic?
+- what statuses does an inn stay heal?
+- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 - add "door" transitions for use in castles/dungeons
 - encode castles (Coneria/Elfland)
 - CSS transitions in town to leave and to enter shops

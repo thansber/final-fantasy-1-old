@@ -104,6 +104,15 @@ var Party = (function() {
     self.switchView("#map"); 
     Movement.startListening(); 
   };
+  self.getAliveChars = function() { 
+    var aliveChars = [];
+    for (var i = 0; i < chars.length; i++) {
+      if (chars[i].isAlive()) {
+        aliveChars.push(chars[i]);
+      }
+    }
+    return aliveChars;
+  };
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
   self.getGold = function() { return gold; };
