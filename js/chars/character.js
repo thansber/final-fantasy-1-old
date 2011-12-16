@@ -224,72 +224,33 @@ var Character = (function() {
   // ----------------------------------
   // SETTER methods - supports chaining 
   // ----------------------------------
-  Char.prototype.name = function(n) { 
-    this.charName = n; 
-    return this; 
-  };
-  
-  Char.prototype.level = function(l) { 
-    this.charLevel = l; 
-    return this; 
-  };
-  
+  Char.prototype.name = function(n) { this.charName = n; return this; };
+  Char.prototype.level = function(l) { this.charLevel = l; return this; };
   Char.prototype.hp = function(max, h) { 
     this.maxHitPoints = max; 
     this.hitPoints = (h == null ? this.maxHitPoints : h); 
     return this; 
   };
-  
-  Char.prototype.healFully = function() {
-    this.hitPoints = this.maxHitPoints;
-    return this;
-  };
-  
+  Char.prototype.healFully = function() { this.hitPoints = this.maxHitPoints; return this; };
   Char.prototype.resurrect = function() {
     this.removeStatus(Status.Dead);
     this.hitPoints = 1;
     return this;
   };
-  
-  Char.prototype.stats = function(s) { 
-    setStats(this, s); 
-    return this; 
+  Char.prototype.stats = function(s) { setStats(this, s); return this; };
+  Char.prototype.spellCharges = function(c) { this.charges = c; return this; };
+  Char.prototype.addSpellCharge = function(level) { this.charges[level - 1]++; return this; };
+  Char.prototype.maxSpellCharges = function(c) { this.maxCharges = c; return this; };
+  Char.prototype.addMaxSpellCharge = function(level) { this.maxCharges[level - 1]++; return this; };
+  Char.prototype.useSpellCharge = function(spellLevel) {
+    if (this.hasSpellCharge(spellLevel)) {
+      this.charges[spellLevel - 1]--;
+    }
   };
-  
-  Char.prototype.spellCharges = function(c) { 
-    this.charges = c;
-    return this;
-  };
-  
-  Char.prototype.addSpellCharge = function(level) { 
-    this.charges[level - 1]++;
-    return this;
-  };
-  
-  Char.prototype.maxSpellCharges = function(c) { 
-    this.maxCharges = c;
-    return this;
-  };
-  
-  Char.prototype.addMaxSpellCharge = function(level) { 
-    this.maxCharges[level - 1]++;
-    return this;
-  };
-  
-  Char.prototype.charClass = function(c) { 
-    this.currentClass = CharacterClass.lookup(c); 
-    return this; 
-  };
-  
-  Char.prototype.addExperience = function(exp) {
-    this.experience += exp;
-    return this;
-  };
-  
-  Char.prototype.index = function(i) {
-    this.charIndex = i;
-    return this;
-  };
+  Char.prototype.refillSpellCharges = function() { this.charges = jQuery.merge([], this.maxCharges); return this; };
+  Char.prototype.charClass = function(c) { this.currentClass = CharacterClass.lookup(c); return this; };
+  Char.prototype.addExperience = function(exp) { this.experience += exp; return this; };
+  Char.prototype.index = function(i) { this.charIndex = i; return this; };
 
   /* ------------------------------------- */
   /* EQUIPMENT methods - supports chaining */
@@ -565,17 +526,6 @@ var Character = (function() {
     if (removeResistance) {
       this.resistedElements[element] = false;
     }
-  };
-  
-  Char.prototype.useSpellCharge = function(spellLevel) {
-    if (this.hasSpellCharge(spellLevel)) {
-      this.charges[spellLevel - 1]--;
-    }
-  };
-  
-  Char.prototype.refillSpellCharges = function() {
-    this.charges = jQuery.merge([], this.maxCharges);
-    return this;
   };
   
   Char.prototype.applyChanges = function(changes) {

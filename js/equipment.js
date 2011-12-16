@@ -93,10 +93,22 @@ var Equipment = (function() {
     var self = this;
       
     function Item(opt) {
+      var uses = opt.uses || {};
+      
       this.name = opt.name;
       this.desc = opt.desc;
       this.price = opt.price;
+      this.inBattleEffect = uses.battle; // function
+      this.outOfBattleEffect = uses.normal; // function
       ALL_ITEMS[this.name] = this;
+    };
+    
+    Item.prototype.use = function(target) {
+      if (Party.inBattle) {
+        return this.inBattleEffect.call(this, target);
+      } else {
+        return this.outOfBattleEffect.call(this, target);
+      }
     };
     
     self.create = function(opt) { return new Item(opt); };

@@ -238,7 +238,8 @@ var BattleCommands = (function() {
     // What to do after all the round animations have finished
     jQuery.when(commandQueue.start()).then(function() {
       if (defeat) { console.log("party is dead - lose"); }
-      else if (victory || ranAway) { 
+      else if (victory || ranAway) {
+        Party.inBattle = false;
         Movement.startListening();
         Party.switchView(Party.WORLD_MAP);
       }

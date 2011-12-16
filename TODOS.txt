@@ -3,7 +3,8 @@
 
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
-- handle LIFE, LIF2, WARP, EXIT, SOFT spells
+- casting a spell that cannot be cast in battle should not be allowed (added spell.inBattle)
+- handle FEAR, WARP, EXIT spells
 
 - character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
@@ -25,7 +26,6 @@ TOWNS
 - clinic - cannot afford
 - implement party inventory (so can add items to it, 2 buckets, 1 for consumables, 1 for key items)
 - implement item usage (heal potion heals 30hp outside of battle, random amount in, tents/cabins/houses)
-- black magic shop flow (same as white magic?)
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal?
 - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups

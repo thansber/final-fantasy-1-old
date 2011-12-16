@@ -101,6 +101,18 @@ var Spell = (function() {
        spell.result.success.push(true);
      }
    }
+   ,Resurrect : {
+     targetGroup : self.TargetGroup.Same
+    ,apply : function(spell, caster, target) {
+       if (!target.isDead()) {
+         return;
+       } 
+       target.resurrect();
+       if (spell.effectivity > 1) {
+         target.applyDamage(-1 * spell.effectivity);
+       }
+    }
+   }
    ,Damage : {
      targetGroup : self.TargetGroup.Other
     ,apply : function(spell, caster, target) {
@@ -260,9 +272,9 @@ var Spell = (function() {
      targetGroup : self.TargetGroup.Other
     ,apply : function(spell, caster, target) { alert("This spell does not work yet [" + spell.spellId + "]"); }
    }
-   ,NonBattle : {
+   ,Teleport : {
      targetGroup : self.TargetGroup.None
-    ,apply : function(spell, caster, target) { alert("This spell cannot be cast in battle [" + spell.spellId + "]"); }
+    ,apply : function(spell, caster, target) { alert("This spell does not work yet [" + spell.spellId + "]"); }
    }
   };
   

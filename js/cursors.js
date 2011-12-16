@@ -1173,7 +1173,7 @@ var Cursors = (function() {
             var aliveChars = Party.getAliveChars();
             // TODO: determine what statuses get healed
             for (var i = 0; i < aliveChars.length; i++) {
-              aliveChars[i].healFully();
+              aliveChars[i].healFully().refillSpellCharges();
             }
             jQuery.when(Animation.restingAtInn(true).start()).then(function() { self.resting = true; });
           }

@@ -199,8 +199,8 @@ Spell.create({
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#FC74B4", splash:"pink", overlay:true}
  ,affects:[Monster.Types.Undead]});
 Spell.create({
-  base:{name:"LIFE", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle, price:8000}
- ,stats:{eff:0, acc:0}
+  base:{name:"LIFE", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.Resurrect, price:8000}
+ ,stats:{eff:1, acc:0, inBattle:false}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]});
 Spell.create({
   base:{name:"BANE", level:5, target:Spell.TargetType.All, type:Spell.SpellType.AddStatus, price:8000}
@@ -218,16 +218,16 @@ Spell.create({
  ,allowedClasses:[CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
  ,ui:{effect:Spell.Effect.Status, message:"Lost intelligence", bgColor:"#80D010", splash:"green", overlay:true}});
 Spell.create({
-  base:{name:"WARP", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle, price:8000}
- ,stats:{eff:0, acc:0}
+  base:{name:"WARP", level:5, target:Spell.TargetType.Single, type:Spell.SpellType.Teleport, price:8000}
+ ,stats:{eff:0, acc:0, inBattle:false}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.BLACK_WIZARD]});
 
 // --------------
 // Level 6 Spells
 // --------------
 Spell.create({
-  base:{name:"EXIT", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle, price:20000}
- ,stats:{eff:0, acc:0}
+  base:{name:"EXIT", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.Teleport, price:20000}
+ ,stats:{eff:0, acc:0, inBattle:false}
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.WHITE_WIZARD]});
 Spell.create({
   base:{name:"FOG2", level:6, target:Spell.TargetType.All, type:Spell.SpellType.StatUp, price:20000}
@@ -240,8 +240,8 @@ Spell.create({
  ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Protect, message:"Easy to dodge", bgColor:"#F478FC"}});
 Spell.create({
-  base:{name:"SOFT", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle, price:20000}
- ,stats:{eff:0, acc:0}
+  base:{name:"SOFT", level:6, target:Spell.TargetType.Single, type:Spell.SpellType.RemoveStatus, price:20000}
+ ,stats:{eff:0, acc:0, element:Element.Status, status:Status.Stone, inBattle:false}
  ,allowedClasses:[CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD]});
 Spell.create({
   base:{name:"LIT3", level:6, target:Spell.TargetType.All, type:Spell.SpellType.Damage, price:20000}
@@ -318,8 +318,8 @@ Spell.create({
  ,allowedClasses:[CharacterClass.WHITE_WIZARD]
  ,ui:{effect:Spell.Effect.Beam, bgColor:"#F478FC", splash:"magenta", overlay:true}});
 Spell.create({
-  base:{name:"LIF2", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.NonBattle, price:60000}
- ,stats:{eff:0, acc:0}
+  base:{name:"LIF2", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.Resurrect, price:60000}
+ ,stats:{eff:999, acc:0, inBattle:false}
  ,allowedClasses:[CharacterClass.WHITE_WIZARD]});
 Spell.create({
   base:{name:"WALL", level:8, target:Spell.TargetType.Single, type:Spell.SpellType.ResistElement, price:60000}

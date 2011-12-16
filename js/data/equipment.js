@@ -401,9 +401,35 @@ Equipment.Armor.create({
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
 
 // ITEMS
-Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60});
-Equipment.Item.create({name:"PurePotion", desc:"PURE+", price:75});
-Equipment.Item.create({name:"SoftPotion", desc:"SOFT+", price:300});
-Equipment.Item.create({name:"Tent", desc:"TENT", price:75});
-Equipment.Item.create({name:"Cabin", desc:"CABIN", price:300});
-Equipment.Item.create({name:"House", desc:"HOUSE", price:3000});
+Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60, 
+  uses:{
+    normal:function(target) { return Action.castSpell(target, "CURE", target, {item:this}); }
+   ,battle:function(target) { target.applyDamage(-30); }
+  }
+});
+Equipment.Item.create({name:"PurePotion", desc:"PURE+", price:75,
+  uses:{
+    normal:function(target) { return Action.castSpell(target, "PURE", target, {item:this}); }
+   ,battle:function(target) { return Action.castSpell(target, "PURE", target, {item:this}); }
+  }
+});
+Equipment.Item.create({name:"SoftPotion", desc:"SOFT+", price:300,
+  uses:{
+    normal:function(target) { return Action.castSpell(target, "SOFT", target, {item:this}); }
+   ,battle:function(target) { return false; }
+  }
+});
+Equipment.Item.create({name:"Tent", desc:"TENT", price:75,
+  uses:{
+    normal:function() { $.each(Party.getAliveChars(), function() { this.applyDamage(-30); }); }
+  }
+});
+Equipment.Item.create({name:"Cabin", desc:"CABIN", price:300,
+  uses:{
+    normal:function() { $.each(Party.getAliveChars(), function() { this.applyDamage(-60); }); }
+  }
+});
+Equipment.Item.create({name:"House", desc:"HOUSE", price:3000,
+  uses:{
+    normal:function() { $.each(Party.getAliveChars(), function() { this.refillSpellCharges().applyDamage(-120); }); }
+  }});

@@ -1,6 +1,7 @@
 var Party = (function() {
     
   var self = this;
+  self.inBattle = false;
   
   var chars = [];
   var gold = 0;
@@ -13,6 +14,8 @@ var Party = (function() {
   var currentTransportation = null;
   
   var orbsLit = [];
+  var consumables = {};
+  var keyItems = {};
   
   var views = {
     WORLD_MAP : "#map"
@@ -184,6 +187,8 @@ var Party = (function() {
     var encounter = Encounter.random(currentMap, coords.tilesetX() + "-" + coords.tilesetY());
     var tileMapping = mapConfig.getParentTileMapping(mapConfig.getTile(coords));
     Logger.debug(encounter.toString());
+    
+    inBattle = true;
     
     KeyPressNotifier.clearListener();
     Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));

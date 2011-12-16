@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  
+  RNG.useDefault();
+  
   module("Adding/equipping");
   test("adding/equipping weapons", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
@@ -181,7 +184,115 @@ $(document).ready(function() {
       var armor = Equipment.Armor.lookup(name);
       equal(armor.allowedClasses.length, numClasses, "Expected " + numClasses + " classes to be able to equip " + name + ", found " + armor.allowedClasses.length);
     });
+  });
+  
+  module("Item Usage");
+  test("healing potion in battle", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.applyDamage(32);
+    Party.inBattle = true;
     
+    var startHp = char.hitPoints;
+    Equipment.Item.lookup("HealPotion").use(char);
+    equal(char.hitPoints, startHp + 30);
+  });
+  
+  test("healing potion outside of battle", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.applyDamage(32);
+    Party.inBattle = false;
+    
+    var startHp = char.hitPoints;
+    var result = Equipment.Item.lookup("HealPotion").use(char);
+    // dmg is actually negative when healing
+    equal(char.hitPoints, startHp - result.dmg[0]);
+  });
+  
+  test("pure potion in battle", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.addStatus(Status.Poison);
+    Party.inBattle = true;
+    
+    Equipment.Item.lookup("PurePotion").use(char);
+    ok(!char.hasStatus(Status.Poison));
+  });
+  
+  test("pure potion outside of battle", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.addStatus(Status.Poison);
+    Party.inBattle = false;
+    
+    Equipment.Item.lookup("PurePotion").use(char);
+    ok(!char.hasStatus(Status.Poison));
+  });
+  
+  test("soft potion in battle", function() {
+    var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
+    char.addStatus(Status.Stone);
+    Party.inBattle = false;
+    
+    Equipment.Item.lookup("SoftPotion").use(char);
+    ok(!char.hasStatus(Status.Stone));
+  });
+  
+
+  test("healing after using a TENT", function() {
+    Party.clearChars();
+    Party.addChar(Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0));
+    Party.addChar(Party.createNewChar("BBBB", CharacterClass.FIGHTER, 1));
+    Party.addChar(Party.createNewChar("CCCC", CharacterClass.FIGHTER, 2));
+    Party.addChar(Party.createNewChar("DDDD", CharacterClass.FIGHTER, 3));
+
+    var startingHp = [];
+    $.each(Party.getChars(), function(i, char) {
+      char.applyDamage(31);
+      startingHp.push(char.hitPoints);
+    });
+    
+    Equipment.Item.lookup("Tent").use();
+    $.each(Party.getChars(), function(i, char) {
+      equal(char.hitPoints, startingHp[i] + 30);
+    });
+  });
+  
+  test("healing after using a CABIN", function() {
+    Party.clearChars();
+    Party.addChar(Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0));
+    Party.addChar(Party.createNewChar("BBBB", CharacterClass.FIGHTER, 1));
+    Party.addChar(Party.createNewChar("CCCC", CharacterClass.FIGHTER, 2));
+    Party.addChar(Party.createNewChar("DDDD", CharacterClass.FIGHTER, 3));
+
+    var startingHp = [];
+    $.each(Party.getChars(), function(i, char) {
+      char.hp(100).applyDamage(75);
+      startingHp.push(char.hitPoints);
+    });
+    
+    Equipment.Item.lookup("Cabin").use();
+    $.each(Party.getChars(), function(i, char) {
+      equal(char.hitPoints, startingHp[i] + 60);
+    });
+  });
+  
+  test("healing after using a HOUSE", function() {
+    Party.clearChars();
+    Party.addChar(Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0));
+    Party.addChar(Party.createNewChar("BBBB", CharacterClass.FIGHTER, 1));
+    Party.addChar(Party.createNewChar("CCCC", CharacterClass.FIGHTER, 2));
+    Party.addChar(Party.createNewChar("DDDD", CharacterClass.FIGHTER, 3));
+
+    var startingHp = [];
+    $.each(Party.getChars(), function(i, char) {
+      char.hp(200).addMaxSpellCharge(1).addMaxSpellCharge(1).addMaxSpellCharge(2).applyDamage(150);
+      startingHp.push(char.hitPoints);
+    });
+    
+    Equipment.Item.lookup("House").use();
+    $.each(Party.getChars(), function(i, char) {
+      equal(char.hitPoints, startingHp[i] + 120);
+      equal(char.charges[0], 2);
+      equal(char.charges[1], 1);
+    });
   });
   
 });
