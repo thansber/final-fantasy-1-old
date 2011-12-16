@@ -36,6 +36,7 @@ var LocationJumperHelper = (function() {
     for (var s in Shops.Types) {
       DebugHelper.addOption($selector, Shops.Types[s], Shops.Types[s]);
     }
+    $selector.val(Shops.Types.WhiteMagic);
   };
   
   var jumpToTown = function($row) {

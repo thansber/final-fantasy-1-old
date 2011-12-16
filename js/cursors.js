@@ -29,8 +29,12 @@ var Cursors = (function() {
    ,EQUIPMENT_SHOP_SELL_ITEM : "equipmentSellItem"
    ,INN : "inn"
    ,ITEM_SHOP : "itemShop"
+   ,ITEM_SHOP_CONFIRM : "itemShopConfirm"
+   ,ITEM_SHOP_SELECT_ITEM : "itemShopSelectItem"
    ,MAGIC_MENU : "magicMenu"
    ,MAGIC_SHOP : "magicShop"
+   ,MAGIC_SHOP_CONFIRM : "magicShopConfirm"
+   ,MAGIC_SHOP_SPELL : "magicShopSpell"
    ,STATUS_MENU : "statusMenu"
    ,WEAPON_ACTIONS_MENU : "weaponActions"
    ,WEAPONS_MENU : "weapons"
@@ -948,10 +952,7 @@ var Cursors = (function() {
     var shop = Party.getShop();
     var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
     var inventoryItem = shop.lookupInventory(index);
-    var displayPrice = Message.padToLength(inventoryItem.item.price, 5);
-    shop
-      .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
-      .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
+    shop.npcSaysPrice(inventoryItem.item.price).offersConfirmation();
     this.clear();
     Cursors.lookup(Cursors.EQUIPMENT_SHOP_BUY_CONFIRM).startListening({item:inventoryItem.item});
   };
@@ -1047,7 +1048,7 @@ var Cursors = (function() {
       Cursors.lookup(Cursors.EQUIPMENT_SHOP).startListening();
     } else {
       for (var i = 0; i < equipment.length; i++) {
-        shop.addInventory(equipment[i]);
+        shop.addInventory(equipment[i].desc, equipment[i].price);
       }
       
       shop.show(".prices");
@@ -1072,10 +1073,7 @@ var Cursors = (function() {
     var index = this.$container.find(".item").index(this.$cursor.closest(".item"));
     shop.toggleEquipmentMode(this.char);
     var item = this.char.getEquipment()[index];
-    var displayPrice = Message.padToLength(Equipment.sellsFor(item), 5);
-    shop
-      .npcSays(displayPrice).npcSays("Gold", true).npcSays("OK?", true)
-      .clear(".menu").offers("Yes", "yes").offers("No", "no").show(".menu");
+    shop.npcSaysPrice(Equipment.sellsFor(item)).offersConfirmation();
     this.clear();
     Cursors.lookup(Cursors.EQUIPMENT_SHOP_SELL_CONFIRM).startListening({char:this.char, item:item, itemIndex:index});
   };
@@ -1167,7 +1165,7 @@ var Cursors = (function() {
           var price = shop.lookupInventory(0).item.price;
           
           if (this.justEntered) {
-            shop.npcSays(Message.padToLength(price, 5)).npcSays("Gold", true).npcSays("OK?", true);
+            shop.npcSaysPrice(price);
             this.justEntered = false;
           } else {
             shop.npcSays("Don't\nforget,\nif you\nleave\nyour\ngame,").hide(".menu");
@@ -1225,8 +1223,7 @@ var Cursors = (function() {
     }
     
     var shop = Party.getShop();
-    var price = Message.padToLength(shop.lookupInventory(0).item.price, 5);
-    shop.npcSays(price).npcSays("Gold", true).npcSays("OK?", true).clear(".menu").offers("Yes", "yes").offers("No", "no");
+    shop.npcSaysPrice(shop.lookupInventory(0).item.price).offersConfirmation();
     Cursors.lookup(Cursors.CLINIC_CONFIRM).startListening({char:charToRevive});
     Logger.debug("reviving char " + index);
   };
@@ -1246,8 +1243,7 @@ var Cursors = (function() {
 
     KeyPressNotifier.clearListener();
     this.clear();
-    Party.getShop().displayInit();
-    Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:false});
+    this.resetShop();
   };
   ClinicConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
   ClinicConfirmCursor.prototype.next = function() {
@@ -1269,10 +1265,196 @@ var Cursors = (function() {
   };
   ClinicConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.justRevived = false; }; 
   ClinicConfirmCursor.prototype.resetShop = function() {
-    Party.getShop().displayInit();
+    Party.getShop().clear(".menu").displayInit();
     Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:Party.getAliveChars().length == Party.getChars().length});
   };
   ClinicConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+  
+  /* ---------------- */
+  /* ITEM SHOP cursor */
+  /* ---------------- */
+  var ItemShopCursor = function() {};
+  var itemShopCursorOpt = {container:"#shop .menu", otherKeys:{}};
+  itemShopCursorOpt.otherKeys[KeyPressNotifier.B] = function() { this.buy(); };
+  itemShopCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.back(); };
+  itemShopCursorOpt.otherKeys[KeyPressNotifier.X] = function() { this.back(); };
+  ItemShopCursor.prototype = new Cursor(self.ITEM_SHOP, itemShopCursorOpt);
+  ItemShopCursor.prototype.back = function() { 
+    this.clear();
+    Party.exitShop();
+  };
+  ItemShopCursor.prototype.buy = function() {
+    var shop = Party.getShop();
+    shop.npcSays("What do\nyou\nwant?").hide(".menu").show(".prices");
+    Cursors.lookup(Cursors.ITEM_SHOP_SELECT_ITEM).startListening();
+  };
+  ItemShopCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  ItemShopCursor.prototype.next = function() {
+    var $option = this.$cursor.closest(".option");
+    if ($option.is(".buy")) {
+      this.buy();
+    } else if ($option.is(".exit")) {
+      this.back();
+    }
+  };
+  ItemShopCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+  
+  /* ---------------------------- */
+  /* ITEM SHOP SELECT ITEM cursor */
+  /* ---------------------------- */
+  var ItemShopSelectItemCursor = function() { };
+  ItemShopSelectItemCursor.prototype = new Cursor(self.ITEM_SHOP_SELECT_ITEM, {container:"#shop .prices", otherKeys:{}});
+  ItemShopSelectItemCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").resetOffers().show(".menu");
+    Cursors.lookup(Cursors.ITEM_SHOP).startListening();
+  };
+  ItemShopSelectItemCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  ItemShopSelectItemCursor.prototype.next = function() {
+    var index = this.yDestinations().index(this.$cursor.closest(".item"));
+    var shop = Party.getShop();
+    var inventoryItem = shop.lookupInventory(index);
+    
+    this.clear();
+    shop.npcSaysPrice(inventoryItem.item.price).offersConfirmation();;
+    Cursors.lookup(Cursors.ITEM_SHOP_CONFIRM).startListening({item:inventoryItem.item});
+  };
+  ItemShopSelectItemCursor.prototype.yDestinations = function() { return this.$container.find(".item"); }
+  
+  /* ------------------------ */
+  /* ITEM SHOP CONFIRM cursor */
+  /* ------------------------ */
+  var ItemShopConfirmCursor = function() { this.item = null; };
+  var itemShopConfirmCursorOpt = {container:"#shop .menu", otherKeys:{}};
+  itemShopConfirmCursorOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
+  itemShopConfirmCursorOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
+  ItemShopConfirmCursor.prototype = new Cursor(self.ITEM_SHOP_CONFIRM, itemShopConfirmCursorOpt);
+  ItemShopConfirmCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?");
+    this.resetShop();
+  };
+  ItemShopConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  ItemShopConfirmCursor.prototype.next = function() {
+    var $option = this.$cursor.closest(".option");
+
+    if ($option.is(".yes")) {
+      if (!Party.hasEnoughGoldFor(this.item.price)) {
+        Logger.debug("What to show if the party cannot afford to buy something");
+        return false;
+      } 
+      Party.buy(this.item.price);
+      // TODO: add item to party's inventory
+      Party.getShop().npcSays("Thank\nyou!\nWhat\nelse?").gold();
+      this.resetShop();
+      Logger.debug("Bought a " + this.item.name + " for " + this.item.price);      
+    } else if ($option.is(".no")) {
+      this.back();
+    }
+  };
+  ItemShopConfirmCursor.prototype.reset = function(fullReset, opt) { this.item = opt.item; };
+  ItemShopConfirmCursor.prototype.resetShop = function() { 
+    Party.getShop().resetOffers().show(".menu");
+    Cursors.lookup(Cursors.ITEM_SHOP).startListening(); 
+  };
+  ItemShopConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
+  
+  /* ----------------- */
+  /* MAGIC SHOP cursor */
+  /* ----------------- */
+  var MagicShopCursor = function() { };
+  MagicShopCursor.prototype = new Cursor(self.MAGIC_SHOP, {container:"#shop .menu", otherKeys:{}});
+  MagicShopCursor.prototype.back = function() { 
+    this.clear();
+    Party.exitShop();
+  };
+  MagicShopCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  MagicShopCursor.prototype.next = function() {
+    var index = this.yDestinations().index(this.$cursor.closest(".option"));
+    var char = Party.getChar(index);
+    var shop = Party.getShop();
+    
+    shop.hide(".menu").show(".prices");
+    Cursors.lookup(Cursors.MAGIC_SHOP_SPELL).startListening({char:char});
+  };
+  MagicShopCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+
+  /* ------------------------------ */
+  /* MAGIC SHOP SELECT SPELL cursor */
+  /* ------------------------------ */
+  var MagicShopSpellCursor = function() { this.char = null; };
+  MagicShopSpellCursor.prototype = new Cursor(self.MAGIC_SHOP_SPELL, {container:"#shop .prices", otherKeys:{}});
+  MagicShopSpellCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").show(".menu");
+    Cursors.lookup(Cursors.MAGIC_SHOP).startListening();
+  };
+  MagicShopSpellCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  MagicShopSpellCursor.prototype.next = function() {
+    var index = this.yDestinations().index(this.$cursor.closest(".item"));
+    var shop = Party.getShop();
+    var inventoryItem = shop.lookupInventory(index);
+    
+    shop.npcSaysPrice(inventoryItem.item.price).offersConfirmation();
+    Cursors.lookup(Cursors.MAGIC_SHOP_CONFIRM).startListening({char:this.char, spell:inventoryItem.item});
+  };
+  MagicShopSpellCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; }
+  MagicShopSpellCursor.prototype.yDestinations = function() { return this.$container.find(".item"); }
+
+  /* ------------------------- */
+  /* MAGIC SHOP CONFIRM cursor */
+  /* ------------------------- */
+  var MagicShopConfirmCursor = function() { this.char = null; this.spell = null; };
+  var magicShopConfirmCursorOpt = {container:"#shop .menu", otherKeys:{}};
+  magicShopConfirmCursorOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
+  magicShopConfirmCursorOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
+  MagicShopConfirmCursor.prototype = new Cursor(self.MAGIC_SHOP_CONFIRM, magicShopConfirmCursorOpt);
+  MagicShopConfirmCursor.prototype.back = function() { 
+    this.clear();
+    Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?");
+    this.resetShop();
+  };
+  MagicShopConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
+  MagicShopConfirmCursor.prototype.next = function() {
+    var $option = this.$cursor.closest(".option");
+    
+    if ($option.is(".yes")) {
+      if (!this.char.isSpellAllowed(this.spell)) {
+        Party.getShop().npcSays("Sorry\nYou\ncan't\nlearn\nthat.\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      } else if (!Party.hasEnoughGoldFor(this.spell.price)) {
+        Party.getShop().npcSays("You\ncan't\nafford\nthat.");
+        this.resetShop();
+        return false;
+      } else if (this.char.knowsSpell(this.spell)) {
+        Party.getShop().npcSays("You\nalready\nknow\nthat\nspell.\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      } else if (!this.char.canLearnSpell(this.spell)) {
+        Party.getShop().npcSays("This\nlevel\nspell\nis full\n::\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      }
+      
+      this.clear();
+      this.char.learnSpell(this.spell);
+      Party.buy(this.spell.price);
+      Party.getShop().gold().resetOffers().displayInit();
+      Logger.debug(this.char.getName() + " bought " + this.spell.spellId + " for " + this.spell.price);
+    } else if ($option.is(".no")) {
+      this.back();
+    }
+  };
+  MagicShopConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.spell = opt.spell; }
+  MagicShopConfirmCursor.prototype.resetShop = function() { 
+    this.clear();
+    Party.getShop().resetOffers();
+    Cursors.lookup(Cursors.MAGIC_SHOP).startListening();
+  };
+
+  MagicShopConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
+
   
   return this;
 }).call({});
