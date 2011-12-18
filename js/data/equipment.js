@@ -419,7 +419,7 @@ Equipment.Item.create({name:"SoftPotion", desc:"SOFT+", price:300,
    ,battle:function(target) { return false; }
   }
 });
-Equipment.Item.create({name:"Tent", desc:"TENT", price:75,
+Equipment.Item.create({name:"Tent", desc:"TENT ", price:75,
   uses:{
     normal:function() { $.each(Party.getAliveChars(), function() { this.applyDamage(-30); }); }
   }

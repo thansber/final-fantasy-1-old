@@ -58,6 +58,12 @@
 #magicMenu .magic .spells .spell.middle { padding:0 16px 0 32px; }
 #magicMenu .magic .spells .spell.middle .cursor { left:0px; }
 
+#itemMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+#itemMenu .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
+#itemMenu .title { height:20px; padding:20px 0 2px 8px; width:102px; }
+#itemMenu .inventory { width:420px; height:250px; margin-top:30px; padding:30px 0 0 40px; }
+#itemMenu .inventory .item { width:140px; height:30px; float:left;}
+#itemMenu .inventory .item .cursor { top:2px; }
 
 #statusMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
 #statusMenu .name { height:20px; padding:20px 0 20px 24px; width:86px; float:left; margin-bottom:12px;}

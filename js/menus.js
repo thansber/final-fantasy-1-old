@@ -204,6 +204,9 @@ var Menus = (function() {
     return this;
   }).call({});
   
+  /* ========================================= */
+  /* MAGIC MENU ------------------------------ */
+  /* ========================================= */
   self.Magic = (function() {
     var self = this;
     var $container = null;
@@ -257,6 +260,37 @@ var Menus = (function() {
     return this;
   }).call({});
   
+  /* ======================================== */
+  /* ITEM MENU ------------------------------ */
+  /* ======================================== */
+  self.Item = (function() {
+    var self = this;
+    var $container = null;
+    
+    self.init = function() {
+      $container = $("#itemMenu");
+      $container.find(".title").append(Message.create("ITEM")).end();
+    };
+    
+    self.load = function() {
+      var consuambles = Party.getConsumables();
+      var $inventory = $container.find(".inventory");
+      $inventory.empty();
+      $.each(consuambles, function(i, item) {
+        if (item.qty > 0) {
+          var displayName = Equipment.Item.lookup(item.name).desc;
+          var qty = Message.padToLength(item.qty, 2);
+          $inventory.append($("<div/>").addClass("item").append(Message.create(displayName + qty)));
+        }
+      });
+    };
+    
+    return this;
+  }).call({});
+  
+  /* ========================================== */
+  /* STATUS MENU ------------------------------ */
+  /* ========================================== */
   self.Status = (function() {
     var self = this;
     var $container = null;
@@ -322,6 +356,7 @@ var Menus = (function() {
     self.Armor.init();
     self.Weapon.init();
     self.Magic.init();
+    self.Item.init();
     self.Status.init();
   };
     

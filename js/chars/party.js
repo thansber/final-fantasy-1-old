@@ -14,7 +14,14 @@ var Party = (function() {
   var currentTransportation = null;
   
   var orbsLit = [];
-  var consumables = {};
+  var consumables = [
+    {name:"HealPotion", qty:0}                
+   ,{name:"PurePotion", qty:0}                
+   ,{name:"SoftPotion", qty:0}                
+   ,{name:"Tent", qty:0}                
+   ,{name:"Cabin", qty:0}                
+   ,{name:"House", qty:0}                
+  ];
   var keyItems = {};
   
   var views = {
@@ -24,6 +31,7 @@ var Party = (function() {
    ,ARMOR_MENU : "#armorMenu"
    ,WEAPON_MENU : "#weaponMenu"
    ,MAGIC_MENU : "#magicMenu"
+   ,ITEM_MENU : "#itemMenu"
    ,STATUS_MENU : "#statusMenu"
   };
   
@@ -50,6 +58,14 @@ var Party = (function() {
   /* PUBLIC METHODS */
   /* ============== */
   self.addChar = function(c) { chars.push(c); };
+  self.addConsumable = function(name, amount) { 
+    $.each(consumables, function(i, item) {
+      if (item.name == name) {
+        item.qty += amount;
+      }
+    });
+    return this;
+  };
   self.addGold = function(gp) { gold += gp; if (gold < 0) { gold = 0; } };
   self.buy = function(gp) { self.addGold(-1 * gp); };
   self.clearChars = function() { chars = []; };
@@ -92,6 +108,11 @@ var Party = (function() {
       .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
     
     self.addGold(400);
+    self.addConsumable("HealPotion", 23)
+        .addConsumable("PurePotion", 7)
+        .addConsumable("SoftPotion", 2)
+        .addConsumable("Tent", 4)
+        .addConsumable("Cabin", 1);
   };
   
   self.enterShop = function(shopType) {
@@ -118,6 +139,7 @@ var Party = (function() {
   };
   self.getChar = function(index) { return chars[index]; };
   self.getChars = function() { return chars; };
+  self.getConsumables = function() { return consumables; };
   self.getGold = function() { return gold; };
   self.getLitOrbs = function() { return orbsLit; };
   self.getMap = function() { return Map.getMap(currentMap); };
@@ -205,6 +227,8 @@ var Party = (function() {
     $("body > .main").hide();
     $(view).show();
   };
+  
+  self.useConsumable = function(item) { self.addConsumable(item, -1); return this; };
   
   return this;
 }).call({});

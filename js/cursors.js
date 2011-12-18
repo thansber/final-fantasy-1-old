@@ -28,6 +28,7 @@ var Cursors = (function() {
    ,EQUIPMENT_SHOP_SELL_CONFIRM : "equipmentSellConfirm"
    ,EQUIPMENT_SHOP_SELL_ITEM : "equipmentSellItem"
    ,INN : "inn"
+   ,INVENTORY : "inventory"
    ,ITEM_SHOP : "itemShop"
    ,ITEM_SHOP_CONFIRM : "itemShopConfirm"
    ,ITEM_SHOP_SELECT_ITEM : "itemShopSelectItem"
@@ -528,7 +529,11 @@ var Cursors = (function() {
   };
   CharMenuCursor.prototype.yDestinations = function() { return this.$container.find(".option"); };
   
-  CharMenuCursor.prototype.item = function() { Logger.debug("TODO: implement item menu"); };
+  CharMenuCursor.prototype.item = function() {
+    Menus.Item.load();
+    Party.switchView(Party.ITEM_MENU);
+    Cursors.lookup(Cursors.INVENTORY).startListening();
+  };
   CharMenuCursor.prototype.magic = function() { 
     this.clear();
     this.mode = "magic";
@@ -887,6 +892,31 @@ var Cursors = (function() {
     // Yeah this is some crazy selection, but it works
     return this.$container.find(".spell:nth-child(3n - " + (Character.MAX_SPELLS_PER_LEVEL - 1 - indexInLevel) + ")");
   };
+  
+  /* ---------------------------- */
+  /* INVENTORY (ITEM MENU) cursor */
+  /* ---------------------------- */
+  var InventoryCursor = function() {};
+  InventoryCursor.prototype = new Cursor(self.INVENTORY, {container: "#itemMenu .inventory", otherKeys:{}});
+  InventoryCursor.prototype.back = function() { 
+    this.clear();
+    Party.switchView(Party.MENU);
+    Cursors.lookup(Cursors.CHAR_MENU).startListening();
+  };
+  InventoryCursor.prototype.initialCursor = function() { return this.$container.find(".item").eq(0); };
+  InventoryCursor.prototype.next = function() { this.back(); };
+  InventoryCursor.prototype.xDestinations = function() { 
+    var $items = this.$container.find(".item");
+    var index = $items.index(this.$cursor);
+    var startIndex = Math.floor(index / 3) * 3 + 0;
+    return $items.slice(startIndex, startIndex + 3); 
+  };
+  InventoryCursor.prototype.yDestinations = function() {
+    var $items = this.$container.find(".item");
+    var index = $items.index(this.$cursor);
+    return this.$container.find(".item:nth-child(3n - " + (2 - (index % 3)) + ")");
+  };
+
   
   /* ------------------ */
   /* STATUS MENU cursor */

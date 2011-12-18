@@ -1,31 +1,30 @@
-- inventory screens
-    - inventory/items page
+- handle FEAR, WARP, EXIT spells
+- refactor walk/slide animations with CSS transitions/animations
+    - animation for walk, class toggling
+- map movement uses jquery for background position animation, replace with CSS3?  (if so, how to handle callback?)
+- remove animation chain?
 
+BATTLE
+======
 - monster skills causing status prob need messages
 - figure out what happens to a char when they are asleep
 - casting a spell that cannot be cast in battle should not be allowed (added spell.inBattle)
-- handle FEAR, WARP, EXIT spells
+- running away for enemies
+- chars w/o magic still show magic selection, when spell is selected, show desc "Nothing", wait for button to hide
 
+MENU
+====
+- cast spells outside of battle flow (healing spells)
+- use consumable flow
 - character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
 
-- running away for enemies
-
-- chars w/o magic still show magic selection, when spell is selected, show desc "Nothing", wait for button to hide
-
-- refactor walk/slide animations with CSS transitions/animations
-    - animation for walk, class toggling
-    
-- movement uses jquery for background position animation, replace with CSS3?  (if so, how to handle callback?)
-- remove animation chain?
-
 TOWNS
------
-- item shop - cannot afford
-- item shop - full
-- clinic - cannot afford
+=====
+- item shop - cannot afford message
+- item shop - full message
+- clinic - cannot afford message
 - implement party inventory (so can add items to it, 2 buckets, 1 for consumables, 1 for key items)
-- implement item usage (heal potion heals 30hp outside of battle, random amount in, tents/cabins/houses)
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal?
 - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
