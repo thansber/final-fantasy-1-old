@@ -82,7 +82,7 @@ var Menus = (function() {
           .find(".hp.values").empty().append(Message.create(hpText)).end()
           .find(".magic.row:eq(0)").empty().append(Message.create(char.charges.slice(0, 4).join("/") + "/")).end()
           .find(".magic.row:eq(1)").empty().append(Message.create(char.charges.slice(4).join("/"))).end()
-          .find(".char.class").addClass(char.currentClass.name);
+          .find(".char.class").addClass(char.currentClass.name); // TODO: handle various statuses
       }
     };
     

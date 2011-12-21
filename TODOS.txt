@@ -21,9 +21,6 @@ MENU
 
 TOWNS
 =====
-- item shop - cannot afford message
-- item shop - full message
-- clinic - cannot afford message
 - implement party inventory (so can add items to it, 2 buckets, 1 for consumables, 1 for key items)
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal?

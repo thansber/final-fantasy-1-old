@@ -189,7 +189,16 @@ var Party = (function() {
   };
   
   self.lightOrb = function(orb) { orbsLit.push(orb); };
-  
+  self.lookupConsumable = function(name) {
+    var consumable = null;
+    $.each(consumables, function(i, item) {
+      if (item.name == name) {
+        consumable = item;
+        return true;
+      }
+    });
+    return consumable;
+  }
   self.resetStepsUntilBattle = function() {
     var steps = null;
     if (self.getMap().is(Map.WORLD_MAP)) {

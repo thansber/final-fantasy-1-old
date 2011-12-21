@@ -98,6 +98,7 @@ var Equipment = (function() {
       this.name = opt.name;
       this.desc = opt.desc;
       this.price = opt.price;
+      this.key = !!opt.key;
       this.inBattleEffect = uses.battle; // function
       this.outOfBattleEffect = uses.normal; // function
       ALL_ITEMS[this.name] = this;

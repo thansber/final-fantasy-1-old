@@ -1263,9 +1263,14 @@ var Cursors = (function() {
   /* ---------------------- */
   /* CLINIC COBNFIRM cursor */
   /* ---------------------- */
-  var ClinicConfirmCursor = function() { this.char = null; this.justRevived = false; };
+  var ClinicConfirmCursor = function() { this.char = null; this.justRevived = false; this.leaving = true; };
   ClinicConfirmCursor.prototype = new Cursor(self.CLINIC_CONFIRM, {container:"#shop .menu", otherKeys:{}});
-  ClinicConfirmCursor.prototype.back = function() { 
+  ClinicConfirmCursor.prototype.back = function() {
+    if (this.leaving) {
+      this.clear();
+      Party.exitShop();
+      return false;
+    }
     if (this.justRevived) {
       this.resetShop();
       return false;
@@ -1277,6 +1282,12 @@ var Cursors = (function() {
   };
   ClinicConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
   ClinicConfirmCursor.prototype.next = function() {
+    if (this.leaving) {
+      this.clear();
+      Party.exitShop();
+      return false;
+    }
+
     if (this.justRevived) {
       this.resetShop();
       return false;
@@ -1284,8 +1295,15 @@ var Cursors = (function() {
     var $option = this.$cursor.closest(".option");
     if ($option.is(".yes")) {
       var shop = Party.getShop();
+      var price = shop.lookupInventory(0).item.price;
+      
+      if (!Party.hasEnoughGoldFor(price)) {
+        shop.npcSays("You\ncan't\nafford\nthat.").hide(".menu");
+        this.leaving = true;
+        return false;
+      }
       shop.npcSays("WARRIOR\n::\nReturn\nto\nlife!").hide(".menu");
-      Party.buy(shop.lookupInventory(0).item.price);
+      Party.buy();
       this.char.resurrect();
       shop.party().gold().hide(".menu").clear(".menu");
       this.justRevived = true;
@@ -1293,7 +1311,7 @@ var Cursors = (function() {
       this.back();
     }
   };
-  ClinicConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.justRevived = false; }; 
+  ClinicConfirmCursor.prototype.reset = function(fullReset, opt) { this.char = opt.char; this.justRevived = false; this.leaving = false; }; 
   ClinicConfirmCursor.prototype.resetShop = function() {
     Party.getShop().clear(".menu").displayInit();
     Cursors.lookup(Cursors.CLINIC).startListening({notNeeded:Party.getAliveChars().length == Party.getChars().length});
@@ -1370,11 +1388,16 @@ var Cursors = (function() {
 
     if ($option.is(".yes")) {
       if (!Party.hasEnoughGoldFor(this.item.price)) {
-        Logger.debug("What to show if the party cannot afford to buy something");
+        Party.getShop().npcSays("You\ncan't\nafford\nthat.");
+        this.resetShop();
+        return false;
+      } else if (Party.lookupConsumable(this.item.name).qty >= 99) {
+        Party.getShop().npcSays("You\ncan't\ncarry\nanymore.");
+        this.resetShop();
         return false;
       } 
       Party.buy(this.item.price);
-      // TODO: add item to party's inventory
+      Party.addConsumable(this.item.name, 1);
       Party.getShop().npcSays("Thank\nyou!\nWhat\nelse?").gold();
       this.resetShop();
       Logger.debug("Bought a " + this.item.name + " for " + this.item.price);      
