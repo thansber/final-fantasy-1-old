@@ -5,7 +5,8 @@ var Movement = (function() {
   var moveDistance = 16;
   var $view = null;
   var isMoving = false;
-  var nextMove = null;
+  var isListening = false;
+  var moveCallback = null;
   var keysPressed = {};
   
   var Transportation = {
@@ -26,6 +27,12 @@ var Movement = (function() {
   /* =========== */
   self.init = function(opt) {
     $view = $("#view");
+    
+    $view.bind("transitionend webkitTransitionEnd", function() {
+      if (moveCallback && isListening) {
+        moveCallback();
+      }
+    });
     self.registeredKeys = [KeyPressNotifier.I, KeyPressNotifier.M];
   };
 
@@ -44,7 +51,7 @@ var Movement = (function() {
       return;
     }
     
-    var callback = function() {
+    moveCallback = function() {
       isMoving = false;
       if (moveValid && typeof(moveValid) === "function") {
         moveValid();
@@ -56,7 +63,7 @@ var Movement = (function() {
     var oldY = parseInt(oldPos[1].replace("px", ""));
     var newPos = (oldX + (xChange * moveDistance * -1)) + "px " + (oldY + (yChange * moveDistance * -1)) + "px";
     var speed = MOVE_SCROLL_SPEEDS[Party.getTransportation()];
-    $view.stop().animate({backgroundPosition:newPos}, speed, "linear", callback);
+    $view.css({backgroundPosition:newPos});
   };
   
   self.left = function() { self.move(-1, 0); };
@@ -95,6 +102,7 @@ var Movement = (function() {
   };
   
   self.startListening = function() {
+    isListening = true;
     KeyPressNotifier.setListener(Movement);
     $(document).everyTime("30ms", TIMER_LABEL, function() {
       Movement.refresh();
@@ -102,6 +110,7 @@ var Movement = (function() {
   };
   
   self.stopListening = function() {
+    isListening = false;
     $(document).stopTime(TIMER_LABEL);
     for (var k in keysPressed) {
       keysPressed[k] = false;

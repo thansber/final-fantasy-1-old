@@ -5,9 +5,8 @@
 #shop .npc.sprite { width:94px; height:128px; background-image:url(../images/shop-npcs.png); background-position:100em 100em; float:left; margin-top:36px; margin-left:20px;}
 #shop .party { float:left; height:156px; width:80px; margin-top:18px; opacity:1; }
 #shop .party { 
-  -moz-transition-property: opacity;  
-  -moz-transition-duration: 0.6s;
-  -moz-transition-timing-function: linear;
+  -moz-transition: opacity 0.6s linear;
+  -webkit-transition: opacity 0.6s linear;
 }
 #shop .party.resting { opacity:0; }
 #shop .party .char { float:left; }

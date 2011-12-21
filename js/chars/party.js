@@ -175,6 +175,8 @@ var Party = (function() {
   };
   
   self.jumpTo = function(map, coords) {
+    var $view = $player.closest("#view");
+    $view.removeClass("smooth").hide();
     currentMap = map;
     currentPosition = jQuery.extend({}, coords);
     Logger.debug("jumped to map [" + map + "], coords [" + currentPosition.toString() + "]");
@@ -185,7 +187,7 @@ var Party = (function() {
     var left = (currentPosition.x * Map.TILE_SIZE) - playerLeft;
     top *= -1;
     left *= -1;
-    $player.closest("#view").css({backgroundPosition:left + "px " + top + "px"});
+    $view.css({backgroundPosition:left + "px " + top + "px"}).addClass("smooth").show();
   };
   
   self.lightOrb = function(orb) { orbsLit.push(orb); };
@@ -229,7 +231,7 @@ var Party = (function() {
   };
   
   self.switchMap = function(map) {
-    $("#map").removeClass().addClass(map).addClass("town main");
+    $("#map").hide().removeClass().addClass(map).addClass("town main").show();
   };
   
   self.switchView = function(view) {

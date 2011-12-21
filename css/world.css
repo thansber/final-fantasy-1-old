@@ -6,6 +6,7 @@
 #map .background .transition.top.displayed { top:0; }
 #map .background .transition.bottom { bottom:-151px; }
 #map .background .transition.bottom.displayed { bottom:0px; }
+
 #map #view { width:302px; height:302px; overflow:hidden; }
 #map.world-map #view { background-image:url(../images/world-map.png); background-color:black; }
 #map.town #view { background-repeat:no-repeat; }
@@ -23,8 +24,12 @@
 #view.zoom.two { width:512px; height:512px; }
 #view.zoom.two #player { margin-top:288px; margin-left:288px; }
 
+#map #view.smooth {
+  -moz-transition: background-position .3s linear;
+  -webkit-transition: background-position .3s linear;
+}
+
 #map .background .transition {
-  -moz-transition-property: top, bottom;  
-  -moz-transition-duration: 1s;
-  -moz-transition-timing-function: linear;
+  -moz-transition-property: top, bottom 1s linear;
+  -webkit-transition-property: top, bottom 1s linear;
 }

@@ -44,7 +44,10 @@
 .equipment.menu .char .items .slot .cursor { position:absolute; left:-5px; top:-2px; }
 .equipment.menu .char .items .slot .originalCursor { position:absolute; left:-10px; top:-2px; }
 .equipment.menu .char .items .flicker .cursor,
-.equipment.menu .char .items .flicker .originalCursor { -moz-animation:cursorFlicker; -moz-animation-duration:100ms; -moz-animation-iteration-count:infinite; }
+.equipment.menu .char .items .flicker .originalCursor { 
+  -moz-animation: cursorFlicker 100ms infinite; 
+  -webkit-animation:cursorFlicker 100ms infinite; 
+}
 
 #magicMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
 #magicMenu .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }

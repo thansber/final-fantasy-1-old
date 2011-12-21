@@ -5,7 +5,6 @@
   <link type="text/css" rel="stylesheet" href="css/global.css"/>
   <link type="text/css" rel="stylesheet" href="css/messages.css"/>
   <link type="text/css" rel="stylesheet" href="css/debug.css"/>
-  <link type="text/css" rel="stylesheet" href="css/debug_world_map.css"/>
   <link type="text/css" rel="stylesheet" href="css/world.css"/>
   <link type="text/css" rel="stylesheet" href="css/battle.css"/>
   <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
@@ -18,7 +17,7 @@
 <div id="map" class="main">
   <div class="background">
     <div class="transition top"></div>
-    <div id="view">
+    <div id="view" class="smooth">
       <div id="player"></div>
     </div>
     <div class="transition bottom"></div>
@@ -373,10 +372,9 @@
   
 </div>
 
-<script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.effects.core.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery.backgroundPosition.js"></script>
 <script type="text/javascript" src="js/lib/jquery.timer.js"></script>
 <script type="text/javascript" src="js/logger.js"></script>
 <script type="text/javascript" src="js/rng.js"></script>

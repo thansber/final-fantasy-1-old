@@ -1,8 +1,7 @@
 .party .char { background-image:url(../images/char-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; width:36px; height:50px; margin-right:0px; }
 .party .char {
-  -moz-transition-property: margin-right;  
-  -moz-transition-duration: 0.35s;
-  -moz-transition-timing-function: linear; 
+  -moz-transition: margin-right 0.3s linear;
+  -webkit-transition: margin-right 0.3s linear;
 }
 .party .char.dead { width:52px; }
 .party .char.advance { margin-right:28px; }

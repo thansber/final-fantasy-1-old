@@ -1,7 +1,6 @@
 - handle FEAR, WARP, EXIT spells
 - refactor walk/slide animations with CSS transitions/animations
     - animation for walk, class toggling
-- map movement uses jquery for background position animation, replace with CSS3?  (if so, how to handle callback?)
 - remove animation chain?
 
 BATTLE
