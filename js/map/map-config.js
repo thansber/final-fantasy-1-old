@@ -454,7 +454,7 @@ var Map = (function() {
     }
 
     var mapConfig = Map.getMap(map);
-    if (mapConfig.exitOnOutOfBounds) {
+    if (mapConfig && mapConfig.exitOnOutOfBounds) {
       if (mapConfig.isOutsideTownMap(coords)) {
         return transitions[0];
       }

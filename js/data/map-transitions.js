@@ -1,3 +1,6 @@
+// Start game
+new Map.Transition("start", Map.WORLD_MAP, {y:0, x:0}, {y:165, x:153});
+
 // World map -> towns
 new Map.Transition(Map.WORLD_MAP, Map.CONERIA, {y:160, x:151});
 new Map.Transition(Map.WORLD_MAP, Map.CONERIA, {y:161, x:151});

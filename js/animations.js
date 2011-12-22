@@ -334,12 +334,18 @@ var Animation = (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  self.areaTransition = function(transition, queue) {
-    var q = queue || new Queue(this.Queues.AreaTransition);
+  self.areaTransition = function(transition, opt) {
+    opt = opt || { hideFirst:true };
+    var q = opt.queue || new Queue(this.Queues.AreaTransition);
     Movement.stopListening();
-    q.add(function() { $("#map .transition").toggleClass("displayed", true); });
-    q.delay(1100);
-    q.add(function() { Party.jumpTo(transition.to, transition.toCoords); });
+    if (opt.hideFirst) {
+      q.add(function() { $("#map .transition").toggleClass("displayed", true); });
+      q.delay(1100);
+    }
+    if (transition) {
+      q.add(function() { Party.jumpTo(transition.to, transition.toCoords); });
+      q.delay(300);
+    }
     q.add(function() { $("#map .transition").toggleClass("displayed", false); });
     q.delay(1100);
     q.add(function() { Movement.startListening(); });

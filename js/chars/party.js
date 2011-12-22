@@ -47,10 +47,6 @@ var Party = (function() {
   /* =========== */
   self.init = function(opt) {
     $player = $(opt.player);
-    currentTransportation = Movement.Transportation.FOOT;
-    //self.createTestChars(); // TODO: remove this
-    self.jumpTo(Map.WORLD_MAP, new Map.AbsoluteCoords(165, 153));
-    self.resetStepsUntilBattle();
   };
   
   /* =============== */
@@ -245,10 +241,11 @@ var Party = (function() {
   
   self.startGame = function() {
     currentTransportation = Movement.Transportation.FOOT;
-    self.jumpTo(Map.WORLD_MAP, new Map.AbsoluteCoords(165, 153));
-    self.resetStepsUntilBattle();
     self.switchView(self.WORLD_MAP);
-    Movement.startListening();
+    var startTransition = Map.findTransition("start", new Map.AbsoluteCoords(0, 0));
+    $.when(Animation.areaTransition(startTransition, {hideFirst:false}).start()).then(function() {
+      self.resetStepsUntilBattle();
+    });
   };
   
   self.switchMap = function(map) {
