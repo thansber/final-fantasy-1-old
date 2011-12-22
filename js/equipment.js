@@ -2,7 +2,13 @@ var Equipment = (function() {
   
   var ALL_WEAPONS = {};
   var ALL_ARMOR = {};
-  var ALL_ITEMS = {}
+  var ALL_ITEMS = {};
+  var ALL_KEY_ITEMS = {};
+  
+//  createKeyItem("CHIME");
+//  createKeyItem("CUBE");
+//  createKeyItem("FLOATER");
+//  createKeyItem("LUTE");
   
   this.sellsFor = function(equipment) { return Math.floor(equipment.price / 2); };
   
@@ -98,7 +104,6 @@ var Equipment = (function() {
       this.name = opt.name;
       this.desc = opt.desc;
       this.price = opt.price;
-      this.key = !!opt.key;
       this.inBattleEffect = uses.battle; // function
       this.outOfBattleEffect = uses.normal; // function
       ALL_ITEMS[this.name] = this;
@@ -116,6 +121,25 @@ var Equipment = (function() {
     self.lookup = function(id) { return ALL_ITEMS[id]; };
 
     self.All = ALL_ITEMS;
+    
+    return self;
+  }).call({});
+  
+  this.KeyItem = (function() {
+    var self = this;
+    var keyItemIndex = 0;
+
+    var KeyItem = function(opt) {
+      this.name = opt.name;
+      this.desc = opt.desc;
+      this.index = 1 << keyItemIndex++;
+      
+      Equipment[this.name] = this.name;
+      ALL_KEY_ITEMS[this.name] = this;
+    };
+    
+    self.create = function(opt) { return new KeyItem(opt); };
+    self.lookup = function(name) { return ALL_KEY_ITEMS[name]; };
     
     return self;
   }).call({});

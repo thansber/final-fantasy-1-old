@@ -27,6 +27,7 @@
 #battle .stats .charStats label.hp .shrunk.text { background-image:url(../images/font-battle-status-sheet.png); height:16px; background-repeat:no-repeat; background-position:1000em 1000em; }
 #battle .stats .charStats label.hp .shrunk.text.poison { background-position:0 0;  }
 #battle .stats .charStats label.hp .shrunk.text.stone { background-position:0 -16px;  }
+#battle .stats .charStats label.hp .shrunk.text.asleep { background-position:0 -32px;  }
 #battle .stats .charStats div.hp { display:block; clear:left; float:right; }
 
 #battle .input { float:left; clear:both; margin-top:-12px; padding-top:4px; background-color:black; }

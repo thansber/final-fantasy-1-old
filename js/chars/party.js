@@ -22,7 +22,7 @@ var Party = (function() {
    ,{name:"Cabin", qty:0}                
    ,{name:"House", qty:0}                
   ];
-  var keyItems = {};
+  var keyItems = "0"; // heck yeah, storing a bunch of boolean as a string
   
   var views = {
     WORLD_MAP : "#map"
@@ -33,6 +33,8 @@ var Party = (function() {
    ,MAGIC_MENU : "#magicMenu"
    ,ITEM_MENU : "#itemMenu"
    ,STATUS_MENU : "#statusMenu"
+   ,NEW_CHAR : "#newChar"
+   ,NEW_CHAR_NAME : "#newCharName"
   };
   
   // Anything in the views object can be referenced via Party.WHATEVER
@@ -46,7 +48,7 @@ var Party = (function() {
   self.init = function(opt) {
     $player = $(opt.player);
     currentTransportation = Movement.Transportation.FOOT;
-    self.createTestChars(); // TODO: remove this
+    //self.createTestChars(); // TODO: remove this
     self.jumpTo(Map.WORLD_MAP, new Map.AbsoluteCoords(165, 153));
     self.resetStepsUntilBattle();
   };
@@ -67,12 +69,21 @@ var Party = (function() {
     return this;
   };
   self.addGold = function(gp) { gold += gp; if (gold < 0) { gold = 0; } };
+  self.addKeyItem = function(name) {
+    var keyItemFlags = parseInt(keyItems, 36);
+    keyItemFlags = keyItemFlags | Equipment.KeyItem.lookup(name).index;
+    keyItems = keyItemFlags.toString(36);
+  };
   self.buy = function(gp) { self.addGold(-1 * gp); };
   self.clearChars = function() { chars = []; };
-  
+  self.clearLastChar = function() { 
+    if (chars.length > 0) { 
+      chars.splice(chars.length - 1, 1); 
+    } 
+  };
   self.createNewChar = function(name, charClass, index) {
     var startingStats = CharacterGrowth.startingStats[charClass];
-    var char = Character.create().name(name).charClass(charClass).index(index);
+    var char = Character.create().name(name).charClass(charClass).index(index === undefined ? chars.length : index);
     char.stats(startingStats).hp(startingStats.hp);
     CharacterGrowth.addMaxChargesToChar(char);
     char.refillSpellCharges();
@@ -113,6 +124,7 @@ var Party = (function() {
         .addConsumable("SoftPotion", 2)
         .addConsumable("Tent", 4)
         .addConsumable("Cabin", 1);
+    self.startGame();
   };
   
   self.enterShop = function(shopType) {
@@ -146,6 +158,7 @@ var Party = (function() {
   self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
+  self.hasKeyItem = function(name) { return !!(parseInt(keyItems, 36) & Equipment.KeyItem.lookup(name).index); };
   self.isDestinationPassable = function(yChange, xChange) {
     var mapConfig = self.getMap();
     var oldPos = new Map.AbsoluteCoords(currentPosition);
@@ -228,6 +241,14 @@ var Party = (function() {
 
     self.switchView(self.BATTLE);
     self.resetStepsUntilBattle();
+  };
+  
+  self.startGame = function() {
+    currentTransportation = Movement.Transportation.FOOT;
+    self.jumpTo(Map.WORLD_MAP, new Map.AbsoluteCoords(165, 153));
+    self.resetStepsUntilBattle();
+    self.switchView(self.WORLD_MAP);
+    Movement.startListening();
   };
   
   self.switchMap = function(map) {

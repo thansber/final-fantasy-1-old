@@ -42,7 +42,7 @@ var Status = (function() {
   ALL[POISON] = {id:POISON, desc:"Poisoned", critical:true, battleText:"poison", shrunkBattleText:true, canTakeAction:true};
   ALL[BLIND] = {id:BLIND, desc:"Darkness", battleText:"Dark", canTakeAction:true};
   ALL[PARALYSIS] = {id:PARALYSIS, desc:"Paralyzed", critical:true, battleText:"Stun"};
-  ALL[SLEEP] = {id:SLEEP, desc:"Asleep"};
+  ALL[SLEEP] = {id:SLEEP, desc:"Asleep", critical:true, battleText:"asleep", shrunkBattleText:true};
   ALL[MUTE] = {id:MUTE, desc:"Silenced", battleText:"Mute", canTakeAction:true};
   ALL[CONFUSE] = {id:CONFUSE, desc:"Confused"}; 
   

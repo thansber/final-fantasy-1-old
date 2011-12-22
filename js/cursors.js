@@ -36,6 +36,8 @@ var Cursors = (function() {
    ,MAGIC_SHOP : "magicShop"
    ,MAGIC_SHOP_CONFIRM : "magicShopConfirm"
    ,MAGIC_SHOP_SPELL : "magicShopSpell"
+   ,NEW_CHAR : "newChar"
+   ,NEW_CHAR_NAME : "newCharName"
    ,STATUS_MENU : "statusMenu"
    ,WEAPON_ACTIONS_MENU : "weaponActions"
    ,WEAPONS_MENU : "weapons"
@@ -916,7 +918,6 @@ var Cursors = (function() {
     var index = $items.index(this.$cursor);
     return this.$container.find(".item:nth-child(3n - " + (2 - (index % 3)) + ")");
   };
-
   
   /* ------------------ */
   /* STATUS MENU cursor */
@@ -1508,6 +1509,91 @@ var Cursors = (function() {
 
   MagicShopConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
 
+  /* --------------- */
+  /* NEW CHAR cursor */
+  /* --------------- */
+  var NewCharCursor = function() { this.index = 0; };
+  NewCharCursor.prototype = new Cursor(self.NEW_CHAR, {container:"#newChar .party", otherKeys:{}});
+  NewCharCursor.prototype.back = function() { 
+    if (this.index > 0) {
+      this.index--;
+      Party.clearLastChar();
+      this.move(0, 0);
+    }
+  };
+  NewCharCursor.prototype.charChanged = function(dir) {
+    var $slot = this.initialCursor();
+    var $charClasses = $slot.find(".charClass");
+    var charIndex = $charClasses.index($slot.find(".charClass:not(.hidden)"));
+    
+    charIndex += dir;
+    if (charIndex >= $charClasses.length) {
+      charIndex = 0;
+    } else if (charIndex < 0) {
+      charIndex = $charClasses.length - 1;
+    }
+    Menus.NewChar.selectionChanged($slot, charIndex);    
+    return $slot;
+  };
+  NewCharCursor.prototype.columnChanged = function(x) { return this.charChanged(x); };
+  NewCharCursor.prototype.initialCursor = function() { return this.$container.find(".slot").eq(this.index); };
+  NewCharCursor.prototype.next = function() {
+    this.clear();
+    if (Party.getChars().length == 4) {
+      // TODO: open animation
+      Party.startGame();
+      return false;
+    }
+    Party.switchView(Party.NEW_CHAR_NAME);
+    Cursors.lookup(Cursors.NEW_CHAR_NAME).startListening();
+  };
+  NewCharCursor.prototype.reset = function(fullReset, opt) {
+    if (this.index === undefined) {
+      this.index = 0;
+    }
+    if (opt.name) {
+      this.initialCursor().find(".name").empty().append(Message.create(opt.name));
+    }
+    
+    if (opt.indexChange !== undefined) {
+      this.index += opt.indexChange;
+    }
+  };
+  NewCharCursor.prototype.rowChanged = function(y) { return this.charChanged(y); };
+  
+  /* -------------------- */
+  /* NEW CHAR NAME cursor */
+  /* -------------------- */
+  var NewCharNameCursor = function() { this.name = ""; };
+  NewCharNameCursor.prototype = new Cursor(self.NEW_CHAR_NAME, {container:"#newCharName .letters", otherKeys:{}});
+  NewCharNameCursor.prototype.back = function() { 
+    this.name = this.name.substr(0, this.name.length - 1); 
+    this.updateName();
+  };
+  NewCharNameCursor.prototype.cursorIndex = function() { return this.$container.find(".text").index(this.$cursor); };
+  NewCharNameCursor.prototype.initialCursor = function() { return this.$container.find(".text").eq(0); };
+  NewCharNameCursor.prototype.next = function() {
+    if (this.name.length >= 4) {
+      this.clear();
+      Party.addChar(Party.createNewChar(this.name, CharacterClass.FIGHTER));
+      Party.switchView(Party.NEW_CHAR);
+      Cursors.lookup(Cursors.NEW_CHAR).startListening({indexChange:1, name:this.name});
+      return false;
+    }
+    
+    this.name += Menus.NewCharName.getSymbol(this.cursorIndex());
+    this.updateName();
+  };
+  NewCharNameCursor.prototype.reset = function(fullReset, opt) { this.name = ""; $("#newCharName .name").empty(); }; 
+  NewCharNameCursor.prototype.updateName = function() { $("#newCharName .name").empty().append(Message.create(this.name)); }; 
+  NewCharNameCursor.prototype.xDestinations = function() { 
+    var $text = this.$container.find(".text");
+    var startIndex = Math.floor(this.cursorIndex() / 10) * 10;
+    return $text.slice(startIndex, startIndex + 10); 
+  };
+  NewCharNameCursor.prototype.yDestinations = function() {
+    return this.$container.find(".text:nth-child(10n - " + (9 - (this.cursorIndex() % 10)) + ")");
+  };
   
   return this;
 }).call({});

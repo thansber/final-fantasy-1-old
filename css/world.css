@@ -30,6 +30,6 @@
 }
 
 #map .background .transition {
-  -moz-transition-property: top, bottom 1s linear;
-  -webkit-transition-property: top, bottom 1s linear;
+  -moz-transition: top 1s linear, bottom 1s linear;
+  -webkit-transition: top 1s linear, bottom 1s linear;
 }

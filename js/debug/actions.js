@@ -144,7 +144,7 @@ var ActionHelper = (function() {
   
   var healStatusForChar = function() {
     newBattle([CharacterClass.FIGHTER], {name:"WrWOLF"}, {party:function() {
-      Party.getChar(0).addStatus(Status.Paralysis);
+      Party.getChar(0).addStatus(Status.Sleep);
     }});
     
     var char = Party.getChar(0);

@@ -65,11 +65,11 @@
 #itemMenu .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
 #itemMenu .title { height:20px; padding:20px 0 2px 8px; width:102px; }
 #itemMenu .inventory { width:420px; height:250px; margin-top:30px; padding:30px 0 0 40px; }
-#itemMenu .inventory .item { width:140px; height:30px; float:left;}
+#itemMenu .inventory .item { width:140px; height:30px; float:left; }
 #itemMenu .inventory .item .cursor { top:2px; }
 
 #statusMenu { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
-#statusMenu .name { height:20px; padding:20px 0 20px 24px; width:86px; float:left; margin-bottom:12px;}
+#statusMenu .name { height:20px; padding:20px 0 20px 24px; width:86px; float:left; margin-bottom:12px; }
 #statusMenu .charClass { height:54px; padding:4px 0 2px 16px; width:186px; float:left; margin:0 8px; }
 #statusMenu .charClass .char { float:left; }
 #statusMenu .charClass .value { float:right; padding-right:16px; padding-top:16px; }
@@ -85,3 +85,17 @@
 #statusMenu .stats .value { float:right; }
 #statusMenu .stats.primary { clear:both; margin-right:8px; }
 #statusMenu .stats.secondary { width:186px; }
+
+#newChar { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+#newChar .party { margin:40px 0 0 80px; }
+#newChar .party .slot { width:144px; height:136px; float:left; margin-right:70px; margin-bottom:40px; overflow:hidden; }
+#newChar .party .slot .cursor { position:relative; top:50px; left:20px; }
+#newChar .party .slot .charClass { float:left; width:160px; margin-top:20px; margin-left:8px; }
+#newChar .party .slot .charClass .char { margin-top:30px; margin-left:44px; }
+#newChar .party .slot .charClass .name { margin-top:12px; margin-left:30px; }
+
+#newCharName { width:47%; height:100%; float:left; margin:1% 0 1% 2em; }
+#newCharName .name { background-color:#921008; width:64px; padding:20px 8px 8px 8px; height:16px; margin-left:160px; margin-bottom:40px; text-align:center; }
+#newCharName .entry { width:368px; height:280px; padding:20px 0 0 24px; }
+#newCharName .entry .letters .text { padding:0 20px 16px 0; float:left; height:16px; width:16px;}
+#newCharName .entry .label { position:relative; top:30px; margin-left:70px; }

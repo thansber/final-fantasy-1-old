@@ -1,5 +1,5 @@
 // ===================================
-// WEAPONS
+// -------------- WEAPONS ------------
 // ===================================
 Equipment.Weapon.create({
   name:"Wooden[N]",desc:"Wooden~",price:10
@@ -222,7 +222,7 @@ Equipment.Weapon.create({
     
 
 // ===================================
-// ARMOR
+// -------------- ARMOR --------------
 // ===================================
 Equipment.Armor.create({
   name:"Cloth",desc:"Cloth",type:Equipment.Armor.Types.BODY,price:10
@@ -400,7 +400,10 @@ Equipment.Armor.create({
  ,special:{element:Element.Death}
  ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
 
-// ITEMS
+// ===================================
+// --------------- ITEMS -------------
+// ===================================
+
 Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60, 
   uses:{
     normal:function(target) { return Action.castSpell(target, "CURE", target, {item:this}); }
@@ -432,4 +435,19 @@ Equipment.Item.create({name:"Cabin", desc:"CABIN", price:300,
 Equipment.Item.create({name:"House", desc:"HOUSE", price:3000,
   uses:{
     normal:function() { $.each(Party.getAliveChars(), function() { this.refillSpellCharges().applyDamage(-120); }); }
-  }});
+  }
+});
+
+// ===================================
+// ------------ KEY ITEMS ------------
+// ===================================
+Equipment.KeyItem.create({name:"CANOE", desc:""});
+Equipment.KeyItem.create({name:"CHIME", desc:""});
+Equipment.KeyItem.create({name:"CROWN", desc:""});
+Equipment.KeyItem.create({name:"CUBE", desc:""});
+Equipment.KeyItem.create({name:"FLOATER", desc:""});
+Equipment.KeyItem.create({name:"HERB", desc:""});
+Equipment.KeyItem.create({name:"KEY", desc:""});
+Equipment.KeyItem.create({name:"LUTE", desc:""});
+Equipment.KeyItem.create({name:"ROD", desc:""});
+Equipment.KeyItem.create({name:"RUBY", desc:""});

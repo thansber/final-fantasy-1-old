@@ -94,6 +94,7 @@ var BattleSetupHelper = (function() {
     statuses[Status.Stone.id] = "Petrified";
     statuses[Status.Poison.id] = "Poisoned";
     statuses[Status.Paralysis.id] = "Paralyzed";
+    statuses[Status.Sleep.id] = "Asleep";
     $("select.status", $debug).each(function() {
       for (var s in statuses) {
         var status = statuses[s];

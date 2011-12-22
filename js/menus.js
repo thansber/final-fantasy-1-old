@@ -348,6 +348,71 @@ var Menus = (function() {
     return this;
   }).call({});
   
+  /* ========================================== */
+  /* SETUP NEW CHAR --------------------------- */
+  /* ========================================== */
+  self.NewChar = (function() {
+    var self = this;
+    var $container = null;
+    
+    var buildChars = function() {
+      var $slots = $container.find(".slot");
+      $slots.each(function() {
+        var $slot = $(this);
+        $slot.empty();
+        $.each(CharacterClass.startingClasses, function(i, charClass) {
+          var $charClass = $("<div/>").addClass("charClass hidden");
+          $charClass.append($("<div/>").addClass("classDesc").append(Message.create(CharacterClass.descriptions[charClass])));
+          $charClass.append($("<div/>").addClass("char").addClass(charClass));
+          $charClass.append($("<div/>").addClass("name"));
+          $slot.append($charClass);
+        });
+      });
+    };
+    
+    var defaultSelections = function() {
+      $container.find(".slot").each(function(i, slot) { Menus.NewChar.selectionChanged($(slot), i); });
+    };
+    
+    self.init = function() {
+      $container = $("#newChar");
+      buildChars();
+      defaultSelections();
+    };
+    
+    self.selectionChanged = function($slot, charClassIndex) {
+      $slot.find(".charClass").addClass("hidden").eq(charClassIndex).removeClass("hidden");
+    };
+    
+    return this;
+  }).call({});
+  
+  /* ========================================== */
+  /* NEW CHAR NAME ---------------------------- */
+  /* ========================================== */
+  self.NewCharName = (function() {
+    var self = this;
+    var $container = null;
+    var symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ',. 0123456789abcdefghijklmnopqrstuvwxyz-:!?";
+    
+    var initLetters = function() {
+      var $letters = $container.find(".letters");
+      for (var i = 0; i < symbols.length; i++) {
+        $letters.append(Message.create(symbols.charAt(i)));
+      }
+    };
+    
+    self.init = function() {
+      $container = $("#newCharName");
+      $container.find(".label").append(Message.create("SELECT  NAME"));
+      initLetters();
+    };
+    
+    self.getSymbol = function(index) { return symbols.charAt(index); };
+    
+    return this;
+  }).call({});
+  
   /* =================== */
   /* MENU INITIALIZATION */
   /* =================== */
@@ -358,6 +423,8 @@ var Menus = (function() {
     self.Magic.init();
     self.Item.init();
     self.Status.init();
+    self.NewChar.init();
+    self.NewCharName.init();
   };
     
   return this;

@@ -36,6 +36,7 @@ var Animation = (function() {
   var RUN_SUCCESS = "Close call::"
   var SPLASH_ORDINALS = ["one", "two", "three"];
   var STATUS_CURED = "Cured!";
+  var STATUS_SLEEP_CURED = "Woke up";
   var VICTORY = "Monsters perished";
   var VICTORY_EXP = "EXP up";
   var VICTORY_GOLD = "GOLD";
@@ -593,7 +594,17 @@ var Animation = (function() {
     }
     
     q.delay(Message.getQuickPause());
-    q.add(function() { Message.desc(result.success ? STATUS_CURED : result.statusCured.desc); });
+    q.add(function() { 
+      var desc = result.statusCured.desc;
+      if (result.success) {
+        if (Status.equals(result.statusCured, Status.Sleep)) {
+          desc = STATUS_SLEEP_CURED;
+        } else {
+          desc = STATUS_CURED;
+        }
+      }
+      Message.desc(desc); 
+    });
     if (isParty) {
       q.add(function() { Battle.adjustCharStats(result); });
     }

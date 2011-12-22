@@ -31,6 +31,14 @@ var CharacterClass = (function() {
   this.fullClassNames[this.BLACK_MAGE] = "Black Mage";
   this.fullClassNames[this.BLACK_WIZARD] = "Black Wizard";
   
+  this.startingClasses = [];
+  this.startingClasses.push(this.FIGHTER);
+  this.startingClasses.push(this.THIEF);
+  this.startingClasses.push(this.BLACKBELT);
+  this.startingClasses.push(this.RED_MAGE);
+  this.startingClasses.push(this.WHITE_MAGE);
+  this.startingClasses.push(this.BLACK_MAGE);
+  
   this.descriptions = {};
   this.descriptions[this.FIGHTER] = "FIGHTER";
   this.descriptions[this.KNIGHT] = "KNIGHT";
