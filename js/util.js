@@ -1,4 +1,5 @@
-var Util = (function() {
+define( /* Util */
+(function() {
   
   this.cssNumericValue = function(s) {
     return parseInt(s.replace("px", ""));
@@ -31,4 +32,5 @@ var Util = (function() {
   };
   
   return this;
-}).call({});
+}).call({})
+);

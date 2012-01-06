@@ -2,6 +2,10 @@
 - refactor walk/slide animations with CSS transitions/animations
     - animation for walk, class toggling
 - remove animation chain?
+- use absolute in map config (may still need tile coords for world map encounters)
+- creating cursors, other key setup uses chaining setter methods
+- finish converting all cursors to AMDs
+- animation should be called using events, nothing should rely on animation module
 
 BATTLE
 ======
@@ -19,11 +23,12 @@ MENU
 
 TOWNS
 =====
-- add all key items as equipment constants
-- leaving a town puts you on the same world map position as you were upon entering
+- when selling equipment, do prices disappear?
+- need oasis shop flow, cursor, npc sprite
+- show descs when selecting key items in inventory
+- show use desc when using key item in correct place
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal?
-- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 - add "door" transitions for use in castles/dungeons
 - encode castles (Coneria/Elfland)
 - CSS transitions in town to leave and to enter shops
@@ -31,3 +36,4 @@ TOWNS
 - add people in town initially not moving
 - add NPC object to track initial position, sprite, and conversations
 - message display in town - check if person is in front of user, if so display conversation text
+- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups

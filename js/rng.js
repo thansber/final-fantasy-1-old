@@ -1,4 +1,7 @@
-var RNG = (function() {
+define( 
+/* RNG */
+["constants/rng"],
+(function(RngConstants) {
 
   var self = this;
   var currentRng = null;
@@ -25,15 +28,6 @@ var RNG = (function() {
   };
   
   var randomPercentage = function(max, pct) { (randomUpTo(max) <= pct); };
-  
-  var check = function(num) {
-    var t = 0, f = 0;
-    for (var i = 0; i < 100; i++) {
-      percent(num) ? t++ : f++;
-    }
-    console.log("for a " + num + "% chance, " + t + " were true, " + f + " were false");
-  };
-  
   var execute = function(method, args) {
     return currentRng[method].apply(currentRng, args);  
   };
@@ -71,8 +65,8 @@ var RNG = (function() {
   var AlwaysSuccessRng = function() {};
   AlwaysSuccessRng.prototype = new RngImpl(self.AlwaysSuccess);
   AlwaysSuccessRng.prototype.randomUpTo = function(max, min) { 
-    if (max == Action.AUTO_MISS) {
-      return Action.AUTO_HIT;
+    if (max == RngConstants.AUTO_MISS) {
+      return RngConstants.AUTO_HIT;
     }
     return min == null ? 1 : min; 
   };
@@ -81,8 +75,8 @@ var RNG = (function() {
   var AlwaysFailureRng = function() {};
   AlwaysFailureRng.prototype = new RngImpl(self.AlwaysFailure);
   AlwaysFailureRng.prototype.randomUpTo = function(max, min) { 
-    if (max == Action.AUTO_MISS) {
-      return Action.AUTO_MISS;
+    if (max == RngConstants.AUTO_MISS) {
+      return RngConstants.AUTO_MISS;
     }
     return max; 
   };
@@ -111,6 +105,7 @@ var RNG = (function() {
   self.shuffle = function(myArray) { return execute("shuffle", arguments); };
   
   return this;
-}).call({});
+}).call({})
+);
 
 

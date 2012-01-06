@@ -1,4 +1,5 @@
-var Logger = (function() {
+define( /* Logger */
+(function() {
   var self = this;
   var enabled = false;
   var level = Infinity;
@@ -23,4 +24,5 @@ var Logger = (function() {
   self.setLevel = function(lvl) { level = lvl; return this; };
   
   return this;
-}).call({});
+}).call({})
+);

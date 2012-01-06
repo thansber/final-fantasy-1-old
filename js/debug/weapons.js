@@ -1,25 +1,14 @@
-var WeaponHelper = (function() {
+define(
+/* DebugWeapons */
+["jquery", "battle", "character-class", "./util", "equipment", "party"],
+function($, Battle, CharacterClass, DebugHelper, Equipment, Party) {
   
   var $debug = null;
   
-  var init = function() {
-    $debug = $("#debug section.weapons .container");
-    initCharClassSelector();
-  };
-  
-  var event = function($target) {
-    if ($target.is(".selector")) {
-      if ($target.val().length > 0) {
-        $(".stances", $debug).remove();
-        $debug.append(createCharWithAllWeapons($target.val()));
-      }
-    } 
-  };
-  
   var initCharClassSelector = function() {
     var $selector = $(".selector", $debug);
-    jQuery.each(CharacterClass.All, function(i, charClass) {
-      $selector.append($("<option/>").val(charClass.name).text(charClass.name));
+    $.each(CharacterClass.All, function(i, charClass) {
+      DebugHelper.addOption($selector, charClass.name, charClass.name);
     });
   };
   
@@ -27,10 +16,11 @@ var WeaponHelper = (function() {
     var char = Party.createNewChar("AAAA", charClass, 0);
     var $stances = $("<div/>").addClass("attack stances").addClass(charClass);
     
-    jQuery.each(Equipment.Weapon.All, function(i, weapon) {
-      char.unequipWeapon();
-      if (char.canEquip(weapon.name, "weapon")) {
-        char.weapon(weapon.name, true);
+    char.weapons();
+    $.each(Equipment.Weapon.All, function(i, weapon) {
+      char.unequip();
+      if (char.canEquip(weapon.name)) {
+        char.drop(0).add(weapon.name).equip(0);
         $stances.append(Battle.createCharUI(char).addClass("swing back"));
         $stances.append(Battle.createCharUI(char).addClass("swing forward"));
         $(".weapon", $stances).removeClass("hidden");
@@ -38,7 +28,7 @@ var WeaponHelper = (function() {
     });
     
     if (CharacterClass.lookup(charClass).isMartialArtist()) {
-      char.unequipWeapon();
+      char.unequip();
       $stances.append(Battle.createCharUI(char).addClass("swing back"));
       $stances.append(Battle.createCharUI(char).addClass("swing forward"));
       $(".weapon", $stances).removeClass("hidden");
@@ -48,7 +38,17 @@ var WeaponHelper = (function() {
   };
   
   return {
-    init: init
-   ,event: event
+    init : function() {
+      $debug = $("#debug section.weapons .container");
+      initCharClassSelector();
+    }
+   ,event : function($target) {
+      if ($target.is(".selector")) {
+        if ($target.val().length > 0) {
+          $(".stances", $debug).remove();
+          $debug.append(createCharWithAllWeapons($target.val()));
+        }
+      } 
+    }
   };
-})();
+});

@@ -1,4 +1,5 @@
-var KeyPressNotifier = (function() {
+define( /* KeyPressNotifier */ ["jquery"], function($) {
+return (function() {
   
   var self = this;
     
@@ -83,4 +84,5 @@ var KeyPressNotifier = (function() {
   };
   
   return this;  
-}).call({});
+}).call({})
+});

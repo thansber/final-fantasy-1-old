@@ -1,4 +1,12 @@
-var Party = (function() {
+define( /* Party */ 
+["jquery", 
+ "character", "character-class", "character-growth", "encounters", "equipment", "events",
+ "logger", "map-config", "map-coords-absolute", "map-coords-converter", "map-transition",
+ "rng", "spells", "util", "constants/map", "constants/movement"], 
+function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
+         Logger, MapConfig, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
+         RNG, Spell, Util, MapConstants, MovementConstants) { 
+return (function() {
     
   var self = this;
   self.inBattle = false;
@@ -7,11 +15,11 @@ var Party = (function() {
   var gold = 0;
   var stepsUntilBattle = -1;
   
-  var $player = null;
   var currentPosition = null;
   var currentMap = null;
   var currentShop = null;
   var currentTransportation = null;
+  var worldMapPosition = null;
   
   var orbsLit = [];
   var consumables = [
@@ -24,34 +32,57 @@ var Party = (function() {
   ];
   var keyItems = "0"; // heck yeah, storing a bunch of boolean as a string
   
-  var views = {
-    WORLD_MAP : "#map"
-   ,BATTLE : "#battleView"
-   ,MENU : "#charMenu"
-   ,ARMOR_MENU : "#armorMenu"
-   ,WEAPON_MENU : "#weaponMenu"
-   ,MAGIC_MENU : "#magicMenu"
-   ,ITEM_MENU : "#itemMenu"
-   ,STATUS_MENU : "#statusMenu"
-   ,NEW_CHAR : "#newChar"
-   ,NEW_CHAR_NAME : "#newCharName"
-  };
-  
-  // Anything in the views object can be referenced via Party.WHATEVER
-  for (var v in views) {
-    self[v] = views[v];
-  }
-  
   /* =========== */
   /* INIT METHOD */
   /* =========== */
   self.init = function(opt) {
-    $player = $(opt.player);
+    Event.listen(Event.Types.Moving, self.isDestinationPassable);
   };
   
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
+  var enterBattle = function() {
+    var coords = MapCoordsConverter.absoluteToTile(currentPosition, self.getMap());
+    var encounter = Encounter.random(currentMap, coords.tilesetX + "-" + coords.tilesetY);
+    Event.transmit(Event.Types.StartBattle, encounter, self.getMap().background);
+    inBattle = true;
+  };
+  
+  var isNewPositionTransition = function() {
+    var transition = MapTransition.lookup(currentMap, currentPosition);
+    
+    var movementCallback = null;
+    // Transition check needs to be first since we can get a null mapping when we leave a town
+    if (!!transition) {
+      if (transition.backToWorldMap) {
+        transition.toCoords = MapCoordsAbsolute.create(worldMapPosition);
+      }
+      movementCallback = function() { Event.transmit(Event.Types.AreaTransition, transition); };
+    } else {
+      movementCallback = function() { Event.transmit(Event.Types.MovingChange, false); };
+    } 
+     
+    Event.clear(Event.Types.MovementCallback);
+    Event.listen(Event.Types.MovementCallback, movementCallback);
+    
+    return !!transition;
+  };
+  
+  var moveToPosition = function(xChange, yChange) {
+    // We are currently moving the character
+    Event.transmit(Event.Types.MovingChange, true);
+
+    var $view = $("#view");
+    var oldPos = $view.css("backgroundPosition").split(" ");
+    var oldX = parseInt(oldPos[0].replace("px", ""));
+    var oldY = parseInt(oldPos[1].replace("px", ""));
+    var newX = (oldX + (xChange * MovementConstants.MoveDistance * -1)) + "px";
+    var newY = (oldY + (yChange * MovementConstants.MoveDistance * -1)) + "px";
+    
+    $view.removeClass().addClass(currentTransportation.speedCss).css({backgroundPosition:newX + " " + newY});
+  };
+  
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
@@ -120,22 +151,8 @@ var Party = (function() {
         .addConsumable("SoftPotion", 2)
         .addConsumable("Tent", 4)
         .addConsumable("Cabin", 1);
-    self.startGame();
   };
   
-  self.enterShop = function(shopType) {
-    Movement.stopListening();
-    $("#shop section").removeClass().addClass(shopType);
-    Shops.lookup(shopType).display();
-    currentShop = Shops.lookup(shopType);
-    self.switchView("#shop");
-  };
-  
-  self.exitShop = function() { 
-    currentShop = null; 
-    self.switchView("#map"); 
-    Movement.startListening(); 
-  };
   self.getAliveChars = function() { 
     var aliveChars = [];
     for (var i = 0; i < chars.length; i++) {
@@ -149,54 +166,58 @@ var Party = (function() {
   self.getChars = function() { return chars; };
   self.getConsumables = function() { return consumables; };
   self.getGold = function() { return gold; };
+  self.getKeyItems = function() {
+    var keyItemsInInventory = [];
+    $.each(Equipment.KeyItem.All, function(name, keyItem) {
+      if (self.hasKeyItem(name)) {
+        keyItemsInInventory.push(keyItem);
+      }
+    });
+    return keyItemsInInventory;
+  };
   self.getLitOrbs = function() { return orbsLit; };
-  self.getMap = function() { return Map.getMap(currentMap); };
+  self.getMap = function() { return MapConfig.lookup(currentMap); };
   self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
   self.hasKeyItem = function(name) { return !!(parseInt(keyItems, 36) & Equipment.KeyItem.lookup(name).index); };
   self.isDestinationPassable = function(yChange, xChange) {
     var mapConfig = self.getMap();
-    var oldPos = new Map.AbsoluteCoords(currentPosition);
+    // Keep the old position around in case we moved somewhere we can't go
+    var oldPos = MapCoordsAbsolute.create(currentPosition);
     
+    // Temporarily change the current position to the potential new position
     currentPosition.adjust(yChange, xChange, mapConfig);
     Logger.debug("moved to " + currentPosition.toString());
-    var transition = Map.findTransition(currentMap, currentPosition);
     
-    // Transition check needs to be first since we can get a null mapping when we leave a town
-    if (!!transition) {
-      return function() { Animation.areaTransition(transition).start(); };
-    } 
+    // See if the new position contains a transition (i.e. entering a town/dungeon)
+    // if so, move the party, then the callback will fire, transitioning them to the
+    // new destination
+    if (isNewPositionTransition()) {
+      moveToPosition(xChange, yChange);
+      return;
+    }
     
+    // Check if the new destinations is passable
     var tile = mapConfig.getTileAbsolute(currentPosition);
     var mapping = mapConfig.getParentTileMapping(tile);
     var passable = mapping.isPassableUsing(currentTransportation);
+    
     if (!passable) {
       currentPosition = oldPos;
-    } else if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
+      return;
+    }
+    
+    if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
-        self.startBattle();
+        // TODO: this should happen in the movement callback
+        enterBattle();
       }
       Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
-    } 
-    return passable;
-  };
-  
-  self.jumpTo = function(map, coords) {
-    var $view = $player.closest("#view");
-    $view.removeClass("smooth").hide();
-    currentMap = map;
-    currentPosition = jQuery.extend({}, coords);
-    Logger.debug("jumped to map [" + map + "], coords [" + currentPosition.toString() + "]");
-    self.switchMap(currentMap);
-    var playerTop = Util.cssNumericValue($player.css("marginTop"));
-    var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
-    var top = (currentPosition.y * Map.TILE_SIZE) - playerTop;
-    var left = (currentPosition.x * Map.TILE_SIZE) - playerLeft;
-    top *= -1;
-    left *= -1;
-    $view.css({backgroundPosition:left + "px " + top + "px"}).addClass("smooth").show();
+    }
+
+    moveToPosition(xChange, yChange);
   };
   
   self.lightOrb = function(orb) { orbsLit.push(orb); };
@@ -209,11 +230,16 @@ var Party = (function() {
       }
     });
     return consumable;
-  }
+  };
+  self.removeKeyItem = function(name) {
+    var keyItemFlags = parseInt(keyItems, 36);
+    keyItemFlags = keyItemFlags & ~Equipment.KeyItem.lookup(name).index;
+    keyItems = keyItemFlags.toString(36);
+  };
   self.resetStepsUntilBattle = function() {
     var steps = null;
-    if (self.getMap().is(Map.WORLD_MAP)) {
-      steps = Encounter.Steps[Map.WORLD_MAP];
+    if (self.getMap().is(MapConstants.WORLD_MAP)) {
+      steps = Encounter.Steps[MapConstants.WORLD_MAP];
     } else {
       Logger.error("Player is in an unsupported map [" + currentMap + "]");
     }
@@ -222,42 +248,13 @@ var Party = (function() {
       stepsUntilBattle = RNG.randomUpTo(steps.max, steps.min);
     }
   };
-  
-  self.startBattle = function() {
-    var mapConfig = self.getMap();
-    var coords = currentPosition.toCoords(mapConfig);
-    var encounter = Encounter.random(currentMap, coords.tilesetX() + "-" + coords.tilesetY());
-    var tileMapping = mapConfig.getParentTileMapping(mapConfig.getTile(coords));
-    Logger.debug(encounter.toString());
-    
-    inBattle = true;
-    
-    KeyPressNotifier.clearListener();
-    Battle.setup(jQuery.extend(true, {background: tileMapping.background}, encounter));
-
-    self.switchView(self.BATTLE);
-    self.resetStepsUntilBattle();
-  };
-  
-  self.startGame = function() {
-    currentTransportation = Movement.Transportation.FOOT;
-    self.switchView(self.WORLD_MAP);
-    var startTransition = Map.findTransition("start", new Map.AbsoluteCoords(0, 0));
-    $.when(Animation.areaTransition(startTransition, {hideFirst:false}).start()).then(function() {
-      self.resetStepsUntilBattle();
-    });
-  };
-  
-  self.switchMap = function(map) {
-    $("#map").hide().removeClass().addClass(map).addClass("town main").show();
-  };
-  
-  self.switchView = function(view) {
-    $("body > .main").hide();
-    $(view).show();
-  };
-  
+  self.setCurrentMap = function(map) { currentMap = map; return this; };
+  self.setCurrentShop = function(shop) { currentShop = shop; return this; };
+  self.setPosition = function(coords) { currentPosition = $.extend({}, coords); return this; };
+  self.setTransportation = function(transportation) { currentTransportation = transportation; return this; };
+  self.storeWorldMapPosition = function() { worldMapPosition = $.extend({}, currentPosition); };
   self.useConsumable = function(item) { self.addConsumable(item, -1); return this; };
   
   return this;
-}).call({});
+}).call({})
+});

@@ -1,75 +1,77 @@
-  
-var WorldMap = (function() {
-  var Config = new Map.Config({id:Map.WORLD_MAP, numTilesets:8, width:32, height:32, wrapsX:true, wrapsY:true});
-  
-  // 0,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwx       xw"
-                    ,"wwwwwwwwwwwwwwwwwwwwwx       mmm"
-                    ,"wwwwwwwwwwwwwwwwwwwww  mmm  mmmm"
-                    ,"wwwwwwwwwwwwwwwwwwwwx mmmm  mmmm"
-                    ,"wwwwwwwwwwwwwwwwwwwx mmmmmggggmm"
-                    ,"wwwwwwwwwwwwwwwwwwx  mmmmggggggg"
-                    ,"wwwwwwwwwwwwwwwwwx  mmmmmgggggg*"
-                    ,"wwwwwwwwwwwwwwwwx   mmmmgggggggg"
-                    ,"wwwwwwwwwwwwwwwx   mmmmgggggggmm"
-                    ,"wwwwwwwwwwwwwwxffffmmmmgggggggmm"
-                    ,"wwwwwwwwwwwwwxfffffmmmmmggggg*mm"
-                    ,"wwwwwwwwwwwwxffffffmmmmmmggggggg"
-                    ,"wwwwwwwwwwwwfffffffmmmmmmmmmgggg"
-                    ,"wwwwwwwwwwwwffffffffmmmmmmmmmmmm"
-                    ,"wwwwwwwwwwwxfffffffffmmmmmmmmmmm"]);
-  // 0,1
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwx   "
-                    ,"wwwwwwwwwwwwwwwwwwwwwwx      mmm"
-                    ,"mmmmxwwwwwwwwwwwwwwxmmmmmmmmmmmm"
-                    ,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
-                    ,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
-                    ,"mmmmrrrrrrmmmmmmmmmmmmmmmmmmmmmm"
-                    ,"mmmrrrrrrrrrrrmmmmmmmmmmmmmmmmmm"
-                    ," mmrrrrrrrrrrrrrrrrmmmmmmmmmmmmm"
-                    ,"mmmrrrrrrrrrrrmmmmrrrrrmmmmmmmmm"
-                    ,"mmmmmmmrrrrrrmmmmmmmmmrmmmmmmmmm"
-                    ,"mmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
-                    ,"mmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
-                    ,"gmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
-                    ,"gfffffmmmmmmmmmmmm@@@@F@mmmmmmmm"
-                    ," fffffffmmmmmmmmmmrrrrrrmmmmmmmm"
-                    ,"mmmfffffffmmmmmmmmrrrrrrmmmmmmmm"]);
-  // 0,2
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+define( 
+/* WorldMapData */
+["map-config", "map-tile", "constants/map", "constants/movement"], 
+function(MapConfig, MapTile, MapConstants, MovementConstants) {
+  var init = function() {
+    MapConfig.create({id:MapConstants.WORLD_MAP, numTilesets:8, width:32, height:32, wrapsX:true, wrapsY:true})
+      // 0,0
+      .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwx       xw"
+                  ,"wwwwwwwwwwwwwwwwwwwwwx       mmm"
+                  ,"wwwwwwwwwwwwwwwwwwwww  mmm  mmmm"
+                  ,"wwwwwwwwwwwwwwwwwwwwx mmmm  mmmm"
+                  ,"wwwwwwwwwwwwwwwwwwwx mmmmmggggmm"
+                  ,"wwwwwwwwwwwwwwwwwwx  mmmmggggggg"
+                  ,"wwwwwwwwwwwwwwwwwx  mmmmmgggggg*"
+                  ,"wwwwwwwwwwwwwwwwx   mmmmgggggggg"
+                  ,"wwwwwwwwwwwwwwwx   mmmmgggggggmm"
+                  ,"wwwwwwwwwwwwwwxffffmmmmgggggggmm"
+                  ,"wwwwwwwwwwwwwxfffffmmmmmggggg*mm"
+                  ,"wwwwwwwwwwwwxffffffmmmmmmggggggg"
+                  ,"wwwwwwwwwwwwfffffffmmmmmmmmmgggg"
+                  ,"wwwwwwwwwwwwffffffffmmmmmmmmmmmm"
+                  ,"wwwwwwwwwwwxfffffffffmmmmmmmmmmm"])
+      // 0,1
+      .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                  ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwx   "
+                  ,"wwwwwwwwwwwwwwwwwwwwwwx      mmm"
+                  ,"mmmmxwwwwwwwwwwwwwwxmmmmmmmmmmmm"
+                  ,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+                  ,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+                  ,"mmmmrrrrrrmmmmmmmmmmmmmmmmmmmmmm"
+                  ,"mmmrrrrrrrrrrrmmmmmmmmmmmmmmmmmm"
+                  ," mmrrrrrrrrrrrrrrrrmmmmmmmmmmmmm"
+                  ,"mmmrrrrrrrrrrrmmmmrrrrrmmmmmmmmm"
+                  ,"mmmmmmmrrrrrrmmmmmmmmmrmmmmmmmmm"
+                  ,"mmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
+                  ,"mmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
+                  ,"gmmmmmmmmmmmmmmmmmmmmmrmmmmmmmmm"
+                  ,"gfffffmmmmmmmmmmmm@@@@F@mmmmmmmm"
+                  ," fffffffmmmmmmmmmmrrrrrrmmmmmmmm"
+                  ,"mmmfffffffmmmmmmmmrrrrrrmmmmmmmm"])
+      // 0,2
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -100,9 +102,9 @@ var WorldMap = (function() {
                     ,"m wwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"m wwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"m wwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"mmwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"mmwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 0,3
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -133,9 +135,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwxfff"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwxffff"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwxfffff"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwxfffffx"]); 
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwxfffffx"]) 
   // 0,4
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -166,9 +168,9 @@ var WorldMap = (function() {
                     ,"fffffffxwwwwwwwwwxssssssssssmmmm"
                     ,"ffffffxwwwwwwxssssssssssssmmmmmm"
                     ,"ffffxwwwwwwxssssssssssssmmmmmmmm"
-                    ,"wwwwwwwwwwxssssssssssssmmmmmmmmm"]);
+                    ,"wwwwwwwwwwxssssssssssssmmmmmmmmm"])
   // 0,5
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -199,9 +201,9 @@ var WorldMap = (function() {
                     ,"mmddddddddddddmmmmmmxwwwwwwwwwww"
                     ,"mmdddddddddddddmmmmxwwwwwwwwwwww"
                     ,"mmdddddddddddddmmmmwwwwwwwwwwwww"
-                    ,"mmddddddddddddddmmmwwwwwwwwwwwww"]);  
+                    ,"mmddddddddddddddmmmwwwwwwwwwwwww"])  
   // 0,6
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -232,9 +234,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwxmmmmmmmmmmmvvm"
                     ,"wwwwwwwwwwwwwwwwxmmmmmmmmmmmg`mm"
                     ,"wwwwwwwwwwwwwwwxmmmxxmmmmmmggmmm"
-                    ,"wwwwwwwwwwwwwwwmmmxwxmmmggggmmmm"]);
+                    ,"wwwwwwwwwwwwwwwmmmxwxmmmggggmmmm"])
   // 0,7
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -265,9 +267,9 @@ var WorldMap = (function() {
                     ,"mmxwwwx xx xwwwwwwwwwwwwwwwwwwww"
                     ,"mxwwx     xwwwwwwwwwwwwwwwwwwwww"
                     ,"mxwx  xx xwwwwwwwwwwwwwwwwwwwwww"
-                    ,"mm   xwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"mm   xwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 1,0
-  Config.addTileset(["wwwwwwwwwwwfffffffffffmmmmmmmmmm"
+  .addTileset(["wwwwwwwwwwwfffffffffffmmmmmmmmmm"
                     ,"wwwwwwwwwwwfffffffffffmmmmmmmmmm"
                     ,"wwwwwwwwwwwfffffffffffmmmmmmmmmm"
                     ,"wwwwwwwwwwwxfffffffffffmmmmmmmmm"
@@ -298,9 +300,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwxfffffddddddddddd"
                     ,"wwwwwwwwwwwwwwwwxfffffdddddddddd"
                     ,"wwwwwwwwwwwwwwwwwxfffffddddddddd"
-                    ,"wwwwwwwwwwwwwwwwwwxfffffdddddddd"]);
+                    ,"wwwwwwwwwwwwwwwwwwxfffffdddddddd"])
   // 1,1
-  Config.addTileset(["mmmmffffffffmmmmmmrrrrrrmmmmmmmm"
+  .addTileset(["mmmmffffffffmmmmmmrrrrrrmmmmmmmm"
                     ,"mmmmmffffffffmmmmmmrrrmmmmmmmmmm"
                     ,"mmmmmffffffffffmmmmmrmmmmmmmmmmm"
                     ,"mmmmmffffffffffmmmmmrmmmmmmmmmmm"
@@ -331,9 +333,9 @@ var WorldMap = (function() {
                     ,"dddddddmmmmmmmmmmmfffffrmmmfffww"
                     ,"ddddddmmmmmmmmmmfffffrrrmmffffww"
                     ,"ddddddmmmmmmmmmffffffrffffffffww"
-                    ,"ddddddmmmmmmmmmffffffrffffffffxw"]);
+                    ,"ddddddmmmmmmmmmffffffrffffffffxw"])
   // 1,2
-  Config.addTileset(["mmxwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["mmxwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"mmmwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"mmmxwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"mmmmxwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -364,9 +366,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwxss"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxs"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);  
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])  
   // 1,3
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwxffffxww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwxffffxww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwxffffxwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwxffffxwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwx fffxwwwww"
@@ -397,9 +399,9 @@ var WorldMap = (function() {
                     ,"ssxwwwwwwx 7wwwwwwwwwwwwwwwwwwww"
                     ,"sssssxwwwww1wwwwwwwwwwwwwwwwwwww"
                     ,"wxsss 7wwwwwwwwwwwwwwwwwwww82www"
-                    ,"wwwwww1wwwwwwwwwwwwwwwwwwx xwwww"]);
+                    ,"wwwwww1wwwwwwwwwwwwwwwwwwx xwwww"])
   // 1,4
-  Config.addTileset(["wwwwwwwwwxsssmmmmfffmmmmmmmmmmmm"
+  .addTileset(["wwwwwwwwwxsssmmmmfffmmmmmmmmmmmm"
                     ,"wwwxssrfffssmmmmmfffmmmmmmfffffm"
                     ,"wwx:rrrffffmmmmmffffmmmmmfffffff"
                     ,"wxffrffffffmmmmffffxwwx  fffffff"
@@ -430,9 +432,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 1,5
-  Config.addTileset(["mmmdddddddddddddfffwwwwwwwwwwwww"
+  .addTileset(["mmmdddddddddddddfffwwwwwwwwwwwww"
                     ,"mmmmmmmdddddddddfffwwwwwwwwwwwww"
                     ,"mmmmmmmmmmmdddddfffxwwwwwwwwwwww"
                     ,"fmmmmmmmmmmmmmmfffffxwwwwwwwwwww"
@@ -463,9 +465,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmmmmmmdddddddddddddddddddd"
                     ,"mmmmmmmmmmmmdddddddddddddddddddd"
                     ,"xmmmmmmmmmmmdddddddddddddddddddd"
-                    ,"wwxmmmmmmmmmdddddddddddddddddddd"]);
+                    ,"wwxmmmmmmmmmdddddddddddddddddddd"])
   // 1,6
-  Config.addTileset(["wwwwwwwwwwwwwwwmmxwxmmmgggmmmmmm"
+  .addTileset(["wwwwwwwwwwwwwwwmmxwxmmmgggmmmmmm"
                     ,"wwwwwwwwwwwwwwwxxwxmmmggmmmmmmmm"
                     ,"wwwwwwwwwwwwwwwwwxmmm&gmmmmmmmmm"
                     ,"wwwwwwwwwwwwwwwwxmmmmmmmmmmmmmmm"
@@ -496,9 +498,9 @@ var WorldMap = (function() {
                     ,"dddddddddddddddmmmmfffffffffffff"
                     ,"dddddddddddddddmmmmmffffffffffff"
                     ,"ddddddddddddddddmmmmmfffffffffff"
-                    ,"dddddddddddddddddmmmmmmffffffffx"]);
+                    ,"dddddddddddddddddmmmmmmffffffffx"])
   // 1,7
-  Config.addTileset(["mmxwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["mmxwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"mxwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"xwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -529,9 +531,9 @@ var WorldMap = (function() {
                     ,"ffffffffffffffxwwwwwwwwwwwwwwwww"
                     ,"fffffffffffffffxwwwwwwwwwwwwwwww"
                     ,"ffffxwxfffffffffwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwxffffffxwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwxffffffxwwwwwwwwwwwwwww"])
   // 2,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwxfffffddddddd"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwxfffffddddddd"
                     ,"wwwwwwwwwwwwwwwwwwwwxfffffffdddd"
                     ,"wwwwwwwwwwwwwwwwwwwwwxffffffffff"
                     ,"wwwwwwwwwwwwwwwwwwwwwwffffffffff"
@@ -562,9 +564,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwxmmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 2,1
-  Config.addTileset(["ddddd  mmmmmmmmffffffrfffffffffx"
+  .addTileset(["ddddd  mmmmmmmmffffffrfffffffffx"
                     ,"dddfffffmmmmmmmmfffffrffffffffff"
                     ,"fffffffffmmmmmmmmffffrfffxwwxfff"
                     ,"ffffffffffffmmmmmffffrffxwwwwwww"
@@ -595,9 +597,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmmmmmmmmmmmmxwwwwwwwwwwwww"
                     ,"xmmmmmmmmmmmmmmmmmmxwwwwwwwwwwww"
                     ,"wwwwxmmmmmmmmmmmmmmmmmxwwwwwwwww"
-                    ,"wwwwwwwwwxmmmmmmmmmmmmmmmmmmxwww"]);
+                    ,"wwwwwwwwwxmmmmmmmmmmmmmmmmmmxwww"])
   // 2,2
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"xwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"xwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -628,9 +630,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 2,3
-  Config.addTileset(["wwwwwwwww4wwwwwwwwwxffff  xwwwww"
+  .addTileset(["wwwwwwwww4wwwwwwwwwxffff  xwwwww"
                     ,"wwwwwwwww6 xwwwwwwxfffff xwwwwww"
                     ,"wwwwwwwwwwx  fffffffoffxwwwwwwww"
                     ,"wwwwwwwwwwwx fffffffffxwwwwwwwww"
@@ -661,9 +663,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 2,4
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -694,9 +696,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 2,5
-  Config.addTileset(["wwwwwxmmmmmmdddddddddddddddddddd"
+  .addTileset(["wwwwwxmmmmmmdddddddddddddddddddd"
                     ,"wwwwwwxmmmmmmddddddddddddddddddd"
                     ,"wwwwwww mmmmmddddddddddddddddddd"
                     ,"wwwwwwwx mmmmmdddddddddddddddddd"
@@ -727,9 +729,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwww62wwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwww4wwx"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwww6   "]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwww6   "])
   // 2,6
-  Config.addTileset(["ddddddddddddddddddmmmmmmffffffxw"
+  .addTileset(["ddddddddddddddddddmmmmmmffffffxw"
                     ,"ddddddddddddddddddmmmmmmmffffxww"
                     ,"dddddddddddddddddddmmmmmmmffxwww"
                     ,"ddddddddddddddddddd mmmmmmmmxwww"
@@ -760,9 +762,9 @@ var WorldMap = (function() {
                     ,"xmmmmmmmmmmmmmmwwwwwwww65w62wwww"
                     ,"xmmmmmmmmmmmmmmwwwwwwwwwwwwwwwww"
                     ,"mmmmmmmmmmmmmmmwwwwwwwwwwwwwwwww"
-                    ,"mmmxwwxmmmmmmmxwwwwwwwwwwwwwwwww"]);
+                    ,"mmmxwwxmmmmmmmxwwwwwwwwwwwwwwwww"])
   // 2,7
-  Config.addTileset(["wwwwwwwwwwwffffffxwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwffffffxwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwxsssffffffxwwwwwwwwwww"
                     ,"wwwwwwwwwwsssssffffffwwwwwwwwwww"
                     ,"wwwwwwwwwwssssssfffffwwwwwwwwwww"
@@ -793,9 +795,9 @@ var WorldMap = (function() {
                     ,"wwwwwxfffffffxwwwwwwwwwwwwwwwwww"
                     ,"www87wwwxfffffffxwwwwwwwwwwwwwww"
                     ,"wwwffxwwwxfffffffxwwwwwwwwwwwwww"
-                    ,"wwwfffxwwwxfffffffwwwwwwwwwwwwww"]);
+                    ,"wwwfffxwwwxfffffffwwwwwwwwwwwwww"])
   // 3,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -826,9 +828,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 3,1
-  Config.addTileset(["wwwwwwwwwwwwwwwxmmmmmmmmmmmmxwww"
+  .addTileset(["wwwwwwwwwwwwwwwxmmmmmmmmmmmmxwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -859,9 +861,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 3,2
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -892,9 +894,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 3,3
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -925,9 +927,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwx ff"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwxff"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxf"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx"])
   // 3,4
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -958,9 +960,9 @@ var WorldMap = (function() {
                     ,"ffffffff  7wwwwwwwwwwwwwwwwwwx  "
                     ,"fffffffff 5wwwwwwwwwwwwwwwwwx ff"
                     ,"fffffffffxwwwwwwwwwwwwwwwwwx fff"
-                    ,"ffffffffxwwwwwwwwwwwwwwwwwxfffff"]);
+                    ,"ffffffffxwwwwwwwwwwwwwwwwwxfffff"])
   // 3,5
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -991,9 +993,9 @@ var WorldMap = (function() {
                     ,"ffffffffwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"ffffffffwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"ffffffffwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"fffffffxwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"fffffffxwwwwwwwwwwwwwwwwwwwwwwww"])
   // 3,6
-  Config.addTileset(["wwwwwwwwxmmmmmwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwxmmmmmwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwx xwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1024,9 +1026,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 3,7
-  Config.addTileset(["wwwxfffxwwxfffffffwwwwwwwwwwwwww"
+  .addTileset(["wwwxfffxwwxfffffffwwwwwwwwwwwwww"
                     ,"wwwwffffxxWWWfffffwwwwwwwwwwwwww"
                     ,"wwwwxffffWWTWWffffwwwwwwwwwwwwww"
                     ,"wwwwwxfffWTTTWffffwwwwwwwwwwwwww"
@@ -1057,9 +1059,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwww87wwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwww  wwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwww  wwwwwwwwwwwwwwwwwwwwwwww"])
   // 4,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1090,9 +1092,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 4,1
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1123,9 +1125,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwssmmmmmssssmmmmmmxwww"
                     ,"wwwwwwwwwwwxsssmmmssssssmmmmmxwx"
                     ,"wwwwwwwwwwwwxsssmmssssssssmmmsss"
-                    ,"wwwwwwwwwwwwwxssssssssssssssssss"]);
+                    ,"wwwwwwwwwwwwwxssssssssssssssssss"])
   // 4,2
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwx x"
@@ -1156,9 +1158,9 @@ var WorldMap = (function() {
                     ,"sssssssssssssssssswwwwwwwwwwwwww"
                     ,"ssssssfffsssssssssxwwwwwwwwwwwww"
                     ,"ssssssffffssssss   xwwwwwwwwwwww"
-                    ,"sssssssfffssssDE v  xwwwwwwwwwww"]);
+                    ,"sssssssfffssssDE v  xwwwwwwwwwww"])
   // 4,3
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwxfffxwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwxffffffwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwxfffffffwwwwww"
@@ -1189,9 +1191,9 @@ var WorldMap = (function() {
                     ,"wwxfffffffmmmmmm wwwwwwwwwwwwwww"
                     ,"wwwffffffmmmmmmmxwwwwwwwwwwwwwww"
                     ,"wwwxffmmmmmm xwwwwwwwwwwwwwwwwww"
-                    ,"wwww  mmmmmxwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwww  mmmmmxwwwwwwwwwwwwwwwwwwww"])
   // 4,4
-  Config.addTileset(["wwxfffffxwwwwwwwwwwwwwwxffffffff"
+  .addTileset(["wwxfffffxwwwwwwwwwwwwwwxffffffff"
                     ,"wwwxfffffwwwwwwwwwwwwwxfffffffff"
                     ,"wwwwxffffwwwwwwwwwwwwxffffffffff"
                     ,"wwwww fffwwwwwwwwwwwxfffffffffff"
@@ -1222,9 +1224,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwx    ffffffffffffx"
                     ,"wwwwwwwwwwwwwx    fffff KK fffff"
                     ,"wwwwwwwwwwwwx     ffff kKKk ffff"
-                    ,"wwwwwwwwwwww      fff kkAAkk fff"]);
+                    ,"wwwwwwwwwwww      fff kkAAkk fff"])
   // 4,5
-  Config.addTileset(["rrrrrrrwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["rrrrrrrwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"fffrfffwwwww4wwwwwwwwwwwwwwwwwww"
                     ,"fffrfffxwwww6 xwwwwwwwwwwwwwwwww"
                     ,"fffrffffxwwwx  xwwwwwwwwwwwwwwww"
@@ -1255,9 +1257,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwx mmmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwww  mmmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwww mmmmmf"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwww mmmm f"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwww mmmm f"])
   // 4,6
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwx    7w"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwx     5w"
@@ -1288,9 +1290,9 @@ var WorldMap = (function() {
                     ,"mmmmm xwwwwwwwwwHH  fffmmmmmmmmm"
                     ,"mmmmm  xwwwwwww  ffffffmmmmmmmmm"
                     ,"fffff   xwwwwwxfffffff       mmm"
-                    ,"fffffffff      ffffff         mm"]);
+                    ,"fffffffff      ffffff         mm"])
   // 4,7
-  Config.addTileset(["wwwwww  wwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwww  wwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwx  wwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwxffffwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwxfffffwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1321,9 +1323,9 @@ var WorldMap = (function() {
                     ,"mm    mmmxwwwwwwwwwwwwwwwwwwwwww"
                     ,"mm    mmmmmmxwwwwwwwwwwwwwwwwwww"
                     ,"mm      mmmmmxwwwwwwwwwwwwwwwwww"
-                    ,"mm  mmm  mmmm wwwwwwwwwwwwwwwwww"]);
+                    ,"mm  mmm  mmmm wwwwwwwwwwwwwwwwww"])
   // 5,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1354,9 +1356,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwxmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwmcm"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwww   "]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwww   "])
   // 5,1
-  Config.addTileset(["wwwwwwwwwwwwwwsssssssssffffffsss"
+  .addTileset(["wwwwwwwwwwwwwwsssssssssffffffsss"
                     ,"wwwwwwwwwwwwwwxssmmssssffffffsss"
                     ,"wwwwwwwwwwwwwwwxsmmmsssfffffssss"
                     ,"wwwwwwwwwwwwwwww mmmssssfffsssss"
@@ -1387,9 +1389,9 @@ var WorldMap = (function() {
                     ,"mmm  wwwwwwwww8  mmmmmmmmmmm   s"
                     ,"m   xwwwwwwwww6       mmmmmmmmms"
                     ,"   xwwwwwwwwwwwwwwwwwx    mmmmmm"
-                    ,"xwwwwwwwwwwwwwwwwwwwwwwwwx    mm"]);
+                    ,"xwwwwwwwwwwwwwwwwwwwwwwwwx    mm"])
   // 5,2
-  Config.addTileset(["ssssssssssssssDH vv  wwwwwwwwwww"
+  .addTileset(["ssssssssssssssDH vv  wwwwwwwwwww"
                     ,"ssssssssssssssDH    xwwwwwwwwwww"
                     ,"ssssss xwwwwwwwwwwwwwww8 xwwwwww"
                     ,"sss   xwwwwwwwwwwwwwwww6   xwwww"
@@ -1420,9 +1422,9 @@ var WorldMap = (function() {
                     ,"sssmmmm wwwwwwwwwwwwwwwwwwwwwwww"
                     ,"ss      wwwwwwwwwwwwwwwwwwwwwwww"
                     ,"mmmm    xwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"mmmmm    wwwwwwwwwwwwwwwwwwwwwwx"]);
+                    ,"mmmmm    wwwwwwwwwwwwwwwwwwwwwwx"])
   // 5,3
-  Config.addTileset(["wwww   mmmxwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwww   mmmxwwwwwwwwwwwwwwwwwwwww"
                     ,"wwww   mmxwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwx   xwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwx xwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1453,9 +1455,9 @@ var WorldMap = (function() {
                     ,"ffffffrrrrrrrrr wwwwwwwwwwwwwwww"
                     ,"fffffffffffr   xwwwwwwwwwwwwwwww"
                     ,"fffffffffffrrrwwwwwwwwwwwwwwwwww"
-                    ," fffffffff    wwwwwwwwwwwwwwwwww"]);
+                    ," fffffffff    wwwwwwwwwwwwwwwwww"])
   // 5,4
-  Config.addTileset(["wwwwwwwwwwwwx     fff kTttTk fff"
+  .addTileset(["wwwwwwwwwwwwx     fff kTttTk fff"
                     ,"wwwwwwwwwwwwwx    fff kTttTk fff"
                     ,"wwwwwwwwwwwwwwwx  fff kTttTk fff"
                     ,"wwwwwwwwwwwwwwww  ffffk>tt<kffff"
@@ -1486,9 +1488,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 5,5
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwww  mmmmf"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwww  mmmmf"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwx  mmm "
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwww  mmmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwww  mmmm"
@@ -1519,9 +1521,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwmmmmmmmmrrrmm"
                     ,"wwwwwwwwwwwwwwwwwwxmmmmmmmmrrrmm"
                     ,"wwwwwwwwwwwwwwwwwxmmmmmmmmmm~GG*"
-                    ,"wwwwwwwwwwwwwwwwwmmmmmmmmmmmmmm~"]);
+                    ,"wwwwwwwwwwwwwwwwwmmmmmmmmmmmmmm~"])
   // 5,6
-  Config.addTileset(["fffffffffffff      mmmmmmmmm    "
+  .addTileset(["fffffffffffff      mmmmmmmmm    "
                     ,"ffffffffffffff   mmmmmmmmmmmm   "
                     ,"ffffffffffffff  mmmmmmmmmmmmmm  "
                     ,"mffffffffffff mmmmmmmmmmmmmmmm  "
@@ -1552,9 +1554,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmGmmmmmmmrmmfffffmmmmmmrmm"
                     ,"mmmmmmmGmmmmmmmrmmmfff  rrrrrrmm"
                     ,"mmmmmmmGmmmmmmmrrmmm   mmmrmmmmm"
-                    ,"GGGGGGGGmmmmmmmmrmmmmmmmmmrmmmmm"]);
+                    ,"GGGGGGGGmmmmmmmmrmmmmmmmmmrmmmmm"])
   // 5,7
-  Config.addTileset(["   mmmmm  mmmmxwwwwwwwwwwwwwwwww"
+  .addTileset(["   mmmmm  mmmmxwwwwwwwwwwwwwwwww"
                     ,"  mmmmmm  mmmmmxwwwwwwwwwwwwwwww"
                     ,"  mmmmmm  mmmmmmxwwwwwwwwwwwwwww"
                     ,"  mmmmmm   mmmmmmmxwwwwwwwwwwwww"
@@ -1585,9 +1587,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmmm      x1w1wwwwwwwwwwwww"
                     ,"mmmmmmmmm     xwwwwwwwwwwwwwwwww"
                     ,"mmmmmmmmm     xwwwwwwwwwwwwwwwww"
-                    ,"mmmmmmmmmm mmmmxwwwwwwwwwwwwwwww"]);
+                    ,"mmmmmmmmmm mmmmxwwwwwwwwwwwwwwww"])
   // 6,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwx x"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwx x"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1618,9 +1620,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 6,1
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwx  "
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwx  "
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwx"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1651,9 +1653,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 6,2
-  Config.addTileset(["mmmmmmmm wwwwwwwwwwwwwwwwwwwwwx "
+  .addTileset(["mmmmmmmm wwwwwwwwwwwwwwwwwwwwwx "
                     ,"   mmmmm xwwwwwwwwwwwwwwwwwwwx  "
                     ,"wwx mmmmm wwwwwwwwwwwwwwwwwwx   "
                     ,"wwwx  mmm wwwwwwwwwwwwwwwwwx    "
@@ -1684,9 +1686,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwx  mmm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwww   mm"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwx  mm"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwww   m"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwww   m"])
   // 6,3
-  Config.addTileset(["              xwwwwwwwwwwwwwwwww"
+  .addTileset(["              xwwwwwwwwwwwwwwwww"
                     ,"      fffffffffxwwwwwwwwwwwwwwww"
                     ,"     fffffffffffwwwwwwwwwwwwwwww"
                     ,"  mmffffffffffffwwwwwwwwwwwwwwww"
@@ -1717,9 +1719,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmmmmmmmmmmfffffffffffmmmmm"
                     ,"mmmmmmmmmmmmmmmmmfffffffmmmmmmmm"
                     ,"mmmmmmssssssmmmmmfffffmmmmmmmmm "
-                    ,"mmsssssssmmssmmmmmffffmmmmmmmmmf"]);
+                    ,"mmsssssssmmssmmmmmffffmmmmmmmmmf"])
   // 6,4
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1750,9 +1752,9 @@ var WorldMap = (function() {
                     ,"ffffgggCCgggfffffxwwwwwwwwwrrrrr"
                     ,"fffgg`eCCe~ggffffwwwwwwwwwwx~GGG"
                     ,"fffgg*e  e&ggfffxwwwwwwwwwwwxggg"
-                    ,"ffffggg  gggfffxwwwwwwwwwwwwwwx "]);
+                    ,"ffffggg  gggfffxwwwwwwwwwwwwwwx "])
   // 6,5
-  Config.addTileset(["wwwwwwwwwwwwwwwwxmmmmmmmmmmmmmmm"
+  .addTileset(["wwwwwwwwwwwwwwwwxmmmmmmmmmmmmmmm"
                     ,"wwwwwwwwwwwwwwwxmmmmmmmmmmmmmmmm"
                     ,"wwwwwwwwwwwwwwxmmmmmmrrrrrrrrrrr"
                     ,"wwwwwwwwwwwwwwmmmmmmmrmmmmmmmmmm"
@@ -1783,9 +1785,9 @@ var WorldMap = (function() {
                     ,"rmmmmmr ffffffmmmmmmmmmmmmmmmmmm"
                     ,"gmmmmmr  fffffmmmmsssssssssmmmmm"
                     ,"gmmmmmrrr fffmmmmsssssssssssmmmm"
-                    ," mmmmmmmrmmm mmmssssssfffssssmmm"]);
+                    ," mmmmmmmrmmm mmmssssssfffssssmmm"])
   // 6,6
-  Config.addTileset(["mmmmmmmmmmmmmmmmrmmmmmmmmmrmmmmm"
+  .addTileset(["mmmmmmmmmmmmmmmmrmmmmmmmmmrmmmmm"
                     ,"mmmmmmmmmmmmmmmmrmmmmmmmmmrrrrmm"
                     ,"rrrrrrrrrrrrrrrrrmmmrrrrmmmmmrmm"
                     ,"mmmmmmmmmmmmrmmmmmmmrrrrmmmmmrmm"
@@ -1816,9 +1818,9 @@ var WorldMap = (function() {
                     ,"mmmmmmmmmmmmmmrrmmffffrr     rrr"
                     ,"mmmmmmmmmmmmmmrmmmfffffrrrrrrrrr"
                     ,"mmmmmmmmmmmmmmrmmmmfffffrrrrrrrr"
-                    ,"  mmmmmmmmmmmmrmmmmfffffffrrrrff"]);
+                    ,"  mmmmmmmmmmmmrmmmmfffffffrrrrff"])
   // 6,7
-  Config.addTileset(["mmmmmmmmmm mmmmmwwwwwwwwwwwwwwww"
+  .addTileset(["mmmmmmmmmm mmmmmwwwwwwwwwwwwwwww"
                     ,"mmmggggmmm mmmmmwwwwwwwwwwwwwwww"
                     ,"mmmGgggg   mmmmmwwwwwwwwwwwwwwww"
                     ,"mmmGggggmmmmmmmmwwwwwwwwwwwwwwww"
@@ -1849,9 +1851,9 @@ var WorldMap = (function() {
                     ,"rrfffffffffffwwwwwwwwwwwwwwwwwww"
                     ,"rfffffffffffxwwwwwwwwwwwwwwwwwww"
                     ,"fffffffffxwwwwwwwwwwwwwwwwwwwwww"
-                    ,"ffffffffxwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"ffffffffxwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,0
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1882,9 +1884,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,1
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -1915,9 +1917,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,2
-  Config.addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwx  m"
+  .addTileset(["wwwwwwwwwwwwwwwwwwwwwwwwwwwwx  m"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwsss"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwsss"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwxss"
@@ -1948,9 +1950,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,3
-  Config.addTileset(["msssssmmmmmmssmmmmmm fffffffffff"
+  .addTileset(["msssssmmmmmmssmmmmmm fffffffffff"
                     ,"ssssssmmmmmmsssmmmmm fffffffffff"
                     ,"mmmmssmmmmmssssmmmmm fffffffffff"
                     ,"mmmmmsssssssxwxmmmmm  ffffffffff"
@@ -1981,9 +1983,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);  
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])  
   // 7,4
-  Config.addTileset(["fffffggggggffffwwwwwwwwwwwwwwwwx"
+  .addTileset(["fffffggggggffffwwwwwwwwwwwwwwwwx"
                     ,"ffffff    ffff wwwwwwwwwwwwwwwww"
                     ,"ffffffffEEfff xwwwwwwwwwwwwwwwww"
                     ,"ffffffffHHHHwwwwwwwwwwwwwwwwwwww"
@@ -2014,9 +2016,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,5
-  Config.addTileset([" mmmmmmmrmmmsssssssssfffffssssss"
+  .addTileset([" mmmmmmmrmmmsssssssssfffffssssss"
                     ,"xmmmmmmmrmmmsssssssssfffffssssss"
                     ,"wmmmmmmmrmmsssssssssffffffssssss"
                     ,"wxmmmmmmrmmsssssssssfffffsssssss"
@@ -2047,9 +2049,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
   // 7,6
-  Config.addTileset(["sssmmmmmmmmmmmrmmmmfffffffffffff"
+  .addTileset(["sssmmmmmmmmmmmrmmmmfffffffffffff"
                     ,"ssssmmmmmmmmmmrmmmmfffffffffffff"
                     ,"sssssmmmmmmmmmrmmmmmffffffffffff"
                     ,"sssssssmmmmmmmrmmmmmffffffffffff"
@@ -2080,9 +2082,9 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
-  // 7,7
-  Config.addTileset(["fffffffxwwwwwwwwwwwwwwwwwwwwwwww"
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
+    // 7,7
+    .addTileset(["fffffffxwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"fffffffwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"fffffffwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"ffffffxwwwwwwwwwwwwwwwwwwwwwwwww"
@@ -2113,86 +2115,85 @@ var WorldMap = (function() {
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
                     ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"]);
-
-  Config.setMapping({
-    " " : new Map.Tile({cssClasses:"none", passableUsing:[Movement.Transportation.FOOT], background:Map.BattleBackgrounds.Plains})
-   ,"c" : new Map.Tile({cssClasses:"cave", passableUsing:[Movement.Transportation.FOOT]})
-   ,"d" : new Map.Tile({cssClasses:"desert", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, borderTile:"d", background:Map.BattleBackgrounds.Desert})
-   ,"e" : new Map.Tile({cssClasses:"elfland", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"f" : new Map.Tile({cssClasses:"forest", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, hasSides:true, borderTile:"f", background:Map.BattleBackgrounds.Forest})
-   ,"g" : new Map.Tile({cssClasses:"grass", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, borderTile:"goG&*~`", background:Map.BattleBackgrounds.Plains})
-   ,"k" : new Map.Tile({cssClasses:"coneria wall", block:{width:6, height:6}})
-   ,"l" : new Map.Tile({cssClasses:"crescent lake town", passableUsing:[Movement.Transportation.FOOT], inheritsFrom:"T", decrementBattleSteps:false})
-   ,"m" : new Map.Tile({cssClasses:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"})
-   ,"n" : new Map.Tile({cssClasses:"volcano", passableUsing:[Movement.Transportation.FOOT], block:{width:2, height:2}, decrementBattleSteps:false})
-   ,"o" : new Map.Tile({cssClasses:"hole", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"r" : new Map.Tile({cssClasses:"river", passableUsing:[Movement.Transportation.CANOE], hasCorners:true, borderTile:"rJ"})
-   ,"s" : new Map.Tile({cssClasses:"swamp", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, borderTile:"so:;,.", background:Map.BattleBackgrounds.Swamp})
-   ,"t" : new Map.Tile({cssClasses:"town empty", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"u" : new Map.Tile({cssClasses:"ruins", passableUsing:[Movement.Transportation.FOOT], block:{width:4, height:2}, decrementBattleSteps:false})
-   ,"v" : new Map.Tile({cssClasses:"village", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"w" : new Map.Tile({cssClasses:"water", passableUsing:[Movement.Transportation.SHIP], hasSides:true, borderTile:"wxH12345678"})
-   ,"x" : new Map.Tile({cssClasses:"coastline", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, borderTile:"wx12345678", background:Map.BattleBackgrounds.Plains})
-   
-   ,"A" : new Map.Tile({cssClasses:"coneria castle entrance", passableUsing:[Movement.Transportation.FOOT], block:{width:2, height:1}, decrementBattleSteps:false})
-   ,"C" : new Map.Tile({cssClasses:"castle", passableUsing:[Movement.Transportation.FOOT], block:{width:2,height:2}, decrementBattleSteps:false})
-   ,"D" : new Map.Tile({cssClasses:"docks", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, hasSides:true, borderTile:"DEFH", background:Map.BattleBackgrounds.Plains})
-   ,"E" : new Map.Tile({cssClasses:"docks top", inheritsFrom:"D"})
-   ,"F" : new Map.Tile({cssClasses:"waterfall", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"G" : new Map.Tile({cssClasses:"grass", inheritsFrom:"g"})
-   ,"H" : new Map.Tile({cssClasses:"water", inheritsFrom:"w"})
-   ,"I" : new Map.Tile({cssClasses:"docks right", inheritsFrom:"D"})
-   ,"J" : new Map.Tile({cssClasses:"river br", inheritsFrom:"r"})
-   ,"K" : new Map.Tile({cssClasses:"coneria castle", block:{width:2, height:2}})
-   ,"L" : new Map.Tile({cssClasses:"crescent lake wall", block:{width:5, height:6}})
-   ,"M" : new Map.Tile({cssClasses:"mirage tower", passableUsing:[Movement.Transportation.FOOT], block:{width:2, height:2}, decrementBattleSteps:false})
-   ,"P" : new Map.Tile({cssClasses:"pravoka", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"T" : new Map.Tile({cssClasses:"town", passableUsing:[Movement.Transportation.FOOT], decrementBattleSteps:false})
-   ,"V" : new Map.Tile({cssClasses:"desert caravan", passableUsing:[Movement.Transportation.FOOT], hasCorners:true, borderTile:"V", decrementBattleSteps:false})
-   ,"W" : new Map.Tile({cssClasses:"town wall", block:{width:5, height:4}})
-   
-   ,"1" : new Map.Tile({cssClasses:"water top", inheritsFrom:"w"})
-   ,"2" : new Map.Tile({cssClasses:"water left", inheritsFrom:"w"})
-   ,"3" : new Map.Tile({cssClasses:"water right", inheritsFrom:"w"})
-   ,"4" : new Map.Tile({cssClasses:"water bottom", inheritsFrom:"w"})
-   ,"5" : new Map.Tile({cssClasses:"coastline tl", inheritsFrom:"x"})
-   ,"6" : new Map.Tile({cssClasses:"coastline tr", inheritsFrom:"x"})
-   ,"7" : new Map.Tile({cssClasses:"coastline bl", inheritsFrom:"x"})
-   ,"8" : new Map.Tile({cssClasses:"coastline br", inheritsFrom:"x"})
-   ,"9" : new Map.Tile({cssClasses:"mountain top", inheritsFrom:"m"})
-   ,"0" : new Map.Tile({cssClasses:"mountain left", inheritsFrom:"m"})
-   ,"!" : new Map.Tile({cssClasses:"mountain right", inheritsFrom:"m"})
-   ,"@" : new Map.Tile({cssClasses:"mountain bottom", inheritsFrom:"m"})
-   ,"#" : new Map.Tile({cssClasses:"mountain tl", inheritsFrom:"m"})
-   ,"$" : new Map.Tile({cssClasses:"mountain tr", inheritsFrom:"m"})
-   ,"%" : new Map.Tile({cssClasses:"mountain bl", inheritsFrom:"m"})
-   ,"^" : new Map.Tile({cssClasses:"mountain br", inheritsFrom:"m"})
-   ,"&" : new Map.Tile({cssClasses:"grass tl", inheritsFrom:"g"})
-   ,"*" : new Map.Tile({cssClasses:"grass tr", inheritsFrom:"g"})
-   ,"~" : new Map.Tile({cssClasses:"grass bl", inheritsFrom:"g"})
-   ,"`" : new Map.Tile({cssClasses:"grass br", inheritsFrom:"g"})
-   ,":" : new Map.Tile({cssClasses:"swamp tl", inheritsFrom:"s"})
-   ,";" : new Map.Tile({cssClasses:"swamp tr", inheritsFrom:"s"})
-   ,"," : new Map.Tile({cssClasses:"swamp bl", inheritsFrom:"s"})
-   ,"." : new Map.Tile({cssClasses:"swamp br", inheritsFrom:"s"})
-   ,"+" : new Map.Tile({cssClasses:"desert tl", inheritsFrom:"d"})
-   ,"=" : new Map.Tile({cssClasses:"desert tr", inheritsFrom:"d"})
-   ,"/" : new Map.Tile({cssClasses:"desert bl", inheritsFrom:"d"})
-   ,"|" : new Map.Tile({cssClasses:"desert br", inheritsFrom:"d"})
-
-   ,"-" : new Map.Tile({})
-   ,"_" : new Map.Tile({})
-   ,"}" : new Map.Tile({})
-   ,"{" : new Map.Tile({})
-   ,"(" : new Map.Tile({})
-   ,")" : new Map.Tile({})
-   ,">" : new Map.Tile({cssClasses:"town wall gate left"})
-   ,"<" : new Map.Tile({cssClasses:"town wall gate right"})
-  });
+                    ,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"])
+    .setMapping({
+      " " : MapTile.create({cssClasses:"none", passableUsing:[MovementConstants.Transportation.Foot], background:MapConstants.BattleBackgrounds.Plains})
+     ,"c" : MapTile.create({cssClasses:"cave", passableUsing:[MovementConstants.Transportation.Foot]})
+     ,"d" : MapTile.create({cssClasses:"desert", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, borderTile:"d", background:MapConstants.BattleBackgrounds.Desert})
+     ,"e" : MapTile.create({cssClasses:"elfland", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"f" : MapTile.create({cssClasses:"forest", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, hasSides:true, borderTile:"f", background:MapConstants.BattleBackgrounds.Forest})
+     ,"g" : MapTile.create({cssClasses:"grass", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, borderTile:"goG&*~`", background:MapConstants.BattleBackgrounds.Plains})
+     ,"k" : MapTile.create({cssClasses:"coneria wall", block:{width:6, height:6}})
+     ,"l" : MapTile.create({cssClasses:"crescent lake town", passableUsing:[MovementConstants.Transportation.Foot], inheritsFrom:"T", decrementBattleSteps:false})
+     ,"m" : MapTile.create({cssClasses:"mountain", hasCorners:true, hasSides:true, borderTile:"90!@#$%^cm"})
+     ,"n" : MapTile.create({cssClasses:"volcano", passableUsing:[MovementConstants.Transportation.Foot], block:{width:2, height:2}, decrementBattleSteps:false})
+     ,"o" : MapTile.create({cssClasses:"hole", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"r" : MapTile.create({cssClasses:"river", passableUsing:[MovementConstants.Transportation.Canoe], hasCorners:true, borderTile:"rJ"})
+     ,"s" : MapTile.create({cssClasses:"swamp", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, borderTile:"so:;,.", background:MapConstants.BattleBackgrounds.Swamp})
+     ,"t" : MapTile.create({cssClasses:"town empty", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"u" : MapTile.create({cssClasses:"ruins", passableUsing:[MovementConstants.Transportation.Foot], block:{width:4, height:2}, decrementBattleSteps:false})
+     ,"v" : MapTile.create({cssClasses:"village", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"w" : MapTile.create({cssClasses:"water", passableUsing:[MovementConstants.Transportation.Ship], hasSides:true, borderTile:"wxH12345678"})
+     ,"x" : MapTile.create({cssClasses:"coastline", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, borderTile:"wx12345678", background:MapConstants.BattleBackgrounds.Plains})
+     
+     ,"A" : MapTile.create({cssClasses:"coneria castle entrance", passableUsing:[MovementConstants.Transportation.Foot], block:{width:2, height:1}, decrementBattleSteps:false})
+     ,"C" : MapTile.create({cssClasses:"castle", passableUsing:[MovementConstants.Transportation.Foot], block:{width:2,height:2}, decrementBattleSteps:false})
+     ,"D" : MapTile.create({cssClasses:"docks", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, hasSides:true, borderTile:"DEFH", background:MapConstants.BattleBackgrounds.Plains})
+     ,"E" : MapTile.create({cssClasses:"docks top", inheritsFrom:"D"})
+     ,"F" : MapTile.create({cssClasses:"waterfall", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"G" : MapTile.create({cssClasses:"grass", inheritsFrom:"g"})
+     ,"H" : MapTile.create({cssClasses:"water", inheritsFrom:"w"})
+     ,"I" : MapTile.create({cssClasses:"docks right", inheritsFrom:"D"})
+     ,"J" : MapTile.create({cssClasses:"river br", inheritsFrom:"r"})
+     ,"K" : MapTile.create({cssClasses:"coneria castle", block:{width:2, height:2}})
+     ,"L" : MapTile.create({cssClasses:"crescent lake wall", block:{width:5, height:6}})
+     ,"M" : MapTile.create({cssClasses:"mirage tower", passableUsing:[MovementConstants.Transportation.Foot], block:{width:2, height:2}, decrementBattleSteps:false})
+     ,"P" : MapTile.create({cssClasses:"pravoka", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"T" : MapTile.create({cssClasses:"town", passableUsing:[MovementConstants.Transportation.Foot], decrementBattleSteps:false})
+     ,"V" : MapTile.create({cssClasses:"desert caravan", passableUsing:[MovementConstants.Transportation.Foot], hasCorners:true, borderTile:"V", decrementBattleSteps:false})
+     ,"W" : MapTile.create({cssClasses:"town wall", block:{width:5, height:4}})
+     
+     ,"1" : MapTile.create({cssClasses:"water top", inheritsFrom:"w"})
+     ,"2" : MapTile.create({cssClasses:"water left", inheritsFrom:"w"})
+     ,"3" : MapTile.create({cssClasses:"water right", inheritsFrom:"w"})
+     ,"4" : MapTile.create({cssClasses:"water bottom", inheritsFrom:"w"})
+     ,"5" : MapTile.create({cssClasses:"coastline tl", inheritsFrom:"x"})
+     ,"6" : MapTile.create({cssClasses:"coastline tr", inheritsFrom:"x"})
+     ,"7" : MapTile.create({cssClasses:"coastline bl", inheritsFrom:"x"})
+     ,"8" : MapTile.create({cssClasses:"coastline br", inheritsFrom:"x"})
+     ,"9" : MapTile.create({cssClasses:"mountain top", inheritsFrom:"m"})
+     ,"0" : MapTile.create({cssClasses:"mountain left", inheritsFrom:"m"})
+     ,"!" : MapTile.create({cssClasses:"mountain right", inheritsFrom:"m"})
+     ,"@" : MapTile.create({cssClasses:"mountain bottom", inheritsFrom:"m"})
+     ,"#" : MapTile.create({cssClasses:"mountain tl", inheritsFrom:"m"})
+     ,"$" : MapTile.create({cssClasses:"mountain tr", inheritsFrom:"m"})
+     ,"%" : MapTile.create({cssClasses:"mountain bl", inheritsFrom:"m"})
+     ,"^" : MapTile.create({cssClasses:"mountain br", inheritsFrom:"m"})
+     ,"&" : MapTile.create({cssClasses:"grass tl", inheritsFrom:"g"})
+     ,"*" : MapTile.create({cssClasses:"grass tr", inheritsFrom:"g"})
+     ,"~" : MapTile.create({cssClasses:"grass bl", inheritsFrom:"g"})
+     ,"`" : MapTile.create({cssClasses:"grass br", inheritsFrom:"g"})
+     ,":" : MapTile.create({cssClasses:"swamp tl", inheritsFrom:"s"})
+     ,";" : MapTile.create({cssClasses:"swamp tr", inheritsFrom:"s"})
+     ,"," : MapTile.create({cssClasses:"swamp bl", inheritsFrom:"s"})
+     ,"." : MapTile.create({cssClasses:"swamp br", inheritsFrom:"s"})
+     ,"+" : MapTile.create({cssClasses:"desert tl", inheritsFrom:"d"})
+     ,"=" : MapTile.create({cssClasses:"desert tr", inheritsFrom:"d"})
+     ,"/" : MapTile.create({cssClasses:"desert bl", inheritsFrom:"d"})
+     ,"|" : MapTile.create({cssClasses:"desert br", inheritsFrom:"d"})
   
-  
-  return {
-    Config: Config
+     ,"-" : MapTile.create({})
+     ,"_" : MapTile.create({})
+     ,"}" : MapTile.create({})
+     ,"{" : MapTile.create({})
+     ,"(" : MapTile.create({})
+     ,")" : MapTile.create({})
+     ,">" : MapTile.create({cssClasses:"town wall gate left"})
+     ,"<" : MapTile.create({cssClasses:"town wall gate right"})
+    });
   };
-})();
+
+  return {
+    init : init
+  };
+});

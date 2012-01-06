@@ -1,30 +1,14 @@
-var WeaponAnimationHelper = (function() {
+define(
+/* DebugWeaponAnimations */
+["jquery", "battle", "character-class", "./util", "equipment", "events", "party"],
+function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Party) {
   
   var $debug = null;
-  var allChars = [];
-  
-  var init = function() {
-    $debug = $("#debug section.weaponAnimations .container");
-    initCharClassSelector();
-  };
-  
-  var event = function($target) {
-    if ($target.is(".selector")) {
-      if ($target.val().length > 0) {
-        $(".stances", $debug).remove();
-        $debug.append(createCharWithAllEquippableWeapons($target.val()));
-      }
-    } else if ($target.is(".start")) {
-      jQuery.each($(".char", $debug), function(i, char) {
-        Animation.swingWeapon(null, {numAnimations:20, $char:$(char)}).start();
-      });
-    }
-  };
   
   var initCharClassSelector = function() {
     var $selector = $(".selector", $debug);
     jQuery.each(CharacterClass.All, function(i, charClass) {
-      $selector.append($("<option/>").val(charClass.name).text(charClass.name));
+      DebugHelper.addOption($selector, charClass.name, charClass.name);
     });
   };
   
@@ -32,26 +16,41 @@ var WeaponAnimationHelper = (function() {
     var char = Party.createNewChar("AAAA", charClass, 0);
     var $stances = $("<div/>").addClass("attack stances").addClass(charClass);
     
+    char.weapons();
     jQuery.each(Equipment.Weapon.All, function(i, weapon) {
-      char.unequipWeapon();
-      if (char.canEquip(weapon.name, "weapon")) {
-        char.weapon(weapon.name, true);
-        $stances.append(Battle.createCharUI(char));
-        $(".weapon", $stances).removeClass("hidden");
+      char.unequip();
+      if (char.canEquip(weapon.name)) {
+        char.drop(0).add(weapon.name).equip(0);
+        $stances.append(Battle.createCharUI(char)).find(".weapon").removeClass("hidden");
       }
     });
     
     if (CharacterClass.lookup(charClass).isMartialArtist()) {
-      char.unequipWeapon();
-      $stances.append(Battle.createCharUI(char));
-      $(".weapon", $stances).removeClass("hidden");
+      char.unequip();
+      $stances.append(Battle.createCharUI(char)).find(".weapon").removeClass("hidden")
     }
     
     return $stances;
   };
   
   return {
-    init: init
-   ,event: event
+    init : function() {
+      $debug = $("#debug section.weaponAnimations .container");
+      initCharClassSelector();
+    }
+   ,event : function($target) {
+      if ($target.is(".selector")) {
+        if ($target.val().length > 0) {
+          $(".stances", $debug).remove();
+          $debug.append(createCharWithAllEquippableWeapons($target.val()));
+        }
+      } else if ($target.is(".start")) {
+        $debug.find(".char").each(function() {
+          Event.animate(Event.Animations.SwingWeapon)
+               .using({$char:$(this), numAnimations:20})
+               .start();
+        });
+      }
+    }
   };
-})();
+});

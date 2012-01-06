@@ -1,10 +1,7 @@
-var Action = (function() {
-
-  /* ========= */
-  /* CONSTANTS */
-  /* ========= */
-  this.AUTO_HIT = 1;
-  this.AUTO_MISS = 201;
+define( /* Action */ 
+["jquery", "battle", "battle-commands", "elements", "logger", "monster", "rng", "spells", "statuses", "constants/rng"], 
+function($, Battle, BattleCommands, Element, Logger, Monster, RNG, Spell, Status, RngConstants) { 
+return (function() {
 
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
@@ -32,7 +29,7 @@ var Action = (function() {
     }
     
     if (target.isDead()) {
-      return jQuery.extend({}, baseResult, {wasDead:true});
+      return $.extend({}, baseResult, {wasDead:true});
     }
     
     if (source.hasStatus(Status.Blind)) {
@@ -46,14 +43,14 @@ var Action = (function() {
     var isTargetWeakToSourceAttack = false;
     
     // See if the source attacks using an element the target is weak to 
-    jQuery.each(Element.AllElements, function(i, element) {
+    $.each(Element.AllElements, function(i, element) {
       if (source.attacksWithElement(element) && target.isWeakToElement(element)) {
         isTargetWeakToSourceAttack = true;
         return false;
       }
     });
     
-    jQuery.each(Monster.Types, function(i, type) {
+    $.each(Monster.Types, function(i, type) {
       if (source.isStrongAgainstMonsterType(type) && target.isMonsterType(type)) {
         isTargetWeakToSourceAttack = true;
         return false;
@@ -74,11 +71,11 @@ var Action = (function() {
     
     for (var i = 0; i < numHits; i++) {
       var attackLog = "";
-      var r = RNG.randomUpTo(this.AUTO_MISS);
-      if (r == this.AUTO_HIT) {
+      var r = RNG.randomUpTo(RngConstants.AUTO_MISS);
+      if (r == RngConstants.AUTO_HIT) {
         hitSuccess = true;
         critSuccess = true;
-      } else if (r == this.AUTO_MISS) {
+      } else if (r == RngConstants.AUTO_MISS) {
         hitSuccess = false;
         critSuccess = false;
       } else {
@@ -117,7 +114,7 @@ var Action = (function() {
         if (source.getStatusAttack() != null) {
           var statusLog = "";
           var baseStatusChance = 100;
-          jQuery.each(Element.AllElements, function(i, element) {
+          $.each(Element.AllElements, function(i, element) {
             if (source.attacksWithElement(element) && target.isProtectedFrom(element)) {
               baseStatusChance = 0;
               return false;
@@ -125,7 +122,7 @@ var Action = (function() {
           });
           
           statusLog += " ST=[";
-          var st = RNG.randomUpTo(this.AUTO_MISS);
+          var st = RNG.randomUpTo(RngConstants.AUTO_MISS);
           if (st <= (baseStatusChance - target.magicDefense())) {
             statusApplied = source.getStatusAttack();
             target.addStatus(source.getStatusAttack());
@@ -138,7 +135,7 @@ var Action = (function() {
         }
       }
       
-      console.log(attackLog);
+      Logger.info(attackLog);
     }
     
     totalDamage = Math.floor(totalDamage);
@@ -151,7 +148,7 @@ var Action = (function() {
      ,status: statusApplied
      ,targetHp: target.hitPoints 
     };
-    return jQuery.extend({}, baseResult, attackResult);
+    return $.extend({}, baseResult, attackResult);
   };
   
   this.castSpell = function(source, spellId, target, opt) {
@@ -161,22 +158,22 @@ var Action = (function() {
     }
     
     opt = opt || {};
-    var spell = jQuery.extend(true, {}, Spell.lookup(spellId));
+    var spell = $.extend(true, {}, Spell.lookup(spellId));
     var usingItem = (opt.item != null);
     
     if (!usingItem && !source.canCastSpell(spell)) {
       return null;
     }
     
-    var targets = (!jQuery.isArray(target) ? jQuery.makeArray(target) : jQuery.merge([], target));
+    var targets = (!$.isArray(target) ? $.makeArray(target) : $.merge([], target));
     var spellTargets = [];
-    jQuery(targets).each(function() { 
+    $(targets).each(function() { 
       if (!this.isDead()) {
         spellTargets.push(this);
       }
     });
     
-    console.log("Casting " + spellId + (usingItem ? "(using " + opt.item.name + ")" : "") + " on " + targets.length + " target(s), " + spellTargets.length + " of which are valid");
+    Logger.info("Casting " + spellId + (usingItem ? "(using " + opt.item.name + ")" : "") + " on " + targets.length + " target(s), " + spellTargets.length + " of which are valid");
     
     if (!usingItem) {
       source.useSpellCharge(spell.spellLevel);
@@ -204,7 +201,7 @@ var Action = (function() {
      ,spell:spell
      ,dmg:0
     };
-    var spellAction = jQuery.extend(baseSpellResult, spell.result);
+    var spellAction = $.extend(baseSpellResult, spell.result);
     if (usingItem) {
       spellAction.type = "I";
       spellAction.item = opt.item;
@@ -238,7 +235,7 @@ var Action = (function() {
       }
     }
     
-    console.log(source.getName() + " running - " + (auto ? "AUTO " : "") + (success ? "SUCCESS" : "FAIL") + "=[" + runLog + "]");
+    Logger.info(source.getName() + " running - " + (auto ? "AUTO " : "") + (success ? "SUCCESS" : "FAIL") + "=[" + runLog + "]");
     
     return {type:"R", source:source, success:success};
   };
@@ -252,7 +249,7 @@ var Action = (function() {
     } else if (source.hasStatus(Status.Sleep)) {
       statusResult = {statusCured:Status.Sleep, success:source.getMaxHitPoints() > 80 || RNG.randomUpTo(80, 0) < source.getMaxHitPoints()};
     }
-    var result = jQuery.extend({type:"SH", source:source, target:source}, statusResult);
+    var result = $.extend({type:"SH", source:source, target:source}, statusResult);
     
     if (result.success) {
       source.removeStatus(result.statusCured);
@@ -265,7 +262,7 @@ var Action = (function() {
     }
     
     if (result.statusCured) {
-      console.log(source.getName() + " is trying to be healed from [" + result.statusCured.id + "] - " + (result.success ? "SUCCESS" : "FAIL"));
+      Logger.info(source.getName() + " is trying to be healed from [" + result.statusCured.id + "] - " + (result.success ? "SUCCESS" : "FAIL"));
     }
     
     // if the source was already healed, return null
@@ -273,4 +270,5 @@ var Action = (function() {
   };
   
   return this;
-}).call({});
+}).call({})
+});

@@ -1,16 +1,16 @@
 $(document).ready(function() {
   
-  Logger.enable().setLevel(Logger.DEBUG);
-  RNG.useDefault();
+  Logger.enable().setLevel(Logger.DEBUG); // converted
+  RNG.useDefault(); // converted
     
-  KeyPressNotifier.init();
-  Movement.init();
+  KeyPressNotifier.init(); // converted
+  Movement.init(); // converted
   Map.init();
-  Message.init({messages:"#battle .messages"});
+  Message.init({messages:"#battle .messages"}); // converted
   Party.init({player:"#player"});
   Battle.init();
-  Menus.init();
-  Shops.init();
+  Menus.init(); // converted
+  Shops.init(); // converted
   
   WorldMapHelper.init({tilesets:"#debug .world-map .tilesets"});
   MessageHelper.init();

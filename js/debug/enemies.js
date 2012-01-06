@@ -1,13 +1,9 @@
-var EnemyHelper = (function() {
+define( 
+/* DebugEnemies */
+["jquery", "battle", "./util", "events", "monster"], 
+function($, Battle, DebugHelper, Event, Monster) {
   
   var $container = null;
-  
-  var init = function() {
-    $container = $("#debug section.enemiesSplash");
-    DebugHelper.loadMainView("world");
-    initializeEnemySelector();
-    initializeSplashSelector();
-  };
   
   var initializeEnemySelector = function() {
     var $selector = $(".enemy.selector", $container);
@@ -35,36 +31,38 @@ var EnemyHelper = (function() {
     return a > b ? 1 : a < b ? -1 : 0;
   };
   
-  var event = function($target) {
-    
-    var selectedEnemy = $(".enemy.selector", $container).val();
-    if (selectedEnemy == null) {
-      return false;
-    }
-    var monster = Monster.lookup(selectedEnemy);
-    var $monsterContainer = null;
-
-    if (monster) {
-      $monsterContainer = $(".monster." + monster.size, $container);
-    }
-    
-    if ($target.is(".enemy")) {
-      $(".monster", $container).hide();
-      if (monster) {
-        $monsterContainer.empty();
-        $monsterContainer.append(Battle.createEnemyUI(monster));
-        $monsterContainer.show();
-      }
-    } else if ($target.is(".show.splash")) {
-      var $enemy = $(".enemy", $monsterContainer);
-      var splashColors = $(".splash.selector", $container).val();
-      var showOverlay = $(".splash.overlay", $container).prop("checked");
-      Animation.splash($enemy, splashColors, {overlay:showOverlay}).start();
-    }
-  };
-  
   return {
-    init: init
-   ,event: event
+    init: function() {
+      $container = $("#debug section.enemiesSplash");
+      initializeEnemySelector();
+      initializeSplashSelector();
+    }
+   ,event: function($target) {
+     
+     var selectedEnemy = $(".enemy.selector", $container).val();
+     if (selectedEnemy == null) {
+       return false;
+     }
+     var monster = Monster.lookup(selectedEnemy);
+     var $monsterContainer = null;
+
+     if (monster) {
+       $monsterContainer = $(".monster." + monster.size, $container);
+     }
+     
+     if ($target.is(".enemy")) {
+       $(".monster", $container).hide();
+       if (monster) {
+         $monsterContainer.empty();
+         $monsterContainer.append(Battle.createEnemyUI(monster));
+         $monsterContainer.show();
+       }
+     } else if ($target.is(".show.splash")) {
+       var $enemy = $(".enemy", $monsterContainer);
+       var splashColors = $(".splash.selector", $container).val();
+       var showOverlay = $(".splash.overlay", $container).prop("checked");
+       Event.animate(Event.Animations.Splash).using({$enemy:$enemy, splashColors:splashColors, overlay:showOverlay}).start();
+     }
+   }
   };
-})();
+});

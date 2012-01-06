@@ -1,4 +1,5 @@
-var Target = (function() {
+define( /* Target */ function() {
+return (function() {
   
   function Target() {};
   
@@ -27,4 +28,5 @@ var Target = (function() {
   this.create = function() { return new Target(); };
  
   return this;  
-}).call({});
+}).call({})
+});

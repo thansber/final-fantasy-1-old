@@ -1,4 +1,7 @@
-var Battle = (function() {
+define( /* Battle */
+["jquery", "battle-commands", "cursor", "events", "key-press-notifier", "logger", "messages", "monster", "party", "rng", "constants/cursor"],
+function($, BattleCommands, Cursor, Event, KeyPressNotifier, Logger, Message, Monster, Party, RNG, CursorConstants) {
+return (function() {
   
   var self = this;  
     
@@ -47,7 +50,7 @@ var Battle = (function() {
   
   var calculateEnemySizeCounts = function(enemies) {
     var sizeCounts = {chaos:{enemies:[]}, fiend:{enemies:[]}, large:{enemies:[]}, small:{enemies:[]}};
-    jQuery.each(enemies, function(index, enemyObj) {
+    $.each(enemies, function(index, enemyObj) {
       var enemy = Monster.lookup(enemyObj.name);
       var enemyQty = enemyObj.qty == null ? 1 : enemyObj.qty;
       for (var i = 0; i < enemyQty; i++) {
@@ -65,7 +68,7 @@ var Battle = (function() {
     }
     
     var leader = null; 
-    jQuery.each(Party.getChars(), function(i, char) { 
+    $.each(Party.getChars(), function(i, char) { 
       if (char.isAlive()) { 
         leader = char;
         return false;
@@ -84,7 +87,7 @@ var Battle = (function() {
       preemptive = true;
     }
     
-    console.log("SURPRISE - " + (ambush ? "AMBUSH - " : preemptive ? "PREEMPTIVE - " : "") + "(leader quick + random - surprise) " + leaderQuickness + " + " + r + " - " + enemySurprise + " = " + result);
+    Logger.info("SURPRISE - " + (ambush ? "AMBUSH - " : preemptive ? "PREEMPTIVE - " : "") + "(leader quick + random - surprise) " + leaderQuickness + " + " + r + " - " + enemySurprise + " = " + result);
   };
   
   var cleanMonsterIndex = function(index) { return (index == null ? 0 : index); };
@@ -138,13 +141,13 @@ var Battle = (function() {
   var populateEnemyList = function(enemies) {
     var $enemyList = $(".enemy.list", $battle);
     $enemyList.empty();
-    jQuery.each(enemies, function(i, enemy) {
+    $.each(enemies, function(i, enemy) {
       $enemyList.append(Message.create(enemy.name));
     });
   };
   
   var setupEnemies = function(enemyQuantities) {
-    if (!enemyQuantities || jQuery.isEmptyObject(enemyQuantities)) {
+    if (!enemyQuantities || $.isEmptyObject(enemyQuantities)) {
       return false;
     }
     var sizeCounts = calculateEnemySizeCounts(enemyQuantities);
@@ -162,7 +165,7 @@ var Battle = (function() {
     for (var s in sizeCounts) {
       var size = s;
       var enemiesBySize = sizeCounts[s].enemies;
-      jQuery.each(enemiesBySize, function(i, name) {
+      $.each(enemiesBySize, function(i, name) {
         if (i % ENEMIES_PER_COLUMN[size] == 0) {
           $column = $("<div/>").addClass("column").addClass(size).addClass(ORDINALS[numColumns++]);
           if (mixed) {
@@ -183,14 +186,14 @@ var Battle = (function() {
     }
     
     populateEnemyList(enemyQuantities);
-    //console.log(jQuery.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
+    //console.log($.map(sizeCounts, function(obj, size) { return size + "=" + obj.enemies.length + "[" + obj.enemies.join(",") + "]"; }).join(","));
   };
   
   var setupParty = function(party) {
     $party.find(".char").remove();
     $stats.empty();
     
-    jQuery.each(party, function(i, char) {
+    $.each(party, function(i, char) {
       $party.append(self.createCharUI(char));
       $stats.append(createCharStatsUI(char));
       self.resetCharUI(char);
@@ -249,7 +252,7 @@ var Battle = (function() {
   
   self.areAllCharactersDead = function(targets) {
     var allDead = true;
-    jQuery.each(targets, function(i, target) {
+    $.each(targets, function(i, target) {
       if (target.isAlive()) {
         allDead = false;
         return false;
@@ -262,7 +265,7 @@ var Battle = (function() {
     var allDead = true;
     for (var e in targets) {
       var enemiesByName = targets[e];
-      jQuery.each(enemiesByName, function(i, target) {
+      $.each(enemiesByName, function(i, target) {
         if (!target.isDead()) {
           allDead = false;
           return false;
@@ -286,7 +289,7 @@ var Battle = (function() {
     }
     
     var charsGettingExp = [];
-    jQuery.each(Party.getChars(), function(i, char) {
+    $.each(Party.getChars(), function(i, char) {
       if (char.isAlive()) { charsGettingExp.push(char); }
     });
     
@@ -411,7 +414,7 @@ var Battle = (function() {
         if (BattleCommands.isAllPartyCommandsEntered()) {
           BattleCommands.generateEnemyCommands();
         } else {
-          Cursors.lookup(Cursors.BATTLE_MENU).startListening();
+          Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
         }
       });
       q.start();
@@ -453,7 +456,7 @@ var Battle = (function() {
       if (otherChar) {
         Animation.walkAndMoveInBattle(otherChar, {queue:q});
       }
-      q.addToChain(function() { KeyPressNotifier.setListener(Cursors.lookup(Cursors.BATTLE_MENU)); });
+      q.addToChain(function() { KeyPressNotifier.setListener(Cursor.lookup(CursorConstants.BATTLE_MENU)); });
       q.start();
     }
   };
@@ -507,7 +510,7 @@ var Battle = (function() {
       if (preemptive) {
         self.inputMessageToggler(true);
         var q = Animation.preBattleMessage(Animation.PREEMPTIVE);        
-        jQuery.when(q.start()).then(function() {
+        $.when(q.start()).then(function() {
           self.startRound(!opt.doNotMove);
         });
       } else {
@@ -521,11 +524,11 @@ var Battle = (function() {
     // Clear all commands
     BattleCommands.clearAllCommands();
     // Start the cursor listener for the first character's action
-    Cursors.lookup(Cursors.BATTLE_MENU).startListening();
+    Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
     // First character that can select an action walks forward to indicate they are choosing an action
     if (moveFirstChar) {
       var firstChar = null;
-      jQuery.each(Party.getChars(), function(i, char) {
+      $.each(Party.getChars(), function(i, char) {
         if (!char.isAlive()) {
           BattleCommands.changeCharIndex(1);
           return true;
@@ -538,7 +541,7 @@ var Battle = (function() {
         }
       });
       if (firstChar) {
-        Animation.walkAndMoveInBattle(firstChar).start();
+        //Animation.walkAndMoveInBattle(firstChar).start();
       }
       
       // If all characters are incapacitated, move on to the enemy commands and start the round 
@@ -555,4 +558,5 @@ var Battle = (function() {
   };
   
   return this;
-}).call({});
+}).call({})
+});

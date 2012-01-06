@@ -1,0 +1,448 @@
+<html>
+<head>
+  <title>Final Fantasy I - Debug Room</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link type="text/css" rel="stylesheet" href="css/global.css"/>
+  <link type="text/css" rel="stylesheet" href="css/messages.css"/>
+  <link type="text/css" rel="stylesheet" href="css/debug.css"/>
+  <link type="text/css" rel="stylesheet" href="css/world.css"/>
+  <link type="text/css" rel="stylesheet" href="css/battle.css"/>
+  <link type="text/css" rel="stylesheet" href="css/enemies.css"/>
+  <link type="text/css" rel="stylesheet" href="css/characters.css"/>
+  <link type="text/css" rel="stylesheet" href="css/menus.css"/>
+  <link type="text/css" rel="stylesheet" href="css/shops.css"/>
+</head>
+<body>
+
+<div id="map" class="main">
+  <div class="background">
+    <div class="transition top displayed"></div>
+    <div id="view" class="smooth">
+      <div id="player"></div>
+    </div>
+    <div class="transition bottom displayed"></div>
+  </div>
+</div>
+
+<div id="battleView" class="main">
+  <div id="battle">
+    <div class="main">
+      <div class="enemies border">
+        <div class="background"></div>
+        <h1 class="splash"></h1>
+        <h1 class="splash"></h1>
+        <h1 class="splash"></h1>
+        <h1 class="splash overlay"></h1>
+        <h1 class="splash overlay"></h1>
+        <h1 class="splash overlay"></h1>
+      </div>
+      <div class="party border">          
+        <div class="background"></div>
+      </div>
+      <div class="input">
+        <div class="enemy list border"></div>
+        <div class="commands border">
+          <div class="first column"></div>
+          <div class="second column"></div>
+        </div>
+        <div class="spells border hidden">
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+          <div class="spell level"></div>
+        </div>
+      </div>
+      <div class="messages hidden">
+        <div class="source message border hidden"></div>
+        <div class="action message border hidden"></div>
+        <div class="overlap target hidden"><div class="target message border hidden"></div></div>
+        <div class="overlap damage hidden"><div class="damage message border hidden"></div></div>
+        <div class="overlap desc hidden"><div class="desc message border hidden"></div></div>
+      </div>
+    </div>
+    <div class="stats"></div>
+  </div>
+</div>
+
+<div id="charMenu" class="main menu">
+  <div class="left">
+    <div class="orbs border">
+      <p class="fire orb"></p>
+      <p class="water orb"></p>
+      <p class="wind orb"></p>
+      <p class="earth orb"></p>
+    </div>
+    <div class="gold border"></div>
+    <div class="options border">
+        <div class="item option"></div>
+        <div class="magic option"></div>
+        <div class="weapon option"></div>
+        <div class="armor option"></div>
+        <div class="status option"></div>
+    </div>
+  </div>
+  <div class="right party">
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+    <div class="char profile border"></div>
+  </div>
+</div>
+
+<div id="armorMenu" class="main equipment menu"><!-- populated via Javascript --></div>
+<div id="weaponMenu" class="main equipment menu"><!-- populated via Javascript --></div>
+<div id="magicMenu" class="main menu">
+  <div class="overlap">
+    <div class="name border"></div>
+  </div>
+  <div class="magic border"><!-- populated via Javascript --></div>
+</div>
+<div id="itemMenu" class="main menu">
+  <div class="overlap">
+    <div class="title border"></div>
+  </div>
+  <div class="inventory border"><!-- populated via Javascript --></div>
+</div>
+<div id="statusMenu" class="main menu">
+  <div class="name border"></div>
+  <div class="charClass party border"></div>
+  <div class="level border"></div>
+  <div class="exp border"></div>
+  <div class="stats primary border"></div>
+  <div class="stats secondary border"></div>
+</div>
+
+<div id="shop" class="main">
+  <section>
+    <h1 class="type border"></h1>
+    <div class="npc dialog border"></div>
+    <div class="npc sprite"></div>
+    <div class="party"></div>
+    <div class="prices border"></div>
+    <div class="menu border"></div>
+    <div class="gold border"></div>
+  </section>
+</div>
+
+<div id="newChar" class="main">
+  <div class="party">
+    <div class="slot border"></div>
+    <div class="slot border"></div>
+    <div class="slot border"></div>
+    <div class="slot border"></div>
+  </div>
+</div>
+
+<div id="newCharName" class="main">
+  <div class="name border"></div>
+  <div class="entry border">
+    <div class="letters"></div>
+    <div class="label"></div>
+  </div>
+</div>
+
+<div id="debug">
+  <ul class="menu">
+    <li class="curve tl bl big"><a href="#" class="world-map">World Map</a></li>
+    <li class="curve tl bl big"><a href="#" class="movement">Movement</a></li>
+    <li class="curve tl bl big"><a href="#" class="locationJumper">Location Jumper</a></li>
+    <li class="curve tl bl big"><a href="#" class="shops">Shops</a></li>
+    <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
+    <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
+    <li class="curve tl bl big"><a href="#" class="enemiesSplash">Enemies/Splash</a></li>
+    <li class="curve tl bl big"><a href="#" class="battleSetup">Battle Setup</a></li>
+    <li class="curve tl bl big"><a href="#" class="spellEffects">Spell Effects</a></li>
+    <li class="curve tl bl big"><a href="#" class="weapons">Weapon Frames</a></li>
+    <li class="curve tl bl big"><a href="#" class="weaponAnimations">Weapon Animations</a></li>
+    <li class="curve tl bl big"><a href="#" class="animations">Animations</a></li>
+    <li class="curve tl bl big"><a href="#" class="battleMessages">Battle Messages</a></li>
+    <li class="curve tl bl big"><a href="#" class="actions">Actions</a></li>
+    <li class="curve tl bl big"><a href="#" class="menus">Menus</a></li>
+  </ul>
+
+  <section class="world-map curve all">
+    <label>Tile Sets:</label>
+    <div class="tilesets"></div>
+    <label for="toggleMapGridlines">Show gridlines <input type="checkbox" id="toggleMapGridlines" /></label>
+    <div class="map"></div>
+    
+    <div class="tile properties hidden">
+      <div class="container">
+        <p class="tileset index"><label>Tileset:</label><span></span>
+        <p class="tile index"><label>Tile:</label><span></span>
+        <p class="data"><label>Data:</label><span></span></p>
+        <p class="cssClasses"><label>CSS classes:</label><span></span></p>
+        <p class="corners"><label>Has corners:</label><span></span></p>
+        <p class="sides"><label>Has sides:</label><span></span></p>
+      </div>
+      <div class="surrounding">
+        <p class="top"></p>
+        <p class="left"></p>
+        <p class="right"></p>
+        <p class="bottom"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="movement curve all">
+    <div class="directions">
+      <a href="#" class="left">Left</a>
+      <a href="#" class="right">Right</a>
+      <a href="#" class="down">Down</a>
+      <a href="#" class="up">Up</a>
+    </div>
+    <button class="start listening">Start listening</button>
+    <button class="stop listening">Stop listening</button>
+  </section>
+  
+  <section class="locationJumper curve all">
+    <div class="town row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+    </div>
+    <div class="shop row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+    </div>
+  </section>
+  
+  <section class="coords curve all">
+    <div class="container">
+      <div class="row"><label>Tileset Y</label><input type="text" class="tileset y" value="0" /></div>
+      <div class="row"><label>Tileset X</label><input type="text" class="tileset x" value="0" /></div>
+      <div class="row"><label>Tile Y</label><input type="text" class="tile y" value="0" /></div>
+      <div class="row"><label>Tile X</label><input type="text" class="tile x" value="0" /></div>
+      <button class="button go">Go there</button>
+      <button class="button absolute">Absolute</button>
+      <div class="absolute container hidden">
+        <span class="absolute y"></span>,<span class="absolute x"></span>
+      </div>
+    </div>
+  </section>
+  
+  <section class="messages curve all">
+    <div class="container"></div>
+  </section>
+  
+  <section class="enemiesSplash curve all">
+    <div class="container">
+      <div class="row">
+        <label>Select an enemy:</label>
+        <select class="enemy selector" size="15"></select>
+        <div class="small monster"></div>
+        <div class="large monster"></div>
+        <div class="fiend monster"></div>
+        <div class="chaos monster"></div>
+      </div>
+      <div class="row">
+        <label>Select a splash:</label>
+        <select class="splash selector"></select>
+      </div>
+      <div class="row">
+        <label>White overlay?</label>
+        <input type="checkbox" class="splash overlay" />
+      </div>
+      <div class="row">
+        <button class="show splash">Show splash</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="battleSetup curve all">
+    <div class="container">
+      <table class="party">
+        <tr>
+          <th></th>
+          <th>Class</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td class="label">Character 1:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 2:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 3:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+        <tr>
+          <td class="label">Character 4:</td>
+          <td><select class="charClass selector"></select></td>
+          <td><select class="status selector"></select></td>
+        </tr>
+      </table>
+      <div class="background row">
+        <label>Background:</label>
+        <select class="selector"></select>
+      </div>
+      <div class="small row">
+        <label>Small enemies:</label>
+        <div class="selectors">
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+        </div>
+      </div>
+      <div class="large row">
+        <label>Large enemies:</label>
+        <div class="selectors">
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+          <div><select class="selector"></select><input type="text" class="qty" value="0" /></div>
+        </div>
+      </div>
+      <div class="fiend row">
+        <label>Fiends:</label>
+        <select class="selector"></select><input type="text" class="qty" value="0" />
+      </div>
+      <button class="button setup">Setup battle</button>
+      <button class="button randomize">Randomize everything</button>
+      <button class="button commands">Generate enemy commands</button>
+    </div>
+  </section>
+  
+  <section class="spellEffects curve all">
+    <div class="party container">
+      <div class="row">
+        <button class="start">Start Animation</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="weapons curve all">
+    <div class="party container">
+      <div class="row">
+        <label>Character Class</label>
+        <select class="selector">
+          <option value="">-- Select a class --</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  
+  <section class="weaponAnimations curve all">
+    <div class="party container">
+      <div class="row">
+        <label>Character Class</label>
+        <select class="selector">
+          <option value="">-- Select a class --</option>
+        </select>
+        <button class="start">Start swinging</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="animations curve all">
+    <div class="container">
+      <button class="walk animation">Walk</button>
+      <button class="slide forward animation">Slide Forward</button>
+      <button class="slide backward animation">Slide Backward</button>
+      <button class="walk slide forward animation">Walk & Slide Forward</button>
+      <button class="walk slide backward animation">Walk & Slide Backward</button>
+      <button class="swing weapon animation">Swing Weapon</button>
+      <button class="spell effect animation">Spell Effect</button>
+      <button class="attack animation">Attack</button>
+      <button class="cast spell animation">Cast Spell</button>
+      <button class="window shake animation">Window Shake</button>
+      <button class="char flicker animation">Character Flicker</button>
+      <button class="victory animation">Victory</button>
+      <button class="run away animation">Run Away</button>
+    </div>
+  </section>
+  
+  
+  <section class="battleMessages curve all">
+    <div class="container">
+      <p><label>Source</label><input type="text" class="source message" /></p>
+      <p><label>Target</label><input type="text" class="target message" /></p>
+      <p><label>Action</label><input type="text" class="action message" /></p>
+      <p><label>Damage</label><input type="text" class="damage message" /></p>
+      <p><label>Desc</label><input type="text" class="desc message" /></p>
+      <button class="show messages action">Show battle messages</button>
+    </div>
+  </section>
+  
+  <section class="actions curve all">
+    <div class="container">
+        <!-- buttons created via Javascript -->
+    </div>
+  </section>
+  
+  <section class="menus curve all">
+    <div class="container">
+      <button class="action load">Load character data</button>
+      <button class="action armor">Load/view armor menu</button>
+      <button class="action weapon">Load/view weapon menu</button>
+      <button class="action magic">Load/view magic menu</button>
+      <button class="action item">Load/view item menu</button>
+      <button class="action status">Load/view status menu</button>
+      <button class="action newChar">Setup new characters</button>
+      <button class="action newCharName">Enter new character name</button>
+    </div>
+  </section>
+  
+</div>
+
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.effects.core.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+<script type="text/javascript" src="js/logger.js"></script>
+<script type="text/javascript" src="js/rng.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/key-press-notifier.js"></script>
+<script type="text/javascript" src="js/movement.js"></script>
+<script type="text/javascript" src="js/messages.js"></script>
+<script type="text/javascript" src="js/cursors.js"></script>
+<script type="text/javascript" src="js/battle.js"></script>
+<script type="text/javascript" src="js/battle-commands.js"></script>
+<script type="text/javascript" src="js/elements-statuses.js"></script>
+<script type="text/javascript" src="js/spells.js"></script>
+<script type="text/javascript" src="js/target.js"></script>
+<script type="text/javascript" src="js/monster.js"></script>
+<script type="text/javascript" src="js/equipment.js"></script>
+<script type="text/javascript" src="js/menus.js"></script>
+<script type="text/javascript" src="js/encounters.js"></script>
+<script type="text/javascript" src="js/actions.js"></script>
+<script type="text/javascript" src="js/animations.js"></script>
+<script type="text/javascript" src="js/shops.js"></script>
+<script type="text/javascript" src="js/map/map-config.js"></script>
+<script type="text/javascript" src="js/chars/character-class.js"></script>
+<script type="text/javascript" src="js/chars/character.js"></script>
+<script type="text/javascript" src="js/chars/growth.js"></script>
+<script type="text/javascript" src="js/chars/party.js"></script>
+<script type="text/javascript" src="js/data/spells.js"></script>
+<script type="text/javascript" src="js/data/monsters.js"></script>
+<script type="text/javascript" src="js/data/equipment.js"></script>
+<script type="text/javascript" src="js/data/world-map.js"></script>
+<script type="text/javascript" src="js/data/town-maps.js"></script>
+<script type="text/javascript" src="js/data/encounters.js"></script>
+<script type="text/javascript" src="js/data/map-transitions.js"></script>
+<script type="text/javascript" src="js/data/shop-inventory.js"></script>
+<script type="text/javascript" src="js/debug/world-map.js"></script>
+<script type="text/javascript" src="js/debug/movement.js"></script>
+<script type="text/javascript" src="js/debug/locationJumper.js"></script>
+<script type="text/javascript" src="js/debug/coordinates.js"></script>
+<script type="text/javascript" src="js/debug/messages.js"></script>
+<script type="text/javascript" src="js/debug/enemies.js"></script>
+<script type="text/javascript" src="js/debug/battle-setup.js"></script>
+<script type="text/javascript" src="js/debug/spell-effects.js"></script>
+<script type="text/javascript" src="js/debug/weapons.js"></script>
+<script type="text/javascript" src="js/debug/weapon-animations.js"></script>
+<script type="text/javascript" src="js/debug/animations.js"></script>
+<script type="text/javascript" src="js/debug/battle-messages.js"></script>
+<script type="text/javascript" src="js/debug/actions.js"></script>
+<script type="text/javascript" src="js/debug/menus.js"></script>
+<script type="text/javascript" src="js/debug/util.js"></script>
+<script type="text/javascript" src="js/init.js"></script>
+
+</body>
+</html>

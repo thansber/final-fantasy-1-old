@@ -1,4 +1,7 @@
-var CharacterGrowth = (function() {
+define(/* CharacterGrowth */
+["character-class"],
+function(CharacterClass) {
+return (function() {
   
   this.statGrowth = {};
   this.statGrowth[CharacterClass.FIGHTER] = {hitGain:3,mdefGain:3,stats:["","+SAV","+SAVL","+SAIL","+SAV","+SAVL","+SAIL","+SAV","+SAVL","+SAIL","+SAV","SAVL","+SAIL","+SAV","SAVL","+SAIL","+SAV","SAVL","+SAIL","+SAV","SVL","+SAIL","+SAV","SVL","SAIL","+SAV","SVL","SAIL","+SAV","SVL","SAIL","+SV","SAL","SIV","+SAL","SV","SAIL","+SV","SAL","SIV","+SA","S","SAI","+S","SA","S","+SA","S","SA","+S"]};
@@ -58,6 +61,5 @@ var CharacterGrowth = (function() {
   };
   
   return this;
-}).call({});
-
-
+}).call({})
+});

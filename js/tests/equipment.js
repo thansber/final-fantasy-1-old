@@ -190,20 +190,18 @@ $(document).ready(function() {
   test("healing potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.applyDamage(32);
-    Party.inBattle = true;
     
     var startHp = char.hitPoints;
-    Equipment.Item.lookup("HealPotion").use(char);
+    Equipment.Item.lookup("HealPotion").use(char, true);
     equal(char.hitPoints, startHp + 30);
   });
   
   test("healing potion outside of battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.applyDamage(32);
-    Party.inBattle = false;
     
     var startHp = char.hitPoints;
-    var result = Equipment.Item.lookup("HealPotion").use(char);
+    var result = Equipment.Item.lookup("HealPotion").use(char, false);
     // dmg is actually negative when healing
     equal(char.hitPoints, startHp - result.dmg[0]);
   });
@@ -211,27 +209,24 @@ $(document).ready(function() {
   test("pure potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Poison);
-    Party.inBattle = true;
     
-    Equipment.Item.lookup("PurePotion").use(char);
+    Equipment.Item.lookup("PurePotion").use(char, true);
     ok(!char.hasStatus(Status.Poison));
   });
   
   test("pure potion outside of battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Poison);
-    Party.inBattle = false;
     
-    Equipment.Item.lookup("PurePotion").use(char);
+    Equipment.Item.lookup("PurePotion").use(char, false);
     ok(!char.hasStatus(Status.Poison));
   });
   
   test("soft potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Stone);
-    Party.inBattle = false;
     
-    Equipment.Item.lookup("SoftPotion").use(char);
+    Equipment.Item.lookup("SoftPotion").use(char, false);
     ok(!char.hasStatus(Status.Stone));
   });
   

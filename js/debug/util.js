@@ -1,14 +1,7 @@
-var DebugHelper = (function() {
-  
-  var HELPERS = {
-    enemiesSplash : {view:Party.BATTLE}
-   ,battleSetup : {view:Party.BATTLE}
-   ,partySetup : {view:Party.BATTLE} 
-   ,animations : {view:Party.BATTLE} 
-   ,battleMessages : {view:Party.BATTLE, disableKeyListener:true} 
-   ,actions : {view:Party.BATTLE}
-   ,menus: {view:Party.MENU}
-  };
+define( 
+/* DebugUtil */
+["jquery", "events", "key-press-notifier", "movement", "./constants", "../constants/cursor", "../constants/party"], 
+function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, PartyConstants) {
   
   var addOption = function($selector, value, text) {
     if (!text) {
@@ -18,23 +11,22 @@ var DebugHelper = (function() {
   };
   
   var loadMainView = function(helper) {
-    helper = jQuery.extend({view:Party.WORLD_MAP, disableKeyListener:false}, helper);
-    Party.switchView(helper.view);
+    helper = $.extend({view:PartyConstants.Views.WORLD_MAP, disableKeyListener:false}, helper);
+    Event.transmit(Event.Types.SwitchView, helper.view);
     
     KeyPressNotifier.clearListener();
     
     switch (helper.view) {
-      case Party.WORLD_MAP:
-        Movement.startListening();
+      case PartyConstants.Views.WORLD_MAP:
+        Event.transmit(Event.Types.StartGame);
         break;
-      case Party.BATTLE:
+      case PartyConstants.Views.BATTLE:
         if (!helper.disableKeyListener) {
-          Cursors.lookup(Cursors.BATTLE_MENU).startListening();
-          //BattleMenuCursor.startListening();
+          Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
         }
         break;
-      case Party.MENU:
-        Cursors.lookup(Cursors.CHAR_MENU).startListening({prevListener:Movement});
+      case PartyConstants.Views.MENU:
+        Event.transmit(Event.Types.CursorStart, CursorConstants.CHAR_MENU, {prevListener:Movement});
         break;
     };
   };
@@ -48,12 +40,12 @@ var DebugHelper = (function() {
     var section = $menuOption.attr("class").split(" ")[0];
     $("#debug section." + section).show();
     
-    loadMainView(HELPERS[section]);
+    loadMainView(DebugConstants.Helpers[section]);
   };
   
   return {
     addOption: addOption
    ,loadMainView: loadMainView
    ,menuChange: menuChange
-  }
-})();
+  };
+});

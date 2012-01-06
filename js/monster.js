@@ -1,4 +1,7 @@
-var Monster = (function() {
+define( /* Monster */
+["jquery", "battle-commands", "party", "rng", "statuses", "target", "util"],
+function($, BattleCommands, Party, RNG, Status, Target, Util) {
+return (function() {
   
   var self = this;
     
@@ -6,18 +9,7 @@ var Monster = (function() {
   var ALL_BY_CSS = {};
   
   var index = 0;
-  var Types = {
-    Magical : "magical"
-   ,Dragon : "dragon"
-   ,Giant : "giant"
-   ,Undead : "undead"
-   ,Were : "were"
-   ,Aquatic : "aquatic"
-   ,Mage : "mage"
-   ,Regenerative : "regen"
-  };
   
-  self.Types = Types;
   self.All = ALL;
   
   function MonsterBase(opt) {
@@ -36,7 +28,7 @@ var Monster = (function() {
       this.otherNames[n] = opt.names.other[n];
     }
     
-    this.types = jQuery.merge([], jQuery.isArray(opt.type) ? opt.type : jQuery.makeArray(opt.type));
+    this.types = $.merge([], $.isArray(opt.type) ? opt.type : $.makeArray(opt.type));
     this.hp = stats.hp;
     this.maxHp = stats.hp;
     this.strength = stats.atk;
@@ -120,7 +112,7 @@ var Monster = (function() {
     var d = this.hasStatus(Status.Dead); 
     return (d == null ? false : d); 
   };
-  MonsterBase.prototype.isMonsterType = function(type) { return (jQuery.inArray(type, this.types) > -1); };
+  MonsterBase.prototype.isMonsterType = function(type) { return ($.inArray(type, this.types) > -1); };
   MonsterBase.prototype.isProtectedFrom = function(element) { return this.elementsResisted[element]; };
   MonsterBase.prototype.isStrongAgainstMonsterType = function(type) { return false; }; 
   MonsterBase.prototype.isWeakToElement = function(element) { return this.elementsWeakTo[element]; };
@@ -217,7 +209,7 @@ var Monster = (function() {
     var numAliveChars = 0;
     var aliveChar = null;
     
-    jQuery.each(Party.getChars(), function(i, char) {
+    $.each(Party.getChars(), function(i, char) {
       if (char.isAlive()) {
         numAliveChars++;
         aliveChar = char;
@@ -261,11 +253,12 @@ var Monster = (function() {
   };
   
   self.createForBattle = function(monster) {
-    return jQuery.extend(true, {}, monster);
+    return $.extend(true, {}, monster);
   };
   
   self.lookup = function(name) { return ALL[name]; };
   self.lookupByCss = function(css) { return ALL_BY_CSS[css]; };
   
   return this;
-}).call({});
+}).call({})
+});

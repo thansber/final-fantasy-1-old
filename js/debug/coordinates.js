@@ -1,35 +1,40 @@
-var CoordsHelper = (function() {
+define( 
+/* DebugCoords */
+["jquery", "events", "map-config", "map-coords-absolute", "map-coords-converter", "map-coords-tile", "../constants/map"], 
+function($, Event, MapConfig, MapCoordsAbsolute, MapCoordsConverter, MapCoordsTile, MapConstants) {
   
-  var event = function($target) {
-    if ($target.is(".go")) { moveParty($target); }
-    else if ($target.is(".absolute")) { showAbsolute($target); }
-  };
-  
-  var moveParty = function($target) {
-    var coords = toCoords($target);
-    Party.jumpTo(coords.toAbsolute());
-  };
-  
-  var showAbsolute = function($target) {
-    var $absoluteContainer = $target.closest(".container").find(".absolute.container");
-    var coords = toCoords($target);
-    var absolute = coords.toAbsolute();
-    $(".absolute.y", $absoluteContainer).html(absolute.y);
-    $(".absolute.x", $absoluteContainer).html(absolute.x);
-    $absoluteContainer.removeClass("hidden");
-  };
-  
-  var toCoords = function($target) {
-    var $container = $target.closest("div");
-    var tilesetY = parseInt($("input.tileset.y", $container).val()); 
-    var tilesetX = parseInt($("input.tileset.x", $container).val());
-    var tileY = parseInt($("input.tile.y", $container).val());
-    var tileX = parseInt($("input.tile.x", $container).val());
-    var coords = new Map.Coords(tilesetY, tilesetX, tileY, tileX);
-    return coords;
-  };
-  
-  return {
-    event: event
-  };
-})();
+  return (function() {
+
+    var event = function($target) {
+      if ($target.is(".go")) { moveParty($target); }
+      else if ($target.is(".absolute")) { showAbsolute($target); }
+    };
+    
+    var moveParty = function($target, coords) {
+      Event.transmit(Event.Types.JumpTo, MapConstants.WORLD_MAP, parseTileCoords($target));
+    };
+    
+    var parseTileCoords = function($target) {
+      var $container = $target.closest("div");
+      var tileCoords = MapCoordsTile.create({
+        tilesetY : parseInt($("input.tileset.y", $container).val()) 
+       ,tilesetX : parseInt($("input.tileset.x", $container).val())
+       ,tileY : parseInt($("input.tile.y", $container).val())
+       ,tileX : parseInt($("input.tile.x", $container).val())
+      });
+      return MapCoordsConverter.tileToAbsolute(tileCoords, MapConfig.lookup(MapConstants.WORLD_MAP));
+    };
+   
+    var showAbsolute = function($target) {
+      var $absoluteContainer = $target.closest(".container").find(".absolute.container");
+      var coords = parseTileCoords($target);
+      $(".absolute.y", $absoluteContainer).html(coords.y);
+      $(".absolute.x", $absoluteContainer).html(coords.x);
+      $absoluteContainer.removeClass("hidden");
+    };
+    
+    return {
+      event: event
+    };
+  })();
+});

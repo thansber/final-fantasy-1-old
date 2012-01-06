@@ -1,4 +1,5 @@
-var Message = (function() {
+define( /* Message */ ["jquery"], function($) {
+return (function() {
   
   var self = this;
     
@@ -81,7 +82,7 @@ var Message = (function() {
   self.create = function(text, cssClasses) {
     var $msg = $("<div/>").addClass("text");
     if (cssClasses) {
-      $msg.addClass(jQuery.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
+      $msg.addClass($.isArray(cssClasses) ? cssClasses.join(" ") : cssClasses);
     }
     var newline = false;
     if (text != null) {
@@ -131,7 +132,7 @@ var Message = (function() {
   };
   
   self.padToLength = function(text, len, opt) {
-    opt = jQuery.extend({}, {dir:"left"}, opt);
+    opt = $.extend({}, {dir:"left"}, opt);
     var padding = self.pad(" ", len - (text + "").length);
     return opt.dir == "left" ? padding + text : text + padding;
   };
@@ -156,4 +157,5 @@ var Message = (function() {
   self.setBattlePause = function(amt) { battlePause = amt; };
   
   return this;
-}).call({});
+}).call({})
+});

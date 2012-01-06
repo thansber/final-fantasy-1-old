@@ -1,4 +1,8 @@
-var BattleCommands = (function() {
+define( 
+/* BattleCommands */
+["jquery", "actions", "battle", "logger", "messages", "movement", "party", "rng", "spells"],
+function($, Action, Battle, Logger, Message, Movement, Party, RNG, Spell) {
+return (function() {
   
   var self = this;
     
@@ -51,24 +55,12 @@ var BattleCommands = (function() {
     var isParty = command.type == CommandTypes.Party;
     var s = command.source.getName();
     switch (command.action) {
-      case ActionTypes.Attack:
-        s += " is attacking";
-        break;
-      case ActionTypes.CastSpell:
-        s += " is casting" + (!isParty ? "/using skill" : "");
-        break;
-      case ActionTypes.Drink:
-        s += " is drinking a";
-        break;
-      case ActionTypes.UseItem:
-        s += " is using the";
-        break;
-      case ActionTypes.Run:
-        s += " is running away";
-        break;
-      case ActionTypes.StatusHeal:
-        s += " is trying to heal from a status";
-        break;
+      case ActionTypes.Attack: s += " is attacking"; break;
+      case ActionTypes.CastSpell: s += " is casting" + (!isParty ? "/using skill" : ""); break;
+      case ActionTypes.Drink: s += " is drinking a"; break;
+      case ActionTypes.UseItem: s += " is using the"; break;
+      case ActionTypes.Run: s += " is running away"; break;
+      case ActionTypes.StatusHeal: s += " is trying to heal from a status"; break;
     }
     
     if (command.spellId) {
@@ -76,9 +68,9 @@ var BattleCommands = (function() {
     }
   
     if (command.target) {
-      var targets = jQuery.isArray(command.target) ? command.target : [command.target];
+      var targets = $.isArray(command.target) ? command.target : [command.target];
       if (targets) {
-        s += " " + jQuery.map(targets, function(target) { 
+        s += " " + $.map(targets, function(target) { 
           return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
         }).join(", ");
       }
@@ -89,25 +81,25 @@ var BattleCommands = (function() {
   
   var commandsToString = function(commands) {
     var s = "", NEWLINE = "\r\n";
-    jQuery.each(commands, function(i, command) { s += commandToString(command) + NEWLINE; });
+    $.each(commands, function(i, command) { s += commandToString(command) + NEWLINE; });
     return s;
   };
   
   var monsterTargetingCharThatDied = function(command) {
     return command.type == CommandTypes.Enemy // monster doing the attacking
-        && command.targetType == BattleCommands.Party // targeting the party
-        && !jQuery.isArray(command.target) // targeting a single character 
+        && command.targetType == CommandTypes.Party // targeting the party
+        && !$.isArray(command.target) // targeting a single character 
         && !command.target.isAlive(); // target is dead or stoned
   };
   
   var resultToString = function(result) {
-    return jQuery.map(result, function(value, index) {
+    return $.map(result, function(value, index) {
       var v = value;
       if (value) {
         if (value.getName) { v = value.getName(); } 
         else if (value.desc) { v = value.desc; } 
         else if (value.spellId) { v = value.spellId; } 
-        else if (jQuery.isArray(value)) { v = "[" + value + "]"; }
+        else if ($.isArray(value)) { v = "[" + value + "]"; }
       }
       return index + "=" + v;
     }).join(",");
@@ -125,7 +117,7 @@ var BattleCommands = (function() {
     charIndex = 0;
     partyCommands = [];
     enemyCommands = [];
-    Animation.reset();
+    //Animation.reset();
     if (commandQueue) {
       commandQueue.kill();
     }
@@ -136,7 +128,7 @@ var BattleCommands = (function() {
   };
 
   self.enemy = function(monster, action) {
-    var command = jQuery.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction());
+    var command = $.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction());
     if (command.spellId) {
       var spell = Spell.lookup(command.spellId);
       if (spell.isOtherTargetGroup()) { command.targetType = CommandTypes.Party; }
@@ -153,12 +145,12 @@ var BattleCommands = (function() {
     if (customCommands) {
       all = customCommands;
     } else {
-      all = jQuery.merge([], partyCommands);
-      jQuery.merge(all, enemyCommands);
+      all = $.merge([], partyCommands);
+      $.merge(all, enemyCommands);
       RNG.shuffle(all);
     }
     
-    console.log(commandsToString(all));
+    Logger.debug(commandsToString(all));
     
     Battle.inputMessageToggler(true);
     var victory = false;
@@ -170,7 +162,7 @@ var BattleCommands = (function() {
       commandQueue.add(Animation.preBattleMessage(Animation.AMBUSH, commandQueue.chain));
     }
     
-    jQuery.each(all, function(i, command) {
+    $.each(all, function(i, command) {
       Message.hideAllBattleMessages();
       
       if (!command || command.source.isDead()) {
@@ -208,7 +200,7 @@ var BattleCommands = (function() {
           break;
       }
       
-      console.log(resultToString(result));
+      Logger.debug(resultToString(result));
       
       if (ranAway) {
         return false;
@@ -236,7 +228,7 @@ var BattleCommands = (function() {
     }
     
     // What to do after all the round animations have finished
-    jQuery.when(commandQueue.start()).then(function() {
+    $.when(commandQueue.start()).then(function() {
       if (defeat) { console.log("party is dead - lose"); }
       else if (victory || ranAway) {
         Party.inBattle = false;
@@ -264,7 +256,7 @@ var BattleCommands = (function() {
       var enemiesByName = Battle.getAllEnemies();
       for (var n in enemiesByName) {
         var enemies = enemiesByName[n];
-        jQuery.each(enemies, function(i, e) {
+        $.each(enemies, function(i, e) {
           // TODO: Need to check for various incapacitating statuses
           self.enemy(e);
         });
@@ -275,7 +267,7 @@ var BattleCommands = (function() {
   };
 
   self.incapacitatedChar = function(char) {
-    self.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}});
+    self.party({source:char, action:ActionTypes.StatusHeal, target:{type:CommandTypes.Party, char:char}});
     self.changeCharIndex(1);
   };
   
@@ -303,11 +295,11 @@ var BattleCommands = (function() {
        // Multi-target
         if (isEnemyTarget) {
           command.target = [];
-          jQuery.each(Battle.getAllEnemies(), function(enemyName, enemies) {
-            jQuery.merge(command.target, enemies);
+          $.each(Battle.getAllEnemies(), function(enemyName, enemies) {
+            $.merge(command.target, enemies);
           });
         } else {
-          command.target = jQuery.merge([], Party.getChars());
+          command.target = $.merge([], Party.getChars());
         }
       } else {
         if (isEnemyTarget) {
@@ -324,4 +316,5 @@ var BattleCommands = (function() {
   };
   
   return this;
-}).call({});
+}).call({})
+});

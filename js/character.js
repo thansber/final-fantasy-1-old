@@ -1,6 +1,10 @@
-var Character = (function() {
+define( /* Character */ 
+["jquery", "character-class", "equipment", "logger", "statuses", "target"], 
+function($, CharacterClass, Equipment, Logger, Status, Target) {  
+return (function() {
 
   var self = this;
+  self.MAX_CHARS = 4;
   self.MAX_WEAPONS = 4;
   self.MAX_ARMOR = 4;
   self.MAX_SPELLS_PER_LEVEL = 3;
@@ -17,7 +21,7 @@ var Character = (function() {
   /* =============== */
   var addArmor = function(char, armorName, index) {
     var armor = Equipment.Armor.lookup(armorName);
-    if (char.allArmor.length == self.MAX_ARMOR) {
+    if (char.countEquipment() == self.MAX_ARMOR) {
       Logger.debug(char.getName() + " already has " + self.MAX_ARMOR + " armor pieces, cannot accept more");
       return false;
     }
@@ -37,7 +41,7 @@ var Character = (function() {
   
   var addWeapon = function(char, weaponName, index) {
     var weapon = Equipment.Weapon.lookup(weaponName);
-    if (char.allWeapons.length == self.MAX_WEAPONS) {
+    if (char.countEquipment() == self.MAX_WEAPONS) {
       Logger.debug(char.getName() + " already has " + self.MAX_WEAPONS + " weapons, cannot accept more");
       return false;
     }
@@ -170,7 +174,7 @@ var Character = (function() {
   Char.prototype.attack = function() { return this.currentClass.attack(this); };
   Char.prototype.attacksWithElement = function(element) { 
     if (this.equippedWeapon()) {
-      return jQuery.inArray(element, this.equippedWeapon().elements) > -1;
+      return $.inArray(element, this.equippedWeapon().elements) > -1;
     }
     return false;
   };
@@ -190,7 +194,7 @@ var Character = (function() {
   Char.prototype.isProtectedFrom = function(element) { return this.resistedElements[element]; };
   Char.prototype.isStrongAgainstMonsterType = function(type) { 
     if (this.equippedWeapon()) {
-      return jQuery.inArray(type, this.equippedWeapon().monsterTypes) > -1;
+      return $.inArray(type, this.equippedWeapon().monsterTypes) > -1;
     }
     return false;
   };
@@ -217,7 +221,7 @@ var Character = (function() {
   
   var equippedToString = function(a) {
     var s = "";
-    jQuery(a).each(function(i) { s += (i > 0 ? "," : "") + this.name; });
+    $(a).each(function(i) { s += (i > 0 ? "," : "") + this.name; });
     return s;
   };
     
@@ -247,7 +251,7 @@ var Character = (function() {
       this.charges[spellLevel - 1]--;
     }
   };
-  Char.prototype.refillSpellCharges = function() { this.charges = jQuery.merge([], this.maxCharges); return this; };
+  Char.prototype.refillSpellCharges = function() { this.charges = $.merge([], this.maxCharges); return this; };
   Char.prototype.charClass = function(c) { this.currentClass = CharacterClass.lookup(c); return this; };
   Char.prototype.addExperience = function(exp) { this.experience += exp; return this; };
   Char.prototype.index = function(i) { this.charIndex = i; return this; };
@@ -266,12 +270,8 @@ var Character = (function() {
   };
   Char.prototype.add = function(name, index) {
     switch (state) {
-      case States.WEAPONS:
-        addWeapon(this, name, index);
-        break;
-      case States.ARMOR:
-        addArmor(this, name, index);
-        break;
+      case States.WEAPONS: addWeapon(this, name, index); break;
+      case States.ARMOR: addArmor(this, name, index); break;
     }
     return this;
   };
@@ -327,7 +327,7 @@ var Character = (function() {
         equippable = Equipment.Armor.lookup(name);
         break;
     }
-    return (jQuery.inArray(this.currentClass.name, equippable.allowedClasses) > -1);
+    return ($.inArray(this.currentClass.name, equippable.allowedClasses) > -1);
   };
   
   Char.prototype.equippedWeapon = function() {
@@ -346,7 +346,7 @@ var Character = (function() {
   Char.prototype.armorWeight = function() {
     var totalWeight = 0;
     this.armor();
-    jQuery.each(this.equippedArmor(), function(i, armor) { 
+    $.each(this.equippedArmor(), function(i, armor) { 
       totalWeight += armor.weight; 
     });
     return totalWeight;
@@ -377,28 +377,22 @@ var Character = (function() {
     return null;
   };
   
-  Char.prototype.hasEquipment = function() {
-    var equipment = null;
-    switch (state) {
-      case States.WEAPONS:
-        equipment = this.allWeapons;
-          break;
-        case States.ARMOR:
-          equipment = this.allArmor;
-          break;
-    }
-    
+  Char.prototype.countEquipment = function() {
+    var equipment = this.getEquipment();
+    var numEquipment = 0;
     if (!equipment || equipment.length == 0) {
-      return false;
+      return numEquipment;
     }
     
     for (var i = 0; i < equipment.length; i++) {
       if (!!equipment[i]) {
-        return true;
+        numEquipment++;
       }
     }
-    return false;
+    return numEquipment;
   };
+  
+  Char.prototype.hasEquipment = function() { return this.countEquipment() > 0; };
   
   // --------------
   // GETTER methods
@@ -424,14 +418,14 @@ var Character = (function() {
   };
   
   Char.prototype.isSpellAllowed = function(spell) {
-    return (jQuery.inArray(this.currentClass.name, spell.allowedClasses) > -1);
+    return ($.inArray(this.currentClass.name, spell.allowedClasses) > -1);
   };
   
   Char.prototype.knowsSpell = function(spell) {
     if (!this.knownSpells[spell.spellLevel - 1]) {
       return false;
     }
-    return jQuery.inArray(spell.spellId, this.knownSpells[spell.spellLevel - 1]) > -1;
+    return $.inArray(spell.spellId, this.knownSpells[spell.spellLevel - 1]) > -1;
   };
   
   Char.prototype.canCastSpell = function(spell) {
@@ -487,7 +481,7 @@ var Character = (function() {
   Char.prototype.isAlive = function() { return !this.isDead() && !this.hasStatus(Status.Stone); };
   Char.prototype.hasCriticalStatus = function() { 
     var anyCriticalStatus = false;
-    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+    $.each(this.currentStatuses, function(id, hasStatus) {
       if (hasStatus && Status.lookup(id).critical) {
         anyCriticalStatus = true;
       }
@@ -496,7 +490,7 @@ var Character = (function() {
   };
   Char.prototype.getBattleStatus = function() {
     var battleStatus = "";
-    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+    $.each(this.currentStatuses, function(id, hasStatus) {
       if (hasStatus && !!Status.lookup(id).battleText) {
         // last status applied wins
         battleStatus = Status.lookup(id);
@@ -506,7 +500,7 @@ var Character = (function() {
   };
   Char.prototype.canTakeAction = function() {
     var actionAllowed = true;
-    jQuery.each(this.currentStatuses, function(id, hasStatus) {
+    $.each(this.currentStatuses, function(id, hasStatus) {
       if (hasStatus && !Status.lookup(id).canTakeAction) {
         actionAllowed = false;
       }
@@ -583,7 +577,7 @@ var Character = (function() {
     var c = "";
     if (ch.length == 0) { return "none"; }
     var n = 0;
-    jQuery(ch).each(function() { n += this; });
+    $(ch).each(function() { n += this; });
     if (n == 0) { return "none"; }
     return ch.join("/");
   };
@@ -595,4 +589,5 @@ var Character = (function() {
   this.create = function() { return new Char(); };
   
   return this;    
-}).call({});
+}).call({})
+});

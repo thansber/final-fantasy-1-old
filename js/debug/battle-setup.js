@@ -1,4 +1,7 @@
-var BattleSetupHelper = (function() {
+define( 
+/* DebugBattleSetup */
+["jquery", "battle", "battle-commands", "character-class", "./util", "equipment", "events", "monster", "party", "rng", "statuses", "constants/map"], 
+function($, Battle, BattleCommands, CharacterClass, DebugHelper, Equipment, Event, Monster, Party, RNG, Status, MapConstants) {
   
   var $debug = null;
   
@@ -18,7 +21,7 @@ var BattleSetupHelper = (function() {
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
   var equipRandomWeapon = function(char) {
-    var weaponArray = jQuery.map(Equipment.Weapon.All, function(weapon, name) {
+    var weaponArray = $.map(Equipment.Weapon.All, function(weapon, name) {
       return weapon;
     });
     weaponArray.unshift(null);
@@ -44,7 +47,7 @@ var BattleSetupHelper = (function() {
   };
   
   var getMonstersBySize = function(size) {
-    return jQuery.map(Monster.All, function(monster) {
+    return $.map(Monster.All, function(monster) {
       return monster.size == size ? monster.name : null;
     }).sort(sortByNameIgnoreCase);
   };
@@ -52,7 +55,7 @@ var BattleSetupHelper = (function() {
   var initializeBackgroundSelector = function() {
     var $selector = $(".background .selector", $debug);
     $selector.append($("<option/>", {text:"-- Select a background --", value:""}));
-    for (var b in Map.BattleBackgrounds) {
+    for (var b in MapConstants.BattleBackgrounds) {
       $selector.append($("<option/>", {text:b,value:b}));
     }
   };
@@ -81,9 +84,9 @@ var BattleSetupHelper = (function() {
     var largeMonsters = getMonstersBySize("large");
     var fiends = getMonstersBySize("fiend");
     
-    jQuery.each(smallMonsters, function(i, name) { $smallSelectors.append($("<option/>", {value:name, text:name})); });
-    jQuery.each(largeMonsters, function(i, name) { $largeSelectors.append($("<option/>", {value:name, text:name})); });
-    jQuery.each(fiends, function(i, name) { $fiendSelectors.append($("<option/>", {value:name, text:name})); });
+    $.each(smallMonsters, function(i, name) { $smallSelectors.append($("<option/>", {value:name, text:name})); });
+    $.each(largeMonsters, function(i, name) { $largeSelectors.append($("<option/>", {value:name, text:name})); });
+    $.each(fiends, function(i, name) { $fiendSelectors.append($("<option/>", {value:name, text:name})); });
   };
   
   var initializeStatuses = function() {
@@ -149,7 +152,7 @@ var BattleSetupHelper = (function() {
       enemies.push(fiendQty);
     }
     
-    Battle.setup({enemies:enemies, background:Map.BattleBackgrounds[background]});
+    Battle.setup({enemies:enemies, background:MapConstants.BattleBackgrounds[background]});
   };
   
   var setupParty = function() {
@@ -180,7 +183,7 @@ var BattleSetupHelper = (function() {
       }
     });
     
-    //jQuery.each(Party.getChars(), function(i, char) { console.log(char.toString()); });    
+    //$.each(Party.getChars(), function(i, char) { console.log(char.toString()); });    
   };
   
   var sortByNameIgnoreCase = function(a, b) {
@@ -202,4 +205,4 @@ var BattleSetupHelper = (function() {
     init: init
    ,event: event
   };
-})();
+});

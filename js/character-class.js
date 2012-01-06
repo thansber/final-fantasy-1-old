@@ -1,4 +1,5 @@
-var CharacterClass = (function() {
+define( /* CharacterClass */ function() {
+return (function() {
   
   var self = this;
   var ALL = {};
@@ -171,4 +172,5 @@ var CharacterClass = (function() {
   this.lookup = function(id) { return ALL[id]; };
   
   return this;
-}).call({});
+}).call({})
+});
