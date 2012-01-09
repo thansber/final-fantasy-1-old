@@ -5,11 +5,6 @@ function($, Event, Logger, RNG) {
     
     var self = this;
     
-    self.AMBUSH = "Monsters strike first";
-    self.PREEMPTIVE = "Chance to strike first";
-    
-    
-    
     /* ======================================================== */
     /* ACTION QUEUE object ------------------------------------ */ 
     /* ======================================================== */
@@ -34,33 +29,6 @@ function($, Event, Logger, RNG) {
     /* ======================================================== */
     /* PRIVATE METHODS ---------------------------------------- */
     /* ======================================================== */
-
-    
-    var castSpellResultMessages = function(command, result, queue) {
-      var spell = Spell.lookup(command.spellId);
-      var targetQueues = [];
-      
-      switch (command.targetType) {
-        case BattleCommands.Party:
-          for (var i = 0; i < result.target.length; i++) {
-            castSpellOnPartyResultMessage(result, i, spell, result.target[i], queue);
-          }
-          break;
-        case BattleCommands.Enemy:
-          for (var i = 0; i < result.target.length; i++) {
-            var target = result.target[i];
-            var $target = (result.target.length == 1 ? Battle.getEnemyUI(target, command.targetIndex) : Battle.getEnemyUIByIndex(i));
-            if (!($target.is(".dead"))) {
-              castSpellOnEnemyResultMessage(result, i, spell, target, $target, queue);
-            }
-          }
-          break;
-      };
-      
-      hideMessages(queue, {hideAction:true, hideSource:true, initialPause:false});
-      
-      return queue;
-    };
     
     var castSpellOnEnemyResultMessage = function(result, resultIndex, spell, target, $target, q) {
       var dmgShown = false, descShown = false;
@@ -96,78 +64,12 @@ function($, Event, Logger, RNG) {
       return q;
     };
     
-    var castSpellOnPartyResultMessage = function(result, resultIndex, spell, target, q) {
-      var descShown = false, dmgShown = false;
-      q.add(function() { Message.target(target.getName()); }, 0);
-      self.charFlicker(target, {queue:q});
-      
-      var resultDamage = result.dmg[resultIndex];
-      if (resultDamage != null && resultDamage > 0) {
-        q.delay(Message.getQuickPause());
-        q.add(function() { Message.damage(resultDamage + DAMAGE_MSG); });
-        dmgShown = true;
-      }
-      
-      if (result.success.length > 0) {
-        q.delay(Message.getQuickPause());
-        if (!!result.success[resultIndex]) {
-          spellMessages(q, spell);
-        } else {
-          q.add(function() { Message.desc(INEFFECTIVE_MSG); });
-        }
-        descShown = true;
-      }
-      
-      if (!!result.died[resultIndex]) {
-        q.delay(!!result.success[resultIndex] ? Message.getBattlePause() : Message.getQuickPause());
-        q.add(function() { Message.desc(CHAR_DIED_MSG); });
-        descShown = true;
-      }
-      q.add(function() {
-        Battle.adjustCharStats({
-          target: target
-         ,targetHp: result.targetHp[resultIndex]
-         ,died: result.died[resultIndex]
-         ,status: result.status[resultIndex]
-         ,clearStatuses: result.clearStatuses
-        }); 
-      });
-      
-      hideMessages(q, {hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
-      
-      return q;
-    };
-    
-    
-    var spellMessages = function(q, spell) {
-      if (spell.message) { 
-        var afterFirstMessage = false;
-        var messages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
-        for (var m in messages) {
-          if (afterFirstMessage) {
-            q.delay(Message.getBattlePause());
-          }
-          q.add(function(message) { 
-            return function() { 
-              Message.desc(message); 
-            }; 
-          }(messages[m]));
-          afterFirstMessage = true;
-        }
-      }
-    };
     
     /* ======================================================== */
     /* PUBLIC METHODS ----------------------------------------- */
     /* ======================================================== */
     
-    self.preBattleMessage = function(message, queue) {
-      var q = queue || new Queue(this.Queues.PreBattleMessage);
-      q.setChain(q);
-      q.add(function() { Message.desc(message); });
-      hideMessages(q, {hideDesc:true});
-      return q;
-    };
+    
     
     self.reset = function() {
       $("#battle .enemies .splash").addClass("hidden");

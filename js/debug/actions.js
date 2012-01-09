@@ -1,7 +1,10 @@
-var ActionHelper = (function() {
-  
+define(
+/* DebugActions */ 
+["jquery", "battle", "battle-commands", "constants/battle", "character-class", "encounters", "events", "constants/map", "party", "rng", "spells"], 
+function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, Event, MapConstants, Party, RNG, Spell) {
+
   var newBattle = function(charClasses, enemies, opt) {
-    opt = jQuery.extend(true, {doNotMove:true}, opt);
+    opt = $.extend(true, {doNotMove:true}, opt);
     for (var c in charClasses) {
       var charName = "";
       for (var i = 0; i < 4; i++) { 
@@ -14,19 +17,24 @@ var ActionHelper = (function() {
       opt.party.call();
     }
     
+    var battle = null;
     if (typeof enemies === "string") {
       var encounter = Encounter.formationToEncounter(Encounter.lookupFormation(enemies));
-      Battle.setup(jQuery.extend(true, {background:Map.BattleBackgrounds.Forest, doNotMove:opt.doNotMove}, encounter));
+      Battle.setup($.extend(true, {background:MapConstants.BattleBackgrounds.Forest, doNotMove:opt.doNotMove}, encounter));
     } else {
-      if (!(jQuery.isArray(enemies))) {
-        enemies = [enemies];
-      }
-      
-      Battle.setup({enemies:enemies, background:Map.BattleBackgrounds.Forest, doNotMove:opt.doNotMove});
+      battle = Battle.create({
+        party : Party.getChars()
+       ,enemies : $.isArray(enemies) ? enemies : [enemies]
+       ,background : MapConstants.BattleBackgrounds.Forest
+       ,doNotMove : opt.doNotMove
+      });
     }
     if (opt.monster) {
       opt.monster.call();
     }
+    
+    Event.transmit(Event.Types.BattleSetup, {battle:battle});
+    return battle;
   };
   
   var addSpellsToChar = function(char, spells) {
@@ -44,9 +52,13 @@ var ActionHelper = (function() {
     
   var charAttack = function() {
     var monsterName = "SABER T";
-    newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
-    BattleCommands.party({source:Party.getChar(0), target:{name:monsterName, index:1, type:BattleCommands.Enemy}, action:BattleCommands.Attack});
-    BattleCommands.executeCommands();
+    var battle = newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
+    BattleCommands.party({
+      source:Party.getChar(0), 
+      target:{name:monsterName, index:1, type:BattleConstants.Commands.Enemy}, 
+      action:BattleConstants.Actions.Attack
+    });
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.getPartyCommands()});
   };
   
   var enemyAttack = function() {
@@ -220,26 +232,6 @@ var ActionHelper = (function() {
     BattleCommands.executeCommands(commands);
   };
   
-  this.event = function($target) {
-    Party.clearChars();
-    RNG.useDefault(); // want this to be reset in case any action overrides the RNG
-    
-    var buttonClasses = $target.attr("class").split(" ");
-    buttonClasses.splice(0, 1);
-    var buttonId = buttonClasses.join(".");
-    
-    if (buttons[buttonId] && buttons[buttonId].onclick) {
-      buttons[buttonId].onclick.apply();
-    }
-  };
-  
-  this.init = function() {
-    var $container = $("section.actions .container");
-    for (var b in buttons) {
-      $container.append($("<button class=\"action " + b.replace(/\./g, " ") + "\">" + buttons[b].desc + "</button>"))
-    }
-  };
-  
   var buttons = {
     "char.attack":{desc:"Character attack", onclick:charAttack}
    ,"monster.multi.attack":{desc:"Monster retargets when character dies", onclick:multipleEnemyAttack} 
@@ -262,5 +254,25 @@ var ActionHelper = (function() {
   };
   
   
-  return this;
-})();
+  return {
+    event : function($target) {
+      Party.clearChars();
+      RNG.useDefault(); // want this to be reset in case any action overrides the RNG
+      
+      var buttonClasses = $target.attr("class").split(" ");
+      buttonClasses.splice(0, 1);
+      var buttonId = buttonClasses.join(".");
+      
+      if (buttons[buttonId] && buttons[buttonId].onclick) {
+        buttons[buttonId].onclick.apply();
+      }
+    },
+    
+    init : function() {
+      var $container = $("section.actions .container");
+      for (var b in buttons) {
+        $container.append($("<button class=\"action " + b.replace(/\./g, " ") + "\">" + buttons[b].desc + "</button>"))
+      }
+    }
+  };
+});

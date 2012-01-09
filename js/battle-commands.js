@@ -1,284 +1,140 @@
 define( 
 /* BattleCommands */
-["jquery", "actions", "battle", "logger", "messages", "movement", "party", "rng", "spells"],
-function($, Action, Battle, Logger, Message, Movement, Party, RNG, Spell) {
-return (function() {
-  
+["jquery", "constants/battle", "party", "rng", "spells"],
+function($, BattleConstants, Party, RNG, Spell) {
+
   var self = this;
-    
   var partyCommands = [];
   var enemyCommands = [];
   var charIndex = 0;
-  var commandQueue = null;
+  var battle = null;
   
-  var ActionTypes = {
-    Attack : "attack"
-   ,CastSpell : "spell"
-   ,Drink : "drink"
-   ,UseItem : "item"
-   ,Run : "run"
-   ,StatusHeal : "statusHeal"
-  };
-  
-  var CommandTypes = {
-    Party : "party"
-   ,Enemy : "enemy"
-  };
-  
-  var TargetAffects = {
-    All : "all"
-   ,Single : "single"
-  };
-  
-  /* ========= */
-  /* CONSTANTS */
-  /* ========= */
-  self.Party = CommandTypes.Party;
-  self.Enemy = CommandTypes.Enemy;
-  self.All = TargetAffects.All;
-  self.Single = TargetAffects.Single;
-  
-  self.Attack = ActionTypes.Attack;
-  self.CastSpell = ActionTypes.CastSpell;
-  self.Drink = ActionTypes.Drink;
-  self.UseItem = ActionTypes.UseItem;
-  self.Run = ActionTypes.Run;
-  self.StatusHeal = ActionTypes.StatusHeal;
-  
-  /* ======================================================== */
-  /* PRIVATE METHODS ---------------------------------------- */
-  /* ======================================================== */
-  var commandToString = function(command) {
-    if (!command) {
-      return "UNDEFINED - probably a dead char";
-    }
-    var isParty = command.type == CommandTypes.Party;
-    var s = command.source.getName();
-    switch (command.action) {
-      case ActionTypes.Attack: s += " is attacking"; break;
-      case ActionTypes.CastSpell: s += " is casting" + (!isParty ? "/using skill" : ""); break;
-      case ActionTypes.Drink: s += " is drinking a"; break;
-      case ActionTypes.UseItem: s += " is using the"; break;
-      case ActionTypes.Run: s += " is running away"; break;
-      case ActionTypes.StatusHeal: s += " is trying to heal from a status"; break;
-    }
-    
-    if (command.spellId) {
-      s += " " + command.spellId + " on";
-    }
-  
-    if (command.target) {
-      var targets = $.isArray(command.target) ? command.target : [command.target];
-      if (targets) {
-        s += " " + $.map(targets, function(target) { 
-          return target.getName() + (isParty ? " " + (command.targetIndex == null ? "" : command.targetIndex) : ""); 
-        }).join(", ");
-      }
-    }
-    
-    return s;
-  };
-  
-  var commandsToString = function(commands) {
-    var s = "", NEWLINE = "\r\n";
-    $.each(commands, function(i, command) { s += commandToString(command) + NEWLINE; });
-    return s;
-  };
-  
-  var monsterTargetingCharThatDied = function(command) {
-    return command.type == CommandTypes.Enemy // monster doing the attacking
-        && command.targetType == CommandTypes.Party // targeting the party
-        && !$.isArray(command.target) // targeting a single character 
-        && !command.target.isAlive(); // target is dead or stoned
-  };
-  
-  var resultToString = function(result) {
-    return $.map(result, function(value, index) {
-      var v = value;
-      if (value) {
-        if (value.getName) { v = value.getName(); } 
-        else if (value.desc) { v = value.desc; } 
-        else if (value.spellId) { v = value.spellId; } 
-        else if ($.isArray(value)) { v = "[" + value + "]"; }
-      }
-      return index + "=" + v;
-    }).join(",");
-  };
-  
-  /* ======================================================== */
-  /* PUBLIC METHODS ----------------------------------------- */
-  /* ======================================================== */
-  self.changeCharIndex = function(amount) {
+  var changeCharIndex = function(amount) {
     charIndex += amount;
     charIndex = charIndex < 0 ? 0 : charIndex;
   };
   
-  self.clearAllCommands = function() {
+  var clear = function() {
     charIndex = 0;
     partyCommands = [];
     enemyCommands = [];
-    //Animation.reset();
-    if (commandQueue) {
-      commandQueue.kill();
-    }
   };
   
-  self.clearPartyCommand = function() {
-    partyCommands[charIndex] = null;
-  };
-
-  self.enemy = function(monster, action) {
-    var command = $.extend(true, {type:CommandTypes.Enemy}, action ? action : monster.determineAction());
+  var enemy = function(monster, action) {
+    var command = $.extend(true, {type:BattleConstants.Commands.Enemy}, action ? action : monsterDetermineAction());
     if (command.spellId) {
       var spell = Spell.lookup(command.spellId);
-      if (spell.isOtherTargetGroup()) { command.targetType = CommandTypes.Party; }
-      else if (spell.isSameTargetGroup()) { command.targetType = CommandTypes.Enemy; }
-      else if (spell.isSelfTarget()) { command.targetType = CommandTypes.Enemy; } 
+      if (spell.isOtherTargetGroup()) { 
+        command.targetType = BattleConstants.Commands.Party; 
+      } else if (spell.isSameTargetGroup() || spell.isSelfTarget()) { 
+        command.targetType = BattleConstants.Commands.Enemy; 
+      } 
     }
     enemyCommands.push(command);
     return command;
   };
   
-  self.executeCommands = function(customCommands) {
-    var all = [];
-    
-    if (customCommands) {
-      all = customCommands;
-    } else {
-      all = $.merge([], partyCommands);
-      $.merge(all, enemyCommands);
-      RNG.shuffle(all);
-    }
-    
-    Logger.debug(commandsToString(all));
-    
-    Battle.inputMessageToggler(true);
-    var victory = false;
-    var defeat = false;
-    var ranAway = false;
-    commandQueue = new Animation.ActionQueue();
-    
-    if (Battle.isAmbush()) {
-      commandQueue.add(Animation.preBattleMessage(Animation.AMBUSH, commandQueue.chain));
-    }
-    
-    $.each(all, function(i, command) {
-      Message.hideAllBattleMessages();
-      
-      if (!command || command.source.isDead()) {
-        return true;
-      }
-
-      // If a monster's target died during this round, allow the monster to retarget
-      if (monsterTargetingCharThatDied(command)) {
-        command = self.enemy(command.source);
-      }
-      
-      var result = null;
-      
-      switch (command.action) {
-        case ActionTypes.Attack:
-          result = Action.attack(command.source, command.target);
-          commandQueue.add(Animation.attack(command, result, commandQueue.chain));
-          break;
-        case ActionTypes.CastSpell:
-          result = Action.castSpell(command.source, command.spellId, command.target);
-          commandQueue.add(Animation.castSpell(command, result, commandQueue.chain));
-          break;
-        case ActionTypes.StatusHeal:
-          result = Action.statusHeal(command.source, command.targetType);
-          if (result) {
-            commandQueue.add(Animation.statusHeal(command, result, commandQueue.chain));
-          }
-          break;
-        case ActionTypes.Run:
-          result = Action.run(command.source, command.targetType);
-          commandQueue.add(Animation.run(command, result, commandQueue.chain));
-          if (result.success) {
-            ranAway = true;
-          }
-          break;
-      }
-      
-      Logger.debug(resultToString(result));
-      
-      if (ranAway) {
-        return false;
-      }
-      
-      if (Battle.areAllEnemiesDead(Battle.getAllEnemies())) {
-        victory = true;
-        return false;
-      }
-      
-      if (Battle.areAllCharactersDead(Party.getChars())) {
-        defeat = true;
-        return false;
-      }
-    });
-    
-    Battle.resetSurprise();
-    
-    //commandQueue.chain.delay(Message.getBattlePause());
-    if (defeat) {
-      commandQueue.add(Animation.defeat(commandQueue.chain));
-    }
-    if (victory) {
-      commandQueue.add(Animation.victory({queue:commandQueue.chain}));
-    }
-    
-    // What to do after all the round animations have finished
-    $.when(commandQueue.start()).then(function() {
-      if (defeat) { console.log("party is dead - lose"); }
-      else if (victory || ranAway) {
-        Party.inBattle = false;
-        Movement.startListening();
-        Party.switchView(Party.WORLD_MAP);
-      }
-      else { 
-        Battle.startRound(true);
-      }
-    });
+  var incapacitatedChar = function(char) {
+    party({source:char, action:BattleConstants.Actions.StatusHeal, target:{type:BattleConstants.Commands.Party, char:char}});
+    changeCharIndex(1);
   };
   
-  self.getCharIndex = function() {
-    return charIndex;
+  var init = function(b) {
+    battle = b;
+    clear();
   };
   
-  self.getCurrentChar = function() {
-    return Party.getChar(self.getCharIndex());
-  };
-  
-  self.generateEnemyCommands = function() {
-    // Enemies don't get to go during the first round if it is a preemptive
-    // strike, this should get reset in executeCommands
-    if (!Battle.isPreemptive()) {
-      var enemiesByName = Battle.getAllEnemies();
-      for (var n in enemiesByName) {
-        var enemies = enemiesByName[n];
-        $.each(enemies, function(i, e) {
-          // TODO: Need to check for various incapacitating statuses
-          self.enemy(e);
-        });
-      }
-    }
-    
-    self.executeCommands();
-  };
-
-  self.incapacitatedChar = function(char) {
-    self.party({source:char, action:ActionTypes.StatusHeal, target:{type:CommandTypes.Party, char:char}});
-    self.changeCharIndex(1);
-  };
-  
-  self.isAllPartyCommandsEntered = function() {
+  var isAllPartyCommandsEntered = function() {
     return charIndex >= Party.getChars().length;
   };
   
-  self.party = function(opt) {
+  var monsterDetermineAction = function(monster) {
+    if (monster.isRunningAway()) {
+      return { source:monster, action:BattleConstants.Actions.Run };
+    }
+    
+    if (monster.isCastingSpell()) {
+      var spellId = monster.getNextSpell();
+      var spell = Spell.lookup(spellId);
+      // targetType is set via BattleCommands
+      return { 
+        source : monster, 
+        action : BattleConstants.Actions.CastSpell, 
+        spellId : spell.spellId, 
+        target : monsterDetermineSpellTarget(spell) 
+      };
+    }
+    
+    if (monster.isUsingSkill()) {
+      var skillId = monster.getNextSkill();
+      var spell = Skill.lookup(skillId);
+      return { 
+        source : monster, 
+        action : BattleConstants.Actions.CastSpell, 
+        spellId : spell.spellId, 
+        target : monsterDetermineSpellTarget(spell), 
+        targetType : BattleConstants.Commands.Party 
+      };
+    }
+    
+    return { 
+      source : monster, 
+      action : BattleConstants.Actions.Attack, 
+      target : monsterDetermineSingleTarget(), 
+      targetType : BattleConstants.Commands.Party 
+    };
+  };
+  
+
+  var monsterDetermineSpellTarget = function(spell) {
+    var target = null;
+    if (spell.isSingleTarget()) {
+      target = monsterDetermineSingleTarget();
+    } else if (spell.isAllTarget()) {
+      target = Party.getAliveChars();
+    } else if (spell.isSelfTarget()) {
+      target = this;
+    }
+    
+    return target;
+  };
+  
+  var monsterDetermineSingleTarget = function() {
+    var validTarget = false;
+    var target = null;
+    var aliveChars = Party.getAliveChars();
+    
+    if (aliveChars.length == 0) {
+      target = null;
+      validTarget = true;
+    }
+    if (aliveChars.length == 1) {
+      target = aliveChars[0];
+      validTarget = true;
+    }
+    
+    while (!validTarget) {
+      var r = RNG.randomUpTo(7, 0);
+      var charIndex = -1;
+      if (r >>> 2) { // 4-7
+        charIndex = 0;
+      } else if (r >>> 1) { // 2-3
+        charIndex = 1;
+      } else if (r) { // 1
+        charIndex = 2;
+      } else { // 0
+        charIndex = 3;
+      }
+      target = Party.getChar(charIndex);
+      validTarget = (target != null && target.isAlive());
+    }
+    return target;
+  };
+  
+  var party = function(opt) {
     var command = partyCommands[charIndex];
     if (!command) {
-      command = {type:CommandTypes.Party};
+      command = {type:BattleConstants.Commands.Party};
     }
     
     if (opt.source) { command.source = opt.source; }
@@ -288,23 +144,23 @@ return (function() {
     if (opt.target) {
       command.targetType = opt.target.type;
       command.targetAffects = opt.target.affects;
-      var isAllTarget = (command.targetAffects == TargetAffects.All); 
-      var isEnemyTarget = (command.targetType == CommandTypes.Enemy); 
+      var isAllTarget = (command.targetAffects == BattleConstants.Targets.All); 
+      var isEnemyTarget = (command.targetType == BattleConstants.Commands.Enemy); 
       // Single target
       if (isAllTarget) {
        // Multi-target
         if (isEnemyTarget) {
           command.target = [];
-          $.each(Battle.getAllEnemies(), function(enemyName, enemies) {
-            $.merge(command.target, enemies);
-          });
+          for (var n in battle.enemiesByName) {
+            $.merge(command.target, battle.enemiesByName[n]);
+          }
         } else {
           command.target = $.merge([], Party.getChars());
         }
       } else {
         if (isEnemyTarget) {
           command.targetIndex = (opt.target.index == null ? 0 : opt.target.index);
-          command.target = Battle.lookupEnemy(opt.target.name, command.targetIndex);
+          command.target = battle.lookupEnemy(opt.target.name, command.targetIndex);
         } else {
           command.target = opt.target.char;
         }
@@ -315,6 +171,14 @@ return (function() {
     return command;
   };
   
-  return this;
-}).call({})
+  return {
+    changeCharIndex : changeCharIndex
+   ,clear : clear
+   ,getEnemyCommands : function() { return enemyCommands; }
+   ,getPartyCommands : function() { return partyCommands; }
+   ,incapacitatedChar : incapacitatedChar
+   ,init : init
+   ,isAllPartyCommandsEntered : isAllPartyCommandsEntered
+   ,party : party
+  };
 });

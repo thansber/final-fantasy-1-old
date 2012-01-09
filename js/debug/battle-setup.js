@@ -1,7 +1,7 @@
 define( 
 /* DebugBattleSetup */
-["jquery", "battle", "battle-commands", "character-class", "./util", "equipment", "events", "monster", "party", "rng", "statuses", "constants/map"], 
-function($, Battle, BattleCommands, CharacterClass, DebugHelper, Equipment, Event, Monster, Party, RNG, Status, MapConstants) {
+["jquery", "battle", "character-class", "./util", "equipment", "events", "monster", "party", "rng", "statuses", "constants/map"], 
+function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Party, RNG, Status, MapConstants) {
   
   var $debug = null;
   
@@ -39,11 +39,6 @@ function($, Battle, BattleCommands, CharacterClass, DebugHelper, Equipment, Even
     } else {
       char.add(weapon.name).equip(0);
     }
-  };
-  
-  var generateCommands = function() {
-    BattleCommands.init();
-    BattleCommands.generateEnemyCommands();
   };
   
   var getMonstersBySize = function(size) {
@@ -198,7 +193,6 @@ function($, Battle, BattleCommands, CharacterClass, DebugHelper, Equipment, Even
   var event = function($target) {
     if ($target.is(".setup")) { setupBattle(); }
     else if ($target.is(".randomize")) { randomizeEverything(); }
-    else if ($target.is(".commands")) { generateCommands(); }
   };
   
   return {

@@ -1,4 +1,5 @@
-define( /* Util */
+define( 
+/* Util */
 (function() {
   
   this.cssNumericValue = function(s) {

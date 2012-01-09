@@ -1,12 +1,12 @@
 define( /* Action */ 
-["jquery", "battle", "battle-commands", "elements", "logger", "monster", "rng", "spells", "statuses", "constants/rng"], 
-function($, Battle, BattleCommands, Element, Logger, Monster, RNG, Spell, Status, RngConstants) { 
+["jquery", "battle", "constants/battle", "elements", "logger", "monster", "constants/monster", "rng", "constants/rng", "spells", "statuses"], 
+function($, Battle, BattleConstants, Element, Logger, Monster, MonsterConstants, RNG, RngConstants, Spell, Status) { 
 return (function() {
 
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
-  var healParalysis = function(source, type) { return (type == BattleCommands.Party) ? RNG.percent(25) : RNG.percent(9.8); };
+  var healParalysis = function(source, type) { return (type == BattleConstants.Commands.Party) ? RNG.percent(25) : RNG.percent(9.8); };
   
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
@@ -43,14 +43,14 @@ return (function() {
     var isTargetWeakToSourceAttack = false;
     
     // See if the source attacks using an element the target is weak to 
-    $.each(Element.AllElements, function(i, element) {
+    $.each(Element.All, function(i, element) {
       if (source.attacksWithElement(element) && target.isWeakToElement(element)) {
         isTargetWeakToSourceAttack = true;
         return false;
       }
     });
     
-    $.each(Monster.Types, function(i, type) {
+    $.each(MonsterConstants.Types, function(i, type) {
       if (source.isStrongAgainstMonsterType(type) && target.isMonsterType(type)) {
         isTargetWeakToSourceAttack = true;
         return false;
@@ -114,7 +114,7 @@ return (function() {
         if (source.getStatusAttack() != null) {
           var statusLog = "";
           var baseStatusChance = 100;
-          $.each(Element.AllElements, function(i, element) {
+          $.each(Element.All, function(i, element) {
             if (source.attacksWithElement(element) && target.isProtectedFrom(element)) {
               baseStatusChance = 0;
               return false;
@@ -210,7 +210,7 @@ return (function() {
   };
   
   this.run = function(source, type) {
-    var isParty = type == BattleCommands.Party;
+    var isParty = type == BattleConstants.Commands.Party;
     var auto = false;
     var success = false;
     var runLog = "";
@@ -243,7 +243,7 @@ return (function() {
   this.statusHeal = function(source, type) {
     var statusResult = {};
     if (source.hasStatus(Status.Paralysis)) {
-      statusResult = {statusCured:Status.Paralysis, success:type == BattleCommands.Party ? RNG.percent(25) : RNG.percent(9.8)};
+      statusResult = {statusCured:Status.Paralysis, success:type == BattleConstants.Commands.Party ? RNG.percent(25) : RNG.percent(9.8)};
     } else if (source.hasStatus(Status.Confuse)) {
       statusResult = {statusCured:Status.Confuse, success:RNG.percent(25)};
     } else if (source.hasStatus(Status.Sleep)) {

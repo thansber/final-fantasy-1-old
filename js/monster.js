@@ -1,6 +1,6 @@
 define( /* Monster */
-["jquery", "battle-commands", "party", "rng", "statuses", "target", "util"],
-function($, BattleCommands, Party, RNG, Status, Target, Util) {
+["jquery", "constants/battle", "party", "rng", "statuses", "target", "util"],
+function($, BattleConstants, Party, RNG, Status, Target, Util) {
 return (function() {
   
   var self = this;
@@ -127,26 +127,7 @@ return (function() {
   // --------------------------------
   // AI methods (determining actions)
   // --------------------------------
-  MonsterBase.prototype.determineAction = function() {
-    if (this.isRunningAway()) {
-      return { source:this, action:BattleCommands.Run };
-    }
-    
-    if (this.isCastingSpell()) {
-      var spellId = this.getNextSpell();
-      var spell = Spell.lookup(spellId);
-      // targetType is set via BattleCommands
-      return { source:this, action:BattleCommands.CastSpell, spellId:spell.spellId, target:this.determineSpellTarget(spell) };
-    }
-    
-    if (this.isUsingSkill()) {
-      var skillId = this.getNextSkill();
-      var spell = Spell.lookup(skillId);
-      return { source:this, action:BattleCommands.CastSpell, spellId:spell.spellId, target:this.determineSpellTarget(spell), targetType:BattleCommands.Party };
-    }
-    
-    return { source:this, action:BattleCommands.Attack, target:this.determineSingleTarget(), targetType:BattleCommands.Party };
-  };
+  
   
   MonsterBase.prototype.isRunningAway = function() {
     var r = RNG.randomUpTo(50, 0);
@@ -188,59 +169,6 @@ return (function() {
       this.skillIndex = 0;
     }
     return this.skills[this.skillIndex];
-  };
-  
-  MonsterBase.prototype.determineSpellTarget = function(spell) {
-    var target = null;
-    if (spell.isSingleTarget()) {
-      target = this.determineSingleTarget();
-    } else if (spell.isAllTarget()) {
-      target = Party.getChars();
-    } else if (spell.isSelfTarget()) {
-      target = this;
-    }
-    
-    return target;
-  };
-  
-  MonsterBase.prototype.determineSingleTarget = function() {
-    var validTarget = false;
-    var target = null;
-    var numAliveChars = 0;
-    var aliveChar = null;
-    
-    $.each(Party.getChars(), function(i, char) {
-      if (char.isAlive()) {
-        numAliveChars++;
-        aliveChar = char;
-      }
-    });
-    
-    if (numAliveChars == 0) {
-      target = null;
-      validTarget = true;
-    }
-    if (numAliveChars == 1) {
-      target = aliveChar;
-      validTarget = true;
-    }
-    
-    while (!validTarget) {
-      var r = RNG.randomUpTo(7, 0);
-      var charIndex = -1;
-      if (r >>> 2) { // 4-7
-        charIndex = 0;
-      } else if (r >>> 1) { // 2-3
-        charIndex = 1;
-      } else if (r) { // 1
-        charIndex = 2;
-      } else { // 0
-        charIndex = 3;
-      }
-      target = Party.getChar(charIndex);
-      validTarget = (target != null && target.isAlive());
-    }
-    return target;
   };
   
   MonsterBase.prototype.toString = function() { return this.getName() + " - " + this.hp + "," + this.maxHp; };

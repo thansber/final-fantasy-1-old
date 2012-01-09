@@ -35,8 +35,7 @@ function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, Party
     NewCharCursor.prototype.next = function() {
       this.clear();
       if (Party.getChars().length == 4) {
-        // TODO: open animation
-        Party.startGame();
+        Event.transmit(Event.Types.StartGame);
         return false;
       }
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.NEW_CHAR_NAME);

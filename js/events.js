@@ -5,8 +5,12 @@ function($, Logger) {
   
   var all = {};
   var types = {
-    AreaTransition : "areaTransition"
+    AdjustCharStats : "adjustCharStats"
+   ,AreaTransition : "areaTransition"
    ,BackToWorldMap : "backToWorldMap"
+   ,BattleGatherCommands : "battleGatherCommands"
+   ,BattleMessageToggle : "battleMessageToggle"
+   ,BattleSetup : "battleSetup"
    ,CharMenu : "charMenu"
    ,CursorStart : "cursorStartListening"
    ,JumpTo : "jumpToPosition"
@@ -15,9 +19,11 @@ function($, Logger) {
    ,MovementStop : "movementStopListening"
    ,Moving : "moving"
    ,MovingChange : "movingChange"
+   ,ResetCharStats : "resetCharStats"
    ,ShopEnter : "shopEnter"
    ,ShopExit : "shopExit"
    ,StartGame : "startGame"
+   ,StartRound : "startRound"
    ,SwitchMap : "switchMap"
    ,SwitchView : "switchView"
   };
@@ -35,6 +41,8 @@ function($, Logger) {
    ,DefeatDone : "animationDefeatDone"
    ,MoveChar : "animationMoveChar"
    ,MoveCharDone : "animationMoveCharDone"
+   ,PreBattleMessage : "animationPreBattleMessage"
+   ,PreBattleMessageDone : "animationPreBattleMessageDone"
    ,RestAtInn : "animationRestAtInn"
    ,RestAtInnDone : "animationRestAtInnDone"
    ,RunParty : "animationRunParty"
