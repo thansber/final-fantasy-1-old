@@ -1,7 +1,7 @@
 define(
 /* DebugBattleAnimations */
-["jquery", "battle", "constants/battle", "events", "party", "rng", "spells"],
-function($, Battle, BattleConstants, Event, Party, RNG, Spell) {
+["jquery", "battle", "constants/battle", "./util", "events", "party", "rng", "spells"],
+function($, Battle, BattleConstants, DebugUtil, Event, Party, RNG, Spell) {
 
   var getRandomSpell = function() {
     var spells = $.map(Spell.ALL, function(spell, index) {
@@ -37,6 +37,7 @@ function($, Battle, BattleConstants, Event, Party, RNG, Spell) {
   
   return {
     event : function($target) {
+      DebugUtil.battleAnimationReset();
       if ($target.is(".move.char")) { allCharAnimation(Event.Animations.MoveChar); }
       else if ($target.is(".swing.weapon")) { allCharAnimation(Event.Animations.SwingWeapon); } 
       else if ($target.is(".spell.effect")) { allCharAnimation(Event.Animations.SpellEffect, {spell:getRandomSpell()}); } 

@@ -10,6 +10,10 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
     $selector.append($("<option/>").text(text).val(value));
   };
   
+  var battleAnimationReset = function() {
+    $("#battle .enemies .splash").addClass("hidden");
+  };
+  
   var loadMainView = function(helper) {
     helper = $.extend({view:PartyConstants.Views.WORLD_MAP, disableKeyListener:false}, helper);
     Event.transmit(Event.Types.SwitchView, helper.view);
@@ -45,6 +49,7 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
   
   return {
     addOption: addOption
+   ,battleAnimationReset : battleAnimationReset
    ,loadMainView: loadMainView
    ,menuChange: menuChange
   };

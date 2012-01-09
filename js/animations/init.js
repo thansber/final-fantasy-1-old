@@ -19,6 +19,7 @@ function(AnimationAction, AnimationBattle, AnimationMap, AnimationShop, Event) {
       Event.listen(Event.Animations.Attack, AnimationAction.attack);
       Event.listen(Event.Animations.CastSpell, AnimationAction.castSpell);
       Event.listen(Event.Animations.Defeat, AnimationAction.defeat);
+      Event.listen(Event.Animations.StatusHeal, AnimationAction.statusHeal);
       Event.listen(Event.Animations.Victory, AnimationAction.victory);
       
       Event.listen(Event.Animations.AreaTransition, AnimationMap.areaTransition);

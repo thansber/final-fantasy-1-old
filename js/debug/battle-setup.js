@@ -1,7 +1,7 @@
 define( 
 /* DebugBattleSetup */
 ["jquery", "battle", "character-class", "./util", "equipment", "events", "monster", "party", "rng", "statuses", "constants/map"], 
-function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Party, RNG, Status, MapConstants) {
+function($, Battle, CharacterClass, DebugUtil, Equipment, Event, Monster, Party, RNG, Status, MapConstants) {
   
   var $debug = null;
   
@@ -45,10 +45,10 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
   
   var initializeCharClass = function() {
     $("select.charClass", $debug).each(function() {
-      DebugHelper.addOption($(this), "", "--Select a class--");
+      DebugUtil.addOption($(this), "", "--Select a class--");
       for (var c in CharacterClass.All) {
         var charClass = CharacterClass.All[c];
-        DebugHelper.addOption($(this), charClass.name, CharacterClass.fullClassNames[charClass.name]);
+        DebugUtil.addOption($(this), charClass.name, CharacterClass.fullClassNames[charClass.name]);
       }
     });
   };
@@ -84,7 +84,7 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
     $("select.status", $debug).each(function() {
       for (var s in statuses) {
         var status = statuses[s];
-        DebugHelper.addOption($(this), s, status);
+        DebugUtil.addOption($(this), s, status);
       }
     });
   };
@@ -190,6 +190,7 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
     },
     
     event : function($target) {
+      DebugUtil.battleAnimationReset();
       if ($target.is(".setup")) { setupBattle(); }
       else if ($target.is(".randomize")) { randomizeEverything(); }
     }

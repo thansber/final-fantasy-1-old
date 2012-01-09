@@ -1,7 +1,7 @@
 define(
 /* AnimationAction */
-["jquery", "./battle", "animation-queue", "./util", "constants/battle", "events", "messages", "party", "rng"],
-function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Event, Message, Party, RNG) {
+["jquery", "./battle", "animation-queue", "./util", "constants/battle", "events", "messages", "party", "rng", "statuses"],
+function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Event, Message, Party, RNG, Status) {
   
   var $party = null;
   var $enemies = null;
@@ -209,7 +209,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       
       // Spell result messages
       if (command.targetType == BattleConstants.Commands.Party) {
-        //Spell is being cast on party
+        // Spell is being cast on party
         for (var i = 0; i < result.target.length; i++) {
           var target = result.target[i];
           var $target = getCharUI(target);
@@ -229,7 +229,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
           if (result.success.length > 0) {
             q.delay(Message.getQuickPause());
             if (!!result.success[i]) {
-              q.addAll(spellMessages, {spell:spell});
+              q.addAll(spellMessages, {spell:result.spell});
             } else {
               q.add(function() { Message.desc(AnimationUtil.INEFFECTIVE_MSG); });
             }
@@ -241,15 +241,20 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
             q.add(function() { Message.desc(AnimationUtil.CHAR_DIED_MSG); });
             descShown = true;
           }
-          q.add(function() {
-            adjustCharStats({result:{
-              target: target
-             ,targetHp: result.targetHp[i]
-             ,died: result.died[i]
-             ,status: result.status[i]
-             ,clearStatuses: result.clearStatuses
-            }}); 
-          });
+          
+          q.add(function(i) {
+            return function() {
+              adjustCharStats({
+                result : {
+                  target : target
+                 ,targetHp : result.targetHp[i]
+                 ,died : result.died[i]
+                 ,status : result.status[i]
+                 ,clearStatuses : result.clearStatuses
+                }
+              });
+            };
+          }(i));
           
           q.hideMessages({hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
         }
@@ -259,9 +264,6 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
           var target = result.target[i];
           var $target = (result.target.length == 1 ? getEnemyUI(target, command.targetIndex) : getEnemyUIByIndex(i));
           if (!($target.is(".dead"))) {
-            // TODO: add this back
-            //castSpellOnEnemyResultMessage(result, i, spell, target, $target, queue);
-
             var dmgShown = false, descShown = false;
             q.add(function() { Message.target(target.getName()); });
             q.addAll(AnimationBattle.splash, {$enemy:$target, splashColors:spell.splash, overlay:spell.overlay});
@@ -306,7 +308,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       q = q || AnimationQueue.create();
       q.delay(Message.getQuickPause());
       q.add(function() { Message.desc(Party.getChar(0).getName() + " party perished"); });
-      AnimationUtil.autoStart(q, settings, Event.Animations.DefeatDone);
+      AnimationUtil.autoStart(q, opt, Event.Animations.DefeatDone);
       return q;
     },
   
@@ -316,6 +318,40 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       $party = $battle.find(".party");
       $enemies = $battle.find(".enemies");
       Event.listen(Event.Types.AdjustCharStats, adjustCharStats);
+    },
+    
+    statusHeal : function(opt, queue) {
+      q = q || AnimationQueue.create();
+      
+      var defaults = {command:null, result:null};
+      var settings = $.extend(true, defaults, opt);
+      var command = settings.command;
+      var result = settings.result;
+      var isParty = (command.type == BattleConstants.Commands.Party);
+      
+      q.delay(Message.getQuickPause());
+      
+      if (command.source) { 
+        q.add(function() { Message.source(command.source.getName()); }); 
+      }
+      
+      q.delay(Message.getQuickPause());
+      q.add(function() { 
+        var desc = result.statusCured.desc;
+        if (result.success) {
+          desc = Status.equals(result.statusCured, Status.Sleep) ? AnimationUtil.STATUS_SLEEP_CURED : AnimationUtil.STATUS_CURED;
+        }
+        Message.desc(desc); 
+      });
+      if (isParty) {
+        q.add(function() { adjustCharStats({result:result}); });
+      }
+      q.delay(Message.getBattlePause());
+      q.hideMessages({hideDesc:true, hideSource:true, initialPause:false});
+      
+      AnimationUtil.autoStart(q, settings, Event.Animations.StatusHealDone);
+      
+      return q;
     },
     
     victory : function(opt, q) {

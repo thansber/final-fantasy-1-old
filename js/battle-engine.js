@@ -227,17 +227,17 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
           result = Action.attack(command.source, command.target);
           q = AnimationAction.attack({command:command, result:result}, q);
           break;
-        case ActionTypes.CastSpell:
-          //result = Action.castSpell(command.source, command.spellId, command.target);
-          //commandQueue.add(Animation.castSpell(command, result, commandQueue.chain));
+        case BattleConstants.Actions.CastSpell:
+          result = Action.castSpell(command.source, command.spellId, command.target);
+          q = AnimationAction.castSpell({command:command, result:result}, q);
           break;
-        case ActionTypes.StatusHeal:
+        case BattleConstants.Actions.StatusHeal:
           //result = Action.statusHeal(command.source, command.targetType);
           //if (result) {
             //commandQueue.add(Animation.statusHeal(command, result, commandQueue.chain));
           //}
           break;
-        case ActionTypes.Run:
+        case BattleConstants.Actions.Run:
 //          result = Action.run(command.source, command.targetType);
 //          commandQueue.add(Animation.run(command, result, commandQueue.chain));
 //          if (result.success) {
@@ -266,10 +266,10 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     });
     
     if (defeat) {
-      q = AnimationBattle.defeat({}, q);
+      q = AnimationAction.defeat({}, q);
     }
     if (victory) {
-      q = AnimationBattle.victory({aliveChars:Party.getAliveChars()}, q);
+      q = AnimationAction.victory({aliveChars:Party.getAliveChars()}, q);
     }
     
     $.when(q.start()).then(function() {

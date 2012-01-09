@@ -1,7 +1,9 @@
 define(
 /* DebugActions */ 
-["jquery", "battle", "battle-commands", "constants/battle", "character-class", "encounters", "events", "constants/map", "party", "rng", "spells"], 
-function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, Event, MapConstants, Party, RNG, Spell) {
+["jquery", "battle", "battle-commands", "constants/battle", "character-class", "./util",
+ "encounters", "events", "constants/map", "party", "rng", "spells"], 
+function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil, 
+         Encounter, Event, MapConstants, Party, RNG, Spell) {
 
   var newBattle = function(charClasses, enemies, opt) {
     opt = $.extend(true, {doNotMove:true}, opt);
@@ -54,47 +56,58 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     var monsterName = "SABER T";
     var battle = newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
     BattleCommands.party({
-      source:Party.getChar(0), 
-      target:{name:monsterName, index:1, type:BattleConstants.Commands.Enemy}, 
-      action:BattleConstants.Actions.Attack
+      source : Party.getChar(0), 
+      action : BattleConstants.Actions.Attack,
+      target : {name:monsterName, index:1, type:BattleConstants.Commands.Enemy} 
     });
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.getPartyCommands()});
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
   };
   
   var enemyAttack = function() {
     var monsterName = "COCTRICE";
-    newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
-    var monster = Battle.lookupEnemy(monsterName, 1);    
-    BattleCommands.enemy(monster);
-    BattleCommands.executeCommands();
+    var battle = newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
+    BattleCommands.enemy(battle.lookupEnemy(monsterName, 1));
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
   };
   
   var multipleEnemyAttack = function() {
     var monsterName = "CRAWL";
-    newBattle([CharacterClass.BLACK_MAGE], {name:monsterName,qty:2});
-    BattleCommands.enemy(Battle.lookupEnemy(monsterName, 0));
-    BattleCommands.enemy(Battle.lookupEnemy(monsterName, 1));
-    BattleCommands.executeCommands();
+    var battle = newBattle([CharacterClass.BLACK_MAGE], {name:monsterName,qty:2});
+    BattleCommands.enemy(battle.lookupEnemy(monsterName, 0));
+    BattleCommands.enemy(battle.lookupEnemy(monsterName, 1));
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
   };
   
   var castSpellOnSelf = function() {
-    newBattle([CharacterClass.WHITE_MAGE], {name:"IMP"});
+    var battle = newBattle([CharacterClass.WHITE_MAGE], {name:"IMP"});
     var char = Party.getChar(0);
     addSpellsToChar(char, ["CURE","RUSE","HARM","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"]);
-    BattleCommands.party({source:char, action:BattleCommands.CastSpell, spellId:"RUSE", target:{type:BattleCommands.Party, char:char}});
-    BattleCommands.executeCommands();
+    
+    BattleCommands.party({
+      source : char,
+      action : BattleConstants.Actions.CastSpell,
+      spellId : "RUSE",
+      target : {type:BattleConstants.Commands.Party, char:char}
+    });
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
   };
   
   var castSpellOnPartyTarget = function() {
-    newBattle([CharacterClass.FIGHTER, CharacterClass.WHITE_WIZARD], {name:"IMP"}, {party:function() {
+    var battle = newBattle([CharacterClass.FIGHTER, CharacterClass.WHITE_WIZARD], {name:"IMP"}, {party:function() {
       Party.getChar(1).applyDamage(24);
       Party.getChar(0).applyDamage(30);
     }});
     var target = Party.getChar(0);
     var caster = Party.getChar(1);
     addSpellsToChar(caster, ["CURE","RUSE","HARM","INVS","ALIT","LAMP","CUR2","AFIR","AMUT","CUR3","LIFE","CUR4"]);
-    BattleCommands.party({source:caster, action:BattleCommands.CastSpell, spellId:"CURE", target:{type:BattleCommands.Party, char:target}});
-    BattleCommands.executeCommands();
+    
+    BattleCommands.party({
+      source : caster, 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "CURE", 
+      target:{type:BattleConstants.Commands.Party, char:target}
+    });
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
   };
   
   var castHealingSpellOnEntireParty = function() {
@@ -112,7 +125,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     
     var caster = Party.getChar(1);
     addSpellsToChar(caster, ["CURE","RUSE","HEAL","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"]);
-    BattleCommands.party({source:caster, action:BattleCommands.CastSpell, spellId:"HEAL", target:{type:BattleCommands.Party, affects:BattleCommands.All}});
+    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"HEAL", target:{type:BattleConstants.Commands.Party, affects:BattleCommands.All}});
     BattleCommands.executeCommands();
   };
   
@@ -120,7 +133,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     newBattle([CharacterClass.BLACK_WIZARD], {name:"IMP",qty:2});
     var caster = Party.getChar(0);
     addSpellsToChar(caster, ["BRAK"]);
-    BattleCommands.party({source:caster, action:BattleCommands.CastSpell, spellId:"BRAK", target:{name:"IMP",index:1,type:BattleCommands.Enemy, affects:BattleCommands.Single}});
+    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"BRAK", target:{name:"IMP",index:1,type:BattleConstants.Commands.Enemy, affects:BattleCommands.Single}});
     BattleCommands.executeCommands();
   };
   
@@ -132,7 +145,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     var enemyToKill = Battle.lookupEnemy("IMP", 1);
     enemyToKill.applyDamage(1000);
     Battle.killEnemyUI(enemyToKill, 1);
-    BattleCommands.party({source:caster, action:BattleCommands.CastSpell, spellId:"ICE2", target:{type:BattleCommands.Enemy, affects:BattleCommands.All}});
+    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"ICE2", target:{type:BattleConstants.Commands.Enemy, affects:BattleCommands.All}});
     BattleCommands.executeCommands();
   };
   
@@ -150,7 +163,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
              ,{name:"MAGE",qty:4});
     var monster = Battle.lookupEnemy("MAGE", 0);
     var spell = Spell.lookup("FIR3");
-    BattleCommands.enemy(null, {source:monster, action:BattleCommands.CastSpell, spellId:spell.spellId, target:monster.determineSpellTarget(spell), targetType:BattleCommands.Party});
+    BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.CastSpell, spellId:spell.spellId, target:monster.determineSpellTarget(spell), targetType:BattleConstants.Commands.Party});
     BattleCommands.executeCommands();
   };
   
@@ -164,8 +177,8 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     var commands = [];
     RNG.useCustom(RNG.AlwaysSuccess);
     
-    commands.push(BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleCommands.Party, char:char}}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:monster.determineSingleTarget(), targetType:BattleCommands.Party}));
+    commands.push(BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleConstants.Commands.Party, char:char}}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:monster.determineSingleTarget(), targetType:BattleConstants.Commands.Party}));
     BattleCommands.executeCommands(commands);
   };
   
@@ -174,8 +187,8 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     var char = Party.getChar(0);
     var monster = Battle.lookupEnemy("IronGOL", 0);
     var commands = [];    
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
     RNG.useCustom(RNG.AlwaysSuccess);
     BattleCommands.executeCommands(commands);
   };
@@ -188,9 +201,9 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     }});
     
     var commands = [];
-    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleCommands.Attack, target:{name:monster, type:BattleCommands.Enemy}}));
+    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleConstants.Actions.Attack, target:{name:monster, type:BattleConstants.Commands.Enemy}}));
     BattleCommands.changeCharIndex(1);
-    commands.push(BattleCommands.party({source:Party.getChar(1), action:BattleCommands.Attack, target:{name:monster, type:BattleCommands.Enemy}}));
+    commands.push(BattleCommands.party({source:Party.getChar(1), action:BattleConstants.Actions.Attack, target:{name:monster, type:BattleConstants.Commands.Enemy}}));
     
     RNG.useCustom(RNG.AlwaysSuccess);
     BattleCommands.executeCommands(commands);
@@ -227,14 +240,14 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     newBattle([CharacterClass.WHITE_MAGE], "21-1");
     var monster = Battle.lookupEnemy("EARTH");
     var commands = [];
-    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleCommands.Run, target:{type:BattleCommands.Party}}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleCommands.Attack, target:Party.getChar(0), targetType:BattleCommands.Party}));
+    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleConstants.Actions.Run, target:{type:BattleConstants.Commands.Party}}));
+    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
     BattleCommands.executeCommands(commands);
   };
   
   var buttons = {
     "char.attack":{desc:"Character attack", onclick:charAttack}
-   ,"monster.multi.attack":{desc:"Monster retargets when character dies", onclick:multipleEnemyAttack} 
+   ,"monster.multi.attack":{desc:"Multiple monster attacks", onclick:multipleEnemyAttack} 
    ,"monster.attack":{desc:"Monster attack", onclick:enemyAttack} 
    ,"spell.self":{desc:"Cast spell on self", onclick:castSpellOnSelf} 
    ,"spell.heal.party.all":{desc:"Cast healing spell on entire party", onclick:castHealingSpellOnEntireParty} 
@@ -258,6 +271,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, Encounter, 
     event : function($target) {
       Party.clearChars();
       RNG.useDefault(); // want this to be reset in case any action overrides the RNG
+      DebugUtil.battleAnimationReset();
       
       var buttonClasses = $target.attr("class").split(" ");
       buttonClasses.splice(0, 1);

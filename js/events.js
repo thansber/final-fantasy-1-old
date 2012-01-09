@@ -53,6 +53,8 @@ function($, Logger) {
    ,SpellEffectDone : "animationSpellEffectDone"
    ,Splash : "animationSplash"
    ,SplashDone : "animationSplashDone"
+   ,StatusHeal : "animationStatusHeal"
+   ,StatusHealDone : "animationStatusHealDone"
    ,SwingWeapon : "animationSwingWeapon"
    ,SwingWeaponDone : "animationSwingWeaponDone"
    ,Victory : "animationVictory"

@@ -21,7 +21,7 @@ function($, BattleConstants, Party, RNG, Spell) {
   };
   
   var enemy = function(monster, action) {
-    var command = $.extend(true, {type:BattleConstants.Commands.Enemy}, action ? action : monsterDetermineAction());
+    var command = $.extend(true, {type:BattleConstants.Commands.Enemy}, action ? action : monsterDetermineAction(monster));
     if (command.spellId) {
       var spell = Spell.lookup(command.spellId);
       if (spell.isOtherTargetGroup()) { 
@@ -174,11 +174,18 @@ function($, BattleConstants, Party, RNG, Spell) {
   return {
     changeCharIndex : changeCharIndex
    ,clear : clear
+   ,enemy : enemy
    ,getEnemyCommands : function() { return enemyCommands; }
    ,getPartyCommands : function() { return partyCommands; }
    ,incapacitatedChar : incapacitatedChar
    ,init : init
    ,isAllPartyCommandsEntered : isAllPartyCommandsEntered
    ,party : party
+   ,shuffleCommands : function() {
+     var allCommands = $.merge([], partyCommands);
+     $.merge(allCommands, enemyCommands);
+     RNG.shuffle(allCommands);
+     return allCommands;
+   }
   };
 });
