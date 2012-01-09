@@ -149,10 +149,6 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     return $("<div/>").addClass("enemy").addClass(monster.cssClass);
   };
   
-  var createSpellUI = function(spell) {
-    return $("<span/>").addClass("spell").addClass(spell.effect).addClass(spell.spellId.toLowerCase().replace("!", ""));
-  };
-  
   var gatherCommands = function(battle) {
     var q = null;
     if (battle.isAmbush()) {
@@ -293,6 +289,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
   };
   
   return {
+    createCharUI : createCharUI,
     init : function() {
       $battle = $("#battle");
       $party = $(".party", $battle);

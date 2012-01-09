@@ -1,7 +1,7 @@
 define( 
 /* DebugSpellEffects */
-["jquery", "events", "spells", "animations/battle"], 
-function($, Event, Spell, AnimationBattle) {
+["jquery", "events", "spells"], 
+function($, Event, Spell) {
   
   var $debug = null;
   

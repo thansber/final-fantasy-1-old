@@ -6,18 +6,6 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
   var $debug = null;
   
   /* ======================================================== */
-  /* INIT METHOD -------------------------------------------- */
-  /* ======================================================== */
-  var init = function() {
-    $debug = $("#debug section.battleSetup");
-    initializeCharClass();
-    initializeStatuses();
-    initializeBackgroundSelector();
-    initializeEnemySelectors();
-    randomizeEverything();
-  };
-  
-  /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
   var equipRandomWeapon = function(char) {
@@ -147,7 +135,13 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
       enemies.push(fiendQty);
     }
     
-    Battle.setup({enemies:enemies, background:MapConstants.BattleBackgrounds[background]});
+    Event.transmit(Event.Types.BattleSetup, {
+      battle : Battle.create({
+        party : Party.getChars(),
+        enemies : enemies,
+        background : MapConstants.BattleBackgrounds[background]
+      })
+    });
   };
   
   var setupParty = function() {
@@ -176,9 +170,7 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
           default: char.addStatus(Status.lookup(status)); break;
         }
       }
-    });
-    
-    //$.each(Party.getChars(), function(i, char) { console.log(char.toString()); });    
+    });   
   };
   
   var sortByNameIgnoreCase = function(a, b) {
@@ -187,16 +179,19 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Event, Monster, Part
     return a > b ? 1 : a < b ? -1 : 0;
   };
   
-  /* ======================================================== */
-  /* PUBLIC METHODS ----------------------------------------- */
-  /* ======================================================== */
-  var event = function($target) {
-    if ($target.is(".setup")) { setupBattle(); }
-    else if ($target.is(".randomize")) { randomizeEverything(); }
-  };
-  
   return {
-    init: init
-   ,event: event
+    init: function() {
+      $debug = $("#debug section.battleSetup");
+      initializeCharClass();
+      initializeStatuses();
+      initializeBackgroundSelector();
+      initializeEnemySelectors();
+      randomizeEverything();
+    },
+    
+    event : function($target) {
+      if ($target.is(".setup")) { setupBattle(); }
+      else if ($target.is(".randomize")) { randomizeEverything(); }
+    }
   };
 });

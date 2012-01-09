@@ -1,7 +1,7 @@
 define(
 /* DebugWeapons */
-["jquery", "battle", "character-class", "./util", "equipment", "party"],
-function($, Battle, CharacterClass, DebugHelper, Equipment, Party) {
+["jquery", "battle-engine", "character-class", "./util", "equipment", "party"],
+function($, BattleEngine, CharacterClass, DebugHelper, Equipment, Party) {
   
   var $debug = null;
   
@@ -21,16 +21,16 @@ function($, Battle, CharacterClass, DebugHelper, Equipment, Party) {
       char.unequip();
       if (char.canEquip(weapon.name)) {
         char.drop(0).add(weapon.name).equip(0);
-        $stances.append(Battle.createCharUI(char).addClass("swing back"));
-        $stances.append(Battle.createCharUI(char).addClass("swing forward"));
+        $stances.append(BattleEngine.createCharUI(char).addClass("swing back"));
+        $stances.append(BattleEngine.createCharUI(char).addClass("swing forward"));
         $(".weapon", $stances).removeClass("hidden");
       }
     });
     
     if (CharacterClass.lookup(charClass).isMartialArtist()) {
       char.unequip();
-      $stances.append(Battle.createCharUI(char).addClass("swing back"));
-      $stances.append(Battle.createCharUI(char).addClass("swing forward"));
+      $stances.append(BattleEngine.createCharUI(char).addClass("swing back"));
+      $stances.append(BattleEngine.createCharUI(char).addClass("swing forward"));
       $(".weapon", $stances).removeClass("hidden");
     }
     

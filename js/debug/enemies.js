@@ -1,7 +1,7 @@
 define( 
 /* DebugEnemies */
-["jquery", "battle", "./util", "events", "monster"], 
-function($, Battle, DebugHelper, Event, Monster) {
+["jquery", "./util", "events", "monster"], 
+function($, DebugHelper, Event, Monster) {
   
   var $container = null;
   
@@ -54,7 +54,7 @@ function($, Battle, DebugHelper, Event, Monster) {
        $(".monster", $container).hide();
        if (monster) {
          $monsterContainer.empty();
-         $monsterContainer.append(Battle.createEnemyUI(monster));
+         $monsterContainer.append($("<div/>").addClass("enemy").addClass(monster.cssClass));
          $monsterContainer.show();
        }
      } else if ($target.is(".show.splash")) {

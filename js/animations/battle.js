@@ -126,7 +126,7 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
       var defaults = {$char:null, spell:null, numAnimations:4, pause:100, start:false};
       var settings = $.extend({}, defaults, opt);
       var $char = opt.$char;
-      var $spell = Battle.createSpellUI(opt.spell);
+      var $spell = $("<span/>").addClass("spell").addClass(settings.spell.effect).addClass(settings.spell.spellId.toLowerCase().replace("!", ""));
       var charAnimationClasses = "casting arms up";
       
       q.add(function() { $char.append($spell); $char.addClass(charAnimationClasses); });
