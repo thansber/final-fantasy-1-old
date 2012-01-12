@@ -80,10 +80,12 @@ function($, Battle, Cursor, Event, Logger, MapCoordsAbsolute, MapTransition, Men
     Logger.debug(encounter.toString());
     
     Event.transmit(Event.Types.MovementStop);
-    Battle.setup($.extend(true, {background: background}, encounter));
+    var battle = Battle.create($.extend(true, {background: background}, encounter));
 
     switchView(PartyConstants.Views.BATTLE);
     Party.resetStepsUntilBattle();
+    
+    Event.transmit(Event.Types.BattleSetup, {battle:battle});
   };
    
   var startGame = function() {

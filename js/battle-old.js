@@ -5,49 +5,9 @@ return (function() {
   
   var self = this;  
     
-  var $battle = null;
-  var $party = null;
-  var $enemies = null;
-  var $stats = null;
-  var $spellList = null;
-
-  var enemies = {};
-  var runnable = true;
-  var preemptive = false;
-  var ambush = false;
-  
-  /* ======================================================== */
-  /* PRIVATE METHODS ---------------------------------------- */
-  /* ======================================================== */
-  
-  var isMessageValid = function(message) {
-    return message != null && message.length > 0;
-  };
-    
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  
-  self.getAllEnemies = function() { return enemies; };
-  
-  self.moveCharBackwardAndOtherForward = function(charIndexChange) {
-    // charIndexChange = -1 for prev char, 1 for next char
-    var char = Party.getChar(BattleCommands.getCharIndex());
-    if (char) {
-      var otherChar = Party.getChar(BattleCommands.getCharIndex() + charIndexChange);
-      // If we are on the first char, and the user tries to go back (ESC), 
-      // use the first char to move forward again
-      otherChar = charIndexChange < 0 && !otherChar ? char : otherChar;
-      var q = Animation.walkAndMoveInBattle(char, {direction:"backward"});
-      
-      if (otherChar) {
-        Animation.walkAndMoveInBattle(otherChar, {queue:q});
-      }
-    }
-    BattleCommands.changeCharIndex(1);
-    q.start();
-  };
-  
   self.nextChar = function() {
     var char = Party.getChar(BattleCommands.getCharIndex());
     if (char) {
@@ -76,22 +36,6 @@ return (function() {
     }
   };
   
-  self.populateSpellList = function() {
-    $(".spell.level", $spellList).empty();
-    var char = Party.getChar(BattleCommands.getCharIndex()); 
-    $(".spell.level", $spellList).each(function(i) {
-      var $this = $(this);
-      $this.append(Message.create("L" + (i + 1), "levelNum"));
-      if (char.knownSpells[i]) {
-        for (var s in char.knownSpells[i]) {
-          $this.append(Message.create(char.knownSpells[i][s], "spell"));
-        }
-      }
-      $this.append(Message.create("" + char.charges[i], "numCharges"));
-    });
-    $spellList.removeClass("hidden");
-  };
-  
   self.prevChar = function() {
     BattleCommands.clearPartyCommand();
     var char = Party.getChar(BattleCommands.getCharIndex());
@@ -115,13 +59,6 @@ return (function() {
       q.start();
     }
   };
-  
-  self.resetSurprise = function() {
-    ambush = false;
-    preemptive = false;
-  };
-  
-
   
   // Called for each new battle
   // Input definition:

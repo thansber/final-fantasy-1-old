@@ -67,6 +67,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
     $enemy.addClass("dead");    
   };
   
+  
   var spellMessages = function(opt, q) {
     var spell = opt.spell;
     if (spell.message) { 
@@ -324,11 +325,13 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
     moveCharForCommand : function(opt, q) {
       q = q || AnimationQueue.create();
       
-      var defaults = {char:null};
+      var defaults = {char:null, initialPause:true};
       var settings = $.extend(true, defaults, opt);
       
-      // Added this pause to let the battle finish getting setup before moving the char
-      q.delay(Message.getQuickPause());
+      if (settings.initialPause) {
+        // Added this pause to let the battle finish getting setup before moving the char
+        q.delay(Message.getQuickPause());
+      }
       q.addAll(AnimationBattle.moveChar, {$char:getCharUI(settings.char)});
       
       AnimationUtil.autoStart(q, settings, Event.Animations.MoveCharForCommandDone);

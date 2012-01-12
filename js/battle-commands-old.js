@@ -10,18 +10,6 @@ return (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  
-  
-  self.clearAllCommands = function() {
-    charIndex = 0;
-    partyCommands = [];
-    enemyCommands = [];
-    //Animation.reset();
-    if (commandQueue) {
-      commandQueue.kill();
-    }
-  };
-  
   self.clearPartyCommand = function() {
     partyCommands[charIndex] = null;
   };
@@ -130,27 +118,6 @@ return (function() {
   
   self.getCharIndex = function() {
     return charIndex;
-  };
-  
-  self.getCurrentChar = function() {
-    return Party.getChar(self.getCharIndex());
-  };
-  
-  self.generateEnemyCommands = function() {
-    // Enemies don't get to go during the first round if it is a preemptive
-    // strike, this should get reset in executeCommands
-    if (!Battle.isPreemptive()) {
-      var enemiesByName = Battle.getAllEnemies();
-      for (var n in enemiesByName) {
-        var enemies = enemiesByName[n];
-        $.each(enemies, function(i, e) {
-          // TODO: Need to check for various incapacitating statuses
-          self.enemy(e);
-        });
-      }
-    }
-    
-    self.executeCommands();
   };
   
   return this;

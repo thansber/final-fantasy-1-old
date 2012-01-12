@@ -1,7 +1,6 @@
 require(
 ["jquery", "animations/init", "battle-engine", "cursors/init", "data/init", "debug/init", 
- "engine", "key-press-notifier", "logger", "menus", "messages", "movement", "party", "rng", "shops",  
-], 
+ "engine", "key-press-notifier", "logger", "menus", "messages", "movement", "party", "rng", "shops"], 
 function($, Animations, BattleEngine, CursorData, Data, Debug, 
          Engine, KeyPressNotifier, Logger, Menus, Message, Movement, Party, RNG, Shops) {
     $(document).ready(function() {

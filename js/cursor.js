@@ -4,6 +4,7 @@ define(
 function($, KeyPressNotifier, Logger) {
   
   var ALL_BY_ID = {};
+  var modifierKeyPressed = false;
   
   /* ======================= */
   /* CURSOR class definition */
@@ -70,9 +71,14 @@ function($, KeyPressNotifier, Logger) {
   };
   Cursor.prototype.isValid = function() { return this.$cursor && this.$cursor.length > 0; };
   Cursor.prototype.keyPressChange = function(key, isPressed) {
-    if (!isPressed) {
+    if (KeyPressNotifier.isModifierKey(key)) {
+      modifierKeyPressed = isPressed;      
+    }
+    // While a modifier key is pressed, don't do anything, let the browser capture the key
+    if (modifierKeyPressed || !isPressed) {
       return false; 
     }
+    
     switch (key) {
       case KeyPressNotifier.Left: 
         this.move(0, -1);

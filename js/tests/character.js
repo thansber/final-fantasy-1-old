@@ -1,6 +1,7 @@
-$(document).ready(function() {
-  module("Learning spells");
-
+define(
+["jquery", "character-class", "party", "spells", "statuses"], 
+function($, CharacterClass, Party, Spell, Status) {
+  module("Character - Learning spells");
   test("can learn a spell", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var spell = Spell.lookup("FIRE");
@@ -31,7 +32,7 @@ $(document).ready(function() {
   });
 
   // -----------------------------------------------------------------
-  module("Statuses");
+  module("Character - Statuses");
   
   test("adding status", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
@@ -39,8 +40,8 @@ $(document).ready(function() {
     char.addStatus(status);
     ok(!!char.currentStatuses[status.id]);
     
-    var otherStatuses = jQuery.map(Status.AllStatuses, function(status) { return status.id; });
-    otherStatuses.splice(jQuery.inArray(status.id, otherStatuses), 1);
+    var otherStatuses = $.map(Status.All, function(status) { return status.id; });
+    otherStatuses.splice($.inArray(status.id, otherStatuses), 1);
     for (var s in otherStatuses) {
       ok(!char.currentStatuses[otherStatuses[s]]);
     }
@@ -53,8 +54,8 @@ $(document).ready(function() {
     char.removeStatus(status);
     ok(!char.currentStatuses[status.id]);
     
-    var otherStatuses = jQuery.map(Status.AllStatuses, function(status) { return status.id; });
-    otherStatuses.splice(jQuery.inArray(status.id, otherStatuses), 1);
+    var otherStatuses = $.map(Status.All, function(status) { return status.id; });
+    otherStatuses.splice($.inArray(status.id, otherStatuses), 1);
     for (var s in otherStatuses) {
       ok(!char.currentStatuses[otherStatuses[s]]);
     }
@@ -100,12 +101,12 @@ $(document).ready(function() {
   test("battle status text", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.addStatus(Status.Dead);
-    equal("", char.getBattleStatus());
+    deepEqual(undefined, char.getBattleStatus().battleText);
     char.removeStatus(Status.Dead);
     char.addStatus(Status.Poison);
-    equal(Status.Poison.battleText, char.getBattleStatus());
+    equal(Status.Poison.battleText, char.getBattleStatus().battleText);
     char.addStatus(Status.Paralysis);
-    equal(Status.Paralysis.battleText, char.getBattleStatus());
+    equal(Status.Paralysis.battleText, char.getBattleStatus().battleText);
   });
   
   test("status preventing actions", function() {
@@ -118,5 +119,4 @@ $(document).ready(function() {
     char.addStatus(Status.Sleep);
     ok(!char.canTakeAction());
   });
-  
 });

@@ -15,6 +15,7 @@ function($, BattleConstants, Party, RNG, Skill, Spell) {
   };
   
   var clear = function() {
+    battle = null;
     charIndex = 0;
     partyCommands = [];
     enemyCommands = [];
@@ -55,8 +56,8 @@ function($, BattleConstants, Party, RNG, Skill, Spell) {
   };
   
   var init = function(b) {
-    battle = b;
     clear();
+    battle = b;
   };
   
   var isAllPartyCommandsEntered = function() {
@@ -189,6 +190,9 @@ function($, BattleConstants, Party, RNG, Skill, Spell) {
   return {
     changeCharIndex : changeCharIndex
    ,clear : clear
+   ,clearLastPartyCommand : function() { partyCommands[charIndex] = null; }
+   ,currentBattle : function() { return battle; } // this method should be limited in its use
+   ,currentChar : function() { return Party.getChar(charIndex); }
    ,enemy : enemy
    ,generateEnemyCommands : generateEnemyCommands
    ,getEnemyCommands : function() { return enemyCommands; }

@@ -1,8 +1,9 @@
-$(document).ready(function() {
-  
+define(
+["jquery", "character-class", "elements", "equipment", "party", "rng", "statuses"], 
+function($, CharacterClass, Element, Equipment, Party, RNG, Status) {  
   RNG.useDefault();
   
-  module("Adding/equipping");
+  module("Equipment - Adding/equipping");
   test("adding/equipping weapons", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.weapons().add("Short[S]").add("Rapier").equip(1);
@@ -84,7 +85,7 @@ $(document).ready(function() {
     equal(char.armorWeight(), 11);
   });
   
-  module("Weapon allowed classes");
+  module("Equipment - Weapon allowed classes");
   test("check # of allowed classes for all weapons", function() {
     
     var numClassesPerWeapon = {
@@ -129,7 +130,7 @@ $(document).ready(function() {
     ,"Xcalber" : 1
     ,"Masmune" : 12};
   
-    jQuery.each(numClassesPerWeapon, function(name, numClasses) {
+    $.each(numClassesPerWeapon, function(name, numClasses) {
       var weapon = Equipment.Weapon.lookup(name);
       equal(weapon.allowedClasses.length, numClasses, "Expected " + numClasses + " classes to be able to equip " + name + ", found " + weapon.allowedClasses.length);
     });
@@ -180,13 +181,13 @@ $(document).ready(function() {
      ,"ProRing" : 12};
     
     
-    jQuery.each(numClassesPerArmor, function(name, numClasses) {
+    $.each(numClassesPerArmor, function(name, numClasses) {
       var armor = Equipment.Armor.lookup(name);
       equal(armor.allowedClasses.length, numClasses, "Expected " + numClasses + " classes to be able to equip " + name + ", found " + armor.allowedClasses.length);
     });
   });
   
-  module("Item Usage");
+  module("Equipment - Item Usage");
   test("healing potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.applyDamage(32);
@@ -289,5 +290,4 @@ $(document).ready(function() {
       equal(char.charges[1], 1);
     });
   });
-  
 });

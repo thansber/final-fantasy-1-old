@@ -1,6 +1,4 @@
 - handle FEAR, WARP, EXIT spells
-- refactor walk/slide animations with CSS transitions/animations
-    - animation for walk, class toggling
 - use absolute in map config (may still need tile coords for world map encounters)
 - creating cursors, other key setup uses chaining setter methods
 

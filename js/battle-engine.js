@@ -1,9 +1,9 @@
 define(
 /* BattleEngine */ 
 ["jquery", "actions", "animations/action", "animations/battle", "animations/util", "battle-commands", "constants/battle", 
- "events", "logger", "messages", "monster", "party", "constants/party"], 
+ "constants/cursor", "events", "logger", "messages", "monster", "party", "constants/party"], 
 function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleCommands, BattleConstants, 
-         Event, Logger, Message, Monster, Party, PartyConstants) {
+         CursorConstants, Event, Logger, Message, Monster, Party, PartyConstants) {
 
   var $battle = null;
   var $party = null;
@@ -172,10 +172,65 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     });
     
     if (firstChar) {
+      q = AnimationBattle.messageToggler({roundStarting:false}, q);
       q = AnimationAction.moveCharForCommand({char:firstChar}, q);
+      Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
     }
         
     return q;
+  };
+  
+  var determineNextChar = function(currentChar) {
+    var nextChar = null;
+    for (var i = currentChar.charIndex + 1; i < Party.getChars().length; i++) {
+      nextChar = Party.getChar(i);
+      if (!nextChar) {
+        break;
+      }
+      if (BattleCommands.isAllPartyCommandsEntered()) {
+        break;
+      }
+      
+      if (!nextChar.isAlive()) {
+        BattleCommands.changeCharIndex(1);
+      } else if (!nextChar.canTakeAction()) {
+        BattleCommands.incapacitatedChar(nextChar);
+      } else {
+        break;
+      }
+    }
+    return nextChar;
+  };
+  
+  var determinePrevChar = function(currentChar) {
+    // Quick shortcut, if we are on the first char, just use them again
+    if (currentChar.charIndex == 0) {
+      return currentChar;
+    }
+    
+    var prevChar = null;
+    for (var i = currentChar.charIndex - 1; i >= 0; i--) {
+      prevChar = Party.getChar(i);
+      if (!prevChar) {
+        break;
+      }
+      if (!prevChar.isAlive()) {
+        BattleCommands.changeCharIndex(-1);
+      } else if (!prevChar.canTakeAction()) {
+        BattleCommands.clearLastPartyCommand();
+        BattleCommands.changeCharIndex(-1);
+      } else {
+        break;
+      }
+    }
+    
+    // If we got to the beginning of the char list, and the first char cannot go, it means
+    // the current char provided is the last one that can go, traversing backwards
+    if (prevChar && prevChar.charIndex == 0 && !prevChar.canTakeAction()) {
+      prevChar = currentChar;
+    }
+    
+    return prevChar;
   };
   
   var gatherCommands = function(battle) {
@@ -190,8 +245,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     } else if (battle.isPreemptive()) {
       q = AnimationBattle.messageToggler({roundStarting:true});
       q = AnimationBattle.preBattleMessage({message:BattleConstants.PreemptiveMessage}, q);
-      q = AnimationBattle.messageToggler({roundStarting:false}, q);
-      q = determineFirstCharCommand(battle, q);
+      determineFirstCharCommand(battle, q);
       q.start();
     } else {
       q = determineFirstCharCommand(battle);
@@ -203,7 +257,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     // If all characters are incapacitated, move on to the enemy commands and start the round
     // TODO: If a char is dead, I don't think this works correctly, may need a no-op action for dead chars
     if (BattleCommands.isAllPartyCommandsEntered()) {
-      BattleCommands.generateEnemyCommands();
+      BattleCommands.generateEnemyCommands(battle);
       startRound({battle:battle, commands:BattleCommands.shuffleCommands()});
     }
   };
@@ -213,6 +267,82 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
         && command.targetType == BattleConstants.Commands.Party // targeting the party
         && !$.isArray(command.target) // targeting a single character 
         && !command.target.isAlive(); // target is dead or stoned
+  };
+  
+  var nextCharForCommand = function() {
+    var currentChar = BattleCommands.currentChar();
+    
+    if (!currentChar) {
+      return;
+    }
+    
+    // Move the char index pointer to the next char
+    BattleCommands.changeCharIndex(1);
+    
+    // Figure out who the next char is that can take an action
+    // Dead or incapacitated chars are skipped or will have a command
+    // created by this method
+    var nextChar = determineNextChar(currentChar);
+    
+    // Queue the animations for the current char and the next char to move them back/forward
+    var q = AnimationAction.moveCharForCommand({char:currentChar});
+    if (nextChar) {
+      q = AnimationAction.moveCharForCommand({char:nextChar, initialPause:false}, q);
+    }
+    
+    // If everyone has a command, start the round
+    if (BattleCommands.isAllPartyCommandsEntered()) {
+      BattleCommands.generateEnemyCommands(BattleCommands.currentBattle());
+      $.when(q.start()).then(function() {
+        startRound({
+          battle : BattleCommands.currentBattle(), 
+          commands : BattleCommands.shuffleCommands()
+        });
+      });
+    } else {
+    // Run the animations for the 2 chars and start listening for the next's char command
+      $.when(q.start()).then(function() {
+        Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
+      });
+    }
+  };
+  
+  var populateSpellList = function() {
+    var char = BattleCommands.currentChar(); 
+    var $spellLevels = $spellList.find(".spell.level");
+    $spellLevels.empty();
+    $spellLevels.each(function(i) {
+      var $this = $(this);
+      $this.append(Message.create("L" + (i + 1), "levelNum"));
+      if (char.knownSpells[i]) {
+        for (var s in char.knownSpells[i]) {
+          $this.append(Message.create(char.knownSpells[i][s], "spell"));
+        }
+      }
+      $this.append(Message.create("" + char.charges[i], "numCharges"));
+    });
+    $spellList.removeClass("hidden");
+  };
+  
+  var prevCharForCommand = function() {    
+    var currentChar = BattleCommands.currentChar();
+    if (!currentChar) {
+      return;
+    }
+    
+    BattleCommands.clearLastPartyCommand();
+    BattleCommands.changeCharIndex(-1);
+    
+    var prevChar = determinePrevChar(currentChar);
+    
+    var q = AnimationAction.moveCharForCommand({char:currentChar});
+    if (prevChar) {
+      q = AnimationAction.moveCharForCommand({char:prevChar, initialPause:false}, q);
+    }
+    
+    $.when(q.start()).then(function() {
+      Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_MENU);
+    });
   };
   
   var resetCharStats = function(char) {
@@ -335,6 +465,8 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
   
   return {
     createCharUI : createCharUI,
+    determineNextChar : determineNextChar, // exposed for testing only
+    determinePrevChar : determinePrevChar, // exposed for testing only
     init : function() {
       $battle = $("#battle");
       $party = $(".party", $battle);
@@ -352,7 +484,9 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
       
       Event.listen(Event.Types.BattleGatherCommands, gatherCommands);
       Event.listen(Event.Types.BattleSetup, battleSetup);
-      //Event.listen(Event.Types.ResetCharStats, resetCharStats);
+      Event.listen(Event.Types.NextChar, nextCharForCommand);
+      Event.listen(Event.Types.PopulateSpellList, populateSpellList);
+      Event.listen(Event.Types.PrevChar, prevCharForCommand);
       Event.listen(Event.Types.StartRound, startRound);
     }
   };

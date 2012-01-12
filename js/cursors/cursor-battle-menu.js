@@ -1,7 +1,7 @@
 define(
 /* CursorBattleMenu */ 
-["jquery", "battle", "battle-commands", "cursor", "events", "key-press-notifier", "logger", "constants/cursor"],
-function($, Battle, BattleCommands, Cursor, Event, KeyPressNotifier, Logger, CursorConstants) {
+["jquery", "battle", "battle-commands", "constants/battle", "cursor", "constants/cursor", "events", "key-press-notifier", "logger"],
+function($, Battle, BattleCommands, BattleConstants, Cursor, CursorConstants, Event, KeyPressNotifier, Logger) {
   
   var setup = function() {
     /* ------------------ */
@@ -17,8 +17,8 @@ function($, Battle, BattleCommands, Cursor, Event, KeyPressNotifier, Logger, Cur
     
     BattleMenuCursor.prototype = Cursor.create(CursorConstants.BATTLE_MENU, battleMenuCursorOpt);
     BattleMenuCursor.prototype.back = function() {
-      KeyPressNotifier.clearListener();
-      Battle.prevChar();
+      this.clear();
+      Event.transmit(Event.Types.PrevChar);
     };
     BattleMenuCursor.prototype.columnChanged = function(y) {
       var $columns = this.$container.find(".column");
@@ -38,32 +38,48 @@ function($, Battle, BattleCommands, Cursor, Event, KeyPressNotifier, Logger, Cur
     BattleMenuCursor.prototype.yDestinations = function() { return this.$cursor.closest(".column").find(".text"); };
     
     BattleMenuCursor.prototype.drink = function() {
-      BattleCommands.party({action:BattleCommands.Drink, source:BattleCommands.getCurrentChar()});
+      BattleCommands.party({
+        source : BattleCommands.currentChar(),
+        action : BattleConstants.Actions.Drink
+      });
       Logger.warn("drink action not supported yet");
     };
     BattleMenuCursor.prototype.fight = function() { 
-      BattleCommands.party({action:BattleCommands.Attack, source:BattleCommands.getCurrentChar()});
+      BattleCommands.party({
+        source : BattleCommands.currentChar(),
+        action : BattleConstants.Actions.Attack
+      });
       this.hide();
       Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_ENEMIES, {prevListener:this});
     };
     BattleMenuCursor.prototype.item = function() {
-      BattleCommands.party({action:BattleCommands.UseItem, source:BattleCommands.getCurrentChar()});
+      BattleCommands.party({
+        source : BattleCommands.currentChar(),
+        action : BattleConstants.Actions.UseItem 
+      });
       Logger.warn("item action not supported yet");
     };
     BattleMenuCursor.prototype.magic = function() {
-      var currentChar = BattleCommands.getCurrentChar();
+      var currentChar = BattleCommands.currentChar();
       if (!currentChar.canUseMagic()) {
         KeyPressNotifier.setListener(this);
         return;
       }
-      BattleCommands.party({action:BattleCommands.CastSpell, source:currentChar});
+      BattleCommands.party({
+        source : currentChar,
+        action : BattleConstants.Actions.CastSpell
+      });
       Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_SPELLS);
       this.hide();
     };
     BattleMenuCursor.prototype.run = function() {
-      BattleCommands.party({action:BattleCommands.Run, source:BattleCommands.getCurrentChar(), target:{type:BattleCommands.Party}});
+      BattleCommands.party({
+        source : BattleCommands.currentChar(), 
+        action : BattleConstants.Actions.Run, 
+        target : {type:BattleCommands.Party}
+      });
       this.clear();
-      Battle.nextChar();
+      Event.transmit(Event.Types.NextChar);
     };
   };
   

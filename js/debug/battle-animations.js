@@ -13,25 +13,20 @@ function($, Battle, BattleConstants, DebugUtil, Event, Party, RNG, Spell) {
   
   var allCharAnimation = function(type, opt) {
     opt = opt || {};
+    var $party = $("#battle .party");
     $.each(Party.getChars(), function(i, char) {
-      opt.$char = Battle.getCharUI(char);
+      opt.$char = $party.find(".char").eq(char.charIndex);
       Event.animate(type).using(opt).start();
     });
   };
   
-  var firstEnemy = function() {
-    for (var name in Battle.getAllEnemies()) {
-      return Battle.lookupEnemy(name);
-    }
-  };
-  
   var run = function(success) {
-    Event.transmit(Event.Types.BattleMessageToggle, {roundStarting:true});
+    Event.animate(Event.Animations.MessageToggler).using({roundStarting:true}).start();
     Event.animate(Event.Animations.RunParty).using({command:{type:BattleConstants.Commands.Party, source:Party.getChar(0)}, success:success}).start(); 
   };
   
   var victory = function() {
-    Event.transmit(Event.Types.BattleMessageToggle, {roundStarting:true}); 
+    Event.animate(Event.Animations.MessageToggler).using({roundStarting:true}).start();
     Event.animate(Event.Animations.Victory).using({aliveChars:Party.getChars()}).start();
   };
   

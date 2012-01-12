@@ -27,10 +27,16 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Party, Spell, CursorC
       if (this.selectSpell()) {
         this.toggleSpellList(false);
         this.clear();
-        Battle.nextChar();
+        Event.transmit(Event.Types.NextChar);
       }
     };
-    BattleSpellCursor.prototype.reset = function(fullReset) { fullReset ? Battle.populateSpellList() : this.toggleSpellList(true); };
+    BattleSpellCursor.prototype.reset = function(fullReset) { 
+      if (fullReset) { 
+        Event.transmit(Event.Types.PopulateSpellList);
+      } else {
+        this.toggleSpellList(true);
+      }
+    };
     BattleSpellCursor.prototype.rowChanged = function(y) {
       var $level = this.$cursor.closest(".level");
       var $levels = this.$container.find(".level");
@@ -67,7 +73,7 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Party, Spell, CursorC
     BattleSpellCursor.prototype.selectCharAsTarget = function(char) {
       BattleCommands.party({target:{type:BattleCommands.Party, char:char}});
       this.clear();
-      Battle.nextChar();
+      Event.transmit(Event.Types.NextChar);
     };
     BattleSpellCursor.prototype.selectSpell = function() {
       if (!(this.$cursor) || this.$cursor.length == 0) {
@@ -78,7 +84,7 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Party, Spell, CursorC
       var $levels = this.$container.find(".level");
       var levelIndex = $levels.index($level);
       var spellIndex = $level.find(".spell").index(this.$cursor);
-      var char = Party.getChar(BattleCommands.getCharIndex());
+      var char = BattleCommands.currentChar();
       var spellId = char.knownSpells[levelIndex][spellIndex]; 
       var spell = Spell.lookup(spellId);
       if (char.canCastSpell(spell)) {

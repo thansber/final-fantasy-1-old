@@ -88,7 +88,7 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Monster, Party, Util,
     BattleEnemyCursor.prototype.next = function() {
       this.selectEnemyAsTarget();
       this.clear();
-      Battle.nextChar();
+      Event.transmit(Event.Types.NextChar);
     };
     BattleEnemyCursor.prototype.selectEnemyAsTarget = function() {
       var monsterCss = Util.getCssClass(this.$cursor, "last");
