@@ -32,7 +32,7 @@ function($, Battle, BattleConstants, DebugUtil, Event, Party, RNG, Spell) {
   
   var victory = function() {
     Event.transmit(Event.Types.BattleMessageToggle, {roundStarting:true}); 
-    Event.animate(Event.Animations.Victory).start();
+    Event.animate(Event.Animations.Victory).using({aliveChars:Party.getChars()}).start();
   };
   
   return {

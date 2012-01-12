@@ -2,21 +2,19 @@ define(
 /* Spell */ 
 ["jquery", "spells"], 
 function($, Spell) { 
-
-  return (function() {
     
-    this.ALL = {};
+  var ALL = {};
     
-    Skill.prototype = new Spell.SpellBase();
-    function Skill(opt) {
-      opt.base.level = 0;
-      opt.base.isSkill = true;
-      Spell.SpellBase.call(this, opt);
-    };
+  var Skill = function(opt) {
+    opt.base.level = 0;
+    opt.base.isSkill = true;
+    Spell.SpellBase.call(this, opt);
+    ALL[opt.base.name] = this;
+  };
+  Skill.prototype = new Spell.SpellBase();
     
-    this.create = function(opt) { return new Skill(opt); };
-    this.lookup = function(skillId) { return this.ALL[skillId]; };
-    
-    return this;
-  }).call({});
+  return {
+    create : function(opt) { return new Skill(opt); }
+   ,lookup : function(skillId) { return ALL[skillId]; }
+  };
 });

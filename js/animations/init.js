@@ -7,9 +7,10 @@ function(AnimationAction, AnimationBattle, AnimationMap, AnimationShop, Event) {
       AnimationAction.init();
       
       Event.listen(Event.Animations.CharFlicker, AnimationBattle.charFlicker);
+      Event.listen(Event.Animations.MessageToggler, AnimationBattle.messageToggler);
       Event.listen(Event.Animations.MoveChar, AnimationBattle.moveChar);
       Event.listen(Event.Animations.PreBattleMessage, AnimationBattle.preBattleMessage);
-      Event.listen(Event.Animations.RunParty, AnimationBattle.runParty);
+      Event.listen(Event.Animations.Rewards, AnimationBattle.rewards);
       Event.listen(Event.Animations.SpellBackgroundFlicker, AnimationBattle.spellBackgroundFlicker);
       Event.listen(Event.Animations.SpellEffect, AnimationBattle.spellEffect);
       Event.listen(Event.Animations.Splash, AnimationBattle.splash);
@@ -19,6 +20,8 @@ function(AnimationAction, AnimationBattle, AnimationMap, AnimationShop, Event) {
       Event.listen(Event.Animations.Attack, AnimationAction.attack);
       Event.listen(Event.Animations.CastSpell, AnimationAction.castSpell);
       Event.listen(Event.Animations.Defeat, AnimationAction.defeat);
+      Event.listen(Event.Animations.MoveCharForCommand, AnimationAction.moveCharForCommand);
+      Event.listen(Event.Animations.RunParty, AnimationAction.runParty);
       Event.listen(Event.Animations.StatusHeal, AnimationAction.statusHeal);
       Event.listen(Event.Animations.Victory, AnimationAction.victory);
       

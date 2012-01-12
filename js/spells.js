@@ -1,7 +1,7 @@
 define( 
 /* Spell */ 
-["jquery", "logger", "rng", "constants/rng", "constants/spell"], 
-function($, Logger, RNG, RngConstants, SpellConstants) { 
+["jquery", "logger", "rng", "constants/rng", "constants/spell", "statuses"], 
+function($, Logger, RNG, RngConstants, SpellConstants, Status) { 
   return (function() {
     
     var self = this;
@@ -122,6 +122,7 @@ function($, Logger, RNG, RngConstants, SpellConstants) {
          
          spell.result.dmg.push(dmg);
          spell.result.targetHp.push(target.hitPoints);
+         spell.result.success.push(true);
          spell.result.died.push(target.isDead());
        }
      }

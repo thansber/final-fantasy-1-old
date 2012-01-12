@@ -1,8 +1,8 @@
 define( 
 /* Data */
-["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills",
+["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
  "./map-transitions", "./town-maps", "./world-map"], 
-function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData,
+function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, TownMapData, WorldMapData) {
   
   // Any data setup should reside here
@@ -12,6 +12,7 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData,
     EquipmentData.init();
     MonsterData.init();
     ShopInventoryData.init();
+    EncounterData.init();
     
     TownMapData.init();
     WorldMapData.init();

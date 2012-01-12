@@ -116,10 +116,32 @@ function($, Logger, Monster, Party, RNG) {
     }
   };
   
+  Battle.prototype.calculateRewards = function() {
+    var totalExp = 0, goldToAdd = 0;
+    for (var name in this.enemiesByName) {
+      var enemies = this.enemiesByName[name];
+      for (var e in enemies) {
+        var enemy = enemies[e];
+        if (!enemy.ranAway) {
+          totalExp += enemy.exp;
+          goldToAdd += enemy.gold;
+        }
+      }
+    }
+    
+    var charsGettingExp = [];
+    $.each(Party.getChars(), function(i, char) {
+      if (char.isAlive()) { charsGettingExp.push(char); }
+    });
+    
+    var expPerChar = Math.floor(totalExp / charsGettingExp.length);
+    // EXP is always at least 1, even if all enemies run away
+    expPerChar = expPerChar <= 0 ? 1 : expPerChar; 
+    
+    return { exp:expPerChar, gold:goldToAdd };
+  };
   Battle.prototype.getRestrictions = function() { return this.isMixedSize() ? restrictions.mixed : restrictions; };
   Battle.prototype.isAmbush = function() { return !this.isStarted && this.ambush; };
-  Battle.prototype.isPreemptive = function() { return !this.isStarted && this.preemptive; };
-  
   Battle.prototype.isMixedSize = function() {
     var numSizes = 0;
     if (this.enemiesBySize.small.enemies.length > 0) { numSizes++; } 
@@ -127,7 +149,8 @@ function($, Logger, Monster, Party, RNG) {
     if (this.enemiesBySize.fiend.enemies.length > 0) { numSizes++; }
     return numSizes > 1;
   };
-  
+  Battle.prototype.isPreemptive = function() { return !this.isStarted && this.preemptive; };
+  Battle.prototype.isRunnable = function() { return this.runnable; };
   Battle.prototype.lookupEnemy = function(name, index) {
     var enemies = this.enemiesByName[name];
     if (enemies) {

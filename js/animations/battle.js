@@ -8,7 +8,7 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
       q = q || AnimationQueue.create();
 
       var defaults = {numAnimations:3, flickerPause:60, initialPause:200, $char:null};
-      var settings = jQuery.extend({}, defaults, opt);
+      var settings = $.extend({}, defaults, opt);
       var $char = settings.$char;
       
       q.delay(settings.initialPause);
@@ -25,11 +25,28 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
       return q;
     },
     
+    messageToggler : function(opt, q) {
+      q = q || AnimationQueue.create();
+
+      var defaults = {show:true};
+      var settings = $.extend(defaults, opt);
+
+      q.add(function() {
+        $("#battle")
+          .find(".input").toggle(!settings.roundStarting).end()
+          .find(".messages").toggleClass("hidden", !settings.roundStarting);
+      });
+      
+      AnimationUtil.autoStart(q, settings, Event.Animations.MessageTogglerDone);
+      
+      return q;
+    },
+    
     moveChar : function(opt, q) {
       q = q || AnimationQueue.create();
      
       var defaults = {$char:null, numAnimations:3, pause:70, restoreStatus:true};
-      var settings = jQuery.extend({}, defaults, opt);
+      var settings = $.extend({}, defaults, opt);
       var $char = settings.$char;
      
       q.add(function() { AnimationUtil.suspendCriticalStatus($char); });
@@ -63,49 +80,39 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
       
       return q;
     },
-   
-    runParty : function(opt, q) {
+    
+    rewards : function(opt, q) {
       q = q || AnimationQueue.create();
       
-      var defaults = {command:null, pause:AnimationUtil.RUN_DELAY, success:false};
-      var settings = jQuery.extend({}, defaults, opt);
-      //var isParty = (settings.command.type == BattleCommands.Party);
+      var defaults = {battle:null};
+      var settings = $.extend(true, defaults, opt);
       
-      if (settings.command && settings.command.source) { 
-        q.add(function() { Message.source(settings.command.source.getName()); });
-        q.delay(Message.getQuickPause());
-      }
+      var rewards = settings.battle.calculateRewards();
+      $.each(settings.aliveChars, function(i, char) { char.addExperience(rewards.exp); });
+      Party.addGold(rewards.gold);
       
-      if (settings.success) {
-        q.add(function() { Message.desc(AnimationUtil.RUN_SUCCESS); });
-        q.delay(Message.getBattlePause());
-        jQuery.each(Party.getAliveChars(), function(i, char) {
-          q.add(function() {
-            var $char = Battle.getCharUI(char);
-            $char.addClass("running");
-            if (!($char.hasClass("critical"))) {
-              $char.addClass("away");
-            }
-          });
-          q.delay(settings.pause);
-        });
-      } else {
-        q.add(function() { Message.desc(AnimationUtil.RUN_FAILURE); })
-        q.delay(Message.getBattlePause());
-      }
+      q.add(function() { Message.desc(AnimationUtil.VICTORY); });
+      q.delay(Message.getBattlePause());
+      q.add(function() { Message.desc({show:false}); });
       
-      q.hideMessages({hideDesc:true, hideSource:true, initialPause:false});
+      q.add(function() { Message.source(AnimationUtil.VICTORY_EXP); });
+      q.delay(Message.getQuickPause());
+      q.add(function() { Message.action(rewards.exp + "P"); });
+      q.delay(Message.getQuickPause());
+      q.add(function() { Message.target(AnimationUtil.VICTORY_GOLD); });
+      q.delay(Message.getQuickPause());
+      q.add(function() { Message.damage(rewards.gold + "G"); });
+      q.hideMessages({hideDamage:true, hideTarget:true, hideAction:true, hideSource:true});
       
-      AnimationUtil.autoStart(q, settings, Event.Animations.RunPartyDone);
- 
+      AnimationUtil.autoStart(q, settings, Event.Animations.RewardsDone);
       return q;
     },
-    
+   
     spellBackgroundFlicker : function(opt, q) {
       q = q || AnimationQueue.create();
       
       var defaults = {spell:null, numAnimations:4, flickerPause:50};
-      var settings = jQuery.extend({}, defaults, opt);
+      var settings = $.extend({}, defaults, opt);
       var $background = $("#battle .main .border, .stats .border");
       
       for (var i = 0; i < settings.numAnimations; i++) {
@@ -146,7 +153,7 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
       q = q || AnimationQueue.create();
       
       var defaults = {pause:80, numAnimations:null, overlay:false, $enemy:null, splashColors:""};
-      var settings = jQuery.extend({}, defaults, opt);
+      var settings = $.extend({}, defaults, opt);
       var $enemy = settings.$enemy;
       
       if (!settings.numAnimations) {
@@ -192,7 +199,7 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
     swingWeapon : function(opt, q) {
       q = q || AnimationQueue.create();
       var defaults = {numAnimations:3, pause:60, start:false, $char:null};
-      var settings = $.extend({}, defaults, opt);
+      var settings = $.extend(true, defaults, opt);
       var $char = settings.$char;
   
       q.add(function() { $char.addClass("attack swing"); });
@@ -214,7 +221,7 @@ function ($, AnimationQueue, AnimationUtil, Battle, Event, Message, Party, RNG) 
     windowShake : function(opt, q) {
       q = q || AnimationQueue.create();
       var defaults = {numPixels:3, speed:30, pause:50};
-      var settings = jQuery.extend({}, defaults, opt);
+      var settings = $.extend({}, defaults, opt);
       var $battle = $("#battle");
       
       q.add(function() { AnimationUtil.moveBattleWindow($battle, settings, RNG.randomUpTo(1, 0), 1); });

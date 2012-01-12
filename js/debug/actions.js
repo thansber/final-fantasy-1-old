@@ -1,10 +1,14 @@
 define(
 /* DebugActions */ 
 ["jquery", "battle", "battle-commands", "constants/battle", "character-class", "./util",
- "encounters", "events", "constants/map", "party", "rng", "spells"], 
+ "encounters", "events", "constants/map", "party", "rng", "spells", "statuses"], 
 function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil, 
-         Encounter, Event, MapConstants, Party, RNG, Spell) {
+         Encounter, Event, MapConstants, Party, RNG, Spell, Status) {
 
+  var go = function(battle, opt) {
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:opt.commands ? opt.commands : BattleCommands.shuffleCommands()});  
+  };
+  
   var newBattle = function(charClasses, enemies, opt) {
     opt = $.extend(true, {doNotMove:true}, opt);
     for (var c in charClasses) {
@@ -22,7 +26,14 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
     var battle = null;
     if (typeof enemies === "string") {
       var encounter = Encounter.formationToEncounter(Encounter.lookupFormation(enemies));
-      Battle.setup($.extend(true, {background:MapConstants.BattleBackgrounds.Forest, doNotMove:opt.doNotMove}, encounter));
+      battle = Battle.create({
+        party : Party.getChars()
+       ,enemies : encounter.enemies
+       ,surprise : encounter.surprise
+       ,runnable : encounter.runnable
+       ,background : MapConstants.BattleBackgrounds.Forest
+       ,doNotMove : opt.doNotMove
+      });
     } else {
       battle = Battle.create({
         party : Party.getChars()
@@ -60,14 +71,14 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
       action : BattleConstants.Actions.Attack,
       target : {name:monsterName, index:1, type:BattleConstants.Commands.Enemy} 
     });
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
+    go(battle);
   };
   
   var enemyAttack = function() {
     var monsterName = "COCTRICE";
     var battle = newBattle([CharacterClass.BLACKBELT], {name:monsterName,qty:2});
     BattleCommands.enemy(battle.lookupEnemy(monsterName, 1));
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
+    go(battle);
   };
   
   var multipleEnemyAttack = function() {
@@ -75,7 +86,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
     var battle = newBattle([CharacterClass.BLACK_MAGE], {name:monsterName,qty:2});
     BattleCommands.enemy(battle.lookupEnemy(monsterName, 0));
     BattleCommands.enemy(battle.lookupEnemy(monsterName, 1));
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
+    go(battle);
   };
   
   var castSpellOnSelf = function() {
@@ -89,7 +100,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
       spellId : "RUSE",
       target : {type:BattleConstants.Commands.Party, char:char}
     });
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
+    go(battle);
   };
   
   var castSpellOnPartyTarget = function() {
@@ -107,11 +118,11 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
       spellId : "CURE", 
       target:{type:BattleConstants.Commands.Party, char:target}
     });
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:BattleCommands.shuffleCommands()});
+    go(battle);
   };
   
   var castHealingSpellOnEntireParty = function() {
-    newBattle([CharacterClass.FIGHTER
+    var battle = newBattle([CharacterClass.FIGHTER
               ,CharacterClass.WHITE_MAGE
               ,CharacterClass.WHITE_MAGE
               ,CharacterClass.WHITE_MAGE]
@@ -125,106 +136,140 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
     
     var caster = Party.getChar(1);
     addSpellsToChar(caster, ["CURE","RUSE","HEAL","INVS","ALIT","CUR2","AFIR","AMUT","CUR3","LIFE"]);
-    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"HEAL", target:{type:BattleConstants.Commands.Party, affects:BattleCommands.All}});
-    BattleCommands.executeCommands();
+    BattleCommands.party({
+      source : caster, 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "HEAL", 
+      target : {type:BattleConstants.Commands.Party, affects:BattleConstants.Targets.All}
+    });
+    go(battle);
   };
   
   var castSpellOnEnemy = function() {
-    newBattle([CharacterClass.BLACK_WIZARD], {name:"IMP",qty:2});
+    var battle = newBattle([CharacterClass.BLACK_WIZARD], {name:"IMP",qty:2});
     var caster = Party.getChar(0);
     addSpellsToChar(caster, ["BRAK"]);
-    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"BRAK", target:{name:"IMP",index:1,type:BattleConstants.Commands.Enemy, affects:BattleCommands.Single}});
-    BattleCommands.executeCommands();
+    BattleCommands.party({
+      source : caster, 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "BRAK", 
+      target : {name:"IMP",index:1,type:BattleConstants.Commands.Enemy, affects:BattleConstants.Targets.Single}
+    });
+    go(battle);
   };
   
   var castSpellOnEnemies = function() {
-    newBattle([CharacterClass.BLACK_WIZARD], {name:"IMP",qty:3});
+    var battle = newBattle([CharacterClass.BLACK_WIZARD], [{name:"IMP",qty:3}, {name:"GrIMP", qty:1}]);
     var caster = Party.getChar(0);
     addSpellsToChar(caster, ["FIRE","LIT","LOCK","ICE","TMPR","FIR2","LIT2","LOK2","FAST","ICE2","BANE","FIR3","STOP"]);
     // Kill off one enemy
-    var enemyToKill = Battle.lookupEnemy("IMP", 1);
+    var enemyToKill = battle.lookupEnemy("IMP", 1);
     enemyToKill.applyDamage(1000);
-    Battle.killEnemyUI(enemyToKill, 1);
-    BattleCommands.party({source:caster, action:BattleConstants.Actions.CastSpell, spellId:"ICE2", target:{type:BattleConstants.Commands.Enemy, affects:BattleCommands.All}});
-    BattleCommands.executeCommands();
+    $("#battle .enemies .enemy." + enemyToKill.cssClass).eq(1).addClass("dead");
+    BattleCommands.party({
+      source : caster, 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "ICE2", 
+      target : {type:BattleConstants.Commands.Enemy, affects:BattleConstants.Targets.All}
+    });
+    go(battle);
   };
   
   var castSpellOnUndead = function() {
-    var monsterName = "ZOMBIE";
-    newBattle([CharacterClass.WHITE_WIZARD], {name:monsterName,qty:2}, {party:function() {
-      var caster = Party.getChar(0);
-      addSpellsToChar(caster, ["HARM","HRM2","HRM3","HRM4"]);
-    }});
-    Battle.startRound(true);
+    var battle = newBattle([CharacterClass.WHITE_WIZARD], [{name:"ZOMBIE",qty:2}, {name:"IMP",qty:1}]);
+    var caster = Party.getChar(0);
+    addSpellsToChar(caster, ["HARM","HRM2","HRM3","HRM4"]);
+    BattleCommands.party({
+      source : caster, 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "HRM2", 
+      target : {type:BattleConstants.Commands.Enemy, affects:BattleConstants.Targets.All}
+    });
+    go(battle);
   };
   
   var castSpellOnEntireParty = function() {
-    newBattle([CharacterClass.FIGHTER,CharacterClass.BLACKBELT,CharacterClass.WHITE_MAGE,CharacterClass.BLACK_MAGE]
-             ,{name:"MAGE",qty:4});
-    var monster = Battle.lookupEnemy("MAGE", 0);
-    var spell = Spell.lookup("FIR3");
-    BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.CastSpell, spellId:spell.spellId, target:monster.determineSpellTarget(spell), targetType:BattleConstants.Commands.Party});
-    BattleCommands.executeCommands();
+    var battle = newBattle([CharacterClass.FIGHTER,CharacterClass.BLACKBELT,CharacterClass.WHITE_MAGE,CharacterClass.BLACK_MAGE],
+                           {name:"MAGE",qty:4});
+    var command = {
+      source : battle.lookupEnemy("MAGE", 0), 
+      action : BattleConstants.Actions.CastSpell, 
+      spellId : "FIR3", 
+      target : Party.getAliveChars(), 
+      targetType:BattleConstants.Commands.Party
+    };
+    go(battle, {commands:[command]});
   };
   
   var healStatusForChar = function() {
-    newBattle([CharacterClass.FIGHTER], {name:"WrWOLF"}, {party:function() {
-      Party.getChar(0).addStatus(Status.Sleep);
-    }});
-    
+    var battle = newBattle([CharacterClass.FIGHTER], {name:"WrWOLF"});
     var char = Party.getChar(0);
-    var monster = Battle.lookupEnemy("WrWOLF", 0);
-    var commands = [];
+    
+    char.addStatus(Status.Sleep);
+    Event.transmit(Event.Types.AdjustCharStats, {result:{
+      target : char,
+      status : Status.Sleep
+    }});
     RNG.useCustom(RNG.AlwaysSuccess);
     
-    commands.push(BattleCommands.party({source:char, action:BattleCommands.StatusHeal, target:{type:BattleConstants.Commands.Party, char:char}}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:monster.determineSingleTarget(), targetType:BattleConstants.Commands.Party}));
-    BattleCommands.executeCommands(commands);
+    var commands = [];
+    commands.push(BattleCommands.party({
+      source : char, 
+      action : BattleConstants.Actions.StatusHeal, 
+      target : {type:BattleConstants.Commands.Party, char:char}
+    }));
+    commands.push({
+      source : battle.lookupEnemy("WrWOLF", 0), 
+      action : BattleConstants.Actions.Attack, 
+      target : char, 
+      targetType : BattleConstants.Commands.Party
+    });
+    go(battle, {commands:commands});
   };
   
   var monsterRetargets = function() {
-    newBattle([CharacterClass.BLACK_MAGE, CharacterClass.FIGHTER], {name:"IronGOL",qty:2});
-    var char = Party.getChar(0);
-    var monster = Battle.lookupEnemy("IronGOL", 0);
+    var battle = newBattle([CharacterClass.BLACK_MAGE, CharacterClass.FIGHTER], {name:"IronGOL",qty:2});
     var commands = [];    
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
+    commands.push({
+      source : battle.lookupEnemy("IronGOL", 0), 
+      action : BattleConstants.Actions.Attack, 
+      type : BattleConstants.Commands.Enemy,
+      target : Party.getChar(0), 
+      targetType : BattleConstants.Commands.Party
+    });
+    commands.push({
+      source : battle.lookupEnemy("IronGOL", 1), 
+      action : BattleConstants.Actions.Attack,
+      type : BattleConstants.Commands.Enemy,
+      target : Party.getChar(0), 
+      targetType : BattleConstants.Commands.Party
+    });
     RNG.useCustom(RNG.AlwaysSuccess);
-    BattleCommands.executeCommands(commands);
+    go(battle, {commands:commands});
   };
   
   var ineffectiveCharAttack = function() {
     var monster = "IMP";
-    newBattle([CharacterClass.KNIGHT, CharacterClass.FIGHTER], {name:monster, qty:2}, {party:function() {
-      Party.getChar(0).weapon("Xcalber", true)
-      Party.getChar(1).weapon("Masmune", true);
+    var battle = newBattle([CharacterClass.KNIGHT, CharacterClass.FIGHTER], {name:monster, qty:2}, {party:function() {
+      Party.getChar(0).weapons().add("Xcalber", 0).equip(0)
+      Party.getChar(1).weapons().add("Masmune", 0).equip(0);
     }});
     
     var commands = [];
-    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleConstants.Actions.Attack, target:{name:monster, type:BattleConstants.Commands.Enemy}}));
+    commands.push(BattleCommands.party({
+      source : Party.getChar(0), 
+      action : BattleConstants.Actions.Attack, 
+      target : {name:monster, type:BattleConstants.Commands.Enemy}
+    }));
     BattleCommands.changeCharIndex(1);
-    commands.push(BattleCommands.party({source:Party.getChar(1), action:BattleConstants.Actions.Attack, target:{name:monster, type:BattleConstants.Commands.Enemy}}));
+    commands.push(BattleCommands.party({
+      source : Party.getChar(1), 
+      action : BattleConstants.Actions.Attack, 
+      target : {name:monster, type:BattleConstants.Commands.Enemy}
+    }));
     
     RNG.useCustom(RNG.AlwaysSuccess);
-    BattleCommands.executeCommands(commands);
-  };
-  
-  var cursorFunWithDeadEnemies = function() {
-    var monsterName = "IMP";
-    newBattle([CharacterClass.FIGHTER], {name:monsterName, qty:8}, {monster:function() {
-      //killEnemy(monsterName, 3);
-      killEnemy(monsterName, 4);
-    }});
-    Battle.startRound(true);
-  };
-  
-  var cursorFunWithSpells = function() {
-    var monsterName = "IMP";
-    newBattle([CharacterClass.BLACK_MAGE, CharacterClass.THIEF, CharacterClass.BLACKBELT, CharacterClass.RED_MAGE], {name:monsterName, qty:4}, {party:function() {
-      var caster = Party.getChar(0);
-      addSpellsToChar(caster, ["FIRE","LIT","LOCK","ICE","TMPR","FIR2","LIT2","LOK2","FAST","ICE2","BANE","FIR3"]);
-    }});
-    Battle.startRound(true);
+    go(battle, {commands:commands});
   };
   
   var preemptive = function() {
@@ -237,12 +282,21 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
   };
   
   var unrunnable = function() {
-    newBattle([CharacterClass.WHITE_MAGE], "21-1");
-    var monster = Battle.lookupEnemy("EARTH");
+    var battle = newBattle([CharacterClass.WHITE_MAGE], "21-1");
     var commands = [];
-    commands.push(BattleCommands.party({source:Party.getChar(0), action:BattleConstants.Actions.Run, target:{type:BattleConstants.Commands.Party}}));
-    commands.push(BattleCommands.enemy(null, {source:monster, action:BattleConstants.Actions.Attack, target:Party.getChar(0), targetType:BattleConstants.Commands.Party}));
-    BattleCommands.executeCommands(commands);
+    commands.push(BattleCommands.party({
+      source : Party.getChar(0), 
+      action : BattleConstants.Actions.Run, 
+      target : {type:BattleConstants.Commands.Party}
+    }));
+    commands.push({
+      source : battle.lookupEnemy("EARTH"), 
+      action : BattleConstants.Actions.Attack, 
+      type : BattleConstants.Commands.Enemy,
+      target : Party.getChar(0), 
+      targetType:BattleConstants.Commands.Party
+    });
+    go(battle, {commands:commands});
   };
   
   var buttons = {
@@ -259,13 +313,10 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
    ,"status.heal":{desc:"Heal a status", onclick:healStatusForChar}
    ,"monster.retarget":{desc:"Monster retargets when character dies", onclick:monsterRetargets}
    ,"ineffective.attack":{desc:"Character attack ineffective", onclick:ineffectiveCharAttack}
-   ,"cursor-dead-enemy":{desc:"Enemy selection cursor", onclick:cursorFunWithDeadEnemies}
-   ,"cursor-spells":{desc:"Spell list cursor", onclick:cursorFunWithSpells}
    ,"ambush":{desc:"Ambush!", onclick:ambush}
    ,"preemptive":{desc:"Preemptive attack", onclick:preemptive}
    ,"unrunnable":{desc:"Unrunnable battle", onclick:unrunnable}
   };
-  
   
   return {
     event : function($target) {

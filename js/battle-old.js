@@ -19,36 +19,6 @@ return (function() {
   /* ======================================================== */
   /* PRIVATE METHODS ---------------------------------------- */
   /* ======================================================== */
-  var calculateSurprise = function(enemySurprise) {
-    
-    if (!self.isRunnable()) {
-      console.log("encounter is not runnable, normal battle");
-      return;
-    }
-    
-    var leader = null; 
-    $.each(Party.getChars(), function(i, char) { 
-      if (char.isAlive()) { 
-        leader = char;
-        return false;
-      } 
-    });
-    var leaderQuickness = Math.floor((leader.agility + leader.luck) / 8);
-    var r = RNG.randomUpTo(100, leaderQuickness);
-    var result = r + leaderQuickness - enemySurprise;
-    if (result < 0) {
-      result = 0;
-    }
-        
-    if (result <= 10) {
-      ambush = true;
-    } else if (result >= 90) {
-      preemptive = true;
-    }
-    
-    Logger.info("SURPRISE - " + (ambush ? "AMBUSH - " : preemptive ? "PREEMPTIVE - " : "") + "(leader quick + random - surprise) " + leaderQuickness + " + " + r + " - " + enemySurprise + " = " + result);
-  };
-  
   
   var isMessageValid = function(message) {
     return message != null && message.length > 0;
@@ -57,49 +27,8 @@ return (function() {
   /* ======================================================== */
   /* PUBLIC METHODS ----------------------------------------- */
   /* ======================================================== */
-  self.calculateRewards = function() {
-    var totalExp = 0, goldToAdd = 0;
-    for (var name in enemies) {
-      var enemiesByName = enemies[name];
-      for (var e in enemiesByName) {
-        var enemy = enemiesByName[e];
-        if (!enemy.ranAway) {
-          totalExp += enemiesByName[e].exp;
-          goldToAdd += enemiesByName[e].gold;
-        }
-      }
-    }
-    
-    var charsGettingExp = [];
-    $.each(Party.getChars(), function(i, char) {
-      if (char.isAlive()) { charsGettingExp.push(char); }
-    });
-    
-    var expPerChar = Math.floor(totalExp / charsGettingExp.length);
-    // EXP is always at least 1, even if all enemies run away
-    expPerChar = expPerChar <= 0 ? 1 : expPerChar; 
-    
-    return {
-      aliveChars: charsGettingExp
-     ,exp: expPerChar
-     ,gold: goldToAdd
-    };
-  };
   
-
   self.getAllEnemies = function() { return enemies; };
-  
-  self.isAmbush = function() {
-    return ambush;
-  }
-  
-  self.isPreemptive = function() {
-    return preemptive;
-  };
-  
-  self.isRunnable = function() {
-    return runnable;
-  };
   
   self.moveCharBackwardAndOtherForward = function(charIndexChange) {
     // charIndexChange = -1 for prev char, 1 for next char

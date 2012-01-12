@@ -56,9 +56,14 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
   
   var getCharUI = function(char) { return char == null ? null : $party.find(".char").eq(char.charIndex); };
   var getEnemyUI = function(monster, index) { return monster == null ? null : $enemies.find(".enemy." + monster.cssClass).eq(index == null ? 0 : index); };
-  var getEnemyUIByIndex = function(index) { return $enemies.find(".enemy:not(.dead)").eq(index == null ? 0 : index); };
-  var killEnemyUI = function(monster, index) {
-    var $enemy = (index == null ? monster : getEnemyUI(monster, index));
+  var getEnemyUIByIndex = function(index) { return $enemies.find(".enemy").eq(index == null ? 0 : index); };
+  var killEnemyUI = function(opt) {
+    var $enemy = null;
+    if (opt.enemy) {
+      $enemy = getEnemyUI(opt.enemy, opt.index);
+    } else {
+      $enemy = getEnemyUIByIndex(opt.index);
+    }
     $enemy.addClass("dead");    
   };
   
@@ -150,7 +155,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         q.delay(result.crit || result.status ? Message.getBattlePause() : Message.getQuickPause());
         if (isParty) {
           q.add(function() { Message.desc(AnimationUtil.ENEMY_DIED_MSG); });
-          q.add(function() { killEnemyUI(command.target, command.targetIndex); });
+          q.add(function() { killEnemyUI({enemy:command.target, index:command.targetIndex}); });
         } else {
           q.add(function() { Message.desc(AnimationUtil.CHAR_DIED_MSG); });
           q.delay(Message.getQuickPause());
@@ -210,13 +215,12 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       // Spell result messages
       if (command.targetType == BattleConstants.Commands.Party) {
         // Spell is being cast on party
-        for (var i = 0; i < result.target.length; i++) {
-          var target = result.target[i];
+        $.each(result.target, function(i, target) {
           var $target = getCharUI(target);
           var descShown = false;
           var dmgShown = false;
           
-          q.add(function() { Message.target(target.getName()); }, 0);
+          q.add(function() { Message.target(target.getName()); });
           q.addAll(AnimationBattle.charFlicker, {$char:$target});
           
           var resultDamage = result.dmg[i];
@@ -242,43 +246,40 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
             descShown = true;
           }
           
-          q.add(function(i) {
-            return function() {
-              adjustCharStats({
-                result : {
-                  target : target
-                 ,targetHp : result.targetHp[i]
-                 ,died : result.died[i]
-                 ,status : result.status[i]
-                 ,clearStatuses : result.clearStatuses
-                }
-              });
-            };
-          }(i));
+          q.add(function() {
+            adjustCharStats({
+              result : {
+                target : result.target[i]
+               ,targetHp : result.targetHp[i]
+               ,died : result.died[i]
+               ,status : result.status[i]
+               ,clearStatuses : result.clearStatuses
+              }
+            });
+          });
           
           q.hideMessages({hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
-        }
+        });
       } else {
         // Spell is being cast on enemies
-        for (var i = 0; i < result.target.length; i++) {
-          var target = result.target[i];
-          var $target = (result.target.length == 1 ? getEnemyUI(target, command.targetIndex) : getEnemyUIByIndex(i));
+        var $aliveEnemies = $enemies.find(".enemy:not(.dead)");
+        $.each(result.target, function(i, target) {
+          var $target = (result.target.length == 1 ? getEnemyUI(target, command.targetIndex) : $aliveEnemies.eq(i));
           if (!($target.is(".dead"))) {
             var dmgShown = false, descShown = false;
             q.add(function() { Message.target(target.getName()); });
-            q.addAll(AnimationBattle.splash, {$enemy:$target, splashColors:spell.splash, overlay:spell.overlay});
+            q.addAll(AnimationBattle.splash, {$enemy:$target, splashColors:result.spell.splash, overlay:result.spell.overlay});
             
-            var resultDamage = result.dmg[i];
-            if (resultDamage != null) {
+            if (result.dmg[i] != null) {
               q.delay(Message.getQuickPause());
-              q.add(function() { Message.damage(resultDamage + AnimationUtil.DAMAGE_MSG); });
+              q.add(function() { Message.damage(result.dmg[i] + AnimationUtil.DAMAGE_MSG); });
               dmgShown = true;
             }
             
             if (result.success.length > 0) {
               q.delay(Message.getQuickPause());
               if (!!result.success[i]) {
-                q.addAll(spellMessages, {spell:spell});
+                q.addAll(spellMessages, {spell:result.spell});
               } else {
                 q.add(function() { Message.desc(AnimationUtil.INEFFECTIVE_MSG); });
               }
@@ -286,15 +287,15 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
             }
             
             if (!!result.died[i]) {
-              q.delay(!!result.success[i] ? Message.getBattlePause() : Message.getQuickPause());
+              q.delay(!!result.success[i] && result.dmg[i] === null ? Message.getBattlePause() : Message.getQuickPause());
               q.add(function() { Message.desc(AnimationUtil.ENEMY_DIED_MSG); });
-              q.add(function() { Battle.killEnemyUI($target); });
+              q.add(function() { $target.addClass("dead"); });
               descShown = true;
             }
             
             q.hideMessages({hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
           }
-        }
+        });
       }
       
       q.hideMessages({hideAction:true, hideSource:true, initialPause:false});
@@ -311,7 +312,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       AnimationUtil.autoStart(q, opt, Event.Animations.DefeatDone);
       return q;
     },
-  
+    
     init : function() {
       var $battle = $("#battle");
       
@@ -320,7 +321,59 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       Event.listen(Event.Types.AdjustCharStats, adjustCharStats);
     },
     
-    statusHeal : function(opt, queue) {
+    moveCharForCommand : function(opt, q) {
+      q = q || AnimationQueue.create();
+      
+      var defaults = {char:null};
+      var settings = $.extend(true, defaults, opt);
+      
+      // Added this pause to let the battle finish getting setup before moving the char
+      q.delay(Message.getQuickPause());
+      q.addAll(AnimationBattle.moveChar, {$char:getCharUI(settings.char)});
+      
+      AnimationUtil.autoStart(q, settings, Event.Animations.MoveCharForCommandDone);
+      
+      return q;
+    },
+
+    runParty : function(opt, q) {
+      q = q || AnimationQueue.create();
+      
+      var defaults = {command:null, pause:AnimationUtil.RUN_DELAY, success:false};
+      var settings = $.extend(true, defaults, opt);
+      //var isParty = (settings.command.type == BattleCommands.Party);
+      
+      if (settings.command && settings.command.source) { 
+        q.add(function() { Message.source(settings.command.source.getName()); });
+        q.delay(Message.getQuickPause());
+      }
+      
+      if (settings.success) {
+        q.add(function() { Message.desc(AnimationUtil.RUN_SUCCESS); });
+        q.delay(Message.getBattlePause());
+        $.each(Party.getAliveChars(), function(i, char) {
+          q.add(function() {
+            var $char = getCharUI(char);
+            $char.addClass("running");
+            if (!($char.hasClass("critical"))) {
+              $char.addClass("away");
+            }
+          });
+          q.delay(settings.pause);
+        });
+      } else {
+        q.add(function() { Message.desc(AnimationUtil.RUN_FAILURE); })
+        q.delay(Message.getBattlePause());
+      }
+      
+      q.hideMessages({hideDesc:true, hideSource:true, initialPause:false});
+      
+      AnimationUtil.autoStart(q, settings, Event.Animations.RunPartyDone);
+ 
+      return q;
+    },
+    
+    statusHeal : function(opt, q) {
       q = q || AnimationQueue.create();
       
       var defaults = {command:null, result:null};
@@ -381,23 +434,6 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         $.each($aliveChars, function(i, $char) { AnimationUtil.restoreCriticalStatus($char); }); 
       });
   
-      var rewards = Battle.calculateRewards();
-      $.each(settings.aliveChars, function(i, char) { char.addExperience(rewards.exp); });
-      Party.addGold(rewards.gold);
-      
-      q.add(function() { Message.desc(AnimationUtil.VICTORY); });
-      q.delay(Message.getBattlePause());
-      q.add(function() { Message.desc({show:false}); });
-      
-      q.add(function() { Message.source(AnimationUtil.VICTORY_EXP); });
-      q.delay(Message.getQuickPause());
-      q.add(function() { Message.action(rewards.exp + "P"); });
-      q.delay(Message.getQuickPause());
-      q.add(function() { Message.target(AnimationUtil.VICTORY_GOLD); });
-      q.delay(Message.getQuickPause());
-      q.add(function() { Message.damage(rewards.gold + "G"); });
-      q.hideMessages({hideDamage:true, hideTarget:true, hideAction:true, hideSource:true});
-      
       AnimationUtil.autoStart(q, settings, Event.Animations.VictoryDone);
       
       return q;

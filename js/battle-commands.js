@@ -1,7 +1,7 @@
 define( 
 /* BattleCommands */
-["jquery", "constants/battle", "party", "rng", "spells"],
-function($, BattleConstants, Party, RNG, Spell) {
+["jquery", "constants/battle", "party", "rng", "skills", "spells"],
+function($, BattleConstants, Party, RNG, Skill, Spell) {
 
   var self = this;
   var partyCommands = [];
@@ -20,8 +20,8 @@ function($, BattleConstants, Party, RNG, Spell) {
     enemyCommands = [];
   };
   
-  var enemy = function(monster, action) {
-    var command = $.extend(true, {type:BattleConstants.Commands.Enemy}, action ? action : monsterDetermineAction(monster));
+  var enemy = function(monster) {
+    var command = $.extend(true, {type:BattleConstants.Commands.Enemy}, monsterDetermineAction(monster));
     if (command.spellId) {
       var spell = Spell.lookup(command.spellId);
       if (spell.isOtherTargetGroup()) { 
@@ -32,6 +32,21 @@ function($, BattleConstants, Party, RNG, Spell) {
     }
     enemyCommands.push(command);
     return command;
+  };
+  
+  var generateEnemyCommands = function(battle) {
+    // Enemies don't get to go during the first round if it is a preemptive strike
+    if (battle.isPreemptive()) {
+      return;
+    }
+    
+    for (var n in battle.enemiesByName) {
+      var enemies = battle.enemiesByName[n];
+      $.each(enemies, function(i, e) {
+        // TODO: Need to check for various incapacitating statuses
+        enemy(e);
+      });
+    }
   };
   
   var incapacitatedChar = function(char) {
@@ -175,6 +190,7 @@ function($, BattleConstants, Party, RNG, Spell) {
     changeCharIndex : changeCharIndex
    ,clear : clear
    ,enemy : enemy
+   ,generateEnemyCommands : generateEnemyCommands
    ,getEnemyCommands : function() { return enemyCommands; }
    ,getPartyCommands : function() { return partyCommands; }
    ,incapacitatedChar : incapacitatedChar

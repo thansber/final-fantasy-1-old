@@ -81,6 +81,8 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     for (var name in enemiesByName) {
       $enemyList.append(Message.create(name));
     }
+    
+    gatherCommands(battle);
   };
   
   var commandToString = function(command) {
@@ -149,19 +151,61 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     return $("<div/>").addClass("enemy").addClass(monster.cssClass);
   };
   
+  var determineFirstCharCommand = function(battle, q) {
+    if (!battle.moveFirstChar) {
+      return null;
+    }
+    
+    var firstChar = null;
+    $.each(Party.getChars(), function(i, char) {
+      if (!char.isAlive()) {
+        BattleCommands.changeCharIndex(1);
+        return true;
+      }
+      
+      if (char.canTakeAction()) {
+        firstChar = char;
+        return false;
+      } else {
+        BattleCommands.incapacitatedChar(char);
+      }
+    });
+    
+    if (firstChar) {
+      q = AnimationAction.moveCharForCommand({char:firstChar}, q);
+    }
+        
+    return q;
+  };
+  
   var gatherCommands = function(battle) {
     var q = null;
     if (battle.isAmbush()) {
-      //BattleCommands.generateEnemyCommands();
-      q = AnimationBattle.preBattleMessage({message:BattleConstants.AmbushMessage});
+      BattleCommands.generateEnemyCommands(battle);
+      q = AnimationBattle.messageToggler({roundStarting:true});
+      q = AnimationBattle.preBattleMessage({message:BattleConstants.AmbushMessage}, q);
+      $.when(q.start()).then(function() {
+        startRound({battle:battle, commands:BattleCommands.shuffleCommands()});
+      });
     } else if (battle.isPreemptive()) {
-      q = AnimationBattle.preBattleMessage({message:BattleConstants.PreemptiveMessage});
+      q = AnimationBattle.messageToggler({roundStarting:true});
+      q = AnimationBattle.preBattleMessage({message:BattleConstants.PreemptiveMessage}, q);
+      q = AnimationBattle.messageToggler({roundStarting:false}, q);
+      q = determineFirstCharCommand(battle, q);
+      q.start();
+    } else {
+      q = determineFirstCharCommand(battle);
+      if (q) {
+        q.start();
+      }
     }
-  };
-  
-  var messageToggler = function(opt) {
-    $(".input", $battle).toggle(!opt.roundStarting);
-    $(".messages", $battle).toggleClass("hidden", !opt.roundStarting);
+    
+    // If all characters are incapacitated, move on to the enemy commands and start the round
+    // TODO: If a char is dead, I don't think this works correctly, may need a no-op action for dead chars
+    if (BattleCommands.isAllPartyCommandsEntered()) {
+      BattleCommands.generateEnemyCommands();
+      startRound({battle:battle, commands:BattleCommands.shuffleCommands()});
+    }
   };
   
   var monsterRetargets = function(command) {
@@ -204,7 +248,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     Logger.debug("initial commands - " + commandsToString(commands));
     
     battle.started();
-    messageToggler({roundStarting:true});
+    AnimationBattle.messageToggler({start:true, roundStarting:true});
     
     $.each(commands, function(i, command) {
       Message.hideAllBattleMessages();
@@ -232,17 +276,17 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
           q = AnimationAction.castSpell({command:command, result:result}, q);
           break;
         case BattleConstants.Actions.StatusHeal:
-          //result = Action.statusHeal(command.source, command.targetType);
-          //if (result) {
-            //commandQueue.add(Animation.statusHeal(command, result, commandQueue.chain));
-          //}
+          result = Action.statusHeal(command.source, command.targetType);
+          if (result) {
+            q = AnimationAction.statusHeal({command:command, result:result}, q);
+          }
           break;
         case BattleConstants.Actions.Run:
-//          result = Action.run(command.source, command.targetType);
-//          commandQueue.add(Animation.run(command, result, commandQueue.chain));
-//          if (result.success) {
-//            ranAway = true;
-//          }
+          result = Action.run(command.source, command.targetType, battle);
+          q = AnimationAction.runParty({command:command, result:result}, q);
+          if (result.success) {
+            ranAway = true;
+          }
           break;
       }
       
@@ -270,6 +314,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     }
     if (victory) {
       q = AnimationAction.victory({aliveChars:Party.getAliveChars()}, q);
+      q = AnimationBattle.rewards({aliveChars:Party.getAliveChars(), battle:battle}, q);
     }
     
     $.when(q.start()).then(function() {
@@ -283,7 +328,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
         Event.transmit(Event.Types.SwitchView, PartyConstants.Views.WORLD_MAP);
       }
       else { 
-        //Battle.startRound(true);
+        gatherCommands(battle);
       }
     });
   };
@@ -305,10 +350,9 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
       $battle.find(".commands .column").eq(1)
         .append(Message.create("RUN", "run"));
       
-      Event.listen(Event.Types.BattleMessageToggle, messageToggler)
       Event.listen(Event.Types.BattleGatherCommands, gatherCommands);
       Event.listen(Event.Types.BattleSetup, battleSetup);
-      Event.listen(Event.Types.ResetCharStats, resetCharStats);
+      //Event.listen(Event.Types.ResetCharStats, resetCharStats);
       Event.listen(Event.Types.StartRound, startRound);
     }
   };
