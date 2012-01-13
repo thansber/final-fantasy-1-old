@@ -1,10 +1,10 @@
 define( 
 /* Debug */
 ["jquery", "./actions", "./battle-animations", "./battle-messages", "./battle-setup", 
- "./coordinates", "./enemies", "./util", "./locationJumper", "./messages", 
+ "./coordinates", "./enemies", "./util", "./locationJumper", "./messages", "./menus",
  "./spell-effects", "./weapon-animations", "./weapons"], 
 function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattleSetup, 
-         DebugCoords, DebugEnemies, DebugHelper, DebugLocationJumper, DebugMessages, 
+         DebugCoords, DebugEnemies, DebugHelper, DebugLocationJumper, DebugMessages, DebugMenu, 
          DebugSpellEffects, DebugWeaponAnimations, DebugWeapons) {
   
   var currentMenu = "battleSetup";
@@ -34,6 +34,7 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
     $("#debug .weaponAnimations button").click(function(event) { DebugWeaponAnimations.event($(event.target)); });
     $("#debug .animations button").click(function(event) { DebugBattleAnimations.event($(event.target)); });
     $("#debug .actions button").click(function(event) { DebugActions.event($(event.target)); });
+    $("#debug .menus button").click(function(event) { DebugMenu.event($(event.target)); });
 
     $("#debug .menu a." + currentMenu).click();  
   };

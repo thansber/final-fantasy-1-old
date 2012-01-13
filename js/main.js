@@ -23,7 +23,7 @@ function($, Animations, BattleEngine, CursorData, Data, Debug,
       
       Debug.init();
       
-      Party.createTestChars();
+      //Party.createTestChars();
     });
   }
 );

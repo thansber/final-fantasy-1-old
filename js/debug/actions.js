@@ -6,7 +6,7 @@ function($, Battle, BattleCommands, BattleConstants, CharacterClass, DebugUtil,
          Encounter, Event, MapConstants, Party, RNG, Spell, Status) {
 
   var go = function(battle, opt) {
-    Event.transmit(Event.Types.StartRound, {battle:battle, commands:opt.commands ? opt.commands : BattleCommands.shuffleCommands()});  
+    Event.transmit(Event.Types.StartRound, {battle:battle, commands:opt && opt.commands ? opt.commands : BattleCommands.shuffleCommands()});  
   };
   
   var newBattle = function(charClasses, enemies, opt) {

@@ -8,14 +8,26 @@ BATTLE
 - chars w/o magic still show magic selection, when spell is selected, show desc "Nothing", wait for button to hide
 - monster attack causing petrification does damage as well?
 - too long of a pause when monster casts spell that kills char?
+- drink command
+- item command
+- wait for button after displaying Monsters perished
+- wait for button after displaying rewards
+- level ups
+- splash builds 3 items, then moves them around, t hen hides them at the end
+	- creep = 45 
+	- imp = 18
+	- madpony = 24
+	- garland = 45
+- char flicker - char goes dark 4 times
+- The black ORB
+glitters ominously....
+But nothing happens.
 
 MENU
 ====
 - cast spells outside of battle flow (healing spells)
 - use consumable flow
-- character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
-- new char name cursor needs to get name from user selection
 
 TOWNS
 =====

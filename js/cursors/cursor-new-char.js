@@ -1,7 +1,7 @@
 define(
 /* CursorNewChar */ 
-["jquery", "cursor", "events", "logger", "messages", "menus", "party", "constants/cursor", "constants/party"],
-function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, PartyConstants) {
+["jquery", "cursor", "events", "logger", "messages", "menus", "party", "constants/cursor", "constants/party", "util"],
+function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, PartyConstants, Util) {
   
   var setup = function() {
     /* --------------- */
@@ -38,8 +38,9 @@ function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, Party
         Event.transmit(Event.Types.StartGame);
         return false;
       }
+      var charClass = Util.getCssClass(this.initialCursor().find(".charClass:not(.hidden)").find(".char"), "last")
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.NEW_CHAR_NAME);
-      Event.transmit(Event.Types.CursorStart, CursorConstants.NEW_CHAR_NAME);
+      Event.transmit(Event.Types.CursorStart, CursorConstants.NEW_CHAR_NAME, {charClass:charClass, charIndex:this.index});
     };
     NewCharCursor.prototype.reset = function(fullReset, opt) {
       if (this.index === undefined) {
