@@ -8,7 +8,7 @@ function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, Party
     /* NEW CHAR NAME cursor */
     /* -------------------- */
     var NewCharNameCursor = function() { this.name = ""; };
-    NewCharNameCursor.prototype = Cursor.create(CursorConstants.NEW_CHAR_NAME, {container:"#newCharName .letters", otherKeys:{}});
+    NewCharNameCursor.prototype = Cursor.create(CursorConstants.NEW_CHAR_NAME).setContainer("#newCharName .letters");
     NewCharNameCursor.prototype.back = function() { 
       this.name = this.name.substr(0, this.name.length - 1); 
       this.updateName();

@@ -8,18 +8,17 @@ function($, Character, Cursor, Event, Logger, CursorConstants, PartyConstants) {
     /* MAGIC MENU cursor */
     /* ----------------- */
     var MagicMenuCursor = function() {};
-    MagicMenuCursor.prototype = Cursor.create(CursorConstants.MAGIC_MENU, {container: "#magicMenu .magic", otherKeys:{}});
+    MagicMenuCursor.prototype = Cursor.create(CursorConstants.MAGIC_MENU).setContainer("#magicMenu .magic");
     MagicMenuCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.MENU);
       
       if (this.previousListener) {
-        var cursorStartOpt = {
-          cursor : this.previousListener
-         ,prevListener : this.previousListener.previousListener
-         ,reset : false
-        };
-        Event.transmit(Event.Types.CursorStart, null, cursorStartOpt);
+        Event.transmit(Event.Types.CursorStart, null, {
+          cursor : this.previousListener,
+          prevListener : this.previousListener.previousListener,
+          reset : false
+        });
       }
     };
     MagicMenuCursor.prototype.initialCursor = function() { return this.$container.find(".spell").eq(0); };

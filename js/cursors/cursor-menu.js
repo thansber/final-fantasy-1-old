@@ -8,14 +8,13 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Menus, Party, CursorConstan
     /* CHARACTER MENU cursor */
     /* --------------------- */
     var CharMenuCursor = function() { this.mode = null; };
-    var charMenuCursorOpt = {container: "#charMenu .options", otherKeys:{}};
-    charMenuCursorOpt.otherKeys[KeyPressNotifier.I] = function() { this.item(); };
-    charMenuCursorOpt.otherKeys[KeyPressNotifier.M] = function() { this.magic(); };
-    charMenuCursorOpt.otherKeys[KeyPressNotifier.W] = function() { this.weapon(); };
-    charMenuCursorOpt.otherKeys[KeyPressNotifier.A] = function() { this.armor(); };
-    charMenuCursorOpt.otherKeys[KeyPressNotifier.S] = function() { this.status(); };
-    
-    CharMenuCursor.prototype = Cursor.create(CursorConstants.CHAR_MENU, charMenuCursorOpt);
+    CharMenuCursor.prototype = Cursor.create(CursorConstants.CHAR_MENU)
+      .setContainer("#charMenu .options")
+      .addOtherKey(KeyPressNotifier.I, function() { this.item(); })
+      .addOtherKey(KeyPressNotifier.M, function() { this.magic(); })
+      .addOtherKey(KeyPressNotifier.W, function() { this.weapon(); })
+      .addOtherKey(KeyPressNotifier.A, function() { this.armor(); })
+      .addOtherKey(KeyPressNotifier.S, function() { this.status(); });
     CharMenuCursor.prototype.back = function() {
       this.clear();
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.WORLD_MAP);

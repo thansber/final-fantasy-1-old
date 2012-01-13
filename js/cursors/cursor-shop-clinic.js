@@ -9,7 +9,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* CLINIC cursor */
     /* ------------- */
     var ClinicCursor = function() { this.notNeeded = false; };
-    ClinicCursor.prototype = Cursor.create(CursorConstants.CLINIC, {container:"#shop .menu", otherKeys:{}});
+    ClinicCursor.prototype = Cursor.create(CursorConstants.CLINIC).setContainer("#shop .menu");
     ClinicCursor.prototype.back = function() { 
       KeyPressNotifier.clearListener();
       this.clear();
@@ -47,7 +47,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* CLINIC CONFIRM cursor */
     /* --------------------- */
     var ClinicConfirmCursor = function() { this.char = null; this.justRevived = false; this.leaving = true; };
-    ClinicConfirmCursor.prototype = Cursor.create(CursorConstants.CLINIC_CONFIRM, {container:"#shop .menu", otherKeys:{}});
+    ClinicConfirmCursor.prototype = Cursor.create(CursorConstants.CLINIC_CONFIRM).setContainer("#shop .menu");
     ClinicConfirmCursor.prototype.back = function() {
       if (this.leaving) {
         this.clear();

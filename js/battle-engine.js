@@ -214,12 +214,9 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
       if (!prevChar) {
         break;
       }
-      if (!prevChar.isAlive()) {
-        BattleCommands.changeCharIndex(-1);
-      } else if (!prevChar.canTakeAction()) {
-        BattleCommands.clearLastPartyCommand();
-        BattleCommands.changeCharIndex(-1);
-      } else {
+      if (!prevChar.canTakeAction()) {
+        BattleCommands.clearPartyCommand(prevChar.charIndex);
+      } else if (prevChar.isAlive()) {
         break;
       }
     }
@@ -330,13 +327,12 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
       return;
     }
     
-    BattleCommands.clearLastPartyCommand();
-    BattleCommands.changeCharIndex(-1);
+    BattleCommands.clearPartyCommand(currentChar.charIndex);
     
     var prevChar = determinePrevChar(currentChar);
-    
     var q = AnimationAction.moveCharForCommand({char:currentChar});
     if (prevChar) {
+      BattleCommands.setCurrentChar(prevChar);
       q = AnimationAction.moveCharForCommand({char:prevChar, initialPause:false}, q);
     }
     
@@ -375,7 +371,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
     var defeat = false;
     var ranAway = false;
         
-    Logger.debug("initial commands - " + commandsToString(commands));
+    Logger.debug("shuffled commands...\n" + commandsToString(commands));
     
     battle.started();
     AnimationBattle.messageToggler({start:true, roundStarting:true});
@@ -394,7 +390,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
       
       var result = null;
       
-      Logger.debug("command [" + i + "] - " + commandToString(command));
+      Logger.info("command [" + i + "] - " + commandToString(command));
       
       switch (command.action) {
         case BattleConstants.Actions.Attack:
@@ -435,8 +431,6 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
         defeat = true;
         return false;
       }
-      
-      Logger.debug("after command [" + i + "], " + q.toString());
     });
     
     if (defeat) {
@@ -458,6 +452,7 @@ function($, Action, AnimationAction, AnimationBattle, AnimationUtil, BattleComma
         Event.transmit(Event.Types.SwitchView, PartyConstants.Views.WORLD_MAP);
       }
       else { 
+        BattleCommands.init(battle);
         gatherCommands(battle);
       }
     });

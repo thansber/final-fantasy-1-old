@@ -8,11 +8,10 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* INN CURSOR */
     /* ---------- */
     var InnCursor = function() {};
-    var innCursorOpt = {container: "#shop .menu", otherKeys:{}};
-    innCursorOpt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
-    innCursorOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
-    
-    InnCursor.prototype = Cursor.create(CursorConstants.INN, innCursorOpt);
+    InnCursor.prototype = Cursor.create(CursorConstants.INN)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.Y, function() { this.next(); })
+      .addOtherKey(KeyPressNotifier.N, function() { this.back(); });
     InnCursor.prototype.back = function() { 
       if (this.leaving) {
         this.exit();

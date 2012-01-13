@@ -8,12 +8,11 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* ITEM SHOP cursor */
     /* ---------------- */
     var ItemShopCursor = function() {};
-    var itemShopCursorOpt = {container:"#shop .menu", otherKeys:{}};
-    itemShopCursorOpt.otherKeys[KeyPressNotifier.B] = function() { this.buy(); };
-    itemShopCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.back(); };
-    itemShopCursorOpt.otherKeys[KeyPressNotifier.X] = function() { this.back(); };
-    
-    ItemShopCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP, itemShopCursorOpt);
+    ItemShopCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.B, function() { this.buy(); })
+      .addOtherKey(KeyPressNotifier.E, function() { this.back(); })
+      .addOtherKey(KeyPressNotifier.X, function() { this.back(); });
     ItemShopCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.ShopExit);
@@ -38,7 +37,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* ITEM SHOP SELECT ITEM cursor */
     /* ---------------------------- */
     var ItemShopSelectItemCursor = function() { };
-    ItemShopSelectItemCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP_SELECT_ITEM, {container:"#shop .prices", otherKeys:{}});
+    ItemShopSelectItemCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP_SELECT_ITEM).setContainer("#shop .prices");
     ItemShopSelectItemCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").resetOffers(Party.getChars()).show(".menu");
@@ -60,34 +59,36 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* ITEM SHOP CONFIRM cursor */
     /* ------------------------ */
     var ItemShopConfirmCursor = function() { this.item = null; };
-    var itemShopConfirmCursorOpt = {container:"#shop .menu", otherKeys:{}};
-    itemShopConfirmCursorOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
-    itemShopConfirmCursorOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
-    ItemShopConfirmCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP_CONFIRM, itemShopConfirmCursorOpt);
+    ItemShopConfirmCursor.prototype = Cursor.create(CursorConstants.ITEM_SHOP_CONFIRM)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.Y, function() { this.confirm(); })
+      .addOtherKey(KeyPressNotifier.N, function() { this.back(); });
     ItemShopConfirmCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?");
       this.resetShop();
     };
+    ItemShopConfirmCursor.prototype.confirm = function() {
+      if (!Party.hasEnoughGoldFor(this.item.price)) {
+        Party.getShop().npcSays("You\ncan't\nafford\nthat.");
+        this.resetShop();
+        return false;
+      } else if (Party.lookupConsumable(this.item.name).qty >= 99) {
+        Party.getShop().npcSays("You\ncan't\ncarry\nanymore.");
+        this.resetShop();
+        return false;
+      } 
+      Party.buy(this.item.price);
+      Party.addConsumable(this.item.name, 1);
+      Party.getShop().npcSays("Thank\nyou!\nWhat\nelse?").gold(Party.getGold());
+      this.resetShop();
+      Logger.debug("Bought a " + this.item.name + " for " + this.item.price);   
+    };
     ItemShopConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
     ItemShopConfirmCursor.prototype.next = function() {
       var $option = this.$cursor.closest(".option");
-  
       if ($option.is(".yes")) {
-        if (!Party.hasEnoughGoldFor(this.item.price)) {
-          Party.getShop().npcSays("You\ncan't\nafford\nthat.");
-          this.resetShop();
-          return false;
-        } else if (Party.lookupConsumable(this.item.name).qty >= 99) {
-          Party.getShop().npcSays("You\ncan't\ncarry\nanymore.");
-          this.resetShop();
-          return false;
-        } 
-        Party.buy(this.item.price);
-        Party.addConsumable(this.item.name, 1);
-        Party.getShop().npcSays("Thank\nyou!\nWhat\nelse?").gold(Party.getGold());
-        this.resetShop();
-        Logger.debug("Bought a " + this.item.name + " for " + this.item.price);      
+        this.confirm();   
       } else if ($option.is(".no")) {
         this.back();
       }

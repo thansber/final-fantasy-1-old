@@ -1,14 +1,15 @@
 define(
 /* CursorBattleEnemy */ 
-["jquery", "battle", "battle-commands", "cursor", "events", "logger", "monster", "party", "util", "constants/cursor"],
-function($, Battle, BattleCommands, Cursor, Event, Logger, Monster, Party, Util, CursorConstants) {
+["jquery", "battle", "battle-commands", "constants/battle", "cursor", "constants/cursor", "events", "logger", "monster", "party", "util"],
+function($, Battle, BattleCommands, BattleConstants, Cursor, CursorConstants, Event, Logger, Monster, Party, Util) {
   
   var setup = function() {
     /* --------------------- */
     /* BATTLE ENEMIES cursor */
     /* --------------------- */
     var BattleEnemyCursor = function() {};
-    BattleEnemyCursor.prototype = Cursor.create(CursorConstants.BATTLE_ENEMIES, {container: "#battle .enemies"});
+    BattleEnemyCursor.prototype = Cursor.create(CursorConstants.BATTLE_ENEMIES)
+      .setContainer("#battle .enemies");
     
     BattleEnemyCursor.prototype.back = function() {
       this.clear();
@@ -96,7 +97,7 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Monster, Party, Util,
       var $enemies = this.$cursor.closest(".enemies").find("." + monsterCss);
       var monsterIndex = $enemies.index(this.$cursor);
     
-      BattleCommands.party({target:{name:monster.name, index:monsterIndex, type:BattleCommands.Enemy}});
+      BattleCommands.party({target:{name:monster.name, index:monsterIndex, type:BattleConstants.Commands.Enemy}});
     };
     BattleEnemyCursor.prototype.yDestinations = function() { return this.$cursor.closest(".column").find(".enemy").not(".dead"); };
   };

@@ -8,7 +8,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* MAGIC SHOP cursor */
     /* ----------------- */
     var MagicShopCursor = function() { };
-    MagicShopCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP, {container:"#shop .menu", otherKeys:{}});
+    MagicShopCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP).setContainer("#shop .menu");
     MagicShopCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.ShopExit);
@@ -28,7 +28,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* MAGIC SHOP SELECT SPELL cursor */
     /* ------------------------------ */
     var MagicShopSpellCursor = function() { this.char = null; };
-    MagicShopSpellCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP_SPELL, {container:"#shop .prices", otherKeys:{}});
+    MagicShopSpellCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP_SPELL).setContainer("#shop .prices");
     MagicShopSpellCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").show(".menu");
@@ -51,43 +51,45 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
     /* MAGIC SHOP CONFIRM cursor */
     /* ------------------------- */
     var MagicShopConfirmCursor = function() { this.char = null; this.spell = null; };
-    var magicShopConfirmCursorOpt = {container:"#shop .menu", otherKeys:{}};
-    magicShopConfirmCursorOpt.otherKeys[KeyPressNotifier.Y] = function() { this.confirm(); };
-    magicShopConfirmCursorOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
-    MagicShopConfirmCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP_CONFIRM, magicShopConfirmCursorOpt);
+    MagicShopConfirmCursor.prototype = Cursor.create(CursorConstants.MAGIC_SHOP_CONFIRM)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.Y, function() { this.confirm(); })
+      .addOtherKey(KeyPressNotifier.N, function() { this.back(); });
     MagicShopConfirmCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?");
       this.resetShop();
     };
+    MagicShopConfirmCursor.prototype.confirm = function() {
+      if (!this.char.isSpellAllowed(this.spell)) {
+        Party.getShop().npcSays("Sorry\nYou\ncan't\nlearn\nthat.\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      } else if (!Party.hasEnoughGoldFor(this.spell.price)) {
+        Party.getShop().npcSays("You\ncan't\nafford\nthat.");
+        this.resetShop();
+        return false;
+      } else if (this.char.knowsSpell(this.spell)) {
+        Party.getShop().npcSays("You\nalready\nknow\nthat\nspell.\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      } else if (!this.char.canLearnSpell(this.spell)) {
+        Party.getShop().npcSays("This\nlevel\nspell\nis full\n::\nSomeone\nelse?");
+        this.resetShop();
+        return false;
+      }
+      
+      this.clear();
+      this.char.learnSpell(this.spell);
+      Party.buy(this.spell.price);
+      Party.getShop().gold(Party.getGold()).resetOffers(Party.getChars()).displayInit();
+      Logger.debug(this.char.getName() + " bought " + this.spell.spellId + " for " + this.spell.price);
+    };
     MagicShopConfirmCursor.prototype.initialCursor = function() { return this.yDestinations().eq(0); }
     MagicShopConfirmCursor.prototype.next = function() {
       var $option = this.$cursor.closest(".option");
-      
       if ($option.is(".yes")) {
-        if (!this.char.isSpellAllowed(this.spell)) {
-          Party.getShop().npcSays("Sorry\nYou\ncan't\nlearn\nthat.\nSomeone\nelse?");
-          this.resetShop();
-          return false;
-        } else if (!Party.hasEnoughGoldFor(this.spell.price)) {
-          Party.getShop().npcSays("You\ncan't\nafford\nthat.");
-          this.resetShop();
-          return false;
-        } else if (this.char.knowsSpell(this.spell)) {
-          Party.getShop().npcSays("You\nalready\nknow\nthat\nspell.\nSomeone\nelse?");
-          this.resetShop();
-          return false;
-        } else if (!this.char.canLearnSpell(this.spell)) {
-          Party.getShop().npcSays("This\nlevel\nspell\nis full\n::\nSomeone\nelse?");
-          this.resetShop();
-          return false;
-        }
-        
-        this.clear();
-        this.char.learnSpell(this.spell);
-        Party.buy(this.spell.price);
-        Party.getShop().gold(Party.getGold()).resetOffers(Party.getChars()).displayInit();
-        Logger.debug(this.char.getName() + " bought " + this.spell.spellId + " for " + this.spell.price);
+        this.confirm();
       } else if ($option.is(".no")) {
         this.back();
       }
@@ -98,7 +100,6 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Party, CursorConstants) {
       Party.getShop().resetOffers(Party.getChars());
       Event.transmit(Event.Types.CursorStart, CursorConstants.MAGIC_SHOP);
     };
-  
     MagicShopConfirmCursor.prototype.yDestinations = function() { return this.$container.find(".option"); }
   };
   

@@ -8,7 +8,7 @@ function($, Cursor, Event, KeyPressNotifier, Logger, Menus, Party, CursorConstan
     /* CHAR SELECTION cursor */
     /* --------------------- */
     var CharSelectionMenuCursor = function() {};
-    CharSelectionMenuCursor.prototype = Cursor.create(CursorConstants.CHAR_SELECTION_MENU, {container: "#charMenu .party", otherKeys:{}});
+    CharSelectionMenuCursor.prototype = Cursor.create(CursorConstants.CHAR_SELECTION_MENU).setContainer("#charMenu .party");
     CharSelectionMenuCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.CursorStart, CursorConstants.CHAR_MENU);

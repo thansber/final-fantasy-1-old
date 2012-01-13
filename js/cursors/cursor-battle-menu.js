@@ -8,14 +8,13 @@ function($, Battle, BattleCommands, BattleConstants, Cursor, CursorConstants, Ev
     /* BATTLE MENU cursor */
     /* ------------------ */
     var BattleMenuCursor = function() {};
-    var battleMenuCursorOpt = {container: "#battle .input .commands", otherKeys:{}};
-    battleMenuCursorOpt.otherKeys[KeyPressNotifier.F] = function() { this.fight(); };
-    battleMenuCursorOpt.otherKeys[KeyPressNotifier.M] = function() { this.magic(); };
-    battleMenuCursorOpt.otherKeys[KeyPressNotifier.D] = function() { this.drink(); };
-    battleMenuCursorOpt.otherKeys[KeyPressNotifier.I] = function() { this.item(); };
-    battleMenuCursorOpt.otherKeys[KeyPressNotifier.R] = function() { this.run(); };
-    
-    BattleMenuCursor.prototype = Cursor.create(CursorConstants.BATTLE_MENU, battleMenuCursorOpt);
+    BattleMenuCursor.prototype = Cursor.create(CursorConstants.BATTLE_MENU)
+      .setContainer("#battle .input .commands")
+      .addOtherKey(KeyPressNotifier.F, function() { this.fight(); })
+      .addOtherKey(KeyPressNotifier.M, function() { this.magic(); })
+      .addOtherKey(KeyPressNotifier.D, function() { this.drink(); })
+      .addOtherKey(KeyPressNotifier.I, function() { this.item(); })
+      .addOtherKey(KeyPressNotifier.R, function() { this.run(); });
     BattleMenuCursor.prototype.back = function() {
       this.clear();
       Event.transmit(Event.Types.PrevChar);
@@ -61,14 +60,13 @@ function($, Battle, BattleCommands, BattleConstants, Cursor, CursorConstants, Ev
     };
     BattleMenuCursor.prototype.magic = function() {
       var currentChar = BattleCommands.currentChar();
-      if (!currentChar.canUseMagic()) {
-        KeyPressNotifier.setListener(this);
-        return;
+      if (currentChar.canUseMagic()) {
+        BattleCommands.party({
+          source : currentChar,
+          action : BattleConstants.Actions.CastSpell
+        });
       }
-      BattleCommands.party({
-        source : currentChar,
-        action : BattleConstants.Actions.CastSpell
-      });
+      
       Event.transmit(Event.Types.CursorStart, CursorConstants.BATTLE_SPELLS);
       this.hide();
     };

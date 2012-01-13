@@ -9,37 +9,29 @@ function($, KeyPressNotifier, Logger) {
   /* ======================= */
   /* CURSOR class definition */
   /* ======================= */
-  var Cursor = function(id, opt) {
+  var Cursor = function(id) {
     this.id = id;
     
-    opt = $.extend({container:null}, opt);
-    
-    opt.nextKeys = opt.nextKeys || [KeyPressNotifier.Enter, KeyPressNotifier.Space];
-    opt.backKeys = opt.backKeys || [KeyPressNotifier.Esc];
-    opt.otherKeys = $.extend({}, opt.otherKeys);
-
     this.$cursor = null;
     this.previousListener = null;
-    this.container = opt.container;
+    this.container = null;
     this.$container = null;
     
+    var defaultNextKeys = [KeyPressNotifier.Enter, KeyPressNotifier.Space];
+    var defaultBackKeys = [KeyPressNotifier.Esc];
+
     this.registeredKeys = [];
     this.nextKeys = {};
     this.backKeys = {};
     this.otherKeys = {};
     
-    for (var k = 0; k < opt.nextKeys.length; k++) {
-      this.nextKeys[opt.nextKeys[k]] = true;
-      this.registeredKeys.push(opt.nextKeys[k]);
+    for (var k = 0; k < defaultNextKeys.length; k++) {
+      this.nextKeys[defaultNextKeys[k]] = true;
+      this.registeredKeys.push(defaultNextKeys[k]);
     }
-    for (var k = 0; k < opt.backKeys.length; k++) {
-      this.backKeys[opt.backKeys[k]] = true;
-      this.registeredKeys.push(opt.backKeys[k]);
-    }
-    this.otherKeys = $.extend(true, {}, opt.otherKeys);
-    
-    for (var k in this.otherKeys) {
-      this.registeredKeys.push(k);
+    for (var k = 0; k < defaultBackKeys.length; k++) {
+      this.backKeys[defaultBackKeys[k]] = true;
+      this.registeredKeys.push(defaultBackKeys[k]);
     }
     
     ALL_BY_ID[id] = this;
@@ -53,7 +45,11 @@ function($, KeyPressNotifier, Logger) {
   /* abstract */ Cursor.prototype.xDestinations = function() { return []; };
   /* abstract */ Cursor.prototype.yDestinations = function() { return []; };
 
-  
+  Cursor.prototype.addOtherKey = function(key, f) {
+    this.otherKeys[key] = f;
+    this.registeredKeys.push(key);
+    return this;
+  };
   Cursor.prototype.clear = function() {
     if (this.isValid()) {
       this.$cursor.find(".cursor").remove();
@@ -119,6 +115,7 @@ function($, KeyPressNotifier, Logger) {
     }
   };
   Cursor.prototype.rowChanged = function(y) { return this.wrappingMovement(y, this.yDestinations())};
+  Cursor.prototype.setContainer = function(c) { this.container = c; return this; };
   Cursor.prototype.show = function() {
     if (this.isValid()) {
       this.$cursor.find(".cursor").show();

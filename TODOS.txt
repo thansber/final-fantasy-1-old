@@ -1,6 +1,4 @@
 - handle FEAR, WARP, EXIT spells
-- use absolute in map config (may still need tile coords for world map encounters)
-- creating cursors, other key setup uses chaining setter methods
 
 BATTLE
 ======
@@ -17,10 +15,10 @@ MENU
 - use consumable flow
 - character sprites should have no black, it should all be transparent
 - what statuses do we show in char menu, sprites 
+- new char name cursor needs to get name from user selection
 
 TOWNS
 =====
-- when selling equipment, do prices disappear?
 - need oasis shop flow, cursor, npc sprite
 - show descs when selecting key items in inventory
 - show use desc when using key item in correct place

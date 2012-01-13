@@ -8,7 +8,7 @@ function($, Battle, BattleCommands, Cursor, Event, Logger, Party, Spell, CursorC
     /* BATTLE SPELLS cursor */
     /* -------------------- */
     var BattleSpellCursor = function() {};
-    BattleSpellCursor.prototype = Cursor.create(CursorConstants.BATTLE_SPELLS, {container: "#battle .input .spells"});
+    BattleSpellCursor.prototype = Cursor.create(CursorConstants.BATTLE_SPELLS).setContainer("#battle .input .spells");
     BattleSpellCursor.prototype.back = function() {
       this.clear();
       this.toggleSpellList(false);

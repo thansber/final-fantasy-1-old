@@ -11,14 +11,14 @@ function($, Cursor, Event, KeyPressNotifier, Logger, CursorConstants, PartyConst
     var EquipmentActionMenuCursor = function(id, opt) { 
       this.id = id; 
       this.action = null;
-      this.opt = {otherKeys:{}};
-      this.opt.otherKeys[KeyPressNotifier.E] = function() { this.equip(); };
-      this.opt.otherKeys[KeyPressNotifier.T] = function() { this.trade(); };
-      this.opt.otherKeys[KeyPressNotifier.D] = function() { this.drop(); };
-      jQuery.extend(true, this.opt, opt);
       
-      var baseCursor = Cursor.create(this.id, this.opt);
-      jQuery.extend(baseCursor, {
+      var baseCursor = Cursor.create(this.id)
+        .setContainer(opt.container)
+        .addOtherKey(KeyPressNotifier.E, function() { this.equip(); })
+        .addOtherKey(KeyPressNotifier.T, function() { this.trade(); })
+        .addOtherKey(KeyPressNotifier.D, function() { this.drop(); });
+      
+      $.extend(baseCursor, {
         back : function() {
           this.clear();
           Event.transmit(Event.Types.SwitchView, PartyConstants.Views.MENU);

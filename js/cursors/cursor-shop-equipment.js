@@ -8,12 +8,12 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP cursor */
     /* --------------------- */
     var EquipmentShopCursor = function() {};
-    var equipmentShopCursorOpt = {container: "#shop .menu", otherKeys:{}};
-    equipmentShopCursorOpt.otherKeys[KeyPressNotifier.B] = function() { this.buy(); };
-    equipmentShopCursorOpt.otherKeys[KeyPressNotifier.E] = function() { this.exit(); };
-    equipmentShopCursorOpt.otherKeys[KeyPressNotifier.S] = function() { this.sell(); };
-    equipmentShopCursorOpt.otherKeys[KeyPressNotifier.X] = function() { this.exit(); };
-    EquipmentShopCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP, equipmentShopCursorOpt);
+    EquipmentShopCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.B, function() { this.buy(); })
+      .addOtherKey(KeyPressNotifier.E, function() { this.exit(); })
+      .addOtherKey(KeyPressNotifier.S, function() { this.sell(); })
+      .addOtherKey(KeyPressNotifier.X, function() { this.exit(); });
     EquipmentShopCursor.prototype.back = function() { 
       KeyPressNotifier.clearListener();
       this.clear();
@@ -42,7 +42,7 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP BUY ITEM cursor */
     /* ------------------------------ */
     var EquipmentShopBuyItemCursor = function() {};
-    EquipmentShopBuyItemCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_ITEM, {container: "#shop .prices", otherKeys:{}});
+    EquipmentShopBuyItemCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_ITEM).setContainer("#shop .prices");
     EquipmentShopBuyItemCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Welcome").hide(".prices").show(".menu");
@@ -63,10 +63,10 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP BUY CONFIRMATION cursor */
     /* -------------------------------------- */
     var EquipmentShopBuyConfirmCursor = function() { this.inventoryItem = null; };
-    var equipmentShopBuyConfirmOpt = {container: "#shop .menu", otherKeys:{}};
-    equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
-    equipmentShopBuyConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
-    EquipmentShopBuyConfirmCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_CONFIRM, equipmentShopBuyConfirmOpt);
+    EquipmentShopBuyConfirmCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_CONFIRM)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.Y, function() { this.next(); })
+      .addOtherKey(KeyPressNotifier.N, function() { this.back(); });
     EquipmentShopBuyConfirmCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers(Party.getChars());
@@ -90,7 +90,7 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP BUY FINAL cursor */
     /* ------------------------------- */
     var EquipmentShopBuyEndCursor = function() { this.item = null; };
-    EquipmentShopBuyEndCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_END, {container:"#shop .menu", otherKeys:{}});
+    EquipmentShopBuyEndCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_BUY_END).setContainer("#shop .menu");
     EquipmentShopBuyEndCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers(Party.getChars());
@@ -128,7 +128,7 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP SELL cursor */
     /* -------------------------- */
     var EquipmentShopSellCursor = function() {};
-    EquipmentShopSellCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL, {container:"#shop .menu", otherKeys:{}});
+    EquipmentShopSellCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL).setContainer("#shop .menu");
     EquipmentShopSellCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers(Party.getChars());
@@ -152,7 +152,7 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
           shop.addInventory(equipment[i].desc, equipment[i].price);
         }
         
-        shop.show(".prices");
+        shop.show(".prices").hide(".menu");
         Event.transmit(Event.Types.CursorStart, CursorConstants.EQUIPMENT_SHOP_SELL_ITEM, {char:char});
       }
     };
@@ -162,7 +162,7 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP SELL ITEM cursor */
     /* ------------------------------- */
     var EquipmentShopSellItemCursor = function() { this.char = null; };
-    EquipmentShopSellItemCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL_ITEM, {container: "#shop .prices", otherKeys:{}});
+    EquipmentShopSellItemCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL_ITEM).setContainer("#shop .prices");
     EquipmentShopSellItemCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers(Party.getChars());
@@ -185,10 +185,10 @@ function($, Cursor, Equipment, Event, KeyPressNotifier, Logger, Party, CursorCon
     /* EQUIPMENT SHOP SELL CONFIRM cursor */
     /* ---------------------------------- */
     var EquipmentShopSellConfirmCursor = function() { this.char = null; this.item = null; this.itemIndex = null; };
-    var equipmentShopSellConfirmOpt = {container: "#shop .menu", otherKeys:{}};
-    equipmentShopSellConfirmOpt.otherKeys[KeyPressNotifier.Y] = function() { this.next(); };
-    equipmentShopSellConfirmOpt.otherKeys[KeyPressNotifier.N] = function() { this.back(); };
-    EquipmentShopSellConfirmCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL_CONFIRM, equipmentShopSellConfirmOpt);
+    EquipmentShopSellConfirmCursor.prototype = Cursor.create(CursorConstants.EQUIPMENT_SHOP_SELL_CONFIRM)
+      .setContainer("#shop .menu")
+      .addOtherKey(KeyPressNotifier.Y, function() { this.next(); })
+      .addOtherKey(KeyPressNotifier.N, function() { this.back(); });
     EquipmentShopSellConfirmCursor.prototype.back = function() { 
       this.clear();
       Party.getShop().npcSays("Too bad\n::\nSome-\nthing\nelse?").clear(".menu").resetOffers(Party.getChars());

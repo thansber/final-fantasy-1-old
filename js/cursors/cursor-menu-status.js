@@ -9,17 +9,16 @@ function($, Cursor, Event, Logger, CursorConstants, PartyConstants) {
     /* STATUS MENU cursor */
     /* ------------------ */
     var StatusMenuCursor = function() {};
-    StatusMenuCursor.prototype = Cursor.create(CursorConstants.STATUS_MENU, {otherKeys:{}});
+    StatusMenuCursor.prototype = Cursor.create(CursorConstants.STATUS_MENU);
     StatusMenuCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.MENU);
       if (this.previousListener) {
-        var cursorStartOpt = {
-          cursor : this.previousListener
-         ,prevListener : this.previousListener.previousListener
-         ,reset : false
-        };
-        Event.transmit(Event.Types.CursorStart, null, cursorStartOpt);
+        Event.transmit(Event.Types.CursorStart, null, {
+          cursor : this.previousListener,
+          prevListener : this.previousListener.previousListener,
+          reset : false
+        });
       }
     };
     StatusMenuCursor.prototype.next = function() { this.back(); };

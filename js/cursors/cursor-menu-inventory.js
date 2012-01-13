@@ -8,7 +8,7 @@ function($, Cursor, Event, Logger, CursorConstants, PartyConstants) {
     /* INVENTORY (ITEM MENU) cursor */
     /* ---------------------------- */
     var InventoryCursor = function() {};
-    InventoryCursor.prototype = Cursor.create(CursorConstants.INVENTORY, {container: "#itemMenu .inventory", otherKeys:{}});
+    InventoryCursor.prototype = Cursor.create(CursorConstants.INVENTORY).setContainer("#itemMenu .inventory");
     InventoryCursor.prototype.back = function() { 
       this.clear();
       Event.transmit(Event.Types.SwitchView, PartyConstants.Views.MENU);      

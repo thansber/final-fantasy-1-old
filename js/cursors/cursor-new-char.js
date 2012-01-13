@@ -8,7 +8,7 @@ function($, Cursor, Event, Logger, Message, Menus, Party, CursorConstants, Party
     /* NEW CHAR cursor */
     /* --------------- */
     var NewCharCursor = function() { this.index = 0; };
-    NewCharCursor.prototype = Cursor.create(CursorConstants.NEW_CHAR, {container:"#newChar .party", otherKeys:{}});
+    NewCharCursor.prototype = Cursor.create(CursorConstants.NEW_CHAR).setContainer("#newChar .party");
     NewCharCursor.prototype.back = function() { 
       if (this.index > 0) {
         this.index--;

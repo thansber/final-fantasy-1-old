@@ -190,7 +190,7 @@ function($, BattleConstants, Party, RNG, Skill, Spell) {
   return {
     changeCharIndex : changeCharIndex
    ,clear : clear
-   ,clearLastPartyCommand : function() { partyCommands[charIndex] = null; }
+   ,clearPartyCommand : function(index) { partyCommands[index] = null; }
    ,currentBattle : function() { return battle; } // this method should be limited in its use
    ,currentChar : function() { return Party.getChar(charIndex); }
    ,enemy : enemy
@@ -201,6 +201,7 @@ function($, BattleConstants, Party, RNG, Skill, Spell) {
    ,init : init
    ,isAllPartyCommandsEntered : isAllPartyCommandsEntered
    ,party : party
+   ,setCurrentChar : function(char) { charIndex = char.charIndex; }
    ,shuffleCommands : function() {
      var allCommands = $.merge([], partyCommands);
      $.merge(allCommands, enemyCommands);

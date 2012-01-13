@@ -8,7 +8,7 @@ function($, Cursor, Event, Logger, Party, CursorConstants) {
     /* BATTLE PARTY cursor */
     /* ------------------- */
     var BattlePartyCursor = function() {};
-    BattlePartyCursor.prototype = Cursor.create(CursorConstants.BATTLE_PARTY, {container: "#battle .party"});
+    BattlePartyCursor.prototype = Cursor.create(CursorConstants.BATTLE_PARTY).setContainer("#battle .party");
     BattlePartyCursor.prototype.back = function() {
       this.clear();
       Event.transmit(Event.Types.CursorStart, null, {cursor:this.previousListener, reset:false});

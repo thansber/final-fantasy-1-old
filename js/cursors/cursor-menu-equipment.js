@@ -15,10 +15,10 @@ function($, Cursor, Event, Logger, Menus, Party, CursorConstants, PartyConstants
       this.trading = false;
       this.dropping = false;
       
-      jQuery.extend(true, this.opt, opt);
+      $.extend(true, this.opt, opt);
       
-      var baseCursor = Cursor.create(this.id, this.opt);
-      jQuery.extend(baseCursor, {
+      var baseCursor = Cursor.create(this.id).setContainer(opt.container);
+      $.extend(baseCursor, {
         addToChar : function(equipment, targetCharIndex, targetEquipmentIndex) {
           if (!equipment) {
             return null;
