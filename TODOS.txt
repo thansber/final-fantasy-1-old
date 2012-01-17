@@ -27,7 +27,7 @@ MENU
 ====
 - cast spells outside of battle flow (healing spells)
 - use consumable flow
-- what statuses do we show in char menu, sprites 
+- what statuses do we show in char menu, sprites, poison = crouched, HP -> PO
 
 TOWNS
 =====
