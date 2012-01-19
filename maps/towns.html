@@ -11,8 +11,8 @@
 </head>
 <body class="maps">
 
-<label for="townSelector">Town:</label>
-<select id="townSelector">
+<label for="selector">Town:</label>
+<select id="selector">
   <option value="">-- Select a Town --</option>
 </select>
 
@@ -20,36 +20,10 @@
   <div class="town map"></div>
 </div>
 
-<script type="text/javascript" src="../js/lib/jquery-1.6.1.min.js"></script>
-<script type="text/javascript" src="../js/lib/jquery.backgroundPosition.js"></script>
-<script type="text/javascript" src="../js/map/map-config.js"></script>
-<script type="text/javascript" src="../js/chars/party.js"></script>
-<script type="text/javascript" src="../js/movement.js"></script>
-<script type="text/javascript" src="../js/data/town-maps.js"></script>
-<script type="text/javascript" src="../js/map/map-builder.js"></script>
+<script type="text/javascript" data-main="../js/debug/maps/towns" src="../js/lib/require-jquery.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-  
-  var $towns = $("#townSelector");
-  for (var t in TownMaps) {
-    $("<option/>").val(t).html(t).appendTo($towns);
-  }
-  
-  $("#townSelector").change(function() {
-    var selectedValue = $(this).val();
-    var $container = $("#map .town");
-    $container.empty();
-    
-    if (selectedValue.length == 0) {
-      return;
-    }
-    
-    MapBuilder.build(TownMaps[selectedValue].Config, $container, function($tileset, y, x) {
-      MapBuilder.buildTileset($tileset, y, x);
-    });
-  });
-  
-  $("#townSelector").val("Lefein").change();
+require.config({
+  baseUrl:"../js"
 });
 </script>
 </body>

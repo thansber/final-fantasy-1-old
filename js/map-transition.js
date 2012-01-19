@@ -22,7 +22,8 @@ function(Logger, MapConfig, MapCoordsAbsolute) {
   };
     
   return {
-    create : function(from, to, fromCoords, toCoords) { return new Transition(from, to, fromCoords, toCoords); }
+    All : ALL_TRANSITIONS
+   ,create : function(from, to, fromCoords, toCoords) { return new Transition(from, to, fromCoords, toCoords); }
    ,lookup : function(map, coords) {
       var transitions = ALL_TRANSITIONS[map];
       if (!transitions || transitions.length == 0) {
@@ -33,8 +34,8 @@ function(Logger, MapConfig, MapCoordsAbsolute) {
       var mapConfig = MapConfig.lookup(map);
       if (mapConfig && mapConfig.exitOnOutOfBounds) {
         if (mapConfig.isOutsideTownMap(coords)) {
-          transitions[0].backToWorldMap = true;
-          return transitions[0];
+          var transition = $.extend({backToWorldMap:true}, transitions[0]);
+          return transition;
         }
       } else {
         for (var t = 0; t < transitions.length; t++) {

@@ -13,7 +13,7 @@ BATTLE
 - wait for button after displaying Monsters perished
 - wait for button after displaying rewards
 - level ups
-- splash builds 3 items, then moves them around, t hen hides them at the end
+- splash builds 3 items, then moves them around, then hides them at the end
 	- creep = 45 
 	- imp = 18
 	- madpony = 24
@@ -44,3 +44,7 @@ TOWNS
 - add NPC object to track initial position, sprite, and conversations
 - message display in town - check if person is in front of user, if so display conversation text
 - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
+
+DUNGEONS
+========
+- marsh cave - need sprites for stairs down 

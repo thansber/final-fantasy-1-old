@@ -1,0 +1,164 @@
+/* ============= */
+/* MARSH CAVE B1 */
+/* ============= */
+#map.marsh-cave-b1 .tile { background-image:url(../../images/marsh-cave-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; }
+#map.marsh-cave-b1 .tile.none { background-image:none; background-color:black; } 
+#map.marsh-cave-b1 .tile.floor { background-position:-48px 0px; } 
+#map.marsh-cave-b1 .tile.wall { background-position:-48px -16px; } 
+#map.marsh-cave-b1 .tile.stairs.up { background-position:-48px -80px; } 
+#map.marsh-cave-b1 .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b1 .tile.ladder.up { background-position:-16px -16px; } 
+#map.marsh-cave-b1 .tile.ladder.down { background-position:-16px -16px; } 
+#map.marsh-cave-b1 .tile.door { background-position:-48px -48px; } 
+#map.marsh-cave-b1 .tile.room { background-position:-16px -16px; } 
+#map.marsh-cave-b1 .tile.room.wall.outside { background-position:-48px -32px; } 
+#map.marsh-cave-b1 .tile.room.wall.tl { background-position:0px 0px; } 
+#map.marsh-cave-b1 .tile.room.wall.top { background-position:-16px 0px; } 
+#map.marsh-cave-b1 .tile.room.wall.tr { background-position:-32px 0px; } 
+#map.marsh-cave-b1 .tile.room.wall.left { background-position:0px -16px; } 
+#map.marsh-cave-b1 .tile.room.wall.right { background-position:-32px -16px; } 
+#map.marsh-cave-b1 .tile.room.wall.bl { background-position:0px -32px; } 
+#map.marsh-cave-b1 .tile.room.wall.bottom { background-position:-16px -32px; } 
+#map.marsh-cave-b1 .tile.room.wall.br { background-position:-32px -32px; }
+
+#map.marsh-cave-b1.indoor .tile.floor { background-position:-64px 0px; }
+#map.marsh-cave-b1.indoor .tile.wall { background-position:-64px -16px; } 
+#map.marsh-cave-b1.indoor .tile.stairs.up { background-position:-64px -80px; }
+#map.marsh-cave-b1.indoor .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b1.indoor .tile.ladder.up { background-position:-80px -64px; } 
+#map.marsh-cave-b1.indoor .tile.ladder.down { background-position:-80px -48px; } 
+#map.marsh-cave-b1.indoor .tile.door { background-position:-48px -64px; } 
+#map.marsh-cave-b1.indoor .tile.room { background-position:-16px -64px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.outside { background-position:-64px -32px; }
+#map.marsh-cave-b1.indoor .tile.room.wall.tl { background-position:0px -48px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.top { background-position:-16px -48px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.tr { background-position:-32px -48px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.left { background-position:0px -64px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.right { background-position:-32px -64px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.bl { background-position:0px -80px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.bottom { background-position:-16px -80px; } 
+#map.marsh-cave-b1.indoor .tile.room.wall.br { background-position:-32px -80px; }
+
+/* =============== */
+/* MARSH CAVE B2-A */
+/* =============== */
+#map.marsh-cave-b2a .tile { background-image:url(../../images/marsh-cave-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; }
+#map.marsh-cave-b2a .tile.none { background-image:none; background-color:black; } 
+#map.marsh-cave-b2a .tile.floor { background-position:-48px 0px; } 
+#map.marsh-cave-b2a .tile.wall { background-position:-48px -16px; } 
+#map.marsh-cave-b2a .tile.stairs.up { background-position:-48px -80px; } 
+#map.marsh-cave-b2a .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b2a .tile.ladder.up { background-position:-16px -16px; } 
+#map.marsh-cave-b2a .tile.ladder.down { background-position:-16px -16px; } 
+#map.marsh-cave-b2a .tile.door { background-position:-48px -48px; } 
+#map.marsh-cave-b2a .tile.chest { background-position:-16px -16px; } 
+#map.marsh-cave-b2a .tile.room { background-position:-16px -16px; } 
+#map.marsh-cave-b2a .tile.room.wall.outside { background-position:-48px -32px; } 
+#map.marsh-cave-b2a .tile.room.wall.tl { background-position:0px 0px; } 
+#map.marsh-cave-b2a .tile.room.wall.top { background-position:-16px 0px; } 
+#map.marsh-cave-b2a .tile.room.wall.tr { background-position:-32px 0px; } 
+#map.marsh-cave-b2a .tile.room.wall.left { background-position:0px -16px; } 
+#map.marsh-cave-b2a .tile.room.wall.right { background-position:-32px -16px; } 
+#map.marsh-cave-b2a .tile.room.wall.bl { background-position:0px -32px; } 
+#map.marsh-cave-b2a .tile.room.wall.bottom { background-position:-16px -32px; } 
+#map.marsh-cave-b2a .tile.room.wall.br { background-position:-32px -32px; }
+
+#map.marsh-cave-b2a.indoor .tile.floor { background-position:-64px 0px; }
+#map.marsh-cave-b2a.indoor .tile.wall { background-position:-64px -16px; } 
+#map.marsh-cave-b2a.indoor .tile.stairs.up { background-position:-64px -80px; }
+#map.marsh-cave-b2a.indoor .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b2a.indoor .tile.ladder.up { background-position:-80px -64px; } 
+#map.marsh-cave-b2a.indoor .tile.ladder.down { background-position:-80px -48px; } 
+#map.marsh-cave-b2a.indoor .tile.door { background-position:-48px -64px; } 
+#map.marsh-cave-b2a.indoor .tile.chest { background-position:-80px -80px; } 
+#map.marsh-cave-b2a.indoor .tile.room { background-position:-16px -64px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.outside { background-position:-64px -32px; }
+#map.marsh-cave-b2a.indoor .tile.room.wall.tl { background-position:0px -48px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.top { background-position:-16px -48px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.tr { background-position:-32px -48px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.left { background-position:0px -64px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.right { background-position:-32px -64px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.bl { background-position:0px -80px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.bottom { background-position:-16px -80px; } 
+#map.marsh-cave-b2a.indoor .tile.room.wall.br { background-position:-32px -80px; }
+
+/* =============== */
+/* MARSH CAVE B2-B */
+/* =============== */
+#map.marsh-cave-b2b .tile { background-image:url(../../images/marsh-cave-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; }
+#map.marsh-cave-b2b .tile.none { background-image:none; background-color:black; } 
+#map.marsh-cave-b2b .tile.floor { background-position:-48px 0px; } 
+#map.marsh-cave-b2b .tile.wall { background-position:-48px -16px; } 
+#map.marsh-cave-b2b .tile.stairs.up { background-position:-48px -80px; } 
+#map.marsh-cave-b2b .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b2b .tile.ladder.up { background-position:-16px -16px; } 
+#map.marsh-cave-b2b .tile.ladder.down { background-position:-16px -16px; } 
+#map.marsh-cave-b2b .tile.door { background-position:-48px -48px; } 
+#map.marsh-cave-b2b .tile.chest { background-position:-16px -16px; } 
+#map.marsh-cave-b2b .tile.room { background-position:-16px -16px; } 
+#map.marsh-cave-b2b .tile.room.wall.outside { background-position:-48px -32px; } 
+#map.marsh-cave-b2b .tile.room.wall.tl { background-position:0px 0px; } 
+#map.marsh-cave-b2b .tile.room.wall.top { background-position:-16px 0px; } 
+#map.marsh-cave-b2b .tile.room.wall.tr { background-position:-32px 0px; } 
+#map.marsh-cave-b2b .tile.room.wall.left { background-position:0px -16px; } 
+#map.marsh-cave-b2b .tile.room.wall.right { background-position:-32px -16px; } 
+#map.marsh-cave-b2b .tile.room.wall.bl { background-position:0px -32px; } 
+#map.marsh-cave-b2b .tile.room.wall.bottom { background-position:-16px -32px; } 
+#map.marsh-cave-b2b .tile.room.wall.br { background-position:-32px -32px; }
+
+#map.marsh-cave-b2b.indoor .tile.floor { background-position:-64px 0px; }
+#map.marsh-cave-b2b.indoor .tile.wall { background-position:-64px -16px; } 
+#map.marsh-cave-b2b.indoor .tile.stairs.up { background-position:-64px -80px; }
+#map.marsh-cave-b2b.indoor .tile.stairs.down { background-position:16px 32px; } 
+#map.marsh-cave-b2b.indoor .tile.ladder.up { background-position:-80px -64px; } 
+#map.marsh-cave-b2b.indoor .tile.ladder.down { background-position:-80px -48px; } 
+#map.marsh-cave-b2b.indoor .tile.door { background-position:-48px -64px; } 
+#map.marsh-cave-b2b.indoor .tile.chest { background-position:-80px -80px; } 
+#map.marsh-cave-b2b.indoor .tile.room { background-position:-16px -64px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.outside { background-position:-64px -32px; }
+#map.marsh-cave-b2b.indoor .tile.room.wall.tl { background-position:0px -48px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.top { background-position:-16px -48px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.tr { background-position:-32px -48px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.left { background-position:0px -64px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.right { background-position:-32px -64px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.bl { background-position:0px -80px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.bottom { background-position:-16px -80px; } 
+#map.marsh-cave-b2b.indoor .tile.room.wall.br { background-position:-32px -80px; }
+
+/* ============= */
+/* MARSH CAVE B3 */
+/* ============= */
+#map.marsh-cave-b3 .tile { background-image:url(../../images/marsh-cave-sheet.png); background-repeat:no-repeat; background-position:1000em 1000em; }
+#map.marsh-cave-b3 .tile.floor { background-position:-64px 0px; }
+#map.marsh-cave-b3 .tile.wall { background-position:-64px -16px; } 
+#map.marsh-cave-b3 .tile.stairs.up { background-position:-64px -80px; }
+#map.marsh-cave-b3 .tile.door { background-position:-64px -48px; } 
+#map.marsh-cave-b3 .tile.chest { background-position:-112px -16px; } 
+#map.marsh-cave-b3 .tile.statue { background-position:-112px -16px; } 
+#map.marsh-cave-b3 .tile.room { background-position:-112px -16px; } 
+#map.marsh-cave-b3 .tile.room.wall.outside { background-position:-64px -32px; }
+#map.marsh-cave-b3 .tile.room.wall.tl { background-position:-96px 0px; } 
+#map.marsh-cave-b3 .tile.room.wall.top { background-position:-112px 0px; } 
+#map.marsh-cave-b3 .tile.room.wall.tr { background-position:-128px 0px; } 
+#map.marsh-cave-b3 .tile.room.wall.left { background-position:-96px -16px; } 
+#map.marsh-cave-b3 .tile.room.wall.right { background-position:-128px -16px; } 
+#map.marsh-cave-b3 .tile.room.wall.bl { background-position:-96px -32px; } 
+#map.marsh-cave-b3 .tile.room.wall.bottom { background-position:-112px -32px; } 
+#map.marsh-cave-b3 .tile.room.wall.br { background-position:-128px -32px; }
+
+#map.marsh-cave-b3.indoor .tile.floor { background-position:-80px 0px; }
+#map.marsh-cave-b3.indoor .tile.wall { background-position:-80px -16px; } 
+#map.marsh-cave-b3.indoor .tile.stairs.up { background-position:-64px -80px; }
+#map.marsh-cave-b3.indoor .tile.door { background-position:-64px -64px; } 
+#map.marsh-cave-b3.indoor .tile.chest { background-position:-80px -80px; } 
+#map.marsh-cave-b3.indoor .tile.statue { background-position:-112px -64px; } 
+#map.marsh-cave-b3.indoor .tile.room { background-position:-16px -64px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.outside { background-position:-80px -32px; }
+#map.marsh-cave-b3.indoor .tile.room.wall.tl { background-position:-96px -48px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.top { background-position:-112px -48px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.tr { background-position:-128px -48px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.left { background-position:-96px -64px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.right { background-position:-128px -64px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.bl { background-position:-96px -80px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.bottom { background-position:-112px -80px; } 
+#map.marsh-cave-b3.indoor .tile.room.wall.br { background-position:-128px -80px; }

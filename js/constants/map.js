@@ -5,8 +5,9 @@ function() {
     TILE_SIZE : 16
     
     // map IDs
-   ,WORLD_MAP : "world-map"
+   ,WORLD_MAP : "world-map"     
    ,OCEAN : "ocean"
+     
    ,CONERIA : "coneria"
    ,PRAVOKA : "pravoka"
    ,ELFLAND : "elfland"
@@ -15,8 +16,22 @@ function() {
    ,ONRAC : "onrac"
    ,GAIA : "gaia"
    ,LEFEIN : "lefein"
+     
+   ,CONERIA_CASTLE : "coneria-castle"
+   ,CONERIA_CASTLE_2F : "coneria-castle-2f"
+   ,ELF_CASTLE : "elf-castle"
+   ,ASTOS_CASTLE : "astos-castle"
+   ,MATOYAS_CAVE : "matoyas-cave"
+   ,DWARF_CAVE : "dwarf-cave"
+   ,TITANS_TUNNEL : "titans-tunnel"
    
-   // battle backgrounds
+   ,TEMPLE_OF_FIENDS : "temple-of-fiends"
+   ,MARSH_CAVE_B1 : "marsh-cave-b1"
+   ,MARSH_CAVE_B2A : "marsh-cave-b2a"
+   ,MARSH_CAVE_B2B : "marsh-cave-b2b"
+   ,MARSH_CAVE_B3 : "marsh-cave-b3"
+
+     // battle backgrounds
    ,BattleBackgrounds : {
      Castle:{cssClass:"castle"}
     ,Desert:{cssClass:"desert"}
