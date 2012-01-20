@@ -1,6 +1,6 @@
-var MapBuilder = (function() {
+define(["jquery", "map-config", "map-coords-tile"], function($, MapConfig, MapCoordsTile) {
   
-  this.build = function(config, $container) {
+  var build = function(config, $container) {
     var markup = [];
     var m = 0;
     for (var y = 0; y < config.maxTilesetY(); y++) {
@@ -10,7 +10,7 @@ var MapBuilder = (function() {
         for (var j = 0; j < config.height; j++) {
           markup[m++] = "<div class=\"row\">";
           for (var i = 0; i < config.width; i++) {
-            var tileClasses = config.getTileClasses(new Map.Coords(y, x, j, i));
+            var tileClasses = config.getTileClasses(MapCoordsTile.create({tilesetY:y, tilesetX:x, tileY:j, tileX:i}));
             markup[m++] = "<p class=\"tile " + tileClasses + "\">&nbsp;</p>";
           }
           markup[m++] = "</div>";
@@ -20,9 +20,30 @@ var MapBuilder = (function() {
       markup[m++] = "</div>";
     }
     
-    $container.append($(markup.join("")));
+    $container
+      .closest("#map").removeClass().addClass(config.id).end()
+      .append($(markup.join("")));
   };
   
-  return this;
-  
-}).call({});
+  return {
+    build: build,
+    
+    init : function() {
+      $("#selector").change(function() {
+        var selectedValue = $(this).val();
+        var $container = $("#map .map");
+        $container.empty();
+        
+        if (selectedValue.length == 0) {
+          return;
+        }
+        
+        build(MapConfig.lookup(selectedValue), $container);
+      });
+      
+      $("#indoor").change(function() {
+        $("#map").toggleClass("indoor", this.checked);
+      });
+    }
+  };
+});

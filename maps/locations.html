@@ -1,0 +1,36 @@
+<html>
+<head>
+  <title>Final Fantasy I</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link type="text/css" rel="stylesheet" href="../css/global.css"/>
+  <link type="text/css" rel="stylesheet" href="../css/maps/all.css"/>
+  <link type="text/css" rel="stylesheet" href="../css/maps/castles.css"/>
+  <link type="text/css" rel="stylesheet" href="../css/maps/caves.css"/>
+  <link type="text/css" rel="stylesheet" href="../css/maps/temple-of-fiends.css"/>
+  <link type="text/css" rel="stylesheet" href="../css/maps/marsh-cave.css"/>
+  <style>
+    #world { width:100%; }
+  </style>
+</head>
+<body class="maps">
+
+<label for="selector">Location:</label>
+<select id="selector">
+  <option value="">-- Select a location --</option>
+</select>
+
+<label for="indoor">Indoor?</label>
+<input type="checkbox" id="indoor" />
+
+<div id="map">
+  <div class="map"></div>
+</div>
+
+<script type="text/javascript" data-main="../js/debug/maps/locations" src="../js/lib/require-jquery.js"></script>
+<script type="text/javascript">
+require.config({
+  baseUrl:"../js"
+});
+</script>
+</body>
+</html>
