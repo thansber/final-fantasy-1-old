@@ -47,6 +47,6 @@ TOWNS
 
 DUNGEONS
 ========
-- marsh cave - need sprites for stairs down 
-- need to encode: Earth Cave, Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Temple of Onrac, Waterfall Cave
-- needs sprite sheets: Sardas Cave, Titans Tunnel, Earth Cave, Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Temple of Onrac, Waterfall Cave
+- need other mountiain sprite for Earth Cave B3
+- need to encode: Earth Cave, Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- needs sprite sheets: Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave

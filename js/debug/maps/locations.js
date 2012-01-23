@@ -24,6 +24,6 @@ function($, MapBuilder, MapConstants,
       $("<option/>").val(maps[m]).html(maps[m]).appendTo($selector);
     }
     
-    $selector.val(MapConstants.SARDAS_CAVE).change();
+    $selector.val(MapConstants.EARTH_CAVE_B1).change();
   });
 });
