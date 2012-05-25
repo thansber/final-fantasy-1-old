@@ -22,6 +22,7 @@ function($, Logger) {
    ,NextChar : "nextChar"
    ,PopulateSpellList : "populateSpellList"
    ,PrevChar : "prevChar"
+   ,ResourcesFinished : "resourcesFinished"
    ,ShopEnter : "shopEnter"
    ,ShopExit : "shopExit"
    ,StartGame : "startGame"

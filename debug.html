@@ -11,22 +11,16 @@
   <link type="text/css" rel="stylesheet" href="css/characters.css"/>
   <link type="text/css" rel="stylesheet" href="css/menus.css"/>
   <link type="text/css" rel="stylesheet" href="css/shops.css"/>
-  <script type="text/javascript" data-main="js/main" src="js/lib/require-jquery.js"></script>
-  <script type="text/javascript">
-  require.config({
-    baseUrl:"js"
-  });
-  </script>
 </head>
 <body>
+
+<section id="loader">Loading resources...<span>0</span>% complete</section>
 
 <!-- MAPS -->
 <section id="map" class="main">
   <div class="background">
     <div class="transition top displayed"></div>
-    <div id="view" class="smooth">
-      <div id="player"></div>
-    </div>
+    <canvas id="view"></canvas>
     <div class="transition bottom displayed"></div>
   </div>
 </section>
@@ -172,6 +166,8 @@
 <div id="debug">
   <ul class="menu">
     <li class="curve tl bl big"><a href="#" class="start-game">Start Game</a></li>
+    <li class="curve tl bl big"><a href="#" class="tiles">Map Tiles</a></li>
+    <li class="curve tl bl big"><a href="#" class="full-maps">Full Maps</a></li>
     <li class="curve tl bl big"><a href="#" class="locationJumper">Location Jumper</a></li>
     <li class="curve tl bl big"><a href="#" class="coords">Coordinates</a></li>
     <li class="curve tl bl big"><a href="#" class="messages">Messages</a></li>
@@ -188,6 +184,22 @@
 
   <section class="start-game curve all">
     <h1>Starting game...</h1>
+  </section>
+  
+  <section class="tiles curve all">
+    <div class="location row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+      <input type="checkbox" class="inside" />Inside?
+    </div>
+  </section>
+  
+  <section class="full-maps curve all">
+    <div class="row">
+      <select class="selector"></select>
+      <button class="go">Go there!</button>
+      <input type="checkbox" class="inside" />Inside?
+    </div>
   </section>
 
   <section class="locationJumper curve all">
@@ -376,6 +388,9 @@
   </section>
   
 </div>
+
+<script type="text/javascript">var require = { baseUrl : "js" };</script>
+<script type="text/javascript" data-main="main" src="js/lib/require-jquery.js"></script>
 
 </body>
 </html>

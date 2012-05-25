@@ -1,7 +1,7 @@
 define( 
 /* DebugUtil */
-["jquery", "events", "key-press-notifier", "movement", "./constants", "../constants/cursor", "../constants/party"], 
-function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, PartyConstants) {
+["jquery", "events", "key-press-notifier", "movement", "./constants", "../constants/cursor", "../constants/map", "../constants/party"], 
+function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, MapConstants, PartyConstants) {
   
   var addOption = function($selector, value, text) {
     if (!text) {
@@ -12,6 +12,21 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
   
   var battleAnimationReset = function() {
     $("#battle .enemies .splash").addClass("hidden");
+  };
+  
+  var initLocationSelector = function($container) {
+    var maps = [MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND, 
+                MapConstants.CRESCENT_LAKE, MapConstants.ONRAC, MapConstants.GAIA, MapConstants.LEFEIN,
+                MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, MapConstants.ASTOS_CASTLE,   
+                MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE,
+                MapConstants.TEMPLE_OF_FIENDS, 
+                MapConstants.MARSH_CAVE_B1, MapConstants.MARSH_CAVE_B2A, MapConstants.MARSH_CAVE_B2B, MapConstants.MARSH_CAVE_B3,
+                MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5];
+    
+    var $selector = $container.find(".selector");
+    for (var m in maps) {
+      $("<option/>").val(maps[m]).html(maps[m]).appendTo($selector);
+    }    
   };
   
   var loadMainView = function(helper) {
@@ -50,6 +65,7 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
   return {
     addOption: addOption
    ,battleAnimationReset : battleAnimationReset
+   ,initLocationSelector: initLocationSelector
    ,loadMainView: loadMainView
    ,menuChange: menuChange
   };

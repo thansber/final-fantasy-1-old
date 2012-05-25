@@ -7,6 +7,7 @@
 #map .background .transition.bottom { bottom:-151px; }
 #map .background .transition.bottom.displayed { bottom:0px; }
 
+/*
 #map #view { width:302px; height:302px; overflow:hidden; }
 #map.world-map #view { background-image:url(../images/world-map.png); background-color:black; }
 #map.town #view { background-repeat:no-repeat; }
@@ -28,6 +29,7 @@
   -moz-transition: background-position .3s linear;
   -webkit-transition: background-position .3s linear;
 }
+*/
 
 #map .background .transition {
   -moz-transition: top 1s linear, bottom 1s linear;

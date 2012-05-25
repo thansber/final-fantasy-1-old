@@ -1,8 +1,8 @@
 define(
 /* Engine */
-["jquery", "battle", "cursor", "events", "logger", "map-coords-absolute", "map-transition", "menus", "party", "shops", "util", 
+["jquery", "battle", "cursor", "events", "logger", "maps/artist", "map-coords-absolute", "map-transition", "menus", "party", "shops", "util", 
  "constants/cursor", "constants/map", "constants/movement", "constants/party"],
-function($, Battle, Cursor, Event, Logger, MapCoordsAbsolute, MapTransition, Menus, Party, Shops, Util, 
+function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTransition, Menus, Party, Shops, Util, 
          CursorConstants, MapConstants, MovementConstants, PartyConstants) {
   
   var areaTransition = function(transition) {
@@ -49,8 +49,8 @@ function($, Battle, Cursor, Event, Logger, MapCoordsAbsolute, MapTransition, Men
     var $view = $("#view");
     var $player = $("#player");
     
-    var oldCss = $view.attr("class").split(" ");
-    $view.removeClass().hide();
+    //var oldCss = $view.attr("class").split(" ");
+    //$view.removeClass().hide();
     
     var currentMap = Party.getMap();
     // If leaving the world map, keep track of the last world map position
@@ -63,11 +63,13 @@ function($, Battle, Cursor, Event, Logger, MapCoordsAbsolute, MapTransition, Men
 
     Logger.debug("jumped to map [" + map + "], coords " + coords.toString());
     
+    /*
     var playerTop = Util.cssNumericValue($player.css("marginTop"));
     var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
     var top = -1 * ((coords.y * MapConstants.TILE_SIZE) - playerTop);
     var left = -1 * ((coords.x * MapConstants.TILE_SIZE) - playerLeft);
     $view.css({backgroundPosition:left + "px " + top + "px"}).addClass(oldCss).show();
+    */
   };
   
   var showCharMenu = function(listener) {
@@ -100,7 +102,10 @@ function($, Battle, Cursor, Event, Logger, MapCoordsAbsolute, MapTransition, Men
   };
    
   var switchMap = function(map) {
-    $("#map").hide().removeClass().addClass(map).addClass("town main").show();
+    var $view = $("#view");
+    $view.hide().data("map", map);
+    MapArtist.draw();
+    $view.show();
   };
    
   var switchView = function(view) {

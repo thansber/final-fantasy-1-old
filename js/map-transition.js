@@ -1,7 +1,7 @@
 define( 
 /* MapTransition */
-["logger", "map-config", "map-coords-absolute"], 
-function(Logger, MapConfig, MapCoordsAbsolute) {
+["logger", "maps/map", "map-coords-absolute"], 
+function(Logger, Map, MapCoordsAbsolute) {
   
   var ALL_TRANSITIONS = {};
   
@@ -10,7 +10,7 @@ function(Logger, MapConfig, MapCoordsAbsolute) {
     this.to = to;
     if (fromCoords) {
       this.fromCoords = MapCoordsAbsolute.create(fromCoords);
-      this.toCoords = toCoords ? MapCoordsAbsolute.create(toCoords) : MapConfig.lookup(to).start;
+      this.toCoords = toCoords ? MapCoordsAbsolute.create(toCoords) : (Map.lookup(to) ? Map.lookup(to).start : null);
     }
     
     var transitionsForFrom = ALL_TRANSITIONS[this.from];
@@ -31,7 +31,7 @@ function(Logger, MapConfig, MapCoordsAbsolute) {
         return null;
       }
   
-      var mapConfig = MapConfig.lookup(map);
+      var mapConfig = Map.lookup(map);
       if (mapConfig && mapConfig.exitOnOutOfBounds) {
         if (mapConfig.isOutsideTownMap(coords)) {
           var transition = $.extend({backToWorldMap:true}, transitions[0]);

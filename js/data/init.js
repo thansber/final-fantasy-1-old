@@ -1,9 +1,9 @@
 define( 
 /* Data */
-["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
- "./map-transitions", "./town-maps", "./world-map"], 
-function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
-         MapTransitionData, TownMapData, WorldMapData) {
+["./maps/castles", "./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
+ "./map-sprites", "./map-transitions", "./maps/towns", "./world-map"], 
+function(CastleMapData, EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
+         MapSpriteData, MapTransitionData, TownMapData, WorldMapData) {
   
   // Any data setup should reside here
   var init = function() {
@@ -14,6 +14,7 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, En
     ShopInventoryData.init();
     EncounterData.init();
     
+    CastleMapData.init();
     TownMapData.init();
     WorldMapData.init();
     MapTransitionData.init();
