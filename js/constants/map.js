@@ -36,6 +36,18 @@ function() {
    ,EARTH_CAVE_B3 : "earth-cave b3"
    ,EARTH_CAVE_B4 : "earth-cave b4"
    ,EARTH_CAVE_B5 : "earth-cave b5"
+   ,GURGU_VOLCANO_B1 : "gurgu-volcano-b1"
+   ,GURGU_VOLCANO_B2 : "gurgu-volcano-b2"
+   ,GURGU_VOLCANO_B3A : "gurgu-volcano-b3a"
+   ,GURGU_VOLCANO_B3B : "gurgu-volcano-b3b"
+   ,GURGU_VOLCANO_B4A : "gurgu-volcano-b4a"
+   ,GURGU_VOLCANO_B4B : "gurgu-volcano-b4b"
+   ,GURGU_VOLCANO_B5 : "gurgu-volcano-b5"
+   ,ICE_CAVE_B1 : "ice-cave-b1"
+   ,ICE_CAVE_B2A : "ice-cave-b2a"
+   ,ICE_CAVE_B2B : "ice-cave-b2b"
+   ,ICE_CAVE_B3A : "ice-cave-b3a"
+   ,ICE_CAVE_B3B : "ice-cave-b3b"
 
      // battle backgrounds
    ,BattleBackgrounds : {

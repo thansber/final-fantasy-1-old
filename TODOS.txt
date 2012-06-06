@@ -37,7 +37,6 @@ TOWNS
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal?
 - add "door" transitions for use in castles/dungeons
-- encode castles (Coneria/Elfland)
 - CSS transitions in town to leave and to enter shops
 - pressing Enter/Space in town displays message
 - add people in town initially not moving
@@ -48,5 +47,6 @@ TOWNS
 DUNGEONS
 ========
 - need other mountiain sprite for Earth Cave B3
-- need to encode: Earth Cave, Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- prob need to split sprite sheet for upper levels/lower levels of Earth Cave
+- need to encode: Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
 - needs sprite sheets: Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
