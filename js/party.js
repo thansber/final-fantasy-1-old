@@ -1,10 +1,10 @@
 define( /* Party */ 
 ["jquery", 
  "character", "character-class", "character-growth", "encounters", "equipment", "events",
- "logger", "map-config", "map-coords-absolute", "map-coords-converter", "map-transition",
+ "logger", "maps/map", "map-coords-absolute", "map-coords-converter", "map-transition",
  "rng", "spells", "util", "constants/map", "constants/movement"], 
 function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
-         Logger, MapConfig, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
+         Logger, Map, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
          RNG, Spell, Util, MapConstants, MovementConstants) { 
 return (function() {
     
@@ -176,7 +176,7 @@ return (function() {
     return keyItemsInInventory;
   };
   self.getLitOrbs = function() { return orbsLit; };
-  self.getMap = function() { return MapConfig.lookup(currentMap); };
+  self.getMap = function() { return Map.lookup(currentMap); };
   self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };

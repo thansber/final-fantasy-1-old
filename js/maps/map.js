@@ -32,6 +32,7 @@ function(MapCoordsAbsolute, Resource) {
   
   Map.prototype.getTile = function(y, x) { return this.mapping[this.getTileId(y, x)]; };
   Map.prototype.getTileId = function(y, x) { return this.tiles[y][x]; };
+  Map.prototype.is = function(id) { return this.id == id; };
   Map.prototype.isOutsideTownMap = function(coords) {
     if (!this.exitOnOutOfBounds) {
       return false;
@@ -41,6 +42,12 @@ function(MapCoordsAbsolute, Resource) {
     }
     return coords.x >= this.cols || coords.y >= this.rows;
   };
+  Map.prototype.repeatSprites = function(row, num) {
+    for (var i = 0; i < num; i++) {
+      this.sprites(row);
+    }
+    return this;
+  }
   Map.prototype.sprites = function(row) {
     var rowTiles = row.split(greedySpaceRegex);
     if (this.cols === 0) {

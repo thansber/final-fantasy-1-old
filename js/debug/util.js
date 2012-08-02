@@ -15,7 +15,8 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
   };
   
   var initLocationSelector = function($container) {
-    var maps = [MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND, 
+    var maps = [MapConstants.WORLD_MAP,
+                MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND, 
                 MapConstants.CRESCENT_LAKE, MapConstants.ONRAC, MapConstants.GAIA, MapConstants.LEFEIN,
                 MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, MapConstants.ASTOS_CASTLE,   
                 MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE,

@@ -2,6 +2,7 @@ define(/* DebugMaps */
 ["jquery", "./util", "maps/map", "maps/artist", "../constants/map"],
 function($, DebugUtil, Map, MapArtist, MapConstants) {
   
+  var $debug = null;
   var inside = false;
   
   var jumpToLocation = function() {
@@ -16,9 +17,11 @@ function($, DebugUtil, Map, MapArtist, MapConstants) {
     for (var y = 0; y < map.rows; y++) {
       for (var x = 0; x < map.cols; x++) {
         var tile = map.getTile(y, x);
-        var sourceX = inside && tile.inside ? tile.inside.x : tile.x;
-        var sourceY = inside && tile.inside ? tile.inside.y : tile.y;
-        MapArtist.drawTile(img, {x:sourceX, y:sourceY}, {x:x, y:y});
+        if (tile) {
+          var sourceX = inside && tile.inside ? tile.inside.x : tile.x;
+          var sourceY = inside && tile.inside ? tile.inside.y : tile.y;
+          MapArtist.drawTile(img, {x:sourceX, y:sourceY}, {x:x, y:y});
+        }
       }
     }
   };

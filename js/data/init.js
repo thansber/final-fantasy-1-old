@@ -3,7 +3,7 @@ define(
 ["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
  "./map-transitions", 
  "./maps/castles", "./maps/dwarf-cave", "./maps/earth-cave", "./maps/matoyas-cave", "./maps/sardas-cave", "./maps/titans-tunnel", 
- "./maps/towns", "./world-map"], 
+ "./maps/towns", "./maps/world"], 
 function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, 
          CastleMapData, DwarfCaveMapData, EarthCaveMapData, MatoyasCaveMapData, SardasCaveMapData, TitansTunnelMapData,
