@@ -180,8 +180,27 @@ function(Map, MapConstants) {
        .sprites("W  W3 r  r  r  W4 W  W  r  r  r  W  W  W3 r  r  r  W4 W  W  W3 r  W4 W  W  W3 r  r  r  W4 W")
        .sprites(".  W  W3 r  W4 W  .  .  .  .  .  .  .  W  W3 r  W4 W  .  .  W3 r  W4 .  .  W  W3 r  W4 W  .")
        .sprites(".  .  W  r  W  .  .  .  .  .  .  .  .  .  W  W  W  .  .  .  W3 r  W4 .  .  .  W  r  W  .  .")
-       .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W  r  W  .  .  .  .  .  .  .  .")
-  
+       .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W  r  W  .  .  .  .  .  .  .  .");
+    
+    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({hasBattles:true, start:{y:28, x:14}})).tileMapping(tiles)
+       .sprites("R1 R2 R2 R2 R2 R3 .  .  .  .  .  .  .  .  .  .  .  .  .  R1 R2 R2 R2 R2 R3")
+       .sprites("R4 T1 T2 T3 R  R5 .  .  .  .  .  .  .  .  .  .  .  .  .  R4 R  R  R  R  R5")
+       .sprites("R4 T4 T5 T6 R  R5 .  .  .  .  .  .  .  .  .  .  .  .  .  R4 R  R  R  R  R5")
+       .sprites("R4 R  R  R  R  R5 W  W  W  W  W  W  W  W  W  W  W  W  W  R4 R  R  R  R  R5")
+       .sprites("R6 R7 R7 R7 R7 R8 r  r  r  r  r  r  r  r  r  r  r  r  r  R6 R7 R7 R7 R7 R8")
+       .sprites("W  W  W  W1 D  W  r  r  r  r  r  r  r  r  r  r  r  r  r  W  W  W2 W  W  W")
+ .repeatSprites(".  .  .  W3 r  r  r  r  r  r  r  r  r  r  r  r  r  r  r  r  r  W4 .  .  .", 5)
+       .sprites(".  .  .  W3 r  r  r  r  r  r  r  P  r  P  r  r  r  r  r  r  r  W4 .  .  .")
+       .sprites(".  .  .  W3 r  r  r  r  r  r  P  r  r  r  P  r  r  r  r  r  r  W4 .  .  .")
+       .sprites(".  .  .  W3 r  r  r  r  r  P  r  r  r  r  r  P  r  r  r  r  r  W4 .  .  .")
+       .sprites(".  .  .  W3 r  r  r  r  r  r  P  r  r  r  P  r  r  r  r  r  r  W4 .  .  .")
+ .repeatSprites(".  .  .  W3 r  r  r  r  r  r  r  P  r  P  r  r  r  r  r  r  r  W4 .  .  .", 4)
+       .sprites("R1 R2 R2 R2 R2 R3 r  r  r  r  r  P  r  P  r  r  r  r  r  R1 R2 R2 R2 R2 R3")
+       .sprites("R4 R  R  R  R  R5 r  r  r  r  r  P  r  P  r  r  r  r  r  R4 R  R  R  R  R5")
+       .sprites("R4 R  R  R  R  R5 W  W  W  W  W  P  r  P  W  W  W  W  W  R4 R  R  R  R  R5")
+       .sprites("R4 R  R  R  R  R5 .  .  .  .  .  .  .  .  .  .  .  .  .  R4 R  R  R  R  R5")
+       .sprites("R6 R7 R7 R7 R7 R8 .  .  .  .  .  .  .  .  .  .  .  .  .  R6 R7 R7 R7 R7 R8")
+       .sprites("W  W  W  W  W  W  .  .  .  .  .  .  .  .  .  .  .  .  .  W  W  W  W  W  W")
   };
   
 

@@ -1,3 +1,4 @@
+/* @DEPRECATED */
 define( 
 /* WorldMapData */
 ["map-config", "map-tile", "constants/map", "constants/movement"], 

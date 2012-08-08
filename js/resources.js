@@ -50,11 +50,18 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.CONERIA_CASTLE_2F, "images/maps/castle-sheet.png");
       new Resource(MapConstants.ELF_CASTLE, "images/maps/castle-sheet.png");
       new Resource(MapConstants.ASTOS_CASTLE, "images/maps/castle-sheet.png");
+      new Resource(MapConstants.CASTLE_ORDEALS_1F, "images/maps/castle-sheet.png");
+      new Resource(MapConstants.CASTLE_ORDEALS_2F, "images/maps/castle-sheet.png");
+      new Resource(MapConstants.CASTLE_ORDEALS_3F, "images/maps/castle-sheet.png");
       
       new Resource(MapConstants.MATOYAS_CAVE, "images/maps/matoya-cave-sheet.png");
       new Resource(MapConstants.DWARF_CAVE, "images/maps/dwarf-cave-sheet.png");
       new Resource(MapConstants.TITANS_TUNNEL, "images/maps/titans-tunnel-sheet.png");
       new Resource(MapConstants.SARDAS_CAVE, "images/maps/sardas-cave-sheet.png");
+
+      new Resource(MapConstants.CARDIA_ISLANDS_MAIN, "images/maps/matoya-cave-sheet.png");
+      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT, "images/maps/matoya-cave-sheet.png");
+      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, "images/maps/matoya-cave-sheet.png");
       
       new Resource(MapConstants.TEMPLE_OF_FIENDS, "images/maps/temple-of-fiends-sheet.png");
       new Resource(MapConstants.EARTH_CAVE_B1, "images/maps/earth-cave-sheet.png");

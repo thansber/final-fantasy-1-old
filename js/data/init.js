@@ -2,11 +2,13 @@ define(
 /* Data */
 ["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
  "./map-transitions", 
- "./maps/castles", "./maps/dwarf-cave", "./maps/earth-cave", "./maps/matoyas-cave", "./maps/sardas-cave", "./maps/titans-tunnel", 
+ "./maps/cardia-islands", "./maps/castles", "./maps/dwarf-cave", "./maps/earth-cave", 
+ "./maps/matoyas-cave", "./maps/sardas-cave", "./maps/titans-tunnel", 
  "./maps/towns", "./maps/world"], 
 function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, 
-         CastleMapData, DwarfCaveMapData, EarthCaveMapData, MatoyasCaveMapData, SardasCaveMapData, TitansTunnelMapData,
+         CardiaIslandsMapData, CastleMapData, DwarfCaveMapData, EarthCaveMapData, 
+         MatoyasCaveMapData, SardasCaveMapData, TitansTunnelMapData,
          TownMapData, WorldMapData) {
   
   // Any data setup should reside here
@@ -18,6 +20,7 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, En
     ShopInventoryData.init();
     EncounterData.init();
     
+    CardiaIslandsMapData.init();
     CastleMapData.init();
     DwarfCaveMapData.init();
     EarthCaveMapData.init();

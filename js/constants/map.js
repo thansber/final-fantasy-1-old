@@ -21,10 +21,18 @@ function() {
    ,CONERIA_CASTLE_2F : "coneria-castle-2f"
    ,ELF_CASTLE : "elf-castle"
    ,ASTOS_CASTLE : "astos-castle"
+   ,CASTLE_ORDEALS_1F : "castle-ordeals-1f" 
+   ,CASTLE_ORDEALS_2F : "castle-ordeals-2f" 
+   ,CASTLE_ORDEALS_3F : "castle-ordeals-3f" 
+    
    ,MATOYAS_CAVE : "matoyas-cave"
    ,DWARF_CAVE : "dwarf-cave"
    ,TITANS_TUNNEL : "titans-tunnel"
    ,SARDAS_CAVE : "sardas-cave"
+    
+   ,CARDIA_ISLANDS_MAIN : "cardia-islands-main"
+   ,CARDIA_ISLANDS_BAHAMUT : "cardia-islands-bahamut-1f"
+   ,CARDIA_ISLANDS_BAHAMUT_2F : "cardia-islands-bahamut-2f"
    
    ,TEMPLE_OF_FIENDS : "temple-of-fiends"
    ,MARSH_CAVE_B1 : "marsh-cave-b1"

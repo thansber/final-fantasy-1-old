@@ -55,7 +55,7 @@ function(Map, MapConstants) {
     "R^": {y:0, x:16, desc:"roof angle"},
     "S" : {y:1, x:12, desc:"sand"},
     "SU": {y:1, x:13, desc:"submarine"},
-    "WL": {y:0, x:13, desc:"well"},
+    "WL": {y:0, x:13, desc:"well"}
   };
   
   var init = function() {

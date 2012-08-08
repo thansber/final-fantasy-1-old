@@ -18,11 +18,13 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
     var maps = [MapConstants.WORLD_MAP,
                 MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND, 
                 MapConstants.CRESCENT_LAKE, MapConstants.ONRAC, MapConstants.GAIA, MapConstants.LEFEIN,
-                MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, MapConstants.ASTOS_CASTLE,   
+                MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, 
+                MapConstants.ASTOS_CASTLE, MapConstants.CASTLE_ORDEALS_1F, MapConstants.CASTLE_ORDEALS_2F, MapConstants.CASTLE_ORDEALS_3F,  
                 MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE,
                 MapConstants.TEMPLE_OF_FIENDS, 
                 MapConstants.MARSH_CAVE_B1, MapConstants.MARSH_CAVE_B2A, MapConstants.MARSH_CAVE_B2B, MapConstants.MARSH_CAVE_B3,
-                MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5];
+                MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5,
+                MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F];
     
     var $selector = $container.find(".selector");
     for (var m in maps) {
