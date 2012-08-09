@@ -1,12 +1,12 @@
 define(/* */
-["maps/map", "constants/map"],
-function(Map, MapConstants) {
+["jquery", "maps/map", "constants/map"],
+function($, Map, MapConstants) {
   
-  var tiles = {
-    "." : {y:9, x:4, desc:"nothing"},
-    "..": {y:0, x:3, desc:"floor", inside:{y:1, x:3}, passable:true},
-    "D" : {y:6, x:5, desc:"door", inside:{y:7, x:5}, passable:true},
-    "R" : {y:1, x:1, desc:"room empty", inside:{y:9, x:4}, passable:true},
+  var tiles_upper = {
+    "." : {y:4, x:1, desc:"nothing"},
+    "..": {y:1, x:4, desc:"floor", inside:{y:4, x:4}, passable:true},
+    "D" : {y:6, x:0, desc:"door", inside:{y:6, x:1}, passable:true},
+    "R" : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}, passable:true},
     "R1": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
     "R2": {y:0, x:1, desc:"room wall top", inside:{y:3, x:1}},
     "R3": {y:0, x:2, desc:"room wall top", inside:{y:3, x:2}},
@@ -15,26 +15,32 @@ function(Map, MapConstants) {
     "R6": {y:2, x:0, desc:"room wall bottom left", inside:{y:5, x:0}},
     "R7": {y:2, x:1, desc:"room wall bottom", inside:{y:5, x:1}, passable:true},
     "R8": {y:2, x:2, desc:"room wall bottom right", inside:{y:5, x:2}},
-    "Rc": {y:1, x:1, desc:"chest", inside:{y:4, x:1}, passable:true},
-    "W" : {y:0, x:4, desc:"wall", inside:{y:1, x:4}},
-    "W1": {y:2, x:3, desc:"wall top left", inside:{y:4, x:3}},
-    "W2": {y:2, x:4, desc:"wall top right", inside:{y:4, x:4}},
-    "W3": {y:3, x:3, desc:"wall left", inside:{y:5, x:3}},
-    "W4": {y:3, x:4, desc:"wall right", inside:{y:5, x:4}},
-    "x" : {y:1, x:1, desc:"spikes", inside:{y:9, x:1}},
-    "X" : {y:1, x:1, desc:"spikes rising", inside:{y:9, x:0}},
-    "x" : {y:1, x:1, desc:"spikes", inside:{y:9, x:1}},
-    "@" : {y:1, x:1, desc:"orb altar", inside:{y:9, x:2}},
-    "*" : {y:1, x:1, desc:"no idea", inside:{y:9, x:3}},
-    "^^": {y:0, x:5, desc:"mountain peak", inside:{y:1, x:5}}, // MISSING
-    "]" : {y:1, x:1, desc:"statue right", inside:{y:8, x:3}},
-    "[" : {y:1, x:1, desc:"statue left", inside:{y:8, x:4}},
-    ">" : {y:2, x:5, desc:"stairs up", passable:true, inside:{y:4, x:5}},
-    "<" : {y:3, x:5, desc:"stairs down", passable:true, inside:{y:5, x:5}}
+    "Rc": {y:1, x:1, desc:"chest", inside:{y:6, x:3}, passable:true},
+    "W" : {y:0, x:4, desc:"wall", inside:{y:3, x:4}},
+    "W1": {y:0, x:3, desc:"wall top left", inside:{y:3, x:3}},
+    "W2": {y:0, x:5, desc:"wall top right", inside:{y:3, x:5}},
+    "W3": {y:1, x:3, desc:"wall left", inside:{y:4, x:3}},
+    "W4": {y:1, x:5, desc:"wall right", inside:{y:4, x:5}},
+    "^" : {y:2, x:5, desc:"mountain", inside:{y:5, x:5}},
+    "^^": {y:6, x:2, desc:"mountain peak"},
+    "]" : {y:1, x:1, desc:"statue right", inside:{y:6, x:4}},
+    "[" : {y:1, x:1, desc:"statue left", inside:{y:6, x:5}},
+    ">" : {y:2, x:3, desc:"stairs up", passable:true, inside:{y:5, x:3}},
+    "<" : {y:2, x:4, desc:"stairs down", passable:true, inside:{y:5, x:4}}
   };
   
+  var tiles_lower = $.extend({}, tiles_upper, {
+    "x" : {y:1, x:1, desc:"spikes", inside:{y:5, x:5}},
+    "O" : {y:1, x:1, desc:"orb", inside:{y:2, x:5}},
+    "X" : {y:1, x:1, desc:"spikes rising", inside:{y:5, x:4}},
+    "@" : {y:1, x:1, desc:"orb altar", inside:{y:6, x:2}},
+    "*" : {y:1, x:1, desc:"no idea", inside:{y:5, x:3}},
+    ">" : {y:2, x:3, desc:"stairs up", passable:true},
+    "<" : {y:2, x:4, desc:"stairs down", passable:true}
+  });
+  
   var init = function() {
-    Map.create(MapConstants.EARTH_CAVE_B1).tileMapping(tiles)
+    Map.create(MapConstants.EARTH_CAVE_B1).tileMapping(tiles_upper)
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  .. .. .. .. .. .. .. .. .. .. .. .. ^  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  .. .. ^  ^  ^  ^  ^  ^  ^  ^  .. .. ^  ^  ^  ^  .  .  .  .  .  .  .")
@@ -85,7 +91,7 @@ function(Map, MapConstants) {
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  .. .. .. .. .. .. .. ^  ^  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  ^  ^  ^  ^  ^  ^  ^  ^  .  .  .  .  .  .  .  .  .  .  .  .  .  .");
        
-    Map.create(MapConstants.EARTH_CAVE_B2).tileMapping(tiles)
+    Map.create(MapConstants.EARTH_CAVE_B2).tileMapping(tiles_upper)
        .sprites("W1 W  W  W  W2 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites("W3 .. >  .. W4 W  W  W  W  W  W2 W  W  W  W  W  W  W  W  W  W2 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites("W3 .. .. .. W4 .. .. .. .. .. W4 .. .. .. .. .. .. .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
@@ -130,7 +136,7 @@ function(Map, MapConstants) {
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  W3 .. .. .. .. .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  W  W  W  W  W  W  W  W  W  .  .  .  .  .  .  .  .  .  .  .  .  .");
     
-    Map.create(MapConstants.EARTH_CAVE_B3).tileMapping(tiles)
+    Map.create(MapConstants.EARTH_CAVE_B3).tileMapping(tiles_upper)
        .sprites("R1 R2 R2 R2 R3 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W1 W  W  W  W  W  W  W2 .  .")
        .sprites("R4 R  R  R  R5 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W3 .. .. .. .. .. .. W4 .  .")
        .sprites("R4 R  R  R  R5 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W1 W  W  W  W  .. W  W2 .. .. W4 .  .")
@@ -171,7 +177,7 @@ function(Map, MapConstants) {
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W3 >  .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. W4 .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  .  .  .  .  .  .  .  .  .");
     
-    Map.create(MapConstants.EARTH_CAVE_B4).tileMapping(tiles)
+    Map.create(MapConstants.EARTH_CAVE_B4).tileMapping(tiles_lower)
        .sprites("W1 W  W  W  W  W2 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites("W3 <  .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites("W3 .. .. .. .. W4 .  .  .  .  W1 W  W  W  W  W  W  W2 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
@@ -214,7 +220,7 @@ function(Map, MapConstants) {
        .sprites(".  .  .  W3 .. .. .. .. .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  W  W  W  W  W  W  W  W  W  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .");
     
-    Map.create(MapConstants.EARTH_CAVE_B5).tileMapping(tiles)
+    Map.create(MapConstants.EARTH_CAVE_B5).tileMapping(tiles_lower)
        .sprites(".  .  .  .  .  .  .  .  W1 W  W  W  W  W2 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  W3 .. .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  W3 .. .. .. .. W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
@@ -235,7 +241,7 @@ function(Map, MapConstants) {
        .sprites("R4 x  x  [  *  ]  X  X  R5 .. W3 .. W4 .. W3 .. .. .. .. W4 W  .. W  W2 .. .. .. .. W4 .  .  .")
        .sprites("R4 X  x  R  R  R  X  x  R5 W  W3 .. W4 W  W3 .. .. .. .. W4 .. .. .. W4 .. .. .. .. W4 .  .  .")
        .sprites("R4 x  X  x  R  x  x  x  R5 .  W3 .. W4 .  W3 .. .. .. .. .. .. .. .. W4 W  .. W  W  W  W  W2 .")
-       .sprites("R4 x  X  X  R  X  x  X  R5 .  W3 .. W4 .  W  W1 .. .. W2 W4 .. .. .. W4 .. .. .. .. .. .. W4 .")
+       .sprites("R4 x  X  X  O  X  x  X  R5 .  W3 .. W4 .  W  W1 .. .. W2 W4 .. .. .. W4 .. .. .. .. .. .. W4 .")
        .sprites("R4 X  X  X  R  X  X  X  R5 .  W3 .. W4 .  .  W3 .. .. W4 W  .. .. .. W4 .. .. .. .. .. .. W4 .")
        .sprites("R4 x  x  x  R  X  x  x  R5 .  W3 .. W4 .  .  W3 .. .. W4 .. .. .. .. W4 .. .. .. .. .. .. W4 .")
        .sprites("R6 R7 R7 R7 R7 R7 R7 R7 R8 .  W3 .. W4 .  .  W3 .. .. W4 W  W  W  W  W  W2 .. .. .. .. .. W4 .")

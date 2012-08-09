@@ -64,11 +64,20 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, "images/maps/matoya-cave-sheet.png");
       
       new Resource(MapConstants.TEMPLE_OF_FIENDS, "images/maps/temple-of-fiends-sheet.png");
-      new Resource(MapConstants.EARTH_CAVE_B1, "images/maps/earth-cave-sheet.png");
-      new Resource(MapConstants.EARTH_CAVE_B2, "images/maps/earth-cave-sheet.png");
-      new Resource(MapConstants.EARTH_CAVE_B3, "images/maps/earth-cave-sheet.png");
-      new Resource(MapConstants.EARTH_CAVE_B4, "images/maps/earth-cave-sheet.png");
-      new Resource(MapConstants.EARTH_CAVE_B5, "images/maps/earth-cave-sheet.png");
+      
+      new Resource(MapConstants.EARTH_CAVE_B1, "images/maps/earth-cave-upper-sheet.png");
+      new Resource(MapConstants.EARTH_CAVE_B2, "images/maps/earth-cave-upper-sheet.png");
+      new Resource(MapConstants.EARTH_CAVE_B3, "images/maps/earth-cave-upper-sheet.png");
+      new Resource(MapConstants.EARTH_CAVE_B4, "images/maps/earth-cave-lower-sheet.png");
+      new Resource(MapConstants.EARTH_CAVE_B5, "images/maps/earth-cave-lower-sheet.png");
+      
+      new Resource(MapConstants.GURGU_VOLCANO_B1, "images/maps/gurgu-volcano-upper-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B2, "images/maps/gurgu-volcano-upper-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B3A, "images/maps/gurgu-volcano-upper-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B3B, "images/maps/gurgu-volcano-upper-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B4A, "images/maps/gurgu-volcano-lower-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B4B, "images/maps/gurgu-volcano-lower-sheet.png");
+      new Resource(MapConstants.GURGU_VOLCANO_B5, "images/maps/gurgu-volcano-lower-sheet.png");
       
       loader.addProgressListener(imageFinishedLoading);
       loader.addCompletionListener(everythingFinishedLoading);
