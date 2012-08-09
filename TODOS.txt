@@ -48,5 +48,5 @@ DUNGEONS
 ========
 - need other mountiain sprite for Earth Cave B3
 - prob need to split sprite sheet for upper levels/lower levels of Earth Cave
-- need to encode: Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
-- needs sprite sheets: Gurgu Volcano, Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- needs sprite sheets: Gurgu Volcano, Ice Cave, Cardia Islands, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
