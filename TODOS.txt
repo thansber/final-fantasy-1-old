@@ -44,8 +44,9 @@ TOWNS
 - message display in town - check if person is in front of user, if so display conversation text
 - make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 
-DUNGEONS
-========
+MAPS
+====
+- Castle of Ordeals is different than NW Castle in world map
 - check orb location on B5 of Earth Cave
 - need fire orb sprite for Gurgu Volcano
 - confirm indoor walls and areas that might be inside but are not triggered by entering doors in Gurgu Volcano
