@@ -49,5 +49,5 @@ DUNGEONS
 - check orb location on B5 of Earth Cave
 - need fire orb sprite for Gurgu Volcano
 - confirm indoor walls and areas that might be inside but are not triggered by entering doors in Gurgu Volcano
-- need to encode: Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
-- needs sprite sheets: Ice Cave, Cardia Islands, Castle of Ordeals, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- needs sprite sheets: Ice Cave, Cardia Islands, Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
