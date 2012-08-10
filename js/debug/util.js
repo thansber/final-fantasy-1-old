@@ -24,7 +24,8 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
                 MapConstants.TEMPLE_OF_FIENDS, 
                 MapConstants.MARSH_CAVE_B1, MapConstants.MARSH_CAVE_B2A, MapConstants.MARSH_CAVE_B2B, MapConstants.MARSH_CAVE_B3,
                 MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5,
-                MapConstants.GURGU_VOLCANO_B1, MapConstants.GURGU_VOLCANO_B2, MapConstants.GURGU_VOLCANO_B3A, MapConstants.GURGU_VOLCANO_B3B, MapConstants.GURGU_VOLCANO_B4A, MapConstants.GURGU_VOLCANO_B4B, MapConstants.GURGU_VOLCANO_B5,  
+                MapConstants.GURGU_VOLCANO_B1, MapConstants.GURGU_VOLCANO_B2, MapConstants.GURGU_VOLCANO_B3A, MapConstants.GURGU_VOLCANO_B3B, MapConstants.GURGU_VOLCANO_B4A, MapConstants.GURGU_VOLCANO_B4B, MapConstants.GURGU_VOLCANO_B5,
+                MapConstants.SEA_SHRINE_B1, MapConstants.SEA_SHRINE_B2, MapConstants.SEA_SHRINE_B2A, MapConstants.SEA_SHRINE_B3, MapConstants.SEA_SHRINE_B3A, MapConstants.SEA_SHRINE_B3B, MapConstants.SEA_SHRINE_B4A, MapConstants.SEA_SHRINE_B4B, MapConstants.SEA_SHRINE_B5,
                 MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F];
     
     var $selector = $container.find(".selector");

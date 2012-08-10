@@ -78,6 +78,16 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.GURGU_VOLCANO_B4A, "images/maps/gurgu-volcano-lower-sheet.png");
       new Resource(MapConstants.GURGU_VOLCANO_B4B, "images/maps/gurgu-volcano-lower-sheet.png");
       new Resource(MapConstants.GURGU_VOLCANO_B5, "images/maps/gurgu-volcano-lower-sheet.png");
+
+      new Resource(MapConstants.SEA_SHRINE_B1, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B2, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B2A, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B3, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B3A, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B3B, "images/maps/sea-shrine-upper-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B4A, "images/maps/sea-shrine-lower-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B4B, "images/maps/sea-shrine-lower-sheet.png");
+      new Resource(MapConstants.SEA_SHRINE_B5, "images/maps/sea-shrine-lower-sheet.png");
       
       loader.addProgressListener(imageFinishedLoading);
       loader.addCompletionListener(everythingFinishedLoading);

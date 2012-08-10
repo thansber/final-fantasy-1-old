@@ -56,6 +56,16 @@ function() {
    ,ICE_CAVE_B2B : "ice-cave-b2b"
    ,ICE_CAVE_B3A : "ice-cave-b3a"
    ,ICE_CAVE_B3B : "ice-cave-b3b"
+    
+   ,SEA_SHRINE_B1 : "sea-shrine-b1"
+   ,SEA_SHRINE_B2 : "sea-shrine-b2"
+   ,SEA_SHRINE_B2A : "sea-shrine-b2a"
+   ,SEA_SHRINE_B3 : "sea-shrine-b3"
+   ,SEA_SHRINE_B3A : "sea-shrine-b3a"
+   ,SEA_SHRINE_B3B : "sea-shrine-b3b"
+   ,SEA_SHRINE_B4A : "sea-shrine-b4a"
+   ,SEA_SHRINE_B4B : "sea-shrine-b4b"
+   ,SEA_SHRINE_B5 : "sea-shrine-b5"
 
      // battle backgrounds
    ,BattleBackgrounds : {
