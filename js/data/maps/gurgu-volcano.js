@@ -31,6 +31,7 @@ function($, Map, MapConstants) {
   var tiles_lower = $.extend({}, tiles_upper, {
     "C" : {y:1, x:1, desc:"candles", inside:{y:4, x:6}},
     "@" : {y:1, x:1, desc:"orb altar", inside:{y:0, x:7}},
+    "O" : {y:1, x:1, desc:"orb", inside:{y:4, x:7}},
     "*" : {y:1, x:1, desc:"no idea", inside:{y:1, x:7}},
     "]" : {y:1, x:1, desc:"statue right", inside:{y:2, x:7}},
     "[" : {y:1, x:1, desc:"statue left", inside:{y:3, x:7}}
@@ -114,7 +115,7 @@ function($, Map, MapConstants) {
           .sprites("R5 .. .. .. !  .. .. !  .. .. !  .. .. !  .. .. !  R6 R7 R  R5 .. .. !  .. R6 R8 .. .. !  !  !  .. .. !  .. .. !  .. R4 R  R  R5 !  .. .. !  .. !  !  !  R4")
           .sprites("R5 !  !  !  .. .. !  .. .. !  .. .. !  R1 R3 !  .. W  W  R4 R5 !  !  .. .. W  W  .. .. R1 R3 .. !  .. !  .. .. .. .. R4 R  R  R5 !  .. !  .. .. !  <  !  R4")
           .sprites("R5 .. .. .. .. !  .. .. !  .. .. !  .. R4 R5 .. .. !  !  R4 R5 .. .. .. !  !  !  .. .. R4 R5 .. !  .. .. !  .. .. .. R4 R  R  R5 !  .. !  .. !  !  !  !  R4")
-          .sprites("R  R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R  R5 .. !  .. .. R4 .. R2 R2 R2 R3 .. .. !  .. R4 R5 .. .. !  .. R1 R2 R2 R2 R  R  R  R  R2 R2 R2 R2 R2 R2 R2 R2 R")
+          .sprites("R  R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R  R5 .. !  .. .. R4 R  R2 R2 R2 R3 .. .. !  .. R4 R5 .. .. !  .. R1 R2 R2 R2 R  R  R  R  R2 R2 R2 R2 R2 R2 R2 R2 R")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R  R5 !  .. .. !  R4 R  R  R  R  R5 !  .. .. !  R4 R5 .. .. !  .. R4 R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R2 R2 R2 R2 R  R  R  R  R  R  R2 R2 R2 R2 R  R  R2 R2 R2 R2 R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R");
           
@@ -205,7 +206,7 @@ function($, Map, MapConstants) {
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R5 .. .. !  !  R6 R7 R7 R7 R7 R8 .. .. R4 R  R  R  R  R  R  R  R  R  R  R  R7 R7 R7 R7 R7 R7 R7 R7 R4 R  R  R  Rc R5 R")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R5 !  !  !  !  W  W  D  W  W  W  .. .. R4 R  R  R  R  R  R  R  R  R  R  R5 W  W  W  W  W  W  W  W  R4 R  R  R  R  R5 R")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R2 R3 !  !  !  .. .. .. !  !  !  !  R4 R  R  R  R  R  R  R  R  R  R  R5 .. .. !  !  !  !  !  !  R6 R7 R7 R7 R7 R8 R")
-          .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R5 !  !  !  !  !  !  !  !  !  .. R4 R  R  R  R  R  R  R  R  R  R  R5 .. !  !  !  !  .. .. .. W  W  D  W  W  W  R")
+          .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R5 !  !  !  !  !  !  !  !  !  .. R4 R  R  R  R  R  R  R  R  R  R  R5 .. !  !  !  !  .. .. .. W  W  D  W  W  W  R4")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R  R2 R2 R2 R2 R2 R3 !  .. R1 R2 R  R  R  R  R  R  R  R  R  R  R  R5 !  !  R1 R2 R2 R3 !  !  !  .. .. .. .. .. R4")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R5 .. .. R4 R  R  R  R  R  R  R  R  R  R  R  R  R5 !  .. R4 R  R  R5 .. !  !  !  !  !  .. .. R4")
           .sprites("R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R5 .. .. R4 R  R  R  R  R  R  R  R1 R2 R2 R2 R2 R3 .. .. R4 R  R  R  R2 R2 R2 R2 R2 R2 R2 R2 R")
@@ -291,7 +292,7 @@ function($, Map, MapConstants) {
           .sprites("R4 [  R  @  R  ]  R5 .. .. .. W4 .  .  .  .  .  .  W3 .. .. R1 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R2 R3 .  .  .  .  .  .  .  .  .  W3 .. .. R1 R2 R2 R2 R2 R2 R2 R3")
           .sprites("R4 R  [  *  ]  R  R5 .. .. .. W4 .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  R  R  R  R  R  R  R  R  R  C  R5 .  .  .  .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  R  R  R5")
           .sprites("R4 R  R  R  R  R  R5 .. .. .. W4 .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  R  R  R  R  R  R  R  R  R  R  R5 .  .  .  .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  C  Rc R5")
-          .sprites("R4 R  [  R  ]  R  R5 .. .. .. W4 .  .  .  .  .  .  W3 .. .. R6 R7 R7 R  R  R  R  R  R  R  R  C  R  C  R  R5 .  .  .  .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  R  C  R5")
+          .sprites("R4 R  [  O  ]  R  R5 .. .. .. W4 .  .  .  .  .  .  W3 .. .. R6 R7 R7 R  R  R  R  R  R  R  R  C  R  C  R  R5 .  .  .  .  .  .  .  .  .  W3 .. .. R4 R  R  R  R  R  C  R5")
           .sprites("R6 R7 R8 R7 R6 R7 R8 .. .. .. W4 .  .  .  .  .  .  W3 .. .. W  W  D  R4 R  R  R  R  R  R  R  R  R  C  R  R5 .  .  .  .  .  .  .  .  .  W3 .. .. R6 R7 R7 R  R  R  R  R5")
           .sprites("W1 W  W  D  W  W  W  .. .. .. W4 .  .  .  .  .  .  W3 .. .. .. .. .. R6 R7 R7 R7 R7 R7 R7 R7 R7 R7 R7 R7 R8 .  .  .  .  .  .  .  .  .  W3 .. .. W  W  D  R4 R  R  R  R5")
           .sprites("W3 .. .. .. .. .. .. .. .. .. W4 .  .  .  .  .  .  W3 .. .. W1 W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  .  .  .  .  .  .  .  .  .  W3 .. .. .. .. .. R6 R7 R7 R7 R8")
