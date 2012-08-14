@@ -48,5 +48,5 @@ MAPS
 ====
 - need open door sprite in Sea Shrine
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Sea Shrine, Waterfall Cave
+- need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Waterfall Cave
 - needs sprite sheets: Floating Castle, Mirage Tower, Temple of Fiends 2
