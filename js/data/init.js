@@ -2,15 +2,13 @@ define(
 /* Data */
 ["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
  "./map-transitions", 
- "./maps/cardia-islands", "./maps/castles", "./maps/dwarf-cave", "./maps/earth-cave", 
- "./maps/gurgu-volcano", "./maps/matoyas-cave", "./maps/sardas-cave", "./maps/sea-shrine", 
- "./maps/titans-tunnel", 
+ "./maps/cardia-islands", "./maps/castles", "./maps/caves", "./maps/earth-cave", 
+ "./maps/gurgu-volcano", "./maps/sea-shrine", 
  "./maps/towns", "./maps/world"], 
 function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, 
-         CardiaIslandsMapData, CastleMapData, DwarfCaveMapData, EarthCaveMapData, 
-         GurguVolcanoMapData, MatoyasCaveMapData, SardasCaveMapData, SeaShrineMapData, 
-         TitansTunnelMapData,
+         CardiaIslandsMapData, CastleMapData, CaveMapData, EarthCaveMapData, 
+         GurguVolcanoMapData, SeaShrineMapData, 
          TownMapData, WorldMapData) {
   
   // Any data setup should reside here
@@ -24,13 +22,10 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, En
     
     CardiaIslandsMapData.init();
     CastleMapData.init();
-    DwarfCaveMapData.init();
+    CaveMapData.init();
     EarthCaveMapData.init();
     GurguVolcanoMapData.init();
-    MatoyasCaveMapData.init();
-    SardasCaveMapData.init();
     SeaShrineMapData.init();
-    TitansTunnelMapData.init();
     
     TownMapData.init();
     WorldMapData.init();
