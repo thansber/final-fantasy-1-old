@@ -58,6 +58,7 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.DWARF_CAVE, "images/maps/dwarf-cave-sheet.png");
       new Resource(MapConstants.TITANS_TUNNEL, "images/maps/titans-tunnel-sheet.png");
       new Resource(MapConstants.SARDAS_CAVE, "images/maps/sardas-cave-sheet.png");
+      new Resource(MapConstants.WATERFALL_CAVE, "images/maps/waterfall-cave-sheet.png");
 
       new Resource(MapConstants.CARDIA_ISLANDS_MAIN, "images/maps/matoya-cave-sheet.png");
       new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT, "images/maps/matoya-cave-sheet.png");
@@ -79,6 +80,12 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.GURGU_VOLCANO_B4B, "images/maps/gurgu-volcano-lower-sheet.png");
       new Resource(MapConstants.GURGU_VOLCANO_B5, "images/maps/gurgu-volcano-lower-sheet.png");
 
+      new Resource(MapConstants.ICE_CAVE_B1, "images/maps/ice-cave-sheet.png");
+      new Resource(MapConstants.ICE_CAVE_B2A, "images/maps/ice-cave-sheet.png");
+      new Resource(MapConstants.ICE_CAVE_B2B, "images/maps/ice-cave-sheet.png");
+      new Resource(MapConstants.ICE_CAVE_B3A, "images/maps/ice-cave-sheet.png");
+      new Resource(MapConstants.ICE_CAVE_B3B, "images/maps/ice-cave-sheet.png");
+      
       new Resource(MapConstants.SEA_SHRINE_B1, "images/maps/sea-shrine-upper-sheet.png");
       new Resource(MapConstants.SEA_SHRINE_B2, "images/maps/sea-shrine-upper-sheet.png");
       new Resource(MapConstants.SEA_SHRINE_B2A, "images/maps/sea-shrine-upper-sheet.png");
@@ -88,6 +95,10 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.SEA_SHRINE_B4A, "images/maps/sea-shrine-lower-sheet.png");
       new Resource(MapConstants.SEA_SHRINE_B4B, "images/maps/sea-shrine-lower-sheet.png");
       new Resource(MapConstants.SEA_SHRINE_B5, "images/maps/sea-shrine-lower-sheet.png");
+      
+      new Resource(MapConstants.MIRAGE_TOWER_1F, "images/maps/mirage-tower-lower-sheet.png");
+      new Resource(MapConstants.MIRAGE_TOWER_2F, "images/maps/mirage-tower-lower-sheet.png");
+      new Resource(MapConstants.MIRAGE_TOWER_3F, "images/maps/mirage-tower-upper-sheet.png");
       
       loader.addProgressListener(imageFinishedLoading);
       loader.addCompletionListener(everythingFinishedLoading);

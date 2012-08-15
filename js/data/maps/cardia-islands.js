@@ -2,7 +2,7 @@ define(/* CardiaIslandsMapData */
 ["maps/map", "constants/map"],
 function(Map, MapConstants) {
     
-  var baseMapOptions = {hasBattles:false, start:{y:23, x:16}};
+  var baseMapOptions = {hasBattles:false};
  
   var tiles = {
     "." : {y:9, x:4, desc:"nothing"},

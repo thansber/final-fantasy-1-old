@@ -3,12 +3,12 @@ define(
 ["./equipment", "./monsters", "./shop-inventory", "./spells", "./skills", "./encounters",
  "./map-transitions", 
  "./maps/cardia-islands", "./maps/castles", "./maps/caves", "./maps/earth-cave", 
- "./maps/gurgu-volcano", "./maps/sea-shrine", 
+ "./maps/gurgu-volcano", "./maps/ice-cave", "./maps/sea-shrine", 
  "./maps/towns", "./maps/world"], 
 function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, 
          CardiaIslandsMapData, CastleMapData, CaveMapData, EarthCaveMapData, 
-         GurguVolcanoMapData, SeaShrineMapData, 
+         GurguVolcanoMapData, IceCaveMapData, SeaShrineMapData, 
          TownMapData, WorldMapData) {
   
   // Any data setup should reside here
@@ -25,6 +25,7 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, En
     CaveMapData.init();
     EarthCaveMapData.init();
     GurguVolcanoMapData.init();
+    IceCaveMapData.init();
     SeaShrineMapData.init();
     
     TownMapData.init();

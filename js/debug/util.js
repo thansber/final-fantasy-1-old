@@ -20,13 +20,15 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
                 MapConstants.CRESCENT_LAKE, MapConstants.ONRAC, MapConstants.GAIA, MapConstants.LEFEIN,
                 MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, 
                 MapConstants.ASTOS_CASTLE, MapConstants.CASTLE_ORDEALS_1F, MapConstants.CASTLE_ORDEALS_2F, MapConstants.CASTLE_ORDEALS_3F,  
-                MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE,
+                MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE, MapConstants.WATERFALL_CAVE,
                 MapConstants.TEMPLE_OF_FIENDS, 
                 MapConstants.MARSH_CAVE_B1, MapConstants.MARSH_CAVE_B2A, MapConstants.MARSH_CAVE_B2B, MapConstants.MARSH_CAVE_B3,
                 MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5,
                 MapConstants.GURGU_VOLCANO_B1, MapConstants.GURGU_VOLCANO_B2, MapConstants.GURGU_VOLCANO_B3A, MapConstants.GURGU_VOLCANO_B3B, MapConstants.GURGU_VOLCANO_B4A, MapConstants.GURGU_VOLCANO_B4B, MapConstants.GURGU_VOLCANO_B5,
+                MapConstants.ICE_CAVE_B1, MapConstants.ICE_CAVE_B2A, MapConstants.ICE_CAVE_B2B, MapConstants.ICE_CAVE_B3A, MapConstants.ICE_CAVE_B3B,
                 MapConstants.SEA_SHRINE_B1, MapConstants.SEA_SHRINE_B2, MapConstants.SEA_SHRINE_B2A, MapConstants.SEA_SHRINE_B3, MapConstants.SEA_SHRINE_B3A, MapConstants.SEA_SHRINE_B3B, MapConstants.SEA_SHRINE_B4A, MapConstants.SEA_SHRINE_B4B, MapConstants.SEA_SHRINE_B5,
-                MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F];
+                MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F,
+                MapConstants.MIRAGE_TOWER_1F, MapConstants.MIRAGE_TOWER_2F, MapConstants.MIRAGE_TOWER_3F];
     
     var $selector = $container.find(".selector");
     for (var m in maps) {

@@ -29,6 +29,7 @@ function() {
    ,DWARF_CAVE : "dwarf-cave"
    ,TITANS_TUNNEL : "titans-tunnel"
    ,SARDAS_CAVE : "sardas-cave"
+   ,WATERFALL_CAVE : "waterfall-cave"
     
    ,CARDIA_ISLANDS_MAIN : "cardia-islands-main"
    ,CARDIA_ISLANDS_BAHAMUT : "cardia-islands-bahamut-1f"
@@ -67,6 +68,10 @@ function() {
    ,SEA_SHRINE_B4B : "sea-shrine-b4b"
    ,SEA_SHRINE_B5 : "sea-shrine-b5"
 
+   ,MIRAGE_TOWER_1F : "mirage-tower-1f"
+   ,MIRAGE_TOWER_2F : "mirage-tower-2f"
+   ,MIRAGE_TOWER_3F : "mirage-tower-3f"
+    
      // battle backgrounds
    ,BattleBackgrounds : {
      Castle:{cssClass:"castle"}
