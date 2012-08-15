@@ -60,9 +60,9 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.SARDAS_CAVE, "images/maps/sardas-cave-sheet.png");
       new Resource(MapConstants.WATERFALL_CAVE, "images/maps/waterfall-cave-sheet.png");
 
-      new Resource(MapConstants.CARDIA_ISLANDS_MAIN, "images/maps/matoya-cave-sheet.png");
-      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT, "images/maps/matoya-cave-sheet.png");
-      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, "images/maps/matoya-cave-sheet.png");
+      new Resource(MapConstants.CARDIA_ISLANDS_MAIN, "images/maps/cardia-islands-sheet.png");
+      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT, "images/maps/cardia-islands-sheet.png");
+      new Resource(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, "images/maps/cardia-islands-sheet.png");
       
       new Resource(MapConstants.TEMPLE_OF_FIENDS, "images/maps/temple-of-fiends-sheet.png");
       

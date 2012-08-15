@@ -35,7 +35,7 @@ TOWNS
 - show descs when selecting key items in inventory
 - show use desc when using key item in correct place
 - what happens to stoned chars when in clinic?
-- what statuses does an inn stay heal?
+- what statuses does an inn stay heal? NONE
 - add "door" transitions for use in castles/dungeons
 - CSS transitions in town to leave and to enter shops
 - pressing Enter/Space in town displays message
@@ -47,5 +47,5 @@ TOWNS
 MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Waterfall Cave
+- need to encode: Floating Castle, Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
