@@ -46,8 +46,6 @@ TOWNS
 
 MAPS
 ====
-- inside wall/floor sprites for Matoya's cave, Dwarf cave
-- need open door sprite in Sea Shrine
 - Castle of Ordeals is different than NW Castle in world map
 - need to encode: Floating Castle, Mirage Tower, Temple of Fiends 2, Waterfall Cave
-- needs sprite sheets: Floating Castle, Mirage Tower, Temple of Fiends 2
+- needs sprite sheets: Floating Castle, Temple of Fiends 2
