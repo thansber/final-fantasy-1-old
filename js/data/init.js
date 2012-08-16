@@ -4,12 +4,12 @@ define(
  "./map-transitions", 
  "./maps/cardia-islands", "./maps/castles", "./maps/caves", "./maps/earth-cave", 
  "./maps/gurgu-volcano", "./maps/ice-cave", "./maps/mirage-tower", "./maps/sea-shrine", 
- "./maps/towns", "./maps/world"], 
+ "./maps/temple-of-fiends", "./maps/towns", "./maps/world"], 
 function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, EncounterData,
          MapTransitionData, 
          CardiaIslandsMapData, CastleMapData, CaveMapData, EarthCaveMapData, 
          GurguVolcanoMapData, IceCaveMapData, MirageTowerMapData, SeaShrineMapData, 
-         TownMapData, WorldMapData) {
+         TempleOfFiendsMapData, TownMapData, WorldMapData) {
   
   // Any data setup should reside here
   var init = function() {
@@ -26,8 +26,9 @@ function(EquipmentData, MonsterData, ShopInventoryData, SpellData, SkillData, En
     EarthCaveMapData.init();
     GurguVolcanoMapData.init();
     IceCaveMapData.init();
-    SeaShrineMapData.init();
     MirageTowerMapData.init();
+    SeaShrineMapData.init();
+    TempleOfFiendsMapData.init();
     
     TownMapData.init();
     WorldMapData.init();
