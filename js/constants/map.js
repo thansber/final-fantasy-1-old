@@ -71,6 +71,13 @@ function() {
    ,MIRAGE_TOWER_1F : "mirage-tower-1f"
    ,MIRAGE_TOWER_2F : "mirage-tower-2f"
    ,MIRAGE_TOWER_3F : "mirage-tower-3f"
+
+   ,FLOATING_CASTLE_1F : "floating-castle-1f"
+   ,FLOATING_CASTLE_2F : "floating-castle-2f"
+   ,FLOATING_CASTLE_3F : "floating-castle-3f"
+   ,FLOATING_CASTLE_4F : "floating-castle-4f"
+   ,FLOATING_CASTLE_5F : "floating-castle-5f"
+
     
      // battle backgrounds
    ,BattleBackgrounds : {
