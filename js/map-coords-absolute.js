@@ -11,13 +11,13 @@ function() {
     this.y = opt.y;
     this.x = opt.x;
   };
-  AbsoluteCoords.prototype.adjust = function(yChange, xChange, config) {
+  AbsoluteCoords.prototype.adjust = function(yChange, xChange, map) {
     this.y += yChange;
     this.x += xChange;
-    if (config.wrapsY && this.y < 0) { this.y = config.maxHeight; }
-    if (config.wrapsX && this.x < 0) { this.x = config.maxWidth; }
-    if (config.wrapsY && this.y > config.maxHeight) { this.y = 0; }
-    if (config.wrapsX && this.x > config.maxWidth) { this.x = 0; }
+    if (map.wrapsY && this.y < 0) { this.y = map.rows; }
+    if (map.wrapsX && this.x < 0) { this.x = map.cols; }
+    if (map.wrapsY && this.y > map.rows) { this.y = 0; }
+    if (map.wrapsX && this.x > map.cols) { this.x = 0; }
     return this;
   };
   AbsoluteCoords.prototype.equals = function(other) {

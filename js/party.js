@@ -32,13 +32,6 @@ return (function() {
   ];
   var keyItems = "0"; // heck yeah, storing a bunch of boolean as a string
   
-  /* =========== */
-  /* INIT METHOD */
-  /* =========== */
-  self.init = function(opt) {
-    Event.listen(Event.Types.Moving, self.isDestinationPassable);
-  };
-  
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
@@ -72,15 +65,7 @@ return (function() {
   var moveToPosition = function(xChange, yChange) {
     // We are currently moving the character
     Event.transmit(Event.Types.MovingChange, true);
-
-    var $view = $("#view");
-    var oldPos = $view.css("backgroundPosition").split(" ");
-    var oldX = parseInt(oldPos[0].replace("px", ""));
-    var oldY = parseInt(oldPos[1].replace("px", ""));
-    var newX = (oldX + (xChange * MovementConstants.MoveDistance * -1)) + "px";
-    var newY = (oldY + (yChange * MovementConstants.MoveDistance * -1)) + "px";
-    
-    $view.removeClass().addClass(currentTransportation.speedCss).css({backgroundPosition:newX + " " + newY});
+    Event.transmit(Event.Types.MovingChange, false);
   };
   
   /* ============== */
@@ -181,14 +166,17 @@ return (function() {
   self.getTransportation = function() { return currentTransportation; };
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
   self.hasKeyItem = function(name) { return !!(parseInt(keyItems, 36) & Equipment.KeyItem.lookup(name).index); };
+  self.init = function(opt) {
+    Event.listen(Event.Types.Moving, self.isDestinationPassable);
+  };
   self.isDestinationPassable = function(yChange, xChange) {
-    var mapConfig = self.getMap();
+    var map = self.getMap();
     // Keep the old position around in case we moved somewhere we can't go
     var oldPos = MapCoordsAbsolute.create(currentPosition);
     
     // Temporarily change the current position to the potential new position
-    currentPosition.adjust(yChange, xChange, mapConfig);
-    Logger.debug("moved to " + currentPosition.toString());
+    currentPosition.adjust(yChange, xChange, map);
+    Logger.debug("moving to " + currentPosition.toString());
     
     // See if the new position contains a transition (i.e. entering a town/dungeon)
     // if so, move the party, then the callback will fire, transitioning them to the
@@ -199,16 +187,14 @@ return (function() {
     }
     
     // Check if the new destinations is passable
-    var tile = mapConfig.getTileAbsolute(currentPosition);
-    var mapping = mapConfig.getParentTileMapping(tile);
-    var passable = mapping.isPassableUsing(currentTransportation);
-    
+    var passable = map.isPassable(currentPosition.y, currentPosition.x, currentTransportation);
+    Logger.debug(currentPosition.toString() + " is" + (passable ? "" : " not") + " passable");
     if (!passable) {
       currentPosition = oldPos;
       return;
     }
     
-    if (mapConfig.hasBattles && mapping.decrementBattleSteps) {
+    if (map.tileCanHaveBattle()) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
         // TODO: this should happen in the movement callback

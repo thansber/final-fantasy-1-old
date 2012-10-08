@@ -47,5 +47,10 @@ TOWNS
 MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Floating Castle, Temple of Fiends 2
+- need to encode: Marsh Cave, Floating Castle, Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
+- add filler sprites to all maps
+- add start coords to all maps
+- convert all tile mapping to use Map.newTile()
+- add passable transportation options to all tile mapping
+- add tile mappings which can have battle

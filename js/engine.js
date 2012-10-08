@@ -62,14 +62,6 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     switchMap(map);
 
     Logger.debug("jumped to map [" + map + "], coords " + coords.toString());
-    
-    /*
-    var playerTop = Util.cssNumericValue($player.css("marginTop"));
-    var playerLeft = Util.cssNumericValue($player.css("marginLeft"));
-    var top = -1 * ((coords.y * MapConstants.TILE_SIZE) - playerTop);
-    var left = -1 * ((coords.x * MapConstants.TILE_SIZE) - playerLeft);
-    $view.css({backgroundPosition:left + "px " + top + "px"}).addClass(oldCss).show();
-    */
   };
   
   var showCharMenu = function(listener) {

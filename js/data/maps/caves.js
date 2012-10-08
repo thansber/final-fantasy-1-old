@@ -27,7 +27,7 @@ function($, Map, MapConstants) {
   
   var init = function() {
    
-   Map.create(MapConstants.MATOYAS_CAVE, {hasBattles:false})
+   Map.create(MapConstants.MATOYAS_CAVE, {})
       .tileMapping($.extend(base_tiles, {
        "P" : {y:1, x:1, desc:"pots", inside:{y:5, x:4}},
        "SK": {y:1, x:1, desc:"skull", inside:{y:2, x:5}, passable:true},
@@ -51,7 +51,7 @@ function($, Map, MapConstants) {
       .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
       .sprites("WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW");
 
-   Map.create(MapConstants.DWARF_CAVE, {hasBattles:false})
+   Map.create(MapConstants.DWARF_CAVE, {})
       .tileMapping($.extend(base_tiles, {
        "$" : {y:1, x:1, desc:"chest", inside:{y:2, x:5}, passable:true},
        "TB": {y:1, x:1, desc:"table", inside:{y:1, x:3}},
@@ -119,7 +119,7 @@ function($, Map, MapConstants) {
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM .  .  MM MM MM MM MM MM MM MM MM MM")
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM");
    
-   Map.create(MapConstants.SARDAS_CAVE, {hasBattles:false})
+   Map.create(MapConstants.SARDAS_CAVE, {})
       .tileMapping($.extend(base_tiles, {
        "P" : {y:1, x:1, desc:"pots", inside:{y:3, x:6}},
        "TB": {y:1, x:1, desc:"table", inside:{y:5, x:4}},
@@ -146,7 +146,7 @@ function($, Map, MapConstants) {
       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~")
       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  ~  ~");
    
-   Map.create(MapConstants.TITANS_TUNNEL, {hasBattles:false})
+   Map.create(MapConstants.TITANS_TUNNEL, {})
       .tileMapping($.extend(base_tiles, {
        "$" : {y:1, x:1, desc:"chest", inside:{y:0, x:5}, passable:true},
        "MM": {y:0, x:3, desc:"mountain", inside:{y:3, x:3}},
@@ -178,7 +178,7 @@ function($, Map, MapConstants) {
       .sprites("~  ~  ~  MM M^ MM M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~");
    
    
-   Map.create(MapConstants.WATERFALL_CAVE, {hasBattles:false})
+   Map.create(MapConstants.WATERFALL_CAVE, {})
       .tileMapping($.extend(base_tiles, {
        "$" : {y:1, x:1, desc:"chest", inside:{y:1, x:3}, passable:true},
        "^" : {y:0, x:3, desc:"stairs up", passable:true},

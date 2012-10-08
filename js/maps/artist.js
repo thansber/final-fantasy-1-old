@@ -8,7 +8,7 @@ function($, MapConstants, Resource) {
   
   // width = # of tiles
   // height = # of tiles
-  // scale = # of pixels/tile (must be square)
+  // scale = # of pixels/tile in a single dimension (assumes tile to be square)
   var resizeCanvas = function(width, height, scale) {
     var w = width * scale;
     var h = height * scale;
@@ -24,7 +24,6 @@ function($, MapConstants, Resource) {
     draw: function() {
       var map = $canvas.data("map");
       var sheet = Resource.lookup(map);
-      console.log("drawing map: " + map);
     },
     drawTile: function(img, whereToPullFrom, whereToDraw) {
       ctx.drawImage(img, 
@@ -44,6 +43,14 @@ function($, MapConstants, Resource) {
       
       resizeCanvas(17, 17, 16);
     },
-    resize: function(w, h, s) { resizeCanvas(w,h,s); }
+    resize: function(w, h, s) { resizeCanvas(w,h,s); },
+    scrollMap: function(xChange, yChange) {
+      if (!!yChange) {
+      // Moving up/down
+        
+      } else if (!!xChange) {
+      // Moving left/right
+      }
+    }
   };
 });

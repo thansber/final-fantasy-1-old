@@ -2,13 +2,10 @@ define(/* CastleMapData */
 ["maps/map", "constants/map"],
 function(Map, MapConstants) {
   
-  var baseMapOptions = {
-    hasBaTTles: false,
-    exitOnOutOfBounds: true,
-  };
-
   var mapOptions = function(opt) {
-    return $.extend(baseMapOptions, opt);
+    return $.extend({
+      exitOnOutOfBounds: true
+    }, opt);
   };
   
   var tiles = {
@@ -182,7 +179,7 @@ function(Map, MapConstants) {
        .sprites(".. .. WW .  WW .. .. .. .. .. .. .. .. .. WW WW WW .. .. .. W| .  |W .. .. .. WW .  WW .. ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW .  WW .. .. .. .. .. .. .. ..");
     
-    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({hasBaTTles:true, start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
        .sprites("#- -- -- -- -- -# .. .. .. .. .. .. .. .. .. .. .. .. .. #- -- -- -- -- -#")
        .sprites("#| T- TT -T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
        .sprites("#| T| tt |T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
@@ -202,7 +199,7 @@ function(Map, MapConstants) {
        .sprites("#_ __ __ __ __ _# .. .. .. .. .. .. .. .. .. .. .. .. .. #_ __ __ __ __ _#")
        .sprites("WW WW WW WW WW WW .. .. .. .. .. .. .. .. .. .. .. .. .. WW WW WW WW WW WW")
 
-    Map.create(MapConstants.CASTLE_ORDEALS_2F, mapOptions({hasBaTTles:true, start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_2F, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
        .sprites("W+ WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
        .sprites("W| I  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  }  $  {  |#")
        .sprites("W| .  .  I  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")
@@ -229,7 +226,7 @@ function(Map, MapConstants) {
        .sprites("W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
        .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW");
 
-    Map.create(MapConstants.CASTLE_ORDEALS_3F, mapOptions({hasBaTTles:true})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_3F, mapOptions({})).tileMapping(tiles)
        .sprites("#- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  $  ,  |#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")
