@@ -1,10 +1,10 @@
 define( /* Party */ 
 ["jquery", 
  "character", "character-class", "character-growth", "encounters", "equipment", "events",
- "logger", "maps/map", "map-coords-absolute", "map-coords-converter", "map-transition",
+ "logger", "maps/map", "maps/artist", "map-coords-absolute", "map-coords-converter", "map-transition",
  "rng", "spells", "util", "constants/map", "constants/movement"], 
 function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
-         Logger, Map, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
+         Logger, Map, MapArtist, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
          RNG, Spell, Util, MapConstants, MovementConstants) { 
 return (function() {
     
@@ -65,6 +65,9 @@ return (function() {
   var moveToPosition = function(xChange, yChange) {
     // We are currently moving the character
     Event.transmit(Event.Types.MovingChange, true);
+    Logger.debug("start moving");
+    MapArtist.moveOneSquare({map:self.getMap(), position:currentPosition, x:xChange, y:yChange});
+    Logger.debug("stop moving");
     Event.transmit(Event.Types.MovingChange, false);
   };
   

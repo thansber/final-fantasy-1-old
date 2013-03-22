@@ -1,8 +1,9 @@
 require(
 ["jquery", "engine", "events", "key-press-notifier", "logger", "maps/map", "maps/artist", "constants/map", 
- "movement", "constants/movement", "party", "resources", "data/maps/towns"], 
+ "movement", "constants/movement", "party", "resources", "shims", "data/maps/towns"], 
 function($, Engine, Event, KeyPressNotifier, Logger, Map, MapArtist, MapConstants, 
-         Movement, MovementConstants, Party, Resources, TownMaps) {
+         Movement, MovementConstants, Party, Resources, Shims, TownMaps) {
+  Shims.init();
   Logger.enable().setLevel(Logger.DEBUG);
  
   Resources.init();
@@ -22,7 +23,6 @@ function($, Engine, Event, KeyPressNotifier, Logger, Map, MapArtist, MapConstant
   
   MapArtist.resize(16, 14, MapConstants.TILE_SIZE);
   var img = map.resource.image;
-  var mapping = map.mapping;
   
   var upperLeftX = map.start.x - 7;
   var upperLeftY = map.start.y - 7;

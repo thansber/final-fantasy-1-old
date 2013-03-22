@@ -1,11 +1,12 @@
 require(
 ["jquery", "animations/init", "battle-engine", "cursors/init", "data/init", "debug/init", 
  "engine", "key-press-notifier", "logger", "maps/artist",
- "menus", "messages", "movement", "party", "resources", "rng", "shops"], 
+ "menus", "messages", "movement", "party", "resources", "rng", "shims", "shops"], 
 function($, Animations, BattleEngine, CursorData, Data, Debug, 
          Engine, KeyPressNotifier, Logger, MapArtist,
-         Menus, Message, Movement, Party, Resources, RNG, Shops) {
+         Menus, Message, Movement, Party, Resources, RNG, Shims, Shops) {
     $(document).ready(function() {
+      Shims.init();
       Logger.enable().setLevel(Logger.DEBUG);
       RNG.useDefault();
    

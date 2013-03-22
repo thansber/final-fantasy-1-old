@@ -1,3 +1,9 @@
+MOST RECENT
+===========
+- movement via reqAnimFrame too fast! add time delay
+
+SPELLS
+======
 - handle FEAR, WARP, EXIT spells
 
 BATTLE
