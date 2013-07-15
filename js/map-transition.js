@@ -1,10 +1,10 @@
-define( 
+define(
 /* MapTransition */
-["logger", "maps/map", "map-coords-absolute"], 
+["logger", "maps/map", "map-coords-absolute"],
 function(Logger, Map, MapCoordsAbsolute) {
-  
+
   var ALL_TRANSITIONS = {};
-  
+
   var Transition = function(from, to, fromCoords, toCoords) {
     this.from = from;
     this.to = to;
@@ -12,7 +12,7 @@ function(Logger, Map, MapCoordsAbsolute) {
       this.fromCoords = MapCoordsAbsolute.create(fromCoords);
       this.toCoords = toCoords ? MapCoordsAbsolute.create(toCoords) : (Map.lookup(to) ? Map.lookup(to).start : null);
     }
-    
+
     var transitionsForFrom = ALL_TRANSITIONS[this.from];
     if (!transitionsForFrom) {
       transitionsForFrom = [];
@@ -20,7 +20,7 @@ function(Logger, Map, MapCoordsAbsolute) {
     }
     transitionsForFrom.push(this);
   };
-    
+
   return {
     All : ALL_TRANSITIONS
    ,create : function(from, to, fromCoords, toCoords) { return new Transition(from, to, fromCoords, toCoords); }
@@ -30,7 +30,7 @@ function(Logger, Map, MapCoordsAbsolute) {
         Logger.error("No map transitions were found for map [" + map + "], you sure you have any setup?");
         return null;
       }
-  
+
       var mapConfig = Map.lookup(map);
       if (mapConfig && mapConfig.exitOnOutOfBounds) {
         if (mapConfig.isOutsideTownMap(coords)) {
@@ -38,6 +38,7 @@ function(Logger, Map, MapCoordsAbsolute) {
           return transition;
         }
       } else {
+        // TODO: replace this with map lookup instead of iterate
         for (var t = 0; t < transitions.length; t++) {
           if (coords.equals(transitions[t].fromCoords)) {
             return transitions[t];

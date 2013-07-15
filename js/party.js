@@ -163,6 +163,7 @@ return (function() {
   self.getMap = function() { return Map.lookup(currentMap); };
   self.getShop = function() { return currentShop; };
   self.getTransportation = function() { return currentTransportation; };
+  self.getWorldMapPosition = function() { return worldMapPosition; };
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
   self.hasKeyItem = function(name) { return !!(parseInt(keyItems, 36) & Equipment.KeyItem.lookup(name).index); };
   self.init = function(opt) {
@@ -193,7 +194,7 @@ return (function() {
       return;
     }
 
-    if (map.tileCanHaveBattle()) {
+    if (map.tileCanHaveBattle(currentPosition)) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
         // TODO: this should happen in the movement callback

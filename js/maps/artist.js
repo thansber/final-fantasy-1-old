@@ -78,16 +78,16 @@ function($, Event, Logger, MapConstants, Resource) {
 
   return {
     context: function() { return ctx; },
-    draw: function() {
+    /*draw: function() {
       var map = $canvas.data("map");
       var sheet = Resource.lookup(map);
-    },
-    drawMap: function(map) {
+    },*/
+    drawMap: function(map, start) {
       resizeCanvas(16, 14, MapConstants.TILE_SIZE);
       var img = map.resource.image;
 
-      var upperLeftX = map.start.x - 7;
-      var upperLeftY = map.start.y - 7;
+      var upperLeftX = start.x - 7;
+      var upperLeftY = start.y - 7;
       var img = map.resource.image;
 
       for (var y = 0; y < 16; y++) { // for now, treat y like x, even though y uses halves
@@ -141,9 +141,9 @@ function($, Event, Logger, MapConstants, Resource) {
         if (pixelsMoved > MapConstants.TILE_SIZE) {
           Event.transmit(Event.Types.MovingChange, false);
           clearInterval(intervalId);
+          Event.transmit(Event.Types.MovementCallback);
         }
       };
-
 
       intervalId = setInterval(moveLoop, 1000 / FPS);
     }

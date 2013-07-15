@@ -20,12 +20,6 @@ return (function() {
     Event.listen(Event.Types.MovementStop, self.stopListening);
 
     self.registeredKeys = [KeyPressNotifier.I, KeyPressNotifier.M];
-
-    $("#view").bind("transitionend webkitTransitionEnd", function() {
-      if (listening) {
-        Event.transmit(Event.Types.MovementCallback);
-      }
-    });
   };
 
   /* ============== */

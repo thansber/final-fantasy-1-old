@@ -1,22 +1,22 @@
 define(
 /* Engine */
-["jquery", "battle", "cursor", "events", "logger", "maps/artist", "map-coords-absolute", "map-transition", "menus", "party", "shops", "util", 
- "constants/cursor", "constants/map", "constants/movement", "constants/party"],
-function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTransition, Menus, Party, Shops, Util, 
-         CursorConstants, MapConstants, MovementConstants, PartyConstants) {
-  
+["jquery", "battle", "cursor", "events", "logger", "maps/artist", "map-coords-absolute", "map-transition", "menus", "party", "shops", "util",
+ "constants/cursor", "maps/map", "constants/map", "constants/movement", "constants/party"],
+function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTransition, Menus, Party, Shops, Util,
+         CursorConstants, Map, MapConstants, MovementConstants, PartyConstants) {
+
   var areaTransition = function(transition) {
     Event.animate(Event.Animations.AreaTransition)
          .using({transition:transition})
          .afterwards(Event.Animations.AreaTransitionDone, function() { Event.transmit(Event.Types.MovingChange, false); })
          .start();
   };
-  
+
   var cursorStartListening = function(cursorId, opt) {
     var cursor = opt && opt.cursor ? opt.cursor : Cursor.lookup(cursorId);
     cursor.startListening(opt);
   };
-  
+
   var enterShop = function(shopType) {
     Event.transmit(Event.Types.MovementStop);
     $("#shop section").removeClass().addClass(shopType);
@@ -25,13 +25,13 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     shop.display(Party.getAliveChars(), Party.getChars(), Party.getMap(), Party.getGold());
     switchView(PartyConstants.Views.SHOP);
   };
-   
-  var exitShop = function() { 
-    Party.setCurrentShop(null); 
-    switchView(PartyConstants.Views.WORLD_MAP); 
+
+  var exitShop = function() {
+    Party.setCurrentShop(null);
+    switchView(PartyConstants.Views.WORLD_MAP);
     Event.transmit(Event.Types.MovementStart);
   };
-  
+
   var init = function() {
     Event.listen(Event.Types.AreaTransition, areaTransition);
     Event.listen(Event.Types.CharMenu, showCharMenu);
@@ -44,67 +44,70 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     Event.listen(Event.Types.SwitchMap, switchMap);
     Event.listen(Event.Types.SwitchView, switchView);
   };
-  
+
   var jumpTo = function(map, coords) {
     var $view = $("#view");
     var $player = $("#player");
-    
-    //var oldCss = $view.attr("class").split(" ");
-    //$view.removeClass().hide();
-    
+
     var currentMap = Party.getMap();
+
     // If leaving the world map, keep track of the last world map position
     if (currentMap && currentMap.is(MapConstants.WORLD_MAP)) {
       Party.storeWorldMapPosition();
     }
-    
+
     Party.setCurrentMap(map).setPosition(coords);
+    if (!currentMap) { // for starting out
+      Party.storeWorldMapPosition();
+    }
     switchMap(map);
 
     Logger.debug("jumped to map [" + map + "], coords " + coords.toString());
   };
-  
+
   var showCharMenu = function(listener) {
     Menus.Char.load(Party.getChars(), Party.getLitOrbs(), Party.getGold());
     switchView(PartyConstants.Views.MENU);
     cursorStartListening(CursorConstants.CHAR_MENU, {prevListener:listener});
   };
-  
+
   var startBattle = function(encounter, background) {
     Logger.debug(encounter.toString());
-    
+
     Event.transmit(Event.Types.MovementStop);
     var battle = Battle.create($.extend(true, {background: background}, encounter));
 
     switchView(PartyConstants.Views.BATTLE);
     Party.resetStepsUntilBattle();
-    
+
     Event.transmit(Event.Types.BattleSetup, {battle:battle});
   };
-   
+
   var startGame = function() {
     Party.setTransportation(MovementConstants.Transportation.Foot);
     switchView(PartyConstants.Views.WORLD_MAP);
-    
+
     var startTransition = MapTransition.lookup("start", MapCoordsAbsolute.create(0, 0));
     Event.animate(Event.Animations.AreaTransition)
          .using({transition:startTransition, hideFirst:false})
          .afterwards(Event.Animations.AreaTransitionDone, function() { Party.resetStepsUntilBattle(); })
          .start();
   };
-   
-  var switchMap = function(map) {
+
+  var switchMap = function(mapId) {
     var $view = $("#view");
-    $view.hide().data("map", map);
-    MapArtist.draw();
+    var map = Map.lookup(mapId);
+    var start = map.is(MapConstants.WORLD_MAP) ? Party.getWorldMapPosition() : map.start;
+    $view.hide().data("map", mapId);
+    MapArtist.drawMap(map, start);
     $view.show();
   };
-   
+
   var switchView = function(view) {
     $("body > .main").hide();
     $(view).show();
   };
-   
+
   return {
    init : init
   };

@@ -21,5 +21,5 @@ function($, Engine, Event, KeyPressNotifier, Logger, Map, MapArtist, MapConstant
   var map = Map.lookup(MapConstants.CONERIA);
   Event.transmit(Event.Types.JumpTo, map.id, map.start);
 
-  MapArtist.drawMap(map);
+  MapArtist.drawMap(map, map.start);
 });

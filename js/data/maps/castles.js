@@ -1,13 +1,13 @@
 define(/* CastleMapData */
 ["maps/map", "constants/map"],
 function(Map, MapConstants) {
-  
+
   var mapOptions = function(opt) {
     return $.extend({
       exitOnOutOfBounds: true
     }, opt);
   };
-  
+
   var tiles = {
     ".." : {y:6, x:4, desc:"grass"},
     "~": {y:7, x:4, desc:"sky"},
@@ -47,7 +47,7 @@ function(Map, MapConstants) {
     "{" : {y:1, x:1, desc:"statue left", inside:{y:4, x:5}},
     "}" : {y:1, x:1, desc:"statue right", inside:{y:4, x:3}},
   };
-  
+
   var init = function() {
 
     Map.create(MapConstants.CONERIA_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
@@ -82,13 +82,13 @@ function(Map, MapConstants) {
        .sprites("WW WW WW WW WW WW WW WW WW WW WW WW W| .  .  .  |W WW WW WW WW WW WW WW WW WW WW WW WW")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. W| .  .  .  |W .. .. .. .. .. .. .. .. .. .. .. .")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. WW WW .  WW WW .. .. .. .. .. .. .. .. .. .. .. .");
-    
+
     Map.create(MapConstants.CONERIA_CASTLE_2F, mapOptions({start:{y:16, x:13}})).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  T- TT -T ,  ,  ,  ,  |# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  }  }  T| tt |T {  {  ,  ,  |# ~  ~  ~  ~  ~  ~")
-       .sprites("~  ~  ~  ~  ~  ~  #_ __ ,  ,  ,  ,  ,  ,  ,  ,  ,  __ _# ~  ~  ~  ~  ~  ~") 
-       .sprites("~  ~  ~  ~  ~  ~  WW WW #| ,  ,  ,  ,  ,  ,  ,  |# WW WW ~  ~  ~  ~  ~  ~") 
+       .sprites("~  ~  ~  ~  ~  ~  #_ __ ,  ,  ,  ,  ,  ,  ,  ,  ,  __ _# ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  WW WW #| ,  ,  ,  ,  ,  ,  ,  |# WW WW ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  #_ __ __ __ __ __ __ __ _# ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  WW W+ WW WW [] WW WW +W WW ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -114,11 +114,11 @@ function(Map, MapConstants) {
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
        .sprites("W| .  .  .  .  |W WW WW WW WW WW WW WW WW WW WW WW WW WW W| .  .  .  .  |W")
        .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW");
-    
-    
-    
+
+
+
     Map.create(MapConstants.ELF_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
-       .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .  ..") 
+       .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .  ..")
        .sprites("W+ WW WW WW +W .. .. .. .. .. .. .. W+ WW WW WW +W .. .. .  #- -- -- -- -- -# .")
        .sprites("W| .  .  .  .  WW WW WW WW WW WW WW .  .  .  .  |W .. .  .  #| $  $  $  $  |# .")
        .sprites("W| .  I  .  .  .  .  .  .  .  .  .  .  .  I  .  |W .. .  .  #_ __ __ __ __ _# .")
@@ -178,7 +178,7 @@ function(Map, MapConstants) {
        .sprites(".. WW W| .  |W WW .. .. .. .. .. .. .. WW W| .  |W WW .. .. W| .  |W .. .. WW W| .  |W WW ..")
        .sprites(".. .. WW .  WW .. .. .. .. .. .. .. .. .. WW WW WW .. .. .. W| .  |W .. .. .. WW .  WW .. ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW .  WW .. .. .. .. .. .. .. ..");
-    
+
     Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
        .sprites("#- -- -- -- -- -# .. .. .. .. .. .. .. .. .. .. .. .. .. #- -- -- -- -- -#")
        .sprites("#| T- TT -T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
@@ -243,15 +243,9 @@ function(Map, MapConstants) {
        .sprites("#| ,  ,  ,  ,  |# WW WW WW WW WW WW WW WW WW WW WW WW WW W| .  .  .  .  |W")
        .sprites("#| $  $  $  $  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  v  .  |W")
        .sprites("#_ __ __ __ __ _# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
-       .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW")
-
-
-       ;
-
+       .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW");
   };
-  
 
-  
   return {
     init: init
   };

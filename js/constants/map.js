@@ -1,13 +1,13 @@
-define( 
+define(
 /* MapConstants */
 function() {
   return {
     TILE_SIZE : 16
-    
+
     // map IDs
-   ,WORLD_MAP : "world-map"     
+   ,WORLD_MAP : "world-map"
    ,OCEAN : "ocean"
-     
+
    ,CONERIA : "coneria"
    ,PRAVOKA : "pravoka"
    ,ELFLAND : "elfland"
@@ -16,25 +16,25 @@ function() {
    ,ONRAC : "onrac"
    ,GAIA : "gaia"
    ,LEFEIN : "lefein"
-     
+
    ,CONERIA_CASTLE : "coneria-castle"
    ,CONERIA_CASTLE_2F : "coneria-castle-2f"
    ,ELF_CASTLE : "elf-castle"
    ,ASTOS_CASTLE : "astos-castle"
-   ,CASTLE_ORDEALS_1F : "castle-ordeals-1f" 
-   ,CASTLE_ORDEALS_2F : "castle-ordeals-2f" 
-   ,CASTLE_ORDEALS_3F : "castle-ordeals-3f" 
-    
+   ,CASTLE_ORDEALS_1F : "castle-ordeals-1f"
+   ,CASTLE_ORDEALS_2F : "castle-ordeals-2f"
+   ,CASTLE_ORDEALS_3F : "castle-ordeals-3f"
+
    ,MATOYAS_CAVE : "matoyas-cave"
    ,DWARF_CAVE : "dwarf-cave"
    ,TITANS_TUNNEL : "titans-tunnel"
    ,SARDAS_CAVE : "sardas-cave"
    ,WATERFALL_CAVE : "waterfall-cave"
-    
+
    ,CARDIA_ISLANDS_MAIN : "cardia-islands-main"
    ,CARDIA_ISLANDS_BAHAMUT : "cardia-islands-bahamut-1f"
    ,CARDIA_ISLANDS_BAHAMUT_2F : "cardia-islands-bahamut-2f"
-   
+
    ,TEMPLE_OF_FIENDS : "temple-of-fiends"
    ,MARSH_CAVE_B1 : "marsh-cave-b1"
    ,MARSH_CAVE_B2A : "marsh-cave-b2a"
@@ -57,7 +57,7 @@ function() {
    ,ICE_CAVE_B2B : "ice-cave-b2b"
    ,ICE_CAVE_B3A : "ice-cave-b3a"
    ,ICE_CAVE_B3B : "ice-cave-b3b"
-    
+
    ,SEA_SHRINE_B1 : "sea-shrine-b1"
    ,SEA_SHRINE_B2 : "sea-shrine-b2"
    ,SEA_SHRINE_B2A : "sea-shrine-b2a"
@@ -78,7 +78,7 @@ function() {
    ,FLOATING_CASTLE_4F : "floating-castle-4f"
    ,FLOATING_CASTLE_5F : "floating-castle-5f"
 
-    
+
      // battle backgrounds
    ,BattleBackgrounds : {
      Castle:{cssClass:"castle"}

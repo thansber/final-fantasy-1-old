@@ -1,6 +1,6 @@
 MOST RECENT
 ===========
-- movement via reqAnimFrame too fast! add time delay
+- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 
 SPELLS
 ======
@@ -20,7 +20,7 @@ BATTLE
 - wait for button after displaying rewards
 - level ups
 - splash builds 3 items, then moves them around, then hides them at the end
-	- creep = 45 
+	- creep = 45
 	- imp = 18
 	- madpony = 24
 	- garland = 45
@@ -48,7 +48,6 @@ TOWNS
 - add people in town initially not moving
 - add NPC object to track initial position, sprite, and conversations
 - message display in town - check if person is in front of user, if so display conversation text
-- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 
 MAPS
 ====
