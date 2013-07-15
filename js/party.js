@@ -1,37 +1,37 @@
-define( /* Party */ 
-["jquery", 
+define( /* Party */
+["jquery",
  "character", "character-class", "character-growth", "encounters", "equipment", "events",
  "logger", "maps/map", "maps/artist", "map-coords-absolute", "map-coords-converter", "map-transition",
- "rng", "spells", "util", "constants/map", "constants/movement"], 
+ "rng", "spells", "util", "constants/map", "constants/movement"],
 function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
          Logger, Map, MapArtist, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
-         RNG, Spell, Util, MapConstants, MovementConstants) { 
+         RNG, Spell, Util, MapConstants, MovementConstants) {
 return (function() {
-    
+
   var self = this;
   self.inBattle = false;
-  
+
   var chars = [];
   var gold = 0;
   var stepsUntilBattle = -1;
-  
+
   var currentPosition = null;
   var currentMap = null;
   var currentShop = null;
   var currentTransportation = null;
   var worldMapPosition = null;
-  
+
   var orbsLit = [];
   var consumables = [
-    {name:"HealPotion", qty:0}                
-   ,{name:"PurePotion", qty:0}                
-   ,{name:"SoftPotion", qty:0}                
-   ,{name:"Tent", qty:0}                
-   ,{name:"Cabin", qty:0}                
-   ,{name:"House", qty:0}                
+    {name:"HealPotion", qty:0}
+   ,{name:"PurePotion", qty:0}
+   ,{name:"SoftPotion", qty:0}
+   ,{name:"Tent", qty:0}
+   ,{name:"Cabin", qty:0}
+   ,{name:"House", qty:0}
   ];
   var keyItems = "0"; // heck yeah, storing a bunch of boolean as a string
-  
+
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
@@ -41,10 +41,10 @@ return (function() {
     Event.transmit(Event.Types.StartBattle, encounter, self.getMap().background);
     inBattle = true;
   };
-  
+
   var isNewPositionTransition = function() {
     var transition = MapTransition.lookup(currentMap, currentPosition);
-    
+
     var movementCallback = null;
     // Transition check needs to be first since we can get a null mapping when we leave a town
     if (!!transition) {
@@ -54,28 +54,24 @@ return (function() {
       movementCallback = function() { Event.transmit(Event.Types.AreaTransition, transition); };
     } else {
       movementCallback = function() { Event.transmit(Event.Types.MovingChange, false); };
-    } 
-     
+    }
+
     Event.clear(Event.Types.MovementCallback);
     Event.listen(Event.Types.MovementCallback, movementCallback);
-    
+
     return !!transition;
   };
-  
+
   var moveToPosition = function(xChange, yChange) {
     // We are currently moving the character
-    Event.transmit(Event.Types.MovingChange, true);
-    Logger.debug("start moving");
     MapArtist.moveOneSquare({map:self.getMap(), position:currentPosition, x:xChange, y:yChange});
-    Logger.debug("stop moving");
-    Event.transmit(Event.Types.MovingChange, false);
   };
-  
+
   /* ============== */
   /* PUBLIC METHODS */
   /* ============== */
   self.addChar = function(c) { chars.push(c); };
-  self.addConsumable = function(name, amount) { 
+  self.addConsumable = function(name, amount) {
     $.each(consumables, function(i, item) {
       if (item.name == name) {
         item.qty += amount;
@@ -91,10 +87,10 @@ return (function() {
   };
   self.buy = function(gp) { self.addGold(-1 * gp); };
   self.clearChars = function() { chars = []; };
-  self.clearLastChar = function() { 
-    if (chars.length > 0) { 
-      chars.splice(chars.length - 1, 1); 
-    } 
+  self.clearLastChar = function() {
+    if (chars.length > 0) {
+      chars.splice(chars.length - 1, 1);
+    }
   };
   self.createNewChar = function(name, charClass, index) {
     var startingStats = CharacterGrowth.startingStats[charClass];
@@ -104,20 +100,20 @@ return (function() {
     char.refillSpellCharges();
     return char;
   };
-  
+
   // TODO: remove this and anything that calls it
   self.createTestChars = function() {
    self.clearChars();
     var charClasses = [CharacterClass.FIGHTER, CharacterClass.THIEF, CharacterClass.WHITE_MAGE, CharacterClass.BLACK_MAGE];
     for (var i = 0; i < charClasses.length; i++) {
       var name = "";
-      for (var n = 0; n < 4; n++) { 
-        name += String.fromCharCode(65 + +i); 
+      for (var n = 0; n < 4; n++) {
+        name += String.fromCharCode(65 + +i);
       }
       var char = self.createNewChar(name, charClasses[i], i);
       self.addChar(char);
     }
-    
+
     self.getChar(0)
       .weapons().add("Short[S]").equip("Short[S]")
       .armor().add("Wooden[A]").add("Wooden[S]").add("Wooden[H]").equipAll();
@@ -132,7 +128,7 @@ return (function() {
       .weapons().add("Small[K]").equip("Small[K]")
       .armor().add("Cloth").equipAll()
       .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
-    
+
     self.addGold(400);
     self.addConsumable("HealPotion", 23)
         .addConsumable("PurePotion", 7)
@@ -140,8 +136,8 @@ return (function() {
         .addConsumable("Tent", 4)
         .addConsumable("Cabin", 1);
   };
-  
-  self.getAliveChars = function() { 
+
+  self.getAliveChars = function() {
     var aliveChars = [];
     for (var i = 0; i < chars.length; i++) {
       if (chars[i].isAlive()) {
@@ -176,11 +172,11 @@ return (function() {
     var map = self.getMap();
     // Keep the old position around in case we moved somewhere we can't go
     var oldPos = MapCoordsAbsolute.create(currentPosition);
-    
+
     // Temporarily change the current position to the potential new position
     currentPosition.adjust(yChange, xChange, map);
     Logger.debug("moving to " + currentPosition.toString());
-    
+
     // See if the new position contains a transition (i.e. entering a town/dungeon)
     // if so, move the party, then the callback will fire, transitioning them to the
     // new destination
@@ -188,7 +184,7 @@ return (function() {
       moveToPosition(xChange, yChange);
       return;
     }
-    
+
     // Check if the new destinations is passable
     var passable = map.isPassable(currentPosition.y, currentPosition.x, currentTransportation);
     Logger.debug(currentPosition.toString() + " is" + (passable ? "" : " not") + " passable");
@@ -196,7 +192,7 @@ return (function() {
       currentPosition = oldPos;
       return;
     }
-    
+
     if (map.tileCanHaveBattle()) {
       stepsUntilBattle--;
       if (stepsUntilBattle <= 0) {
@@ -208,7 +204,7 @@ return (function() {
 
     moveToPosition(xChange, yChange);
   };
-  
+
   self.lightOrb = function(orb) { orbsLit.push(orb); };
   self.lookupConsumable = function(name) {
     var consumable = null;
@@ -232,7 +228,7 @@ return (function() {
     } else {
       Logger.error("Player is in an unsupported map [" + currentMap + "]");
     }
-    
+
     if (steps) {
       stepsUntilBattle = RNG.randomUpTo(steps.max, steps.min);
     }
@@ -243,7 +239,7 @@ return (function() {
   self.setTransportation = function(transportation) { currentTransportation = transportation; return this; };
   self.storeWorldMapPosition = function() { worldMapPosition = $.extend({}, currentPosition); };
   self.useConsumable = function(item) { self.addConsumable(item, -1); return this; };
-  
+
   return this;
 }).call({})
 });

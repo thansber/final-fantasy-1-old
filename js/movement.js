@@ -1,16 +1,16 @@
-define( /* Movement */ 
-["jquery", "events", "key-press-notifier", "logger", "constants/movement", "js/lib/jquery.timer.js"], 
+define( /* Movement */
+["jquery", "events", "key-press-notifier", "logger", "constants/movement", "js/lib/jquery.timer.js"],
 function($, Event, KeyPressNotifier, Logger, MovementConstants) {
 return (function() {
-  
+
   var self = this;
-    
+
   var moving = false;
   var listening = false;
   var moveCallback = null;
   var keysPressed = {};
   var TIMER_LABEL = "movement";
-  
+
   /* =========== */
   /* INIT METHOD */
   /* =========== */
@@ -20,7 +20,7 @@ return (function() {
     Event.listen(Event.Types.MovementStop, self.stopListening);
 
     self.registeredKeys = [KeyPressNotifier.I, KeyPressNotifier.M];
-    
+
     $("#view").bind("transitionend webkitTransitionEnd", function() {
       if (listening) {
         Event.transmit(Event.Types.MovementCallback);
@@ -33,7 +33,7 @@ return (function() {
   /* ============== */
   self.keyPressChange = function(key, isPressed) {
     keysPressed[key] = isPressed;
-    
+
     if (!isPressed) {
       switch (key) {
         case KeyPressNotifier.I:
@@ -47,22 +47,18 @@ return (function() {
   self.isListening = function() { return listening; };
   self.isMoving = function() { return moving; };
   self.move = function(xChange, yChange) {
-    if (moving) {
-      return;
-    }
-    
     Event.transmit(Event.Types.Moving, yChange, xChange);
   };
-  
+
   self.moveDown = function() { self.move(0, 1); };
   self.moveLeft = function() { self.move(-1, 0); };
   self.moveRight = function() { self.move(1, 0); };
   self.moveUp = function() { self.move(0, -1); };
   self.setMoving = function(m) { moving = m; };
-  
+
   self.refresh = function() {
     for (var k in keysPressed) {
-      if (keysPressed[k]) {
+      if (keysPressed[k] && !moving) {
         switch (k) {
           case KeyPressNotifier.Left: self.moveLeft(); return false;
           case KeyPressNotifier.Up: self.moveUp(); return false;
@@ -72,7 +68,7 @@ return (function() {
       }
     }
   };
-  
+
   self.startListening = function() {
     Logger.debug("listening for movement");
     listening = true;
@@ -81,7 +77,7 @@ return (function() {
       self.refresh();
     });
   };
-  
+
   self.stopListening = function() {
     Logger.debug("NOT listening for movement");
     listening = false;
@@ -90,7 +86,7 @@ return (function() {
       keysPressed[k] = false;
     }
   };
-  
+
   return this;
 }).call({})
 });
