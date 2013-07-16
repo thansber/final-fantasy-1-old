@@ -1,7 +1,7 @@
 define( /* Party */
 ["jquery",
  "character", "character-class", "character-growth", "encounters", "equipment", "events",
- "logger", "maps/map", "maps/artist", "map-coords-absolute", "map-coords-converter", "map-transition",
+ "logger", "maps/map", "maps/artist", "map-coords-absolute", "map-coords-converter", "maps/transition",
  "rng", "spells", "util", "constants/map", "constants/movement"],
 function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
          Logger, Map, MapArtist, MapCoordsAbsolute, MapCoordsConverter, MapTransition,

@@ -1,10 +1,10 @@
-define( 
+define(
 /* DebugLocationJumper */
-["jquery", "./util", "events", "map-config", "../constants/map", "map-coords-absolute", "map-transition", "party", "statuses", "../constants/shop"], 
+["jquery", "./util", "events", "map-config", "../constants/map", "map-coords-absolute", "maps/transition", "party", "statuses", "../constants/shop"],
 function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapTransition, Party, Status, ShopConstants) {
 
   var $debug = null;
-  
+
   var findTownCoords = function(map) {
     var transitions = MapTransition.All[MapConstants.WORLD_MAP];
     for (var t = 0; t < transitions.length; t++) {
@@ -13,7 +13,7 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
       }
     }
   };
-  
+
   var initTownSelector = function() {
     var $selector = $(".town .selector", $debug);
     DebugHelper.addOption($selector, "", "--Select a town--");
@@ -26,7 +26,7 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
     DebugHelper.addOption($selector, MapConstants.GAIA, "Gaia");
     DebugHelper.addOption($selector, MapConstants.LEFEIN, "Lefein");
   };
-  
+
   var initShopSelector = function() {
     var $selector = $(".shop .selector", $debug);
     DebugHelper.addOption($selector, "", "--Select a shop--");
@@ -35,7 +35,7 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
     }
     $selector.val(ShopConstants.Clinic);
   };
-  
+
   var jumpToTown = function($row) {
     var map = $(".selector", $row).val();
     if (map.length > 0) {
@@ -43,7 +43,7 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
       Event.transmit(Event.Types.JumpTo, MapConstants.WORLD_MAP, townCoords);
     }
   };
-  
+
   var jumpToShop = function($row) {
     Event.transmit(Event.Types.JumpTo, MapConstants.CONERIA, MapConfig.lookup(MapConstants.CONERIA).start);
     var shopType = $(".selector", $row).val();
@@ -53,20 +53,20 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
     }
     Event.transmit(Event.Types.ShopEnter, shopType);
   };
-    
+
   return {
     init : function() {
       $debug = $("#debug section.locationJumper");
       initTownSelector();
       initShopSelector();
     },
-    
+
     event : function($target) {
       if ($target.is(".go")) {
         var $row = $target.closest(".row");
-        if ($row.is(".town")) { jumpToTown($row); } 
+        if ($row.is(".town")) { jumpToTown($row); }
         else if ($row.is(".shop")) { jumpToShop($row); }
-      } 
+      }
     }
   };
 });
