@@ -1,14 +1,14 @@
-define( 
+define(
 /* Debug */
-["jquery", "./actions", "./battle-animations", "./battle-messages", "./battle-setup", 
- "./coordinates", "./enemies", "./util", "./locationJumper", "./maps", "./messages", "./menus",
- "./spell-effects", "./tiles", "./weapon-animations", "./weapons", "events"], 
-function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattleSetup, 
-         DebugCoords, DebugEnemies, DebugHelper, DebugLocationJumper, DebugMaps, DebugMessages, DebugMenu, 
+["jquery", "./actions", "./battle-animations", "./battle-messages", "./battle-setup",
+ "./enemies", "./util", "./locationJumper", "./maps", "./messages", "./menus",
+ "./spell-effects", "./tiles", "./weapon-animations", "./weapons", "events"],
+function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattleSetup,
+         DebugEnemies, DebugHelper, DebugLocationJumper, DebugMaps, DebugMessages, DebugMenu,
          DebugSpellEffects, DebugTiles, DebugWeaponAnimations, DebugWeapons, Event) {
-  
+
   var currentMenu = "full-maps";
-  
+
   var init = function() {
     DebugActions.init();
     DebugBattleSetup.init();
@@ -20,7 +20,7 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
     DebugTiles.init();
     DebugWeapons.init();
     DebugWeaponAnimations.init();
-    
+
     $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
     $("#debug section button").click(function() { this.blur(); });
 
@@ -41,14 +41,14 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
     $("#debug .animations button").click(function(event) { DebugBattleAnimations.event($(event.target)); });
     $("#debug .actions button").click(function(event) { DebugActions.event($(event.target)); });
     $("#debug .menus button").click(function(event) { DebugMenu.event($(event.target)); });
-    
+
     Event.listen(Event.Types.ResourcesFinished, start);
   };
-  
+
   var start = function() {
     $("#debug").show().find(".menu a." + currentMenu).click();
   };
-  
+
   return {
     init : init
   };

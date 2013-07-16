@@ -1,7 +1,7 @@
 define(
 /* DebugLocationJumper */
-["jquery", "./util", "events", "map-config", "../constants/map", "map-coords-absolute", "maps/transition", "party", "statuses", "../constants/shop"],
-function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapTransition, Party, Status, ShopConstants) {
+["jquery", "./util", "events", "maps/map", "../constants/map", "map-coords-absolute", "maps/transition", "party", "statuses", "../constants/shop"],
+function($, DebugHelper, Event, Map, MapConstants, MapCoordsAbsolute, MapTransition, Party, Status, ShopConstants) {
 
   var $debug = null;
 
@@ -45,7 +45,7 @@ function($, DebugHelper, Event, MapConfig, MapConstants, MapCoordsAbsolute, MapT
   };
 
   var jumpToShop = function($row) {
-    Event.transmit(Event.Types.JumpTo, MapConstants.CONERIA, MapConfig.lookup(MapConstants.CONERIA).start);
+    Event.transmit(Event.Types.JumpTo, MapConstants.CONERIA, Map.lookup(MapConstants.CONERIA).start);
     var shopType = $(".selector", $row).val();
     if (shopType == ShopConstants.Clinic) {
       Party.getChar(0).addStatus(Status.Dead);
