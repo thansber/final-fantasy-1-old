@@ -1,5 +1,9 @@
 MOST RECENT
 ===========
+- finish converting marsh cave to new mapping, remove old marsh cave mapping
+- move map stuff to map folder
+- what to do with elements.js, move to constants?
+
 
 SPELLS
 ======
