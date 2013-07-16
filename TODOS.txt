@@ -1,6 +1,5 @@
 MOST RECENT
 ===========
-- make transitions use 3-tiered map > map -- y coord -- x coord for faster lookups
 
 SPELLS
 ======

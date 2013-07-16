@@ -4,6 +4,7 @@ define(
 function(Logger, Map, MapCoordsAbsolute) {
 
   var ALL_TRANSITIONS = {};
+  var ALL_TRANSITIONS_BY_COORDS = {};
 
   var Transition = function(from, to, fromCoords, toCoords) {
     this.from = from;
@@ -11,6 +12,14 @@ function(Logger, Map, MapCoordsAbsolute) {
     if (fromCoords) {
       this.fromCoords = MapCoordsAbsolute.create(fromCoords);
       this.toCoords = toCoords ? MapCoordsAbsolute.create(toCoords) : (Map.lookup(to) ? Map.lookup(to).start : null);
+
+      var coordsTransitionsForFrom = ALL_TRANSITIONS_BY_COORDS[this.from];
+      if (!coordsTransitionsForFrom) {
+        coordsTransitionsForFrom = {};
+        ALL_TRANSITIONS_BY_COORDS[this.from] = coordsTransitionsForFrom;
+      }
+      coordsTransitionsForFrom[this.fromCoords.y] = {};
+      coordsTransitionsForFrom[this.fromCoords.y][this.fromCoords.x] = this;
     }
 
     var transitionsForFrom = ALL_TRANSITIONS[this.from];
@@ -38,11 +47,9 @@ function(Logger, Map, MapCoordsAbsolute) {
           return transition;
         }
       } else {
-        // TODO: replace this with map lookup instead of iterate
-        for (var t = 0; t < transitions.length; t++) {
-          if (coords.equals(transitions[t].fromCoords)) {
-            return transitions[t];
-          }
+        var yTransitions = ALL_TRANSITIONS_BY_COORDS[map][coords.y];
+        if (yTransitions && yTransitions[coords.x]) {
+          return yTransitions[coords.x];
         }
       }
       return null;
