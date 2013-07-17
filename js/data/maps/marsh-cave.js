@@ -2,11 +2,11 @@ define(/* */
 ["jquery", "maps/map", "constants/map"],
 function($, Map, MapConstants) {
 
-  var tiles_upper = {
+  var tiles = {
     "~" : {y:4, x:1, desc:"nothing"},
     "." : {y:0, x:3, desc:"floor", inside:{y:3, x:3}, passable:true},
     "[]": {y:1, x:3, desc:"door", inside:{y:4, x:3}, passable:true},
-    "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}, passable:true},
+  "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}, passable:true},
     "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
     "--": {y:0, x:1, desc:"room wall top", inside:{y:3, x:1}},
     "-#": {y:0, x:2, desc:"room wall top", inside:{y:3, x:2}},
@@ -26,7 +26,7 @@ function($, Map, MapConstants) {
   };
 
   var init = function() {
-    Map.create(MapConstants.MARSH_CAVE_B1, {y:28, x:14}).tileMapping(tiles_upper)
+    Map.create(MapConstants.MARSH_CAVE_B1, {y:28, x:14}).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  WW WW WW .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -84,7 +84,7 @@ function($, Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MARSH_CAVE_B2A).tileMapping(tiles_upper)
+    Map.create(MapConstants.MARSH_CAVE_B2A).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW ~  ~  WW WW WW WW ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  WW ~  ~  WW .  .  WW ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW .  WW WW WW WW .  .  WW WW WW WW WW WW WW")
@@ -115,7 +115,7 @@ function($, Map, MapConstants) {
        .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MARSH_CAVE_B2B).tileMapping(tiles_upper)
+    Map.create(MapConstants.MARSH_CAVE_B2B).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  WW ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  #- -- -- -- -- -# .  .  WW ~")
@@ -148,8 +148,66 @@ function($, Map, MapConstants) {
        .sprites("~  WW .  .  .  .  .  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  WW ~  WW ~  WW ~  WW .  .  v  .  WW")
        .sprites("~  ~  WW WW WW WW .  .  WW .  .  .  .  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  WW")
        .sprites("~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW")
-  };
 
+    Map.create(MapConstants.MARSH_CAVE_B3).tileMapping(tiles)
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW ~  ~  WW WW WW WW ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  WW ~  ~  WW .  .  WW ~")
+       .sprites("~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  WW .  .  .  .  WW WW WW WW .  .  WW ~")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  WW WW WW WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW WW .  .  .  .  .  .  .  .  .  .  WW ~")
+       .sprites("~  ~  ~  WW ^  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW ~")
+       .sprites("~  ~  ~  WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  $  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  $  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  WW WW WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW ~")
+       .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~")
+       .sprites("~  ~  WW .  .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  .  .  WW ~")
+       .sprites("~  ~  WW WW WW .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  $  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  WW WW WW ~")
+       .sprites("~  ~  ~  ~  WW .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  #| ,  ,  $  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  $  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW ~  ~  ~")
+       .sprites("WW WW WW WW WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("WW .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW ~  ~  ~")
+       .sprites("WW WW WW WW WW .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW WW WW ~")
+       .sprites("~  ~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~")
+       .sprites("~  ~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~")
+       .sprites("~  ~  ~  WW WW .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  WW WW WW WW .  .  #- -- -- -- -- -# .  .  .  .  WW WW")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| && && && ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  $  |# .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| && $  && ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  .  .  .  #| && ,  && ,  |# .  .  .  .  .  .  .  .  #| ,  ,  $  ,  |# .  .  .  .  .  .  .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  WW .  .  WW .  .  #| ,  ,  ,  ,  |# .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  .  .  .  #_ __ __ __ __ _# .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  WW WW WW WW .  .  RR RR [] RR RR RR .  .  .  .  .  WW")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW WW")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW WW .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  ~  WW WW WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW WW .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  .  .  .  .  .  .  WW .  .  .  .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  .  .  .  .  .  .  WW .  WW WW .  WW .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #- -- -- -- -- -- -- -# WW WW WW WW .  .  #- -- -- -- -- -- -- -# WW WW WW WW .  .  #- -- -- -- -- -- -- -# WW WW WW WW .  .  #- -- -- -- -- -- -# .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #| ,  ,  ,  ,  ,  ,  |# .  .  .  .  .  .  #| ,  ,  ,  ,  ,  $  |# .  .  .  .  .  .  #| ,  ,  ,  ,  && && |# .  .  .  .  .  .  #| ,  && $  && ,  |# .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  #_ __ ,  ,  && $  && |# WW .  .  WW .  .  #_ __ ,  ,  ,  ,  ,  |# .  .  .  WW .  .  #_ __ ,  ,  ,  ,  && |# .  .  .  WW .  .  #_ __ ,  ,  ,  __ _# .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  RR [] #_ __ __ __ __ _# WW .  .  WW .  .  RR [] #_ __ __ __ __ _# .  .  .  WW .  .  RR [] #_ __ __ __ __ _# .  .  .  WW .  .  RR [] #_ __ _# [] RR .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  RR RR RR RR RR RR .  .  .  .  .  .  .  .  RR RR RR RR RR RR .  .  .  .  .  .  .  .  RR RR RR RR RR RR .  .  .  .  .  .  .  .  RR RR RR .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW .  .  .  .  WW .  WW .  WW .  WW WW WW WW .  .  WW WW WW WW WW WW WW .  WW WW WW WW .  .  .  .  WW WW WW WW WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW ~  ~  ~")
+       .sprites("~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  WW WW WW ~  ~  WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW ~  ~  ~");
+  };
 
   return {
     init: init

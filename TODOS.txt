@@ -1,6 +1,5 @@
 MOST RECENT
 ===========
-- finish converting marsh cave to new mapping, remove old marsh cave mapping
 - move map stuff to map folder
 - what to do with elements.js, move to constants?
 
@@ -55,7 +54,7 @@ TOWNS
 MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Marsh Cave, Floating Castle, Temple of Fiends 2
+- need to encode: Floating Castle, Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
 - add filler sprites to all maps
 - add start coords to all maps
