@@ -1,5 +1,5 @@
 define(
-["jquery", "character-class", "party", "spells", "statuses"], 
+["jquery", "character-class", "party", "spells", "data/statuses"],
 function($, CharacterClass, Party, Spell, Status) {
   module("Character - Learning spells");
   test("can learn a spell", function() {
@@ -13,7 +13,7 @@ function($, CharacterClass, Party, Spell, Status) {
     var spell = Spell.lookup("CURE");
     ok(!char.canLearnSpell(spell), "A " + char.currentClass.name + " should not be able to learn " + spell.spellId);
   });
-  
+
   test("can not learn a spell because of max limit reached", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.learnSpell(Spell.lookup("FIR2"));
@@ -21,7 +21,7 @@ function($, CharacterClass, Party, Spell, Status) {
     char.learnSpell(Spell.lookup("LOK2"));
     ok(!char.canLearnSpell(Spell.lookup("HOLD")), "A character cannot learn more than 3 spells");
   });
-  
+
   test("learned a spell", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var spell = Spell.lookup("FIRE");
@@ -33,41 +33,41 @@ function($, CharacterClass, Party, Spell, Status) {
 
   // -----------------------------------------------------------------
   module("Character - Statuses");
-  
+
   test("adding status", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var status = Status.Poison;
     char.addStatus(status);
     ok(!!char.currentStatuses[status.id]);
-    
+
     var otherStatuses = $.map(Status.All, function(status) { return status.id; });
     otherStatuses.splice($.inArray(status.id, otherStatuses), 1);
     for (var s in otherStatuses) {
       ok(!char.currentStatuses[otherStatuses[s]]);
     }
   });
-  
+
   test("remove status", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var status = Status.Poison;
     char.addStatus(status);
     char.removeStatus(status);
     ok(!char.currentStatuses[status.id]);
-    
+
     var otherStatuses = $.map(Status.All, function(status) { return status.id; });
     otherStatuses.splice($.inArray(status.id, otherStatuses), 1);
     for (var s in otherStatuses) {
       ok(!char.currentStatuses[otherStatuses[s]]);
     }
   });
-  
+
   test("has status", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var status = Status.Confuse;
     char.addStatus(status);
     ok(char.hasStatus(status));
   });
-  
+
   test("is dead", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     var status = Status.Dead;
@@ -75,7 +75,7 @@ function($, CharacterClass, Party, Spell, Status) {
     ok(char.hasStatus(status));
     ok(char.isDead());
   });
-  
+
   test("is alive", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.addStatus(Status.Dead);
@@ -85,7 +85,7 @@ function($, CharacterClass, Party, Spell, Status) {
     char.addStatus(Status.Stone);
     ok(!char.isAlive());
   });
-  
+
   test("has critical status", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.addStatus(Status.Dead);
@@ -97,7 +97,7 @@ function($, CharacterClass, Party, Spell, Status) {
     char.addStatus(Status.Paralysis);
     ok(char.hasCriticalStatus());
   });
-  
+
   test("battle status text", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.addStatus(Status.Dead);
@@ -108,7 +108,7 @@ function($, CharacterClass, Party, Spell, Status) {
     char.addStatus(Status.Paralysis);
     equal(Status.Paralysis.battleText, char.getBattleStatus().battleText);
   });
-  
+
   test("status preventing actions", function() {
     var char = Party.createNewChar("A", CharacterClass.BLACK_MAGE, 0);
     char.addStatus(Status.Dead);

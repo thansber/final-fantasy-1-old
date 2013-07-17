@@ -1,4 +1,4 @@
-#map { width:47%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em;  }
+#map { width:37%; height:100%; float:left; overflow:auto; margin-top:2em; margin-left:2em;  }
 #map .background { position:relative; }
 #map.town .background { width:302px; height:302px; background-image:url(../images/town-background.png); }
 #map .background .transition { background-color:black; width:302px; height:151px; position:absolute; }

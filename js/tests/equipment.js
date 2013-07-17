@@ -1,8 +1,8 @@
 define(
-["jquery", "character-class", "elements", "equipment", "party", "rng", "statuses"], 
-function($, CharacterClass, Element, Equipment, Party, RNG, Status) {  
+["jquery", "character-class", "data/elements", "equipment", "party", "rng", "data/statuses"],
+function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
   RNG.useDefault();
-  
+
   module("Equipment - Adding/equipping");
   test("adding/equipping weapons", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
@@ -10,24 +10,24 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
     equal(char.allWeapons[0].name, "Short[S]");
     equal(char.equippedWeaponIndex, 1);
     equal(char.equippedWeapon().name, "Rapier");
-    
+
     char.equip(0);
     equal(char.equippedWeaponIndex, 0);
     equal(char.equippedWeapon().name, "Short[S]");
-    
+
     char.unequip();
     equal(char.equippedWeaponIndex, -1);
     equal(char.equippedWeapon(), null);
   });
-  
+
   test("adding/equipping armor", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0);
     char.armor().add("Chain[A]").add("Silver[B]").add("Buckler").add("Cap").equip(1);
-    
+
     equal(char.allArmor.length, 4);
     equal(char.allArmor[0].name, "Chain[A]");
     ok(char.isEquipped(1));
-    
+
     char.equip(2).equip(3);
     ok(char.isEquipped(1));
     ok(char.isEquipped(2));
@@ -35,7 +35,7 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
     equal(char.equippedArmor()[0].name, "Silver[B]");
     equal(char.equippedArmor()[1].name, "Buckler");
     equal(char.equippedArmor()[2].name, "Cap");
-    
+
     char.equip(0);
     ok(char.isEquipped(0));
     ok(!char.isEquipped(1));
@@ -45,7 +45,7 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
     equal(char.equippedArmor()[1].name, "Buckler");
     equal(char.equippedArmor()[2].name, "Cap");
   });
-  
+
   test("equipping duplicate armor", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.armor().add("Wooden[A]").add("Wooden[S]").add("Wooden[H]").add("Wooden[A]");
@@ -53,41 +53,41 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
 
     equal(char.equippedArmor().length, 3);
     equal(char.equippedArmor()[0].name, "Wooden[A]");
-    
+
     char.equip(3);
     equal(char.equippedArmor().length, 3);
     equal(char.equippedArmor()[0].name, "Wooden[S]");
     equal(char.equippedArmor()[2].name, "Wooden[A]");
   });
-  
+
   test("dropping armor", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.RED_MAGE, 0);
     char.armor().add("Chain[A]").add("Silver[B]").add("White[R]").drop(0);
-    
+
     ok(!char.equippedArmor[0]);
     equal(char.allArmor[1].name, "Silver[B]");
     equal(char.allArmor[2].name, "White[R]");
   });
-  
+
   test("armor resistances", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0);
     char.armor().add("Dragon[A]").add("Opal[A]").add("ProRing");
     char.equip(2).equip(0).equip(1);
     deepEqual(char.elementsProtectedFrom(), [Element.Death, Element.Lightning]);
   });
-  
+
   test("armor weight", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0);
     char.armor().add("Steel[A]").add("Iron[H]").add("Iron[G]").equipAll();
     equal(char.armorWeight(), 43);
-    
+
     char.add("Opal[B]").equip(3);
     equal(char.armorWeight(), 11);
   });
-  
+
   module("Equipment - Weapon allowed classes");
   test("check # of allowed classes for all weapons", function() {
-    
+
     var numClassesPerWeapon = {
      "Wooden[N]" : 3
     ,"Small[K]" : 8
@@ -129,15 +129,15 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
     ,"Katana" : 1
     ,"Xcalber" : 1
     ,"Masmune" : 12};
-  
+
     $.each(numClassesPerWeapon, function(name, numClasses) {
       var weapon = Equipment.Weapon.lookup(name);
       equal(weapon.allowedClasses.length, numClasses, "Expected " + numClasses + " classes to be able to equip " + name + ", found " + weapon.allowedClasses.length);
     });
   });
-  
+
   test("check # of allowed classes for all armor", function() {
-    
+
     var numClassesPerArmor = {
       "Cloth" : 12
      ,"Wooden[A]" : 8
@@ -167,7 +167,7 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
      ,"Cap" : 12
      ,"Wooden[H]" : 3
      ,"Iron[H]" : 3
-     ,"Silver[H]" : 3 
+     ,"Silver[H]" : 3
      ,"Opal[H]" : 1
      ,"Heal[H]" : 2
      ,"Ribbon" : 12
@@ -179,58 +179,58 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
      ,"Power[G]" : 4
      ,"Opal[G]" : 1
      ,"ProRing" : 12};
-    
-    
+
+
     $.each(numClassesPerArmor, function(name, numClasses) {
       var armor = Equipment.Armor.lookup(name);
       equal(armor.allowedClasses.length, numClasses, "Expected " + numClasses + " classes to be able to equip " + name + ", found " + armor.allowedClasses.length);
     });
   });
-  
+
   module("Equipment - Item Usage");
   test("healing potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.applyDamage(32);
-    
+
     var startHp = char.hitPoints;
     Equipment.Item.lookup("HealPotion").use(char, true);
     equal(char.hitPoints, startHp + 30);
   });
-  
+
   test("healing potion outside of battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.applyDamage(32);
-    
+
     var startHp = char.hitPoints;
     var result = Equipment.Item.lookup("HealPotion").use(char, false);
     // dmg is actually negative when healing
     equal(char.hitPoints, startHp - result.dmg[0]);
   });
-  
+
   test("pure potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Poison);
-    
+
     Equipment.Item.lookup("PurePotion").use(char, true);
     ok(!char.hasStatus(Status.Poison));
   });
-  
+
   test("pure potion outside of battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Poison);
-    
+
     Equipment.Item.lookup("PurePotion").use(char, false);
     ok(!char.hasStatus(Status.Poison));
   });
-  
+
   test("soft potion in battle", function() {
     var char = Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0);
     char.addStatus(Status.Stone);
-    
+
     Equipment.Item.lookup("SoftPotion").use(char, false);
     ok(!char.hasStatus(Status.Stone));
   });
-  
+
 
   test("healing after using a TENT", function() {
     Party.clearChars();
@@ -244,13 +244,13 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
       char.applyDamage(31);
       startingHp.push(char.hitPoints);
     });
-    
+
     Equipment.Item.lookup("Tent").use();
     $.each(Party.getChars(), function(i, char) {
       equal(char.hitPoints, startingHp[i] + 30);
     });
   });
-  
+
   test("healing after using a CABIN", function() {
     Party.clearChars();
     Party.addChar(Party.createNewChar("AAAA", CharacterClass.FIGHTER, 0));
@@ -263,13 +263,13 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
       char.hp(100).applyDamage(75);
       startingHp.push(char.hitPoints);
     });
-    
+
     Equipment.Item.lookup("Cabin").use();
     $.each(Party.getChars(), function(i, char) {
       equal(char.hitPoints, startingHp[i] + 60);
     });
   });
-  
+
   test("healing after using a HOUSE", function() {
     Party.clearChars();
     Party.addChar(Party.createNewChar("AAAA", CharacterClass.KNIGHT, 0));
@@ -282,7 +282,7 @@ function($, CharacterClass, Element, Equipment, Party, RNG, Status) {
       char.hp(200).addMaxSpellCharge(1).addMaxSpellCharge(1).addMaxSpellCharge(2).applyDamage(150);
       startingHp.push(char.hitPoints);
     });
-    
+
     Equipment.Item.lookup("House").use();
     $.each(Party.getChars(), function(i, char) {
       equal(char.hitPoints, startingHp[i] + 120);

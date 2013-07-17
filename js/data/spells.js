@@ -1,6 +1,6 @@
-define( 
+define(
 /* SpellData */
-["jquery", "character-class", "elements", "spells", "statuses", "../constants/monster", "../constants/spell"], 
+["jquery", "character-class", "./elements", "spells", "./statuses", "../constants/monster", "../constants/spell"],
 function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConstants) {
 
   var init = function() {
@@ -48,7 +48,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,stats:{eff:0, acc:24, element:Element.Status, status:Status.Sleep}
      ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Status, message:"Asleep", bgColor:"#58F898", splash:"sea green", overlay:true}});
-    
+
     // --------------
     // Level 2 Spells
     // --------------
@@ -93,7 +93,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,isAlreadyApplied:function() { return this.spellAttack > 0; }
      ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Star, message:"Weapons stronger", bgColor:"#58F898"}});
-    
+
     // --------------
     // Level 3 Spells
     // --------------
@@ -139,7 +139,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,stats:{eff:20, acc:40, statChanged:"spellEvasion"}
      ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Star, message:"Easy to hit", bgColor:"#FC9838", splash:"orange", overlay:true}});
-    
+
     // --------------
     // Level 4 Spells
     // --------------
@@ -184,7 +184,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,stats:{eff:0, acc:64, status:Status.Sleep}
      ,allowedClasses:[CharacterClass.NINJA, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Status, message:"Asleep", bgColor:"#3CBCFC", splash:"blue", overlay:true}});
-    
+
     // --------------
     // Level 5 Spells
     // --------------
@@ -227,7 +227,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
       base:{name:"WARP", level:5, target:SpellConstants.TargetType.Single, type:Spell.SpellType.Teleport, price:8000}
      ,stats:{eff:0, acc:0, inBattle:false}
      ,allowedClasses:[CharacterClass.RED_WIZARD, CharacterClass.BLACK_WIZARD]});
-    
+
     // --------------
     // Level 6 Spells
     // --------------
@@ -269,7 +269,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,stats:{eff:0, acc:0, element:Element.Status, status:Status.Paralysis}
      ,allowedClasses:[CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Status, message:"Paralyzed", bgColor:"#F0BC3C", splash:"gold", overlay:true}});
-    
+
     // --------------
     // Level 7 Spells
     // --------------
@@ -314,7 +314,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,stats:{eff:16, acc:40, statChanged:{eff:"spellAttack", acc:"spellHit"}}
      ,allowedClasses:[CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Protect, message:"Weapon became enchanted", bgColor:"#BCBCBC"}});
-    
+
     // --------------
     // Level 8 Spells
     // --------------
@@ -329,12 +329,12 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,allowedClasses:[CharacterClass.WHITE_WIZARD]});
     Spell.create({
       base:{name:"WALL", level:8, target:SpellConstants.TargetType.Single, type:Spell.SpellType.ResistElement, price:60000}
-     ,stats:{eff:0, acc:0, element:Element.AllElements}
+     ,stats:{eff:0, acc:0, element:Element.All}
      ,allowedClasses:[CharacterClass.WHITE_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Protect, message:"Defend All", bgColor:"#BCBCBC"}});
     Spell.create({
       base:{name:"XFER", level:8, target:SpellConstants.TargetType.Single, type:Spell.SpellType.WeakToElement, price:60000}
-     ,stats:{eff:0, acc:107, element:Element.AllElements}
+     ,stats:{eff:0, acc:107, element:Element.All}
      ,allowedClasses:[CharacterClass.WHITE_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Star, message:"Defenseless", bgColor:"#BCBCBC", splash:"grey", overlay:true}});
     Spell.create({
@@ -358,7 +358,7 @@ function($, CharacterClass, Element, Spell, Status, MonsterConstants, SpellConst
      ,allowedClasses:[CharacterClass.BLACK_WIZARD]
      ,ui:{effect:SpellConstants.Effects.Death, message:"Exile to 4th dimension", bgColor:"#58F898", splash:"sea green", overlay:true}});
   };
-  
+
   return {
     init : init
   };

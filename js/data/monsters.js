@@ -1,6 +1,6 @@
-define( 
+define(
 /* MonsterData */
-["elements", "monster", "statuses", "constants/monster"], 
+["./elements", "monster", "./statuses", "constants/monster"],
 function(Element, Monster, Status, MonsterConstants) {
 
   var init = function() {
@@ -779,7 +779,7 @@ function(Element, Monster, Status, MonsterConstants) {
                    ,skills : {chance:50,order:["CRACK","INFERNO","SWIRL","TORNADO"]}
                    ,ui: {size:"chaos",cssClass:"chaos",boss:true}});
   };
-  
+
   return {
     init : init
   };

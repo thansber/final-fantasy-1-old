@@ -1,6 +1,6 @@
 define(
 /* DebugLocationJumper */
-["jquery", "./util", "events", "maps/map", "../constants/map", "maps/transition", "party", "statuses", "../constants/shop"],
+["jquery", "./util", "events", "maps/map", "../constants/map", "maps/transition", "party", "data/statuses", "../constants/shop"],
 function($, DebugHelper, Event, Map, MapConstants, MapTransition, Party, Status, ShopConstants) {
 
   var $debug = null;

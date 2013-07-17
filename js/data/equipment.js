@@ -1,6 +1,6 @@
-define( 
+define(
 /* ShopInventoryData */
-["jquery", "actions", "character-class", "elements", "equipment", "party", "constants/monster"], 
+["jquery", "actions", "character-class", "./elements", "equipment", "party", "constants/monster"],
 function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants) {
 
   var init = function() {
@@ -225,8 +225,8 @@ function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants)
      ,ui:{cssClasses:"masamune", splash:"grey"}
      ,stats:{attack:56,hit:50,crit:10,index:40}
      ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
-        
-    
+
+
     // ===================================
     // -------------- ARMOR --------------
     // ===================================
@@ -368,7 +368,7 @@ function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants)
     Equipment.Armor.create({
       name:"Ribbon",desc:"Ribbon",type:Equipment.Armor.Types.HEAD,price:2
      ,stats:{def:1,weight:1}
-     ,special:{element:Element.AllElements}
+     ,special:{element:Element.All}
      ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
     Equipment.Armor.create({
       name:"Gloves",desc:"Gloves",type:Equipment.Armor.Types.HANDS,price:60
@@ -405,12 +405,12 @@ function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants)
      ,stats:{def:8,weight:1}
      ,special:{element:Element.Death}
      ,allowedClasses:[CharacterClass.FIGHTER, CharacterClass.KNIGHT, CharacterClass.THIEF, CharacterClass.NINJA, CharacterClass.BLACKBELT, CharacterClass.MASTER, CharacterClass.RED_MAGE, CharacterClass.RED_WIZARD, CharacterClass.WHITE_MAGE, CharacterClass.WHITE_WIZARD, CharacterClass.BLACK_MAGE, CharacterClass.BLACK_WIZARD]});
-    
+
     // ===================================
     // --------------- ITEMS -------------
     // ===================================
-    
-    Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60, 
+
+    Equipment.Item.create({name:"HealPotion", desc:"HEAL+", price:60,
       uses:{
         normal:function(target) { return Action.castSpell(target, "CURE", target, {item:this}); }
        ,battle:function(target) { target.applyDamage(-30); }
@@ -443,7 +443,7 @@ function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants)
         normal:function() { $.each(Party.getAliveChars(), function() { this.refillSpellCharges().applyDamage(-120); }); }
       }
     });
-    
+
     // ===================================
     // ------------ KEY ITEMS ------------
     // ===================================
@@ -465,7 +465,7 @@ function($, Action, CharacterClass, Element, Equipment, Party, MonsterConstants)
     Equipment.KeyItem.create({name:"OXYALE", desc:"The OXYALE furnishes fresh air."});
     Equipment.KeyItem.create({name:"CANOE", desc:"You can cross the river."});
   };
-  
+
   return {
     init : init
   };

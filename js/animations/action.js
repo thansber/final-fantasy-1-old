@@ -1,22 +1,22 @@
 define(
 /* AnimationAction */
-["jquery", "./battle", "animation-queue", "./util", "constants/battle", "events", "messages", "party", "rng", "statuses"],
+["jquery", "./battle", "animation-queue", "./util", "constants/battle", "events", "messages", "party", "rng", "data/statuses"],
 function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Event, Message, Party, RNG, Status) {
-  
+
   var $party = null;
   var $enemies = null;
-  
+
   var adjustCharStats = function(opt) {
     var result = opt.result;
     var char = result.target;
     var $char = getCharUI(char);
     var $charStats = $("#battle").find(".stats").find(".charStats." + AnimationUtil.ORDINALS[char.charIndex]);
-      
+
     if (result.targetHp) {
       // Updates the HP for the character
       $("div.hp", $charStats).empty().append(Message.create(result.targetHp + ""));
     }
-    
+
     $char.removeClass("swing forward back arms up");
 
     if (result.died) {
@@ -25,7 +25,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       $("div.hp", $charStats).empty().append(Message.create("0"));
       return;
     }
-    
+
     if (result.status) {
       if (result.status.battleText) {
         var $statusText = null;
@@ -36,11 +36,11 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         }
         $("label.hp", $charStats).empty().append($statusText);
       }
-      
+
       if (result.status.critical) {
         $char.addClass("critical");
       }
-      
+
       if (Status.equals(result.status, Status.Stone)) {
         $char.addClass("stone");
       }
@@ -53,7 +53,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       }
     }
   };
-  
+
   var getCharUI = function(char) { return char == null ? null : $party.find(".char").eq(char.charIndex); };
   var getEnemyUI = function(monster, index) { return monster == null ? null : $enemies.find(".enemy." + monster.cssClass).eq(index == null ? 0 : index); };
   var getEnemyUIByIndex = function(index) { return $enemies.find(".enemy").eq(index == null ? 0 : index); };
@@ -64,60 +64,60 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
     } else {
       $enemy = getEnemyUIByIndex(opt.index);
     }
-    $enemy.addClass("dead");    
+    $enemy.addClass("dead");
   };
-  
-  
+
+
   var spellMessages = function(opt, q) {
     var spell = opt.spell;
-    if (spell.message) { 
+    if (spell.message) {
       var afterFirstMessage = false;
       var messages = jQuery.isArray(spell.message) ? spell.message : [spell.message];
       for (var m in messages) {
         if (afterFirstMessage) {
           q.delay(Message.getBattlePause());
         }
-        q.add(function(message) { 
-          return function() { 
-            Message.desc(message); 
-          }; 
+        q.add(function(message) {
+          return function() {
+            Message.desc(message);
+          };
         }(messages[m]));
         afterFirstMessage = true;
       }
     }
   };
-  
+
   return {
     attack : function(opt, q) {
       q = q || AnimationQueue.create();
-      
+
       var defaults = {command:null, result:null};
       var settings = $.extend({}, defaults, opt);
       var command = settings.command;
       var result = settings.result;
       var isParty = (command.type == BattleConstants.Commands.Party);
-      
+
       q.delay(Message.getQuickPause());
-      
-      if (command.source) { 
-        q.add(function() { Message.source(command.source.getName()); }); 
+
+      if (command.source) {
+        q.add(function() { Message.source(command.source.getName()); });
       }
-      if (command.target) { 
+      if (command.target) {
         q.delay(Message.getQuickPause());
-        q.add(function() { Message.target(command.target.getName()); }); 
+        q.add(function() { Message.target(command.target.getName()); });
       }
-      
+
       if (isParty) {
         // Char doing the attacking
         var $char = getCharUI(command.source);
         var $enemy = getEnemyUI(command.target, command.targetIndex);
         // unequipped chars using their fists get a gold splash effect
-        var weaponSplash = (command.source.equippedWeapon() ? command.source.equippedWeapon().splash : "gold"); 
-        
+        var weaponSplash = (command.source.equippedWeapon() ? command.source.equippedWeapon().splash : "gold");
+
         q.addAll(AnimationBattle.moveChar, {$char:$char, restoreStatus:false});
         q.addAll(AnimationBattle.swingWeapon, {$char:$char});
         q.addAll(AnimationBattle.moveChar, {$char:$char, restoreStatus:true});
-        
+
         if (!result.wasDead) {
           q.addAll(AnimationBattle.splash, {$enemy:$enemy, splashColors:weaponSplash});
         }
@@ -125,7 +125,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         q.addAll(AnimationBattle.windowShake);
         q.addAll(AnimationBattle.charFlicker, {$char:getCharUI(command.target)});
       }
-  
+
       // Show messages from attack result
       if (result.status) {
         q.delay(Message.getQuickPause());
@@ -133,11 +133,11 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         q.delay(Message.getBattlePause());
         q.hideMessages({hideDesc:true, initialPause:false});
       }
-      
-      if (result.hits && result.hits > 1) { 
+
+      if (result.hits && result.hits > 1) {
         q.add(function() { Message.action(result.hits + AnimationUtil.NUM_HITS_MSG); });
       }
-      
+
       if (result.dmg != null) {
         if (result.dmg == 0) {
           q.add(function() { Message.damage(AnimationUtil.MISSED_MSG); });
@@ -146,12 +146,12 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
           q.add(function() { Message.damage(result.dmg + AnimationUtil.DAMAGE_MSG); });
         }
       }
-      
+
       if (result.crit) {
         q.delay(Message.getQuickPause());
         q.add(function() { Message.desc(AnimationUtil.CRITICAL_HIT_MSG); });
       }
-      
+
       if (result.died) {
         q.delay(result.crit || result.status ? Message.getBattlePause() : Message.getQuickPause());
         if (isParty) {
@@ -162,11 +162,11 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
           q.delay(Message.getQuickPause());
         }
       }
-      
+
       if (result.wasDead) {
         q.add(function() { Message.desc(AnimationUtil.INEFFECTIVE_MSG); });
       }
-      
+
       if (!isParty) {
         q.add(function() { adjustCharStats({result:result}); });
       }
@@ -178,32 +178,32 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
        ,hideAction: result.hits && result.hits > 1
        ,hideSource: true
       });
-      
+
       AnimationUtil.autoStart(q, settings, Event.Animations.AttackDone);
-      
+
       return q;
     },
-    
+
     castSpell : function(opt, q) {
       q = q || AnimationQueue.create();
-      
+
       var defaults = {command:null, result:null};
       var settings = $.extend({}, defaults, opt);
       var command = settings.command;
       var result = settings.result;
       var isParty = (command.type == BattleConstants.Commands.Party);
-      
+
       q.delay(Message.getQuickPause());
-  
-      if (command.source) { 
-        q.add(function() { Message.source(command.source.getName()); }); 
+
+      if (command.source) {
+        q.add(function() { Message.source(command.source.getName()); });
       }
-      
+
       if (result.spell) {
         q.delay(Message.getQuickPause());
         q.add(function() { Message.action(result.spell.spellId); });
       }
-  
+
       if (isParty) {
         var $char = getCharUI(command.source);
         q.addAll(AnimationBattle.moveChar, {$char:$char, restoreStatus:false});
@@ -211,8 +211,8 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         q.add(function() { Event.animate(Event.Animations.SpellBackgroundFlicker).using({spell:result.spell}).start(); });
         q.addAll(AnimationBattle.spellEffect, {$char:$char, spell:result.spell});
         q.addAll(AnimationBattle.moveChar, {$char:$char, restoreStatus:true});
-      } 
-      
+      }
+
       // Spell result messages
       if (command.targetType == BattleConstants.Commands.Party) {
         // Spell is being cast on party
@@ -220,17 +220,17 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
           var $target = getCharUI(target);
           var descShown = false;
           var dmgShown = false;
-          
+
           q.add(function() { Message.target(target.getName()); });
           q.addAll(AnimationBattle.charFlicker, {$char:$target});
-          
+
           var resultDamage = result.dmg[i];
           if (resultDamage != null && resultDamage > 0) {
             q.delay(Message.getQuickPause());
             q.add(function() { Message.damage(resultDamage + AnimationUtil.DAMAGE_MSG); });
             dmgShown = true;
           }
-          
+
           if (result.success.length > 0) {
             q.delay(Message.getQuickPause());
             if (!!result.success[i]) {
@@ -240,13 +240,13 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
             }
             descShown = true;
           }
-          
+
           if (!!result.died[i]) {
             q.delay(!!result.success[i] ? Message.getBattlePause() : Message.getQuickPause());
             q.add(function() { Message.desc(AnimationUtil.CHAR_DIED_MSG); });
             descShown = true;
           }
-          
+
           q.add(function() {
             adjustCharStats({
               result : {
@@ -258,7 +258,7 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
               }
             });
           });
-          
+
           q.hideMessages({hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
         });
       } else {
@@ -270,13 +270,13 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
             var dmgShown = false, descShown = false;
             q.add(function() { Message.target(target.getName()); });
             q.addAll(AnimationBattle.splash, {$enemy:$target, splashColors:result.spell.splash, overlay:result.spell.overlay});
-            
+
             if (result.dmg[i] != null) {
               q.delay(Message.getQuickPause());
               q.add(function() { Message.damage(result.dmg[i] + AnimationUtil.DAMAGE_MSG); });
               dmgShown = true;
             }
-            
+
             if (result.success.length > 0) {
               q.delay(Message.getQuickPause());
               if (!!result.success[i]) {
@@ -286,26 +286,26 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
               }
               descShown = true;
             }
-            
+
             if (!!result.died[i]) {
               q.delay(!!result.success[i] && result.dmg[i] === null ? Message.getBattlePause() : Message.getQuickPause());
               q.add(function() { Message.desc(AnimationUtil.ENEMY_DIED_MSG); });
               q.add(function() { $target.addClass("dead"); });
               descShown = true;
             }
-            
+
             q.hideMessages({hideDesc:descShown, hideDamage:dmgShown, hideTarget:true});
           }
         });
       }
-      
+
       q.hideMessages({hideAction:true, hideSource:true, initialPause:false});
-      
+
       AnimationUtil.autoStart(q, settings, Event.Animations.CastSpellDone);
-      
+
       return q;
     },
-    
+
     defeat : function(opt, q) {
       q = q || AnimationQueue.create();
       q.delay(Message.getQuickPause());
@@ -313,44 +313,44 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
       AnimationUtil.autoStart(q, opt, Event.Animations.DefeatDone);
       return q;
     },
-    
+
     init : function() {
       var $battle = $("#battle");
-      
+
       $party = $battle.find(".party");
       $enemies = $battle.find(".enemies");
       Event.listen(Event.Types.AdjustCharStats, adjustCharStats);
     },
-    
+
     moveCharForCommand : function(opt, q) {
       q = q || AnimationQueue.create();
-      
+
       var defaults = {char:null, initialPause:true};
       var settings = $.extend(true, defaults, opt);
-      
+
       if (settings.initialPause) {
         // Added this pause to let the battle finish getting setup before moving the char
         q.delay(Message.getQuickPause());
       }
       q.addAll(AnimationBattle.moveChar, {$char:getCharUI(settings.char)});
-      
+
       AnimationUtil.autoStart(q, settings, Event.Animations.MoveCharForCommandDone);
-      
+
       return q;
     },
 
     runParty : function(opt, q) {
       q = q || AnimationQueue.create();
-      
+
       var defaults = {command:null, pause:AnimationUtil.RUN_DELAY, success:false};
       var settings = $.extend(true, defaults, opt);
       //var isParty = (settings.command.type == BattleCommands.Party);
-      
-      if (settings.command && settings.command.source) { 
+
+      if (settings.command && settings.command.source) {
         q.add(function() { Message.source(settings.command.source.getName()); });
         q.delay(Message.getQuickPause());
       }
-      
+
       if (settings.success) {
         q.add(function() { Message.desc(AnimationUtil.RUN_SUCCESS); });
         q.delay(Message.getBattlePause());
@@ -368,77 +368,77 @@ function ($, AnimationBattle, AnimationQueue, AnimationUtil, BattleConstants, Ev
         q.add(function() { Message.desc(AnimationUtil.RUN_FAILURE); })
         q.delay(Message.getBattlePause());
       }
-      
+
       q.hideMessages({hideDesc:true, hideSource:true, initialPause:false});
-      
+
       AnimationUtil.autoStart(q, settings, Event.Animations.RunPartyDone);
- 
+
       return q;
     },
-    
+
     statusHeal : function(opt, q) {
       q = q || AnimationQueue.create();
-      
+
       var defaults = {command:null, result:null};
       var settings = $.extend(true, defaults, opt);
       var command = settings.command;
       var result = settings.result;
       var isParty = (command.type == BattleConstants.Commands.Party);
-      
+
       q.delay(Message.getQuickPause());
-      
-      if (command.source) { 
-        q.add(function() { Message.source(command.source.getName()); }); 
+
+      if (command.source) {
+        q.add(function() { Message.source(command.source.getName()); });
       }
-      
+
       q.delay(Message.getQuickPause());
-      q.add(function() { 
+      q.add(function() {
         var desc = result.statusCured.desc;
         if (result.success) {
           desc = Status.equals(result.statusCured, Status.Sleep) ? AnimationUtil.STATUS_SLEEP_CURED : AnimationUtil.STATUS_CURED;
         }
-        Message.desc(desc); 
+        Message.desc(desc);
       });
       if (isParty) {
         q.add(function() { adjustCharStats({result:result}); });
       }
       q.delay(Message.getBattlePause());
       q.hideMessages({hideDesc:true, hideSource:true, initialPause:false});
-      
+
       AnimationUtil.autoStart(q, settings, Event.Animations.StatusHealDone);
-      
+
       return q;
     },
-    
+
     victory : function(opt, q) {
       q = q || AnimationQueue.create();
       var defaults = {aliveChars:[], numAnimations:4, pause:250};
       var settings = $.extend(true, defaults, opt);
       var $aliveChars = [];
-      
+
       $.each(settings.aliveChars, function(i, char) { $aliveChars.push(getCharUI(char)); });
-      
-      q.add(function() { 
+
+      q.add(function() {
         $.each($aliveChars, function(i, $char) { AnimationUtil.suspendCriticalStatus($char); });
       });
-      
+
       for (var i = 0; i < settings.numAnimations; i++) {
-        q.add(function() { 
-          $.each($aliveChars, function(i, $char) { $char.addClass("victory arms up"); }); 
+        q.add(function() {
+          $.each($aliveChars, function(i, $char) { $char.addClass("victory arms up"); });
         });
         q.delay(settings.pause);
-        q.add(function() { 
-          $.each($aliveChars, function(i, $char) { $char.removeClass("victory arms up"); }); 
+        q.add(function() {
+          $.each($aliveChars, function(i, $char) { $char.removeClass("victory arms up"); });
         });
         q.delay(settings.pause);
       }
-      
-      q.add(function() { 
-        $.each($aliveChars, function(i, $char) { AnimationUtil.restoreCriticalStatus($char); }); 
+
+      q.add(function() {
+        $.each($aliveChars, function(i, $char) { AnimationUtil.restoreCriticalStatus($char); });
       });
-  
+
       AnimationUtil.autoStart(q, settings, Event.Animations.VictoryDone);
-      
+
       return q;
     }
   };

@@ -1,6 +1,6 @@
-define( 
+define(
 /* SkillData */
-["jquery", "elements", "skills", "spells", "statuses", "../constants/spell"], 
+["jquery", "./elements", "skills", "spells", "./statuses", "../constants/spell"],
 function($, Element, Skill, Spell, Status, SpellConstants) {
 
   var init = function() {
@@ -87,7 +87,7 @@ function($, Element, Skill, Spell, Status, SpellConstants) {
       base:{name:"TORNADO", target:SpellConstants.TargetType.All, type:Spell.SpellType.Damage}
      ,stats:{eff:64, acc:32}});
   };
-  
+
   return {
     init : init
   };
