@@ -50,11 +50,12 @@ TOWNS
 - add people in town initially not moving
 - add NPC object to track initial position, sprite, and conversations
 - message display in town - check if person is in front of user, if so display conversation text
+- move NPCs around randomly (HOLY CRAP THIS MIGHT BE DIFFICULT)
 
 MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Floating Castle, Temple of Fiends 2
+- need to encode: Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
 - add filler sprites to all maps
 - add start coords to all maps
