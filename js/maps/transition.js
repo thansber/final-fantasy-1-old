@@ -1,7 +1,7 @@
 define(
 /* MapTransition */
-["logger", "maps/map", "constants/map", "map-coords-absolute", "util"],
-function(Logger, Map, MapConstants, MapCoordsAbsolute, Util) {
+["logger", "maps/map", "constants/map", "util"],
+function(Logger, Map, MapConstants, Util) {
 
   var ALL_TRANSITIONS_BY_COORDS = new Util.NestedMap();
   var TRANSITIONS_TO_WORLD_MAP = {};
@@ -9,13 +9,13 @@ function(Logger, Map, MapConstants, MapCoordsAbsolute, Util) {
   var Transition = function(id, fromCoords) {
     this.from = id;
     if (fromCoords) {
-      this.fromCoords = MapCoordsAbsolute.create(fromCoords);
+      this.fromCoords = new Map.Coords(fromCoords);
       ALL_TRANSITIONS_BY_COORDS.add(this, this.from, this.fromCoords.y, this.fromCoords.x);
     }
   };
   Transition.prototype.to = function(id, toCoords) {
     this.to = id;
-    this.toCoords = toCoords ? MapCoordsAbsolute.create(toCoords) : (Map.lookup(this.to) ? Map.lookup(this.to).start : null);
+    this.toCoords = toCoords ? new Map.Coords(toCoords) : (Map.lookup(this.to) ? Map.lookup(this.to).start : null);
 
     if (this.to === MapConstants.WORLD_MAP) {
       TRANSITIONS_TO_WORLD_MAP[this.from] = this;

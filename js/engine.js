@@ -1,8 +1,8 @@
 define(
 /* Engine */
-["jquery", "battle", "cursor", "events", "logger", "maps/artist", "map-coords-absolute", "maps/transition", "menus", "party", "shops", "util",
+["jquery", "battle", "cursor", "events", "logger", "maps/artist", "maps/transition", "menus", "party", "shops", "util",
  "constants/cursor", "maps/map", "constants/map", "constants/movement", "constants/party"],
-function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTransition, Menus, Party, Shops, Util,
+function($, Battle, Cursor, Event, Logger, MapArtist, MapTransition, Menus, Party, Shops, Util,
          CursorConstants, Map, MapConstants, MovementConstants, PartyConstants) {
 
   var areaTransition = function(transition) {

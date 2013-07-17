@@ -1,6 +1,6 @@
 define(/* Map */
-["map-coords-absolute", "resources"],
-function(MapCoordsAbsolute, Resource) {
+["resources"],
+function(Resource) {
 
   var allMaps = {};
   var greedySpaceRegex = / +/;
@@ -20,7 +20,7 @@ function(MapCoordsAbsolute, Resource) {
     this.exitOnOutOfBounds = opt.exitOnOutOfBounds;
     this.wrapsX = opt.wrapsX;
     this.wrapsY = opt.wrapsY;
-    this.start = MapCoordsAbsolute.create(opt.start);
+    this.start = new Coords(opt.start);
     this.filler = opt.fillerTile;
 
     this.tiles = [];
@@ -64,6 +64,39 @@ function(MapCoordsAbsolute, Resource) {
     return this;
   };
 
+  /**
+   * Args can be 2 params - y, x
+   * or a object containing y and x
+   */
+  var Coords = function(opt) {
+    opt = opt || {x:0, y:0};
+    this.y = opt.y;
+    this.x = opt.x;
+  };
+  Coords.prototype.adjust = function(yChange, xChange, map) {
+    this.y += yChange;
+    this.x += xChange;
+    if (map.wrapsY && this.y < 0) { this.y = map.rows; }
+    if (map.wrapsX && this.x < 0) { this.x = map.cols; }
+    if (map.wrapsY && this.y > map.rows) { this.y = 0; }
+    if (map.wrapsX && this.x > map.cols) { this.x = 0; }
+    return this;
+  };
+  Coords.prototype.equals = function(other) {
+    return this.y == other.y && this.x == other.x;
+  };
+  Coords.prototype.toTile = function(map) {
+    return {
+      tilesetY : Math.floor(this.y / map.height),
+      tilesetX : Math.floor(this.x / map.width),
+      tileY : this.y % map.height,
+      tileX : this.x % map.width
+    };
+  };
+  Coords.prototype.toString = function() {
+    return "[" + this.y + "," + this.x + "]";
+  };
+
   var Tile = function(opt) {
     this.x = opt.x;
     this.y = opt.y;
@@ -82,6 +115,7 @@ function(MapCoordsAbsolute, Resource) {
   };
 
   return {
+    Coords: Coords,
     create: function(id, opt) { return new Map(id, opt); },
     lookup: function(id) { return allMaps[id]; },
     newTile: function(opt) { return new Tile(opt); }

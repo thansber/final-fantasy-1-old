@@ -1,7 +1,7 @@
 MOST RECENT
 ===========
-- move map stuff to map folder
 - what to do with elements.js, move to constants?
+- add passable transportation options to all tile mapping
 
 
 SPELLS
@@ -60,5 +60,4 @@ MAPS
 - add filler sprites to all maps
 - add start coords to all maps
 - convert all tile mapping to use Map.newTile()
-- add passable transportation options to all tile mapping
 - add tile mappings which can have battle

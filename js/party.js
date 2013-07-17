@@ -1,11 +1,11 @@
 define( /* Party */
 ["jquery",
  "character", "character-class", "character-growth", "encounters", "equipment", "events",
- "logger", "maps/map", "maps/artist", "map-coords-absolute", "map-coords-converter", "maps/transition",
- "rng", "spells", "util", "constants/map", "constants/movement"],
+ "logger", "maps/map", "maps/artist", "constants/map", "maps/transition", "constants/movement",
+ "rng", "spells", "util"],
 function($, Character, CharacterClass, CharacterGrowth, Encounter, Equipment, Event,
-         Logger, Map, MapArtist, MapCoordsAbsolute, MapCoordsConverter, MapTransition,
-         RNG, Spell, Util, MapConstants, MovementConstants) {
+         Logger, Map, MapArtist, MapConstants, MapTransition, MovementConstants,
+         RNG, Spell, Util) {
 return (function() {
 
   var self = this;
@@ -36,8 +36,8 @@ return (function() {
   /* PRIVATE METHODS */
   /* =============== */
   var enterBattle = function() {
-    var coords = MapCoordsConverter.absoluteToTile(currentPosition, self.getMap());
-    var encounter = Encounter.random(currentMap, coords.tilesetX + "-" + coords.tilesetY);
+    var tileCoords = currentPosition.toTile(self.getMap());
+    var encounter = Encounter.random(currentMap, tileCoords.tilesetX + "-" + tileCoords.tilesetY);
     Event.transmit(Event.Types.StartBattle, encounter, self.getMap().background);
     inBattle = true;
   };
@@ -49,7 +49,7 @@ return (function() {
     // Transition check needs to be first since we can get a null mapping when we leave a town
     if (!!transition) {
       if (transition.backToWorldMap) {
-        transition.toCoords = MapCoordsAbsolute.create(worldMapPosition);
+        transition.toCoords = new Map.Coords(worldMapPosition);
       }
       movementCallback = function() { Event.transmit(Event.Types.AreaTransition, transition); };
     } else {
@@ -172,7 +172,7 @@ return (function() {
   self.isDestinationPassable = function(yChange, xChange) {
     var map = self.getMap();
     // Keep the old position around in case we moved somewhere we can't go
-    var oldPos = MapCoordsAbsolute.create(currentPosition);
+    var oldPos = new Map.Coords(currentPosition);
 
     // Temporarily change the current position to the potential new position
     currentPosition.adjust(yChange, xChange, map);
