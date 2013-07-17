@@ -5,15 +5,6 @@ function($, DebugHelper, Event, Map, MapConstants, MapCoordsAbsolute, MapTransit
 
   var $debug = null;
 
-  var findTownCoords = function(map) {
-    var transitions = MapTransition.All[MapConstants.WORLD_MAP];
-    for (var t = 0; t < transitions.length; t++) {
-      if (map === transitions[t].to) {
-        return transitions[t].fromCoords;
-      }
-    }
-  };
-
   var initTownSelector = function() {
     var $selector = $(".town .selector", $debug);
     DebugHelper.addOption($selector, "", "--Select a town--");
@@ -39,8 +30,7 @@ function($, DebugHelper, Event, Map, MapConstants, MapCoordsAbsolute, MapTransit
   var jumpToTown = function($row) {
     var map = $(".selector", $row).val();
     if (map.length > 0) {
-      var townCoords = findTownCoords(map);
-      Event.transmit(Event.Types.JumpTo, MapConstants.WORLD_MAP, townCoords);
+      Event.transmit(Event.Types.JumpTo, MapConstants.WORLD_MAP, MapTransition.toWorldMap(map).toCoords);
     }
   };
 

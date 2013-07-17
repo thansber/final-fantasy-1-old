@@ -5,6 +5,7 @@ function() {
     TILE_SIZE : 16
 
     // map IDs
+   ,START : "start" // starting position for a new game
    ,WORLD_MAP : "world-map"
    ,OCEAN : "ocean"
 

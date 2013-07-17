@@ -1,8 +1,8 @@
 define(
-/* Event */ 
+/* Event */
 ["jquery", "logger"],
 function($, Logger) {
-  
+
   var all = {};
   var types = {
     AdjustCharStats : "adjustCharStats"
@@ -27,10 +27,9 @@ function($, Logger) {
    ,ShopExit : "shopExit"
    ,StartGame : "startGame"
    ,StartRound : "startRound"
-   ,SwitchMap : "switchMap"
    ,SwitchView : "switchView"
   };
-  
+
   var animations = {
     AreaTransition : "animationAreaTransition"
    ,AreaTransitionDone : "animationAreaTransitionDone"
@@ -71,7 +70,7 @@ function($, Logger) {
    ,WindowShake : "animationWindowShake"
    ,WindowShakeDone : "animationWindowShakeDone"
   };
-  
+
   var Event = function(type) {
     this.cbq = $.Callbacks();
     this.type = type;
@@ -80,14 +79,14 @@ function($, Logger) {
   Event.prototype.clear = function() { this.cbq.empty(); };
   Event.prototype.fire = function() { this.cbq.fireWith(window, arguments); };
   Event.prototype.getCallbacks = function() { return this.cbq; };
-  
+
   var Animation = function(type) { this.event = all[type]; this.opt = {}; };
   Animation.prototype.using = function(opt) { this.opt = opt; return this; };
   Animation.prototype.afterwards = function(doneType, f) { clear(doneType); listen(doneType, f); return this; };
   Animation.prototype.start = function() { this.opt.start = true; this.event.fire(this.opt); };
-  
+
   var animate = function(type) { return new Animation(type); };
-  
+
   var clear = function(type) {
     var event = all[type];
     if (!event) {
@@ -95,7 +94,7 @@ function($, Logger) {
     }
     event.clear();
   };
-  
+
   var listen = function(type, f) {
     var event = all[type];
     if (!event) {
@@ -104,7 +103,7 @@ function($, Logger) {
     }
     event.add(f);
   };
-  
+
   var transmit = function(type) {
     var event = all[type];
     if (!event) {
@@ -113,11 +112,11 @@ function($, Logger) {
     }
     Event.prototype.fire.apply(event, Array.prototype.slice.call(arguments).slice(1));
   };
-  
+
   return {
     Animations : animations
    ,Types : types
-    
+
    ,animate : animate
    ,clear : clear
    ,listen : listen

@@ -33,7 +33,7 @@ function(MapCoordsAbsolute, Resource) {
   Map.prototype.getTile = function(y, x) { return this.mapping[this.getTileId(y, x) ? this.getTileId(y, x) : this.filler]; };
   Map.prototype.getTileId = function(y, x) { return this.tiles[y] ? this.tiles[y][x] : null; };
   Map.prototype.is = function(id) { return this.id == id; };
-  Map.prototype.isOutsideTownMap = function(coords) {
+  Map.prototype.isOutOfBounds = function(coords) {
     if (!this.exitOnOutOfBounds) {
       return false;
     }

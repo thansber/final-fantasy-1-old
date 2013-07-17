@@ -41,7 +41,6 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     Event.listen(Event.Types.ShopExit, exitShop);
     Event.listen(Event.Types.StartBattle, startBattle);
     Event.listen(Event.Types.StartGame, startGame);
-    Event.listen(Event.Types.SwitchMap, switchMap);
     Event.listen(Event.Types.SwitchView, switchView);
   };
 
@@ -60,7 +59,7 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     if (!currentMap) { // for starting out
       Party.storeWorldMapPosition();
     }
-    switchMap(map);
+    switchMap(map, coords);
 
     Logger.debug("jumped to map [" + map + "], coords " + coords.toString());
   };
@@ -87,19 +86,17 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapCoordsAbsolute, MapTran
     Party.setTransportation(MovementConstants.Transportation.Foot);
     switchView(PartyConstants.Views.WORLD_MAP);
 
-    var startTransition = MapTransition.lookup("start", MapCoordsAbsolute.create(0, 0));
     Event.animate(Event.Animations.AreaTransition)
-         .using({transition:startTransition, hideFirst:false})
+         .using({transition:MapTransition.start(), hideFirst:false})
          .afterwards(Event.Animations.AreaTransitionDone, function() { Party.resetStepsUntilBattle(); })
          .start();
   };
 
-  var switchMap = function(mapId) {
+  var switchMap = function(mapId, coords) {
     var $view = $("#view");
     var map = Map.lookup(mapId);
-    var start = map.is(MapConstants.WORLD_MAP) ? Party.getWorldMapPosition() : map.start;
     $view.hide().data("map", mapId);
-    MapArtist.drawMap(map, start);
+    MapArtist.drawMap(map, coords);
     $view.show();
   };
 
