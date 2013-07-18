@@ -1,0 +1,23 @@
+.player {
+  background-image: url(../images/char-world-map-sheet.png);
+  background-position: 1000em 1000em;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.player.fighter.down {
+  background-position: 0 0;
+}
+
+.player.fighter.left {
+  background-position: -32px 0;
+}
+
+.player.fighter.up {
+  background-position: -64px 0;
+}
+
+.player.fighter.right {
+  background-position: -96px 0;
+}

@@ -1,9 +1,9 @@
 define(
 /* Debug */
-["jquery", "./actions", "./battle-animations", "./battle-messages", "./battle-setup",
+["jquery", "./actions", "./battle-animations", "./battle-messages", "./battle-setup", "./chars-walking",
  "./enemies", "./util", "./locationJumper", "./maps", "./messages", "./menus",
  "./spell-effects", "./tiles", "./weapon-animations", "./weapons", "events"],
-function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattleSetup,
+function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattleSetup, DebugCharsWalking,
          DebugEnemies, DebugHelper, DebugLocationJumper, DebugMaps, DebugMessages, DebugMenu,
          DebugSpellEffects, DebugTiles, DebugWeaponAnimations, DebugWeapons, Event) {
 
@@ -12,6 +12,7 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
   var init = function() {
     DebugActions.init();
     DebugBattleSetup.init();
+    DebugCharsWalking.init();
     DebugEnemies.init();
     DebugLocationJumper.init();
     DebugMaps.init();
@@ -38,7 +39,7 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
     $("#debug .weapons select").change(function(event) { DebugWeapons.event($(event.target)); });
     $("#debug .weaponAnimations select").change(function(event) { DebugWeaponAnimations.event($(event.target)); });
     $("#debug .weaponAnimations button").click(function(event) { DebugWeaponAnimations.event($(event.target)); });
-    $("#debug .animations button").click(function(event) { DebugBattleAnimations.event($(event.target)); });
+    $("#debug .battleAnimations button").click(function(event) { DebugBattleAnimations.event($(event.target)); });
     $("#debug .actions button").click(function(event) { DebugActions.event($(event.target)); });
     $("#debug .menus button").click(function(event) { DebugMenu.event($(event.target)); });
 

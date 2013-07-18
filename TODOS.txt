@@ -1,6 +1,7 @@
 MOST RECENT
 ===========
-- what to do with elements.js, move to constants?
+- char walking sprite sheet
+- char walking debug menu
 - add passable transportation options to all tile mapping
 
 
@@ -10,6 +11,7 @@ SPELLS
 
 BATTLE
 ======
+- fix borders
 - monster skills causing status prob need messages
 - casting a spell that cannot be cast in battle should not be allowed (added spell.inBattle)
 - running away for enemies

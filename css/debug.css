@@ -88,7 +88,11 @@
 #debug .weaponAnimations .container label { color:white; }
 #debug .weaponAnimations .stances .char { float:left; margin-right:2.5em; margin-bottom:1em; }
 
-#debug .animations button { display:block; margin-bottom:1em; }
+#debug .battleAnimations button { display:block; margin-bottom:1em; }
+
+#debug section.charsWalking { background-color:black; }
+#debug .charsWalking .row { margin-bottom:1em; overflow:auto; }
+#debug .charsWalking .row .player { float:left;  margin-right: 1em; }
 
 #debug .battleMessages p { height:30px; clear:both; }
 #debug .battleMessages p label { width:6em; float:left; text-align:right; margin-right:1em; }

@@ -2,37 +2,37 @@ define(
 /* DebugWeaponAnimations */
 ["jquery", "battle-engine", "character-class", "./util", "equipment", "events", "party"],
 function($, BattleEngine, CharacterClass, DebugHelper, Equipment, Event, Party) {
-  
+
   var $debug = null;
-  
+
   var initCharClassSelector = function() {
     var $selector = $(".selector", $debug);
-    jQuery.each(CharacterClass.All, function(i, charClass) {
+    $.each(CharacterClass.All, function(i, charClass) {
       DebugHelper.addOption($selector, charClass.name, charClass.name);
     });
   };
-  
+
   var createCharWithAllEquippableWeapons = function(charClass) {
     var char = Party.createNewChar("AAAA", charClass, 0);
     var $stances = $("<div/>").addClass("attack stances").addClass(charClass);
-    
+
     char.weapons();
-    jQuery.each(Equipment.Weapon.All, function(i, weapon) {
+    $.each(Equipment.Weapon.All, function(i, weapon) {
       char.unequip();
       if (char.canEquip(weapon.name)) {
         char.drop(0).add(weapon.name).equip(0);
         $stances.append(BattleEngine.createCharUI(char)).find(".weapon").removeClass("hidden");
       }
     });
-    
+
     if (CharacterClass.lookup(charClass).isMartialArtist()) {
       char.unequip();
       $stances.append(BattleEngine.createCharUI(char)).find(".weapon").removeClass("hidden")
     }
-    
+
     return $stances;
   };
-  
+
   return {
     init : function() {
       $debug = $("#debug section.weaponAnimations .container");
