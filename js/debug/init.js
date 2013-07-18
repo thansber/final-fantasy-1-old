@@ -22,6 +22,9 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
     DebugWeapons.init();
     DebugWeaponAnimations.init();
 
+    $("#debug")
+    .on("click", ".charsWalking button", function(e) { DebugCharsWalking.fire($(e.target)); });
+
     $("#debug .menu a").click(function() { DebugHelper.menuChange($(this)); return false; });
     $("#debug section button").click(function() { this.blur(); });
 

@@ -6,18 +6,110 @@
   width: 16px;
 }
 
-.player.fighter.down {
-  background-position: 0 0;
-}
+.player.fighter.down { background-position: 0 0; }
+.player.fighter.down.step { background-position: -16px 0; }
+.player.fighter.left { background-position: -32px 0; }
+.player.fighter.left.step { background-position: -48px 0; }
+.player.fighter.up { background-position: -64px 0; }
+.player.fighter.up.step { background-position: -80px 0; }
+.player.fighter.right { background-position: -112px 0; }
+.player.fighter.right.step { background-position: -96px 0; }
 
-.player.fighter.left {
-  background-position: -32px 0;
-}
+.player.thief.down { background-position: 0 -16px; }
+.player.thief.down.step { background-position: -16px -16px; }
+.player.thief.left { background-position: -32px -16px; }
+.player.thief.left.step { background-position: -48px -16px; }
+.player.thief.up { background-position: -64px -16px; }
+.player.thief.up.step { background-position: -80px -16px; }
+.player.thief.right { background-position: -112px -16px; }
+.player.thief.right.step { background-position: -96px -16px; }
 
-.player.fighter.up {
-  background-position: -64px 0;
-}
+.player.blackbelt.down { background-position: 0 -32px; }
+.player.blackbelt.down.step { background-position: -16px -32px; }
+.player.blackbelt.left { background-position: -32px -32px; }
+.player.blackbelt.left.step { background-position: -48px -32px; }
+.player.blackbelt.up { background-position: -64px -32px; }
+.player.blackbelt.up.step { background-position: -80px -32px; }
+.player.blackbelt.right { background-position: -112px -32px; }
+.player.blackbelt.right.step { background-position: -96px -32px; }
 
-.player.fighter.right {
-  background-position: -96px 0;
-}
+.player.redmage.down { background-position: 0 -48px; }
+.player.redmage.down.step { background-position: -16px -48px; }
+.player.redmage.left { background-position: -32px -48px; }
+.player.redmage.left.step { background-position: -48px -48px; }
+.player.redmage.up { background-position: -64px -48px; }
+.player.redmage.up.step { background-position: -80px -48px; }
+.player.redmage.right { background-position: -112px -48px; }
+.player.redmage.right.step { background-position: -96px -48px; }
+
+.player.whitemage.down { background-position: 0 -64px; }
+.player.whitemage.down.step { background-position: -16px -64px; }
+.player.whitemage.left { background-position: -32px -64px; }
+.player.whitemage.left.step { background-position: -48px -64px; }
+.player.whitemage.up { background-position: -64px -64px; }
+.player.whitemage.up.step { background-position: -80px -64px; }
+.player.whitemage.right { background-position: -112px -64px; }
+.player.whitemage.right.step { background-position: -96px -64px; }
+
+.player.blackmage.down { background-position: 0 -80px; }
+.player.blackmage.down.step { background-position: -16px -80px; }
+.player.blackmage.left { background-position: -32px -80px; }
+.player.blackmage.left.step { background-position: -48px -80px; }
+.player.blackmage.up { background-position: -64px -80px; }
+.player.blackmage.up.step { background-position: -80px -80px; }
+.player.blackmage.right { background-position: -112px -80px; }
+.player.blackmage.right.step { background-position: -96px -80px; }
+
+.player.knight.down { background-position: 0 -96px; }
+.player.knight.down.step { background-position: -16px -96px; }
+.player.knight.left { background-position: -32px -96px; }
+.player.knight.left.step { background-position: -48px -96px; }
+.player.knight.up { background-position: -64px -96px; }
+.player.knight.up.step { background-position: -80px -96px; }
+.player.knight.right { background-position: -112px -96px; }
+.player.knight.right.step { background-position: -96px -96px; }
+
+.player.ninja.down { background-position: 0 -112px; }
+.player.ninja.down.step { background-position: -16px -112px; }
+.player.ninja.left { background-position: -32px -112px; }
+.player.ninja.left.step { background-position: -48px -112px; }
+.player.ninja.up { background-position: -64px -112px; }
+.player.ninja.up.step { background-position: -80px -112px; }
+.player.ninja.right { background-position: -112px -112px; }
+.player.ninja.right.step { background-position: -96px -112px; }
+
+.player.master.down { background-position: 0 -128px; }
+.player.master.down.step { background-position: -16px -128px; }
+.player.master.left { background-position: -32px -128px; }
+.player.master.left.step { background-position: -48px -128px; }
+.player.master.up { background-position: -64px -128px; }
+.player.master.up.step { background-position: -80px -128px; }
+.player.master.right { background-position: -112px -128px; }
+.player.master.right.step { background-position: -96px -128px; }
+
+.player.redwizard.down { background-position: 0 -144px; }
+.player.redwizard.down.step { background-position: -16px -144px; }
+.player.redwizard.left { background-position: -32px -144px; }
+.player.redwizard.left.step { background-position: -48px -144px; }
+.player.redwizard.up { background-position: -64px -144px; }
+.player.redwizard.up.step { background-position: -80px -144px; }
+.player.redwizard.right { background-position: -112px -144px; }
+.player.redwizard.right.step { background-position: -96px -144px; }
+
+.player.whitewizard.down { background-position: 0 -160px; }
+.player.whitewizard.down.step { background-position: -16px -160px; }
+.player.whitewizard.left { background-position: -32px -160px; }
+.player.whitewizard.left.step { background-position: -48px -160px; }
+.player.whitewizard.up { background-position: -64px -160px; }
+.player.whitewizard.up.step { background-position: -80px -160px; }
+.player.whitewizard.right { background-position: -112px -160px; }
+.player.whitewizard.right.step { background-position: -96px -160px; }
+
+.player.blackwizard.down { background-position: 0 -176px; }
+.player.blackwizard.down.step { background-position: -16px -176px; }
+.player.blackwizard.left { background-position: -32px -176px; }
+.player.blackwizard.left.step { background-position: -48px -176px; }
+.player.blackwizard.up { background-position: -64px -176px; }
+.player.blackwizard.up.step { background-position: -80px -176px; }
+.player.blackwizard.right { background-position: -112px -176px; }
+.player.blackwizard.right.step { background-position: -96px -176px; }

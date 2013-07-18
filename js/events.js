@@ -39,6 +39,7 @@ function($, Logger) {
    ,CastSpellDone : "castSpellDone"
    ,CharFlicker : "animationCharFlicker"
    ,CharFlickerDone : "animationCharFlickerDone"
+   ,CharWalking : "charWalking"
    ,Defeat : "animationDefeat"
    ,DefeatDone : "animationDefeatDone"
    ,MessageToggler : "animationMessageToggler"

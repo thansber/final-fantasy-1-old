@@ -26,6 +26,7 @@ function(AnimationAction, AnimationBattle, AnimationMap, AnimationShop, Event) {
       Event.listen(Event.Animations.Victory, AnimationAction.victory);
       
       Event.listen(Event.Animations.AreaTransition, AnimationMap.areaTransition);
+      Event.listen(Event.Animations.CharWalking, AnimationMap.charWalk);
 
       Event.listen(Event.Animations.RestAtInn, AnimationShop.restingAtInn);
     }
