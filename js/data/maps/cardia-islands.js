@@ -1,9 +1,9 @@
 define(/* CardiaIslandsMapData */
 ["maps/map", "constants/map"],
 function(Map, MapConstants) {
-    
+
   var baseMapOptions = {};
- 
+
   var tiles = {
     "~" : {y:4, x:1, desc:"nothing"},
     "." : {y:1, x:4, desc:"floor", inside:{y:4, x:4}, passable:true},
@@ -30,7 +30,7 @@ function(Map, MapConstants) {
     "^" : {y:2, x:4, desc:"stairs up", passable:true},
     "v" : {y:5, x:4, desc:"stairs down", passable:true}
   };
-  
+
   var init = function() {
     Map.create(MapConstants.CARDIA_ISLANDS_MAIN, baseMapOptions).tileMapping(tiles)
        .sprites("W+ WW WW WW WW WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -44,7 +44,7 @@ function(Map, MapConstants) {
        .sprites("W| .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("W| .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("W| .  .  .  .  .  .  ^  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
-       .sprites("W| .  .  .  .  .  .  .  .  .  WW WW WW WW WW |W ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  .  .  .  .  WW WW WW WW WW +W ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  W| .  .  .  ^  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  W+ .  .  .  .  |W WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -85,8 +85,8 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  #_ __ __ __ __ __ __ __ _# .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  WW WW WW WW [] WW WW WW WW .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ^  |W")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
-       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW W");
-    
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW");
+
     Map.create(MapConstants.CARDIA_ISLANDS_BAHAMUT, baseMapOptions).tileMapping(tiles)
        .sprites("W+ WW WW WW +W")
        .sprites("W| .  .  .  |W")
@@ -99,7 +99,7 @@ function(Map, MapConstants) {
        .sprites("W| .  v  .  |W")
        .sprites("W| .  .  .  |W")
        .sprites("WW WW WW WW WW");
-    
+
     Map.create(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, baseMapOptions).tileMapping(tiles)
        .sprites("#- -- -- -- -- -- -- -- -- -- -#")
        .sprites("#| ,  C  ,  ,  ,  ,  ,  C  ,  |#")
@@ -147,9 +147,9 @@ function(Map, MapConstants) {
        .sprites("~  W| .  .  .  .  .  ^  .  |W ~")
        .sprites("~  WW WW WW WW WW WW WW WW WW ~");
   };
-  
+
   return {
     init: init
   };
-  
+
 });

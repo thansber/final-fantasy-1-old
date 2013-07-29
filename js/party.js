@@ -147,7 +147,7 @@ return (function() {
 
     // Temporarily change the current position to the potential new position
     currentPosition.adjust(yChange, xChange, map);
-    Logger.debug("moving to " + currentPosition.toString());
+    Logger.debug(LOG_ID, "moving to " + currentPosition.toString());
 
     // See if the new position contains a transition (i.e. entering a town/dungeon)
     // if so, move the party, then the callback will fire, transitioning them to the
@@ -159,7 +159,7 @@ return (function() {
 
     // Check if the new destinations is passable
     var passable = map.isPassable(currentPosition.y, currentPosition.x, currentTransportation);
-    Logger.debug(currentPosition.toString() + " is" + (passable ? "" : " not") + " passable");
+    Logger.debug(LOG_ID, currentPosition.toString() + " is" + (passable ? "" : " not") + " passable");
     if (!passable) {
       currentPosition = oldPos;
       return;
@@ -171,7 +171,7 @@ return (function() {
         // TODO: this should happen in the movement callback
         enterBattle();
       }
-      Logger.debug("# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
+      Logger.debug(LOG_ID, "# steps till battle=" + stepsUntilBattle + " - " + currentPosition.toString());
     }
 
     moveToPosition(xChange, yChange);

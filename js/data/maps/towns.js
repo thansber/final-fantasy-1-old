@@ -1,20 +1,19 @@
 define(/* TownMapData */
 ["maps/map", "constants/map", "constants/movement"],
 function(Map, MapConstants, MovementConstants) {
-  
+
   var baseMapOptions = {
-    exitOnOutOfBounds: true,
-    fillerTile: "."
+    exitOnOutOfBounds: true
   };
 
   var mapOptions = function(opt) {
     return $.extend(baseMapOptions, opt);
   };
-  
+
   var Transport = MovementConstants.Transportation;
-  
+
   var tiles = {
-    "." : Map.newTile({y:1, x:8, desc:"grass"}).passableBy(Transport.Foot),
+    "." : Map.newTile({y:1, x:8, desc:"grass"}).isFiller().passableBy(Transport.Foot),
     ".1": Map.newTile({y:0, x:9, desc:"grass shadow top"}).passableBy(Transport.Foot),
     ".2": Map.newTile({y:1, x:9, desc:"grass shadow bottom"}).passableBy(Transport.Foot),
     "r" : Map.newTile({y:0, x:5, desc:"road"}).passableBy(Transport.Foot),
@@ -29,13 +28,13 @@ function(Map, MapConstants, MovementConstants) {
     "w1": Map.newTile({y:0, x:7, desc:"water shadow top"}),
     "w2": Map.newTile({y:1, x:7, desc:"water shadow bottom"}),
     "W" : Map.newTile({y:0, x:1, desc:"wall"}),
-    "W1": Map.newTile({y:0, x:0, desc:"wall vertical"}), 
-    "W2": Map.newTile({y:1, x:0, desc:"wall half left"}), 
-    "W3": Map.newTile({y:1, x:1, desc:"wall half middle"}), 
-    "W4": Map.newTile({y:1, x:2, desc:"wall half right"}), 
-    "W5": Map.newTile({y:0, x:3, desc:"wall vertical shadow top"}), 
-    "W6": Map.newTile({y:1, x:3, desc:"wall vertical shadow middle"}), 
-    "W7": Map.newTile({y:0, x:2, desc:"wall vertical shadow bottom"}), 
+    "W1": Map.newTile({y:0, x:0, desc:"wall vertical"}),
+    "W2": Map.newTile({y:1, x:0, desc:"wall half left"}),
+    "W3": Map.newTile({y:1, x:1, desc:"wall half middle"}),
+    "W4": Map.newTile({y:1, x:2, desc:"wall half right"}),
+    "W5": Map.newTile({y:0, x:3, desc:"wall vertical shadow top"}),
+    "W6": Map.newTile({y:1, x:3, desc:"wall vertical shadow middle"}),
+    "W7": Map.newTile({y:0, x:2, desc:"wall vertical shadow bottom"}),
     "AR": Map.newTile({y:1, x:18, desc:"armor shop sign"}),
     "BM": Map.newTile({y:1, x:19, desc:"black magic shop sign"}),
     "CL": Map.newTile({y:1, x:20, desc:"clinic shop sign"}),
@@ -59,7 +58,7 @@ function(Map, MapConstants, MovementConstants) {
     "SU": Map.newTile({y:1, x:13, desc:"submarine"}).passableBy(Transport.Foot),
     "WL": Map.newTile({y:0, x:13, desc:"well"})
   };
-  
+
   var init = function() {
     Map.create(MapConstants.CONERIA, mapOptions({start:{y:23, x:16}})).tileMapping(tiles)
        .sprites("W5 W  W  W  W  W  W  W  W  W  W  W  W  W  W  tt r  tt W  W  W  W  W  W  W  W  W  W  W  W  W  W5")
@@ -189,7 +188,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites(".  .  .  .  .  .  .  .  .  W  W  W  W  S  S  S  S  S  S  W  W  .2 .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .");
-    
+
     Map.create(MapConstants.CRESCENT_LAKE, mapOptions({start:{y:24, x:11}})).tileMapping(tiles)
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt .  .  .  .  .")
        .sprites("W1 W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  W  .  t  t  tt tt tt t  t  t  tt tt tt tt tt tt tt tt tt t  tt tt t  tt tt tt .  .  .  .")
@@ -217,7 +216,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("W1 .1 .  .  .  .  .  .  t  t  t  r  t  t  t  t  t  t  t  t  W6 .  t  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt")
        .sprites("W2 W3 W3 W3 W3 W3 W3 W3 W3 W3 W4 r  W2 W3 W3 W3 W3 W3 W3 W3 W4 .  .  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  t  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt");
-    
+
     Map.create(MapConstants.ONRAC, mapOptions({start:{y:39, x:16}})).tileMapping(tiles)
        .sprites("tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt w  w  w")
        .sprites("tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt t  t  t  t  t  t  t  t  t  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt w  w  w")
@@ -260,7 +259,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt .  .  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt w")
        .sprites("t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  .  .  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  w")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  w");
-    
+
     Map.create(MapConstants.GAIA, mapOptions({start:{y:54, x:54}})).tileMapping(tiles)
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt")
        .sprites(".  .  .  .  .  .  .  .  .  tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt tt")
@@ -317,7 +316,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  r2 r  r  r  r  r  r  r  r  r  r")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  r  r")
        .sprites(".  .  .  .  .  FN FN FN FN FN FN FN .  .  .  FN FN FN FN FN FN FN FN FN .  .  .  .  FN FN FN FN FN .  .  .  .  FN FN FN FN FN FN FN FN FN FN FN FN FN FN FN .  r2 r3");
-    
+
     Map.create(MapConstants.LEFEIN, mapOptions({start:{y:23, x:17}})).tileMapping(tiles)
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  t  .  .  .  .  .  .  .")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  t  .  t  .  .  .  .  .  .  .  .  .  .  .  .  .  t  t  .  Rt Rt Rt Rt .  t  .")
@@ -344,7 +343,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("W1 r  w1 w  w  w  w  w  w  w  w  w  w  w  r  t  r  r  r  t  r  w1 w  w  w  w  w  w  w  w  w  w  r  W6 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
        .sprites("W2 W3 W3 W3 W3 W3 W3 W3 W3 W3 W3 W3 W3 W4 r  r  r  r  r  r  r  W2 W3 W3 W3 W3 W3 W3 W3 W3 W3 W3 W3 W4 .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
   };
-  
+
   return {
     init: init
   };

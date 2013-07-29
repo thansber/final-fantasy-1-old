@@ -1,6 +1,28 @@
 MOST RECENT
 ===========
-- add passable transportation options to all tile mapping
+- add transitions to:
+- convert all tile mapping to use Map.newTile() to:
+- add passable transportation options to:
+- add filler sprites to:
+- add tile mappings which can have battle to:
+-- CONERIA_CASTLE
+-- ELF_CASTLE
+-- ASTOS_CASTLE
+-- CASTLE_ORDEALS
+-- MATOYAS_CAVE
+-- DWARF_CAVE
+-- TITANS_TUNNEL
+-- SARDAS_CAVE
+-- WATERFALL_CAVE
+-- CARDIA_ISLANDS
+-- TEMPLE_OF_FIENDS
+-- MARSH_CAVE
+-- EARTH_CAVE
+-- GURGU_VOLCANO
+-- ICE_CAVE
+-- SEA_SHRINE
+-- MIRAGE_TOWER
+-- FLOATING_CASTLE
 
 
 MOVEMENT
@@ -61,7 +83,4 @@ MAPS
 - Castle of Ordeals is different than NW Castle in world map
 - need to encode: Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
-- add filler sprites to all maps
-- add start coords to all maps
-- convert all tile mapping to use Map.newTile()
-- add tile mappings which can have battle
+- door transitions, on enter trigger inside, on leave trigger outside

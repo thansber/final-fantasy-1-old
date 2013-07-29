@@ -27,6 +27,16 @@ function($, DebugHelper, Event, Map, MapConstants, MapTransition, Party, Status,
     $selector.val(ShopConstants.Clinic);
   };
 
+  var jumpToLocation = function($row) {
+    var mapId = $row.find(".selector").val();
+    var y = parseInt($row.find(".y").val(), 10);
+    var x = parseInt($row.find(".x").val(), 10);
+    y = isNaN(y) ? 0 : y;
+    x = isNaN(x) ? 0 : x;
+    console.log(mapId + "," + y + "," + x);
+    Event.transmit(Event.Types.JumpTo, mapId, new Map.Coords({y:y, x:x}));
+  };
+
   var jumpToTown = function($row) {
     var map = $(".selector", $row).val();
     if (map.length > 0) {
@@ -49,13 +59,15 @@ function($, DebugHelper, Event, Map, MapConstants, MapTransition, Party, Status,
       $debug = $("#debug section.locationJumper");
       initTownSelector();
       initShopSelector();
+      DebugHelper.initLocationSelector($debug.find(".location"));
     },
 
     event : function($target) {
       if ($target.is(".go")) {
         var $row = $target.closest(".row");
-        if ($row.is(".town")) { jumpToTown($row); }
+        if ($row.is(".town")) { jumpToLocation($row); }
         else if ($row.is(".shop")) { jumpToShop($row); }
+        else if ($row.is(".location")) { jumpToLocation($row); }
       }
     }
   };

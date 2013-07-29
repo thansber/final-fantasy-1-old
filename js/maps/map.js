@@ -11,7 +11,7 @@ function(Resource) {
       wrapsX: false,
       wrapsY: false,
       start:{y:0, x:0},
-      fillerTile: null
+      inside: false
     }, opt);
 
     this.id = id;
@@ -21,7 +21,8 @@ function(Resource) {
     this.wrapsX = opt.wrapsX;
     this.wrapsY = opt.wrapsY;
     this.start = new Coords(opt.start);
-    this.filler = opt.fillerTile;
+    this.inside = opt.inside;
+    // filler set from tile mapping
 
     this.tiles = [];
     this.cols = 0;
@@ -60,6 +61,11 @@ function(Resource) {
   };
   Map.prototype.tileCanHaveBattle = function(coords) { return this.getTile(coords.y, coords.x).hasBattles; };
   Map.prototype.tileMapping = function(mapping) {
+    for (var m in mapping) {
+      if (mapping[m].filler) {
+        this.filler = m;
+      }
+    }
     this.mapping = mapping;
     return this;
   };
@@ -100,9 +106,26 @@ function(Resource) {
   var Tile = function(opt) {
     this.x = opt.x;
     this.y = opt.y;
-    this.desc = opt.desc;
+    this.description = opt.desc;
     this.passable = 0;
     this.canHaveBattle = false;
+    this.filler = false;
+  };
+  Tile.prototype.desc = function(d) {
+    this.description = d;
+    return this;
+  };
+  Tile.prototype.isFiller = function() {
+    this.filler = true;
+    return this;
+  };
+  Tile.prototype.hasBattle = function() {
+    this.canHaveBattle = true;
+    return this;
+  };
+  Tile.prototype.inside = function(coords) {
+    this.inside = coords;
+    return this;
   };
   Tile.prototype.passableBy = function(transportation) {
     var tile = this;

@@ -7,7 +7,7 @@ function($, DebugActions, DebugBattleAnimations, DebugBattleMessages, DebugBattl
          DebugEnemies, DebugHelper, DebugLocationJumper, DebugMaps, DebugMessages, DebugMenu,
          DebugSpellEffects, DebugTiles, DebugWeaponAnimations, DebugWeapons, Event) {
 
-  var currentMenu = "full-maps";
+  var currentMenu = "locationJumper";
 
   var init = function() {
     DebugActions.init();

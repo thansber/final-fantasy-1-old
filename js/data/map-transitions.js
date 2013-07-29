@@ -1,7 +1,7 @@
 define(
 /* MapTransitionData */
-["maps/transition", "constants/map"],
-function(MapTransition, MapConstants) {
+["maps/map", "maps/transition", "constants/map"],
+function(Map, MapTransition, MapConstants) {
 
   var init = function() {
     // Start game
@@ -42,6 +42,12 @@ function(MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:235}).to(MapConstants.LEFEIN);
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:236}).to(MapConstants.LEFEIN);
 
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:129}).to(MapConstants.TEMPLE_OF_FIENDS, new Map.Coords({y:30, x:20}));
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, new Map.Coords({y:30, x:20}));
+    MapTransition.from(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).to(MapConstants.WORLD_MAP, new Map.Coords({y:123, x:130}));
+
+
+
     // Towns -> world map
     MapTransition.from(MapConstants.CONERIA).to(MapConstants.WORLD_MAP, {y:162, x:153});
     MapTransition.from(MapConstants.PRAVOKA).to(MapConstants.WORLD_MAP, {y:150, x:210});
@@ -51,6 +57,7 @@ function(MapTransition, MapConstants) {
     MapTransition.from(MapConstants.ONRAC).to(MapConstants.WORLD_MAP, {y:59, x:61});
     MapTransition.from(MapConstants.GAIA).to(MapConstants.WORLD_MAP, {y:29, x:221});
     MapTransition.from(MapConstants.LEFEIN).to(MapConstants.WORLD_MAP, {y:100, x:235});
+
   };
 
   return {
