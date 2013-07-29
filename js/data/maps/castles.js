@@ -1,6 +1,6 @@
 define(/* CastleMapData */
-["maps/map", "constants/map"],
-function(Map, MapConstants) {
+["maps/map", "constants/map", "constants/movement"],
+function(Map, MapConstants, MovementConstants) {
 
   var mapOptions = function(opt) {
     return $.extend({
@@ -8,49 +8,51 @@ function(Map, MapConstants) {
     }, opt);
   };
 
+  var Transport = MovementConstants.Transportation;
   var tiles = {
-    ".." : {y:6, x:4, desc:"grass"},
-    "~": {y:7, x:4, desc:"sky"},
-    "." : {y:0, x:4, desc:"road"},
-    "WW" : {y:1, x:4, desc:"wall"},
-    "W+": {y:1, x:3, desc:"wall top left"},
-    "+W": {y:1, x:5, desc:"wall top right"},
-    "W|": {y:0, x:3, desc:"wall left"},
-    "|W": {y:0, x:5, desc:"wall right"},
-    "I" : {y:2, x:4, desc:"pillar"},
-    "^" : {y:2, x:5, desc:"stairs up"},
-    "v" : {y:3, x:5, desc:"stairs down"},
-    "[]" : {y:3, x:3, desc:"door", inside:{y:3, x:4}},
-    "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}},
-    "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
-    "--": {y:0, x:1, desc:"room wall top", inside:{y:3, x:1}},
-    "-#": {y:0, x:2, desc:"room wall top", inside:{y:3, x:2}},
-    "#|": {y:1, x:0, desc:"room wall left", inside:{y:4, x:0}},
-    "|#": {y:1, x:2, desc:"room wall right", inside:{y:4, x:2}},
-    "#_": {y:2, x:0, desc:"room wall boTTom left", inside:{y:5, x:0}},
-    "__": {y:2, x:1, desc:"room wall boTTom", inside:{y:5, x:1}},
-    "_#": {y:2, x:2, desc:"room wall boTTom right", inside:{y:5, x:2}},
-    "$": {y:1, x:1, desc:"chest", inside:{y:5, x:4}},
-    "T-": {y:1, x:1, desc:"throne top left", inside:{y:6, x:0}},
-    "TT": {y:1, x:1, desc:"throne top", inside:{y:6, x:1}},
-    "-T": {y:1, x:1, desc:"throne top right", inside:{y:6, x:2}},
-    "T|": {y:1, x:1, desc:"throne boTTom left", inside:{y:7, x:0}},
-    "tt": {y:1, x:1, desc:"throne boTTom", inside:{y:7, x:1}},
-    "|T": {y:1, x:1, desc:"throne boTTom right", inside:{y:7, x:2}},
-    "==": {y:1, x:1, desc:"bed top", inside:{y:6, x:5}},
-    "HH": {y:1, x:1, desc:"bed boTTom", inside:{y:7, x:5}},
-    "FP" : {y:1, x:1, desc:"fireplace", inside:{y:4, x:4}},
-    "s-": {y:1, x:1, desc:"stool left", inside:{y:5, x:5}},
-    "-s": {y:1, x:1, desc:"stool right", inside:{y:5, x:3}},
-    "T^": {y:1, x:1, desc:"table top", inside:{y:6, x:3}},
-    "Tv": {y:1, x:1, desc:"table boTTom", inside:{y:7, x:3}},
-    "{" : {y:1, x:1, desc:"statue left", inside:{y:4, x:5}},
-    "}" : {y:1, x:1, desc:"statue right", inside:{y:4, x:3}},
+    "." : Map.newTile({y:0, x:4}).desc("road").passableBy(Transport.Foot),
+    "WW": Map.newTile({y:1, x:4}).desc("wall"),
+    "W+": Map.newTile({y:1, x:3}).desc("wall top left"),
+    "+W": Map.newTile({y:1, x:5}).desc("wall top right"),
+    "W|": Map.newTile({y:0, x:3}).desc("wall left"),
+    "|W": Map.newTile({y:0, x:5}).desc("wall right"),
+    "I" : Map.newTile({y:2, x:4}).desc("pillar"),
+    "^" : Map.newTile({y:2, x:5}).desc("stairs up").passableBy(Transport.Foot),
+    "v" : Map.newTile({y:3, x:5}).desc("stairs down").passableBy(Transport.Foot),
+    "[]": Map.newTile({y:3, x:3}).desc("door").inside({y:3, x:4}).passableBy(Transport.Foot),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:5, x:4}).passableBy(Transport.Foot),
+    "T-": Map.newTile({y:1, x:1}).desc("throne top left").inside({y:6, x:0}),
+    "TT": Map.newTile({y:1, x:1}).desc("throne top").inside({y:6, x:1}),
+    "-T": Map.newTile({y:1, x:1}).desc("throne top right").inside({y:6, x:2}),
+    "T|": Map.newTile({y:1, x:1}).desc("throne bottom left").inside({y:7, x:0}),
+    "tt": Map.newTile({y:1, x:1}).desc("throne bottom").inside({y:7, x:1}),
+    "|T": Map.newTile({y:1, x:1}).desc("throne bottom right").inside({y:7, x:2}),
+    "==": Map.newTile({y:1, x:1}).desc("bed top").inside({y:6, x:5}),
+    "HH": Map.newTile({y:1, x:1}).desc("bed bottom").inside({y:7, x:5}),
+    "FP": Map.newTile({y:1, x:1}).desc("fireplace").inside({y:4, x:4}),
+    "s-": Map.newTile({y:1, x:1}).desc("stool left").inside({y:5, x:5}),
+    "-s": Map.newTile({y:1, x:1}).desc("stool right").inside({y:5, x:3}),
+    "T^": Map.newTile({y:1, x:1}).desc("table top").inside({y:6, x:3}),
+    "Tv": Map.newTile({y:1, x:1}).desc("table bottom").inside({y:7, x:3}),
+    "{" : Map.newTile({y:1, x:1}).desc("statue left").inside({y:4, x:5}),
+    "}" : Map.newTile({y:1, x:1}).desc("statue right").inside({y:4, x:3})
   };
+
+  var grassFillerTiles = $.extend({"..": Map.newTile({y:6, x:4}).desc("grass").passableBy(Transport.Foot).isFiller()}, tiles);
+  var skyFillerTiles = $.extend({"~" : Map.newTile({y:7, x:4}).desc("sky").isFiller()}, tiles);
 
   var init = function() {
 
-    Map.create(MapConstants.CONERIA_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.CONERIA_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
        .sprites("W+ WW WW WW WW WW WW WW WW WW WW WW WW +W .. W+ WW WW WW WW WW WW WW WW WW WW WW WW +W")
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
        .sprites("W| .  W+ WW WW WW +W .. .. .. .. .. .. .  .  .  .. .. .. .. .. .. W+ WW WW WW +W .  |W")
@@ -83,7 +85,7 @@ function(Map, MapConstants) {
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. W| .  .  .  |W .. .. .. .. .. .. .. .. .. .. .. .")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. WW WW .  WW WW .. .. .. .. .. .. .. .. .. .. .. .");
 
-    Map.create(MapConstants.CONERIA_CASTLE_2F, mapOptions({start:{y:16, x:13}})).tileMapping(tiles)
+    Map.create(MapConstants.CONERIA_CASTLE_2F, mapOptions({start:{y:16, x:13}})).tileMapping(skyFillerTiles)
        .sprites("~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  T- TT -T ,  ,  ,  ,  |# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  }  }  T| tt |T {  {  ,  ,  |# ~  ~  ~  ~  ~  ~")
@@ -117,7 +119,7 @@ function(Map, MapConstants) {
 
 
 
-    Map.create(MapConstants.ELF_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.ELF_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .  ..")
        .sprites("W+ WW WW WW +W .. .. .. .. .. .. .. W+ WW WW WW +W .. .. .  #- -- -- -- -- -# .")
        .sprites("W| .  .  .  .  WW WW WW WW WW WW WW .  .  .  .  |W .. .  .  #| $  $  $  $  |# .")
@@ -152,7 +154,7 @@ function(Map, MapConstants) {
        .sprites(".. .. .. .. .. .. .. WW WW WW WW WW .. .. .. .  .  .  .. .. .. WW WW WW WW WW ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .. .. .. .. .. .. .. .. ..");
 
-    Map.create(MapConstants.ASTOS_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.ASTOS_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
        .sprites(".. .. W+ WW +W .. .. W+ WW WW WW WW WW W+ WW WW WW +W .. .. .. .. .. .. .. .. W+ WW +W .. ..")
        .sprites(".. W+ .  .  .  +W .. W| .  .  .  .  .  .  .  .  .  |W WW WW WW +W .. .. .. W+ .  .  .  +W ..")
        .sprites("W+ .  .  .  .  .  WW W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW .  .  .  .  .  +W")
@@ -179,7 +181,7 @@ function(Map, MapConstants) {
        .sprites(".. .. WW .  WW .. .. .. .. .. .. .. .. .. WW WW WW .. .. .. W| .  |W .. .. .. WW .  WW .. ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW .  WW .. .. .. .. .. .. .. ..");
 
-    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
        .sprites("#- -- -- -- -- -# .. .. .. .. .. .. .. .. .. .. .. .. .. #- -- -- -- -- -#")
        .sprites("#| T- TT -T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
        .sprites("#| T| tt |T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
@@ -199,7 +201,7 @@ function(Map, MapConstants) {
        .sprites("#_ __ __ __ __ _# .. .. .. .. .. .. .. .. .. .. .. .. .. #_ __ __ __ __ _#")
        .sprites("WW WW WW WW WW WW .. .. .. .. .. .. .. .. .. .. .. .. .. WW WW WW WW WW WW")
 
-    Map.create(MapConstants.CASTLE_ORDEALS_2F, mapOptions({start:{y:28, x:14}})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_2F, mapOptions({start:{y:28, x:14}})).tileMapping(skyFillerTiles)
        .sprites("W+ WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
        .sprites("W| I  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  }  $  {  |#")
        .sprites("W| .  .  I  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")
@@ -226,7 +228,7 @@ function(Map, MapConstants) {
        .sprites("W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
        .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW");
 
-    Map.create(MapConstants.CASTLE_ORDEALS_3F, mapOptions({})).tileMapping(tiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_3F, mapOptions({})).tileMapping(skyFillerTiles)
        .sprites("#- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  $  ,  |#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")

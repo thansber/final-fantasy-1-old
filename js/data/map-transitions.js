@@ -42,10 +42,13 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:235}).to(MapConstants.LEFEIN);
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:236}).to(MapConstants.LEFEIN);
 
-    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:129}).to(MapConstants.TEMPLE_OF_FIENDS, new Map.Coords({y:30, x:20}));
-    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, new Map.Coords({y:30, x:20}));
-    MapTransition.from(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).to(MapConstants.WORLD_MAP, new Map.Coords({y:123, x:130}));
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:129}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
+    MapTransition.from(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).to(MapConstants.WORLD_MAP, {y:123, x:130});
 
+    MapTransition.from(MapConstants.WORLD_MAP, {y:159, x:152}).to(MapConstants.CONERIA_CASTLE, {y:30, x:14});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:159, x:153}).to(MapConstants.CONERIA_CASTLE, {y:30, x:14});
+    MapTransition.from(MapConstants.CONERIA_CASTLE, {y:13, x:14}).to(MapConstants.CONERIA_CASTLE_2F, {y:16, x:12}).bidirectional();
 
 
     // Towns -> world map

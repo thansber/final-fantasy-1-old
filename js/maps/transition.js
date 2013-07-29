@@ -20,6 +20,10 @@ function(Logger, Map, MapConstants, Util) {
     if (this.to === MapConstants.WORLD_MAP) {
       TRANSITIONS_TO_WORLD_MAP[this.from] = this;
     }
+    return this;
+  };
+  Transition.prototype.bidirectional = function() {
+    return new Transition(this.to, this.toCoords).to(this.from, this.fromCoords);
   };
 
   return {
