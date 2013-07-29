@@ -2,7 +2,7 @@
 .menu .shrunk.weapon.text { background-position:0 0; }
 .menu .shrunk.status.text { background-position:0 -16px; }
 
-#charMenu { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#charMenu { }
 
 #charMenu .left { float:left; margin-top:26px; }
 #charMenu .right { float:left; width:350px; margin-left:8px; }
@@ -29,7 +29,7 @@
 #charMenu .char.profile .char.class { width:34px; height:50px; top:16px; right:20px; position:absolute; padding:0; margin:0; }
 #charMenu .char.profile .cursor { position:absolute; top:0; }
 
-.equipment.menu { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+.equipment.menu { }
 .equipment.menu .title { height:20px; width:80px; padding:20px 10px 2px 10px; float:left; margin-bottom:12px; }
 .equipment.menu .actions { height:20px; width:326px; padding:20px 0 2px 36px; float:left; margin-left:6px; }
 .equipment.menu .actions .text { display:inline-block; position:relative; }
@@ -49,7 +49,7 @@
   -webkit-animation:cursorFlicker 100ms infinite;
 }
 
-#magicMenu { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#magicMenu { }
 #magicMenu .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
 #magicMenu .name { height:20px; padding:20px 0 2px 24px; width:86px; }
 #magicMenu .magic { width:400px; height:250px; margin-top:30px; padding:20px 0 0 24px;}
@@ -61,14 +61,14 @@
 #magicMenu .magic .spells .spell.middle { padding:0 16px 0 32px; }
 #magicMenu .magic .spells .spell.middle .cursor { left:0px; }
 
-#itemMenu { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#itemMenu { }
 #itemMenu .overlap { width:118px; height:50px; float:left; z-index:2; position:relative; background-color:black; }
 #itemMenu .title { height:20px; padding:20px 0 2px 8px; width:102px; }
 #itemMenu .inventory { width:420px; height:250px; margin-top:30px; padding:30px 0 0 40px; }
 #itemMenu .inventory .item { width:140px; height:30px; float:left; }
 #itemMenu .inventory .item .cursor { top:2px; }
 
-#statusMenu { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#statusMenu { }
 #statusMenu .name { height:20px; padding:20px 0 20px 24px; width:86px; float:left; margin-bottom:12px; }
 #statusMenu .charClass { height:54px; padding:4px 0 2px 16px; width:186px; float:left; margin:0 8px; }
 #statusMenu .charClass .char { float:left; }
@@ -86,7 +86,7 @@
 #statusMenu .stats.primary { clear:both; margin-right:8px; }
 #statusMenu .stats.secondary { width:186px; }
 
-#newChar { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#newChar { }
 #newChar .party { margin:40px 0 0 80px; }
 #newChar .party .slot { width:144px; height:136px; float:left; margin-right:70px; margin-bottom:40px; overflow:hidden; }
 #newChar .party .slot .cursor { position:relative; top:50px; left:20px; }
@@ -94,7 +94,7 @@
 #newChar .party .slot .charClass .char { margin-top:30px; margin-left:44px; }
 #newChar .party .slot .charClass .name { margin-top:12px; margin-left:30px; }
 
-#newCharName { width:37%; height:100%; float:left; margin:1% 0 1% 2em; }
+#newCharName { }
 #newCharName .name { background-color:#921008; width:64px; padding:20px 8px 8px 8px; height:16px; margin-left:160px; margin-bottom:40px; text-align:center; }
 #newCharName .entry { width:368px; height:280px; padding:20px 0 0 24px; }
 #newCharName .entry .letters .text { padding:0 20px 16px 0; float:left; height:16px; width:16px;}

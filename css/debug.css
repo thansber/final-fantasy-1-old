@@ -1,4 +1,4 @@
-#debug { float:left; width:60%; height:100%; background-color:white; }
+#debug { float:left; width:59%; height:100%; background-color:white; }
 #debug .menu { list-style-type:none; margin:0; padding:0; float:left; padding-top:2em; text-align:right; margin-left:1em; }
 #debug .menu a { color:blue; text-decoration:none; font-size:0.8em; padding:0.2em 1em 0.4em 0; width:9em; display:block; }
 #debug .menu a:hover { text-decoration:underline; }
