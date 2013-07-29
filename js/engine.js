@@ -5,6 +5,8 @@ define(
 function($, Battle, Cursor, Event, Logger, MapArtist, MapTransition, Menus, Party, Shops, Util,
          CursorConstants, Map, MapConstants, MovementConstants, PartyConstants) {
 
+  var LOG_ID = "Engine";
+
   var areaTransition = function(transition) {
     Event.animate(Event.Animations.AreaTransition)
          .using({transition:transition})
@@ -61,7 +63,7 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapTransition, Menus, Part
     }
     switchMap(map, coords);
 
-    Logger.debug("jumped to map [" + map + "], coords " + coords.toString());
+    Logger.debug(LOG_ID, "jumped to map [" + map + "], coords " + coords.toString());
   };
 
   var showCharMenu = function(listener) {
@@ -71,7 +73,7 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapTransition, Menus, Part
   };
 
   var startBattle = function(encounter, background) {
-    Logger.debug(encounter.toString());
+    Logger.debug(LOG_ID, encounter.toString());
 
     Event.transmit(Event.Types.MovementStop);
     var battle = Battle.create($.extend(true, {background: background}, encounter));
@@ -101,6 +103,9 @@ function($, Battle, Cursor, Event, Logger, MapArtist, MapTransition, Menus, Part
   };
 
   var switchView = function(view) {
+    if (view === PartyConstants.Views.WORLD_MAP) {
+      Party.updateSprite();
+    }
     $("body > .main").hide();
     $(view).show();
   };

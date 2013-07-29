@@ -10,6 +10,7 @@ return (function() {
   var moveCallback = null;
   var keysPressed = {};
   var TIMER_LABEL = "movement";
+  var LOG_ID = "Movement";
 
   /* =========== */
   /* INIT METHOD */
@@ -64,7 +65,7 @@ return (function() {
   };
 
   self.startListening = function() {
-    Logger.debug("listening for movement");
+    Logger.debug(LOG_ID, "listening for movement");
     listening = true;
     KeyPressNotifier.setListener(self);
     $(document).everyTime("30ms", TIMER_LABEL, function() {
@@ -73,7 +74,7 @@ return (function() {
   };
 
   self.stopListening = function() {
-    Logger.debug("NOT listening for movement");
+    Logger.debug(LOG_ID, "NOT listening for movement");
     listening = false;
     $(document).stopTime(TIMER_LABEL);
     for (var k in keysPressed) {

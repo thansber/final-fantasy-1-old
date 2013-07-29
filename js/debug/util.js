@@ -1,27 +1,29 @@
-define( 
+define(
 /* DebugUtil */
-["jquery", "events", "key-press-notifier", "movement", "./constants", "../constants/cursor", "../constants/map", "../constants/party"], 
-function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, MapConstants, PartyConstants) {
-  
+["jquery", "events", "key-press-notifier", "movement", "./random-party",
+ "../constants/cursor", "./constants", "../constants/map", "../constants/party"],
+function($, Event, KeyPressNotifier, Movement, RandomParty,
+         CursorConstants, DebugConstants, MapConstants, PartyConstants) {
+
   var addOption = function($selector, value, text) {
     if (!text) {
       text = value;
     }
     $selector.append($("<option/>").text(text).val(value));
   };
-  
+
   var battleAnimationReset = function() {
     $("#battle .enemies .splash").addClass("hidden");
   };
-  
+
   var initLocationSelector = function($container) {
     var maps = [MapConstants.WORLD_MAP,
-                MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND, 
+                MapConstants.CONERIA, MapConstants.PRAVOKA, MapConstants.ELFLAND, MapConstants.MELMOND,
                 MapConstants.CRESCENT_LAKE, MapConstants.ONRAC, MapConstants.GAIA, MapConstants.LEFEIN,
-                MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE, 
-                MapConstants.ASTOS_CASTLE, MapConstants.CASTLE_ORDEALS_1F, MapConstants.CASTLE_ORDEALS_2F, MapConstants.CASTLE_ORDEALS_3F,  
+                MapConstants.CONERIA_CASTLE, MapConstants.CONERIA_CASTLE_2F, MapConstants.ELF_CASTLE,
+                MapConstants.ASTOS_CASTLE, MapConstants.CASTLE_ORDEALS_1F, MapConstants.CASTLE_ORDEALS_2F, MapConstants.CASTLE_ORDEALS_3F,
                 MapConstants.MATOYAS_CAVE, MapConstants.DWARF_CAVE, MapConstants.TITANS_TUNNEL, MapConstants.SARDAS_CAVE, MapConstants.WATERFALL_CAVE,
-                MapConstants.TEMPLE_OF_FIENDS, 
+                MapConstants.TEMPLE_OF_FIENDS,
                 MapConstants.MARSH_CAVE_B1, MapConstants.MARSH_CAVE_B2A, MapConstants.MARSH_CAVE_B2B, MapConstants.MARSH_CAVE_B3,
                 MapConstants.EARTH_CAVE_B1, MapConstants.EARTH_CAVE_B2, MapConstants.EARTH_CAVE_B3, MapConstants.EARTH_CAVE_B4, MapConstants.EARTH_CAVE_B5,
                 MapConstants.GURGU_VOLCANO_B1, MapConstants.GURGU_VOLCANO_B2, MapConstants.GURGU_VOLCANO_B3A, MapConstants.GURGU_VOLCANO_B3B, MapConstants.GURGU_VOLCANO_B4A, MapConstants.GURGU_VOLCANO_B4B, MapConstants.GURGU_VOLCANO_B5,
@@ -29,19 +31,19 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
                 MapConstants.SEA_SHRINE_B1, MapConstants.SEA_SHRINE_B2, MapConstants.SEA_SHRINE_B2A, MapConstants.SEA_SHRINE_B3, MapConstants.SEA_SHRINE_B3A, MapConstants.SEA_SHRINE_B3B, MapConstants.SEA_SHRINE_B4A, MapConstants.SEA_SHRINE_B4B, MapConstants.SEA_SHRINE_B5,
                 MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F,
                 MapConstants.MIRAGE_TOWER_1F, MapConstants.MIRAGE_TOWER_2F, MapConstants.MIRAGE_TOWER_3F];
-    
+
     var $selector = $container.find(".selector");
     for (var m in maps) {
       $("<option/>").val(maps[m]).html(maps[m]).appendTo($selector);
-    }    
+    }
   };
-  
+
   var loadMainView = function(helper) {
     helper = $.extend({view:PartyConstants.Views.WORLD_MAP, disableKeyListener:false}, helper);
     Event.transmit(Event.Types.SwitchView, helper.view);
-    
+
     KeyPressNotifier.clearListener();
-    
+
     switch (helper.view) {
       case PartyConstants.Views.WORLD_MAP:
         Event.transmit(Event.Types.StartGame);
@@ -52,23 +54,24 @@ function($, Event, KeyPressNotifier, Movement, DebugConstants, CursorConstants, 
         }
         break;
       case PartyConstants.Views.MENU:
+        RandomParty.create({equip:true, spells:true, consumables:true});
         Event.transmit(Event.Types.CursorStart, CursorConstants.CHAR_MENU, {prevListener:Movement});
         break;
     };
   };
-  
+
   var menuChange = function($menuOption) {
     $menuOption.parent().siblings().removeClass("selected");
     $menuOption.parent().addClass("selected");
     $menuOption.blur();
-    
+
     $("#debug section").hide();
     var section = $menuOption.attr("class").split(" ")[0];
     $("#debug section." + section).show();
-    
+
     loadMainView(DebugConstants.Helpers[section]);
   };
-  
+
   return {
     addOption: addOption
    ,battleAnimationReset : battleAnimationReset

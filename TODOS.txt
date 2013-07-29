@@ -1,9 +1,11 @@
 MOST RECENT
 ===========
-- char walking sprite sheet
-- char walking debug menu
 - add passable transportation options to all tile mapping
 
+
+MOVEMENT
+========
+- moving against impassable, change dir? show walk animation?
 
 SPELLS
 ======

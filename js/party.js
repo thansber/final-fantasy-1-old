@@ -32,6 +32,11 @@ return (function() {
   ];
   var keyItems = "0"; // heck yeah, storing a bunch of boolean as a string
 
+  var $sprite = null;
+  var spriteDirs = ["up", "down", "left", "right"];
+
+  var LOG_ID = "Party";
+
   /* =============== */
   /* PRIVATE METHODS */
   /* =============== */
@@ -64,6 +69,7 @@ return (function() {
 
   var moveToPosition = function(xChange, yChange) {
     // We are currently moving the character
+    Event.animate(Event.Animations.CharWalking).using({$player:$sprite, xChange:xChange, yChange:yChange}).start();
     MapArtist.moveOneSquare({map:self.getMap(), position:currentPosition, x:xChange, y:yChange});
   };
 
@@ -101,42 +107,6 @@ return (function() {
     return char;
   };
 
-  // TODO: remove this and anything that calls it
-  self.createTestChars = function() {
-   self.clearChars();
-    var charClasses = [CharacterClass.FIGHTER, CharacterClass.THIEF, CharacterClass.WHITE_MAGE, CharacterClass.BLACK_MAGE];
-    for (var i = 0; i < charClasses.length; i++) {
-      var name = "";
-      for (var n = 0; n < 4; n++) {
-        name += String.fromCharCode(65 + +i);
-      }
-      var char = self.createNewChar(name, charClasses[i], i);
-      self.addChar(char);
-    }
-
-    self.getChar(0)
-      .weapons().add("Short[S]").equip("Short[S]")
-      .armor().add("Wooden[A]").add("Wooden[S]").add("Wooden[H]").equipAll();
-    self.getChar(1)
-      .weapons().add("Rapier").equip("Rapier")
-      .armor().add("Wooden[A]").equipAll();
-    self.getChar(2)
-      .weapons().add("Iron[H]").equip("Iron[H]")
-      .armor().add("Cloth").equipAll()
-      .learnSpell(Spell.lookup("CURE")).learnSpell(Spell.lookup("HARM"));
-    self.getChar(3)
-      .weapons().add("Small[K]").equip("Small[K]")
-      .armor().add("Cloth").equipAll()
-      .learnSpell(Spell.lookup("FIRE")).learnSpell(Spell.lookup("LIT")).learnSpell(Spell.lookup("LOCK"));
-
-    self.addGold(400);
-    self.addConsumable("HealPotion", 23)
-        .addConsumable("PurePotion", 7)
-        .addConsumable("SoftPotion", 2)
-        .addConsumable("Tent", 4)
-        .addConsumable("Cabin", 1);
-  };
-
   self.getAliveChars = function() {
     var aliveChars = [];
     for (var i = 0; i < chars.length; i++) {
@@ -167,6 +137,7 @@ return (function() {
   self.hasEnoughGoldFor = function(amount) { return gold >= amount; };
   self.hasKeyItem = function(name) { return !!(parseInt(keyItems, 36) & Equipment.KeyItem.lookup(name).index); };
   self.init = function(opt) {
+    $sprite = $("#map .player");
     Event.listen(Event.Types.Moving, self.isDestinationPassable);
   };
   self.isDestinationPassable = function(yChange, xChange) {
@@ -227,7 +198,7 @@ return (function() {
     if (self.getMap().is(MapConstants.WORLD_MAP)) {
       steps = Encounter.Steps[MapConstants.WORLD_MAP];
     } else {
-      Logger.error("Player is in an unsupported map [" + currentMap + "]");
+      Logger.error(LOG_ID, "Player is in an unsupported map [" + currentMap + "]");
     }
 
     if (steps) {
@@ -239,6 +210,18 @@ return (function() {
   self.setPosition = function(coords) { currentPosition = $.extend({}, coords); return this; };
   self.setTransportation = function(transportation) { currentTransportation = transportation; return this; };
   self.storeWorldMapPosition = function() { worldMapPosition = $.extend({}, currentPosition); };
+  self.updateSprite = function() {
+    var chars = self.getChars();
+    if (chars.length === 0) {
+      Logger.warn(LOG_ID, "there are 0 chars in the party, wtf are you doing?");
+    }
+    var charClasses = Object.keys(CharacterClass.All);
+    $sprite.removeClass(charClasses.join(" ")).addClass(chars[0].currentClass.name);
+    self.updateSpriteDir("down");
+  };
+  self.updateSpriteDir = function(dir) {
+    $sprite.removeClass(spriteDirs.join(" ")).addClass(dir);
+  };
   self.useConsumable = function(item) { self.addConsumable(item, -1); return this; };
 
   return this;

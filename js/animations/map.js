@@ -4,8 +4,10 @@ define(
 function($, AnimationQueue, AnimationUtil, Event, Logger) {
 
   // This will be created many times so do not define it in the animation method itself
-  var CHAR_WALK_DEFAULTS = {$player:null, numAnimations:4, pause:70, xChange:0, yChange:0};
+  var CHAR_WALK_DEFAULTS = {$player:null, numAnimations:3, pause:80, xChange:0, yChange:0};
   var CHAR_WALK_DIRS = ["left", "up", "right", "down"];
+
+  var LOG_ID = "AnimationMap";
 
   var determineDirection = function(yChange, xChange) {
     if (!!xChange) {
@@ -13,7 +15,7 @@ function($, AnimationQueue, AnimationUtil, Event, Logger) {
     } else if (!!yChange) {
       return yChange > 0 ? "down" : "up";
     }
-    Logger.error("AnimationMap - unable to determine direction with y=" + yChange + ", x=" + xChange);
+    Logger.error(LOG_ID, "unable to determine direction with y=" + yChange + ", x=" + xChange);
     return "";
   }
 
