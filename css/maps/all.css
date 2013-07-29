@@ -1,9 +1,0 @@
-#selector { margin-bottom:2em; }
-
-.maps { color:white; padding:1em; }
-.map { width:1000px; height:416px; }
-.map .tileset { float:left; }
-.map .row { clear:both; }
-.map .tile { width:16px; height:16px; float:left; background-image:url(../../images/map-tiles.png); background-position:16px 16px; background-repeat:no-repeat; overflow:hidden; }
-.map .tile.unknown { background-image:none; background-color:red; }
-.map .tile.none { background-image:none; background-color:black; }
