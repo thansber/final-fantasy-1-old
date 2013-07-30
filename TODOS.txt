@@ -5,11 +5,6 @@ MOST RECENT
 - add passable transportation options to:
 - add filler sprites to:
 - add tile mappings which can have battle to:
--- MATOYAS_CAVE
--- DWARF_CAVE
--- TITANS_TUNNEL
--- SARDAS_CAVE
--- WATERFALL_CAVE
 -- CARDIA_ISLANDS
 -- MARSH_CAVE
 -- EARTH_CAVE
@@ -79,5 +74,5 @@ MAPS
 - need to encode: Temple of Fiends 2
 - needs sprite sheets: Floating Castle, Temple of Fiends 2
 - door transitions, on enter trigger inside, on leave trigger outside
-- in castles, what can be walked on for the weird tiles?
+- in castles/caves, what can be walked on for the weird tiles?
 - turn off battle in specific tiles?
