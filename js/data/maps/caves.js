@@ -1,39 +1,41 @@
 define(/* CaveMapData */
-["jquery", "maps/map", "constants/map"],
-function($, Map, MapConstants) {
-    
-  var base_tiles = {
-    "~" : {y:4, x:1, desc:"nothing"},
-    "." : {y:1, x:4, desc:"floor", inside:{y:4, x:4}, passable:true},
-    "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}, passable:true},
-    "$" : {y:1, x:1, desc:"chest", inside:{y:0, x:6}, passable:true},
-    "^" : {y:2, x:4, desc:"stairs up", passable:true},
-    "v" : {y:1, x:4, desc:"stairs down", passable:true},
-    "WW": {y:0, x:4, desc:"wall", inside:{y:3, x:4}},
-    "W+": {y:0, x:3, desc:"wall top left", inside:{y:3, x:3}},
-    "+W": {y:0, x:5, desc:"wall top right", inside:{y:3, x:5}},
-    "W|": {y:1, x:3, desc:"wall left", inside:{y:4, x:3}},
-    "|W": {y:1, x:5, desc:"wall right", inside:{y:4, x:5}},
-    "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
-    "--": {y:0, x:1, desc:"room wall top ", inside:{y:3, x:1}},
-    "-#": {y:0, x:2, desc:"room wall top right", inside:{y:3, x:2}},
-    "#|": {y:1, x:0, desc:"room wall left", inside:{y:4, x:0}},
-    "|#": {y:1, x:2, desc:"room wall right", inside:{y:4, x:2}},
-    "#_": {y:2, x:0, desc:"room wall bottom left", inside:{y:5, x:0}},
-    "__": {y:2, x:1, desc:"room wall bottom", inside:{y:5, x:1}},
-    "_#": {y:2, x:2, desc:"room wall bottom right", inside:{y:5, x:2}},
-    "[]": {y:2, x:3, desc:"door", inside:{y:5, x:3}},
+["jquery", "maps/map", "constants/map", "constants/movement"],
+function($, Map, MapConstants, MovementConstants) {
+
+  var Transport = MovementConstants.Transportation;
+  var baseTiles = {
+    "." : Map.newTile({y:1, x:4}).desc("floor").inside({y:4, x:4}).passableBy(Transport.Foot),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:0, x:6}).passableBy(Transport.Foot),
+    "^" : Map.newTile({y:2, x:4}).desc("stairs up").passableBy(Transport.Foot),
+    "v" : Map.newTile({y:1, x:4}).desc("stairs down").passableBy(Transport.Foot),
+    "WW": Map.newTile({y:0, x:4}).desc("wall").inside({y:3, x:4}),
+    "W+": Map.newTile({y:0, x:3}).desc("wall top left").inside({y:3, x:3}),
+    "+W": Map.newTile({y:0, x:5}).desc("wall top right").inside({y:3, x:5}),
+    "W|": Map.newTile({y:1, x:3}).desc("wall left").inside({y:4, x:3}),
+    "|W": Map.newTile({y:1, x:5}).desc("wall right").inside({y:4, x:5}),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top ").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top right").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot)
   };
-  
+
+  var emptyFillerTiles = $.extend({"~" : Map.newTile({y:4, x:1}).desc("nothing").isFiller()}, baseTiles);
+
   var init = function() {
-   
-   Map.create(MapConstants.MATOYAS_CAVE, {})
-      .tileMapping($.extend(base_tiles, {
-       "P" : {y:1, x:1, desc:"pots", inside:{y:5, x:4}},
-       "SK": {y:1, x:1, desc:"skull", inside:{y:2, x:5}, passable:true},
-       "TB": {y:1, x:1, desc:"table", inside:{y:5, x:5}},
-       "CH": {y:1, x:1, desc:"chair", inside:{y:1, x:6}, passable:true},
-      }))
+
+   Map.create(MapConstants.MATOYAS_CAVE)
+      .tileMapping($.extend({
+       "P" : Map.newTile({y:1, x:1}).desc("pots").inside({y:5, x:4}),
+       "SK": Map.newTile({y:1, x:1}).desc("skull").inside({y:2, x:5}).passableBy(Transport.Foot),
+       "TB": Map.newTile({y:1, x:1}).desc("table").inside({y:5, x:5}),
+       "CH": Map.newTile({y:1, x:1}).desc("chair").inside({y:1, x:6}).passableBy(Transport.Foot)
+      }, emptyFillerTiles))
       .sprites("#- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -#")
       .sprites("#| SK ,  ,  SK P  P  ,  CH ,  P  P  SK ,  ,  SK |#")
       .sprites("#| SK ,  ,  SK ,  P  ,  TB ,  P  ,  SK ,  ,  SK |#")
@@ -45,23 +47,23 @@ function($, Map, MapConstants) {
       .sprites("#| ,  ,  SK ,  ,  ,  SK ,  SK ,  ,  ,  SK ,  ,  |#")
       .sprites("#_ __ __ ,  SK SK SK SK ,  SK SK SK SK ,  __ __ _#")
       .sprites("W+ WW WW #| ,  ,  ,  SK ,  SK ,  ,  ,  |# WW WW +W")
-      .sprites("W| .  .  #_ __ __ __ __ __ __ __ __ __ _# .  MM |W")
+      .sprites("W| .  .  #_ __ __ __ __ __ __ __ __ __ _# .  ^  |W")
       .sprites("W| .  .  WW WW WW WW WW [] WW WW WW WW WW .  .  |W")
       .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
       .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
       .sprites("WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW");
 
-   Map.create(MapConstants.DWARF_CAVE, {})
-      .tileMapping($.extend(base_tiles, {
-       "$" : {y:1, x:1, desc:"chest", inside:{y:2, x:5}, passable:true},
-       "TB": {y:1, x:1, desc:"table", inside:{y:1, x:3}},
-       "CH": {y:1, x:1, desc:"chair", inside:{y:3, x:5}, passable:true},
-       "MM": {y:0, x:3, desc:"mountain", inside:{y:3, x:3}},
-       "AN": {y:1, x:1, desc:"anvil", inside:{y:4, x:3}},
-       "HM": {y:1, x:1, desc:"hammer", inside:{y:5, x:4}},
-       "FG": {y:1, x:1, desc:"forge", inside:{y:1, x:5}},
-       "SW": {y:1, x:1, desc:"sword", inside:{y:0, x:5}, passable:true}
-      }))
+   Map.create(MapConstants.DWARF_CAVE)
+      .tileMapping($.extend({
+       "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:2, x:5}).passableBy(Transport.Foot),
+       "TB": Map.newTile({y:1, x:1}).desc("table").inside({y:1, x:3}),
+       "CH": Map.newTile({y:1, x:1}).desc("chair").inside({y:3, x:5}).passableBy(Transport.Foot),
+       "MM": Map.newTile({y:0, x:3}).desc("mountain").inside({y:3, x:3}).isFiller(),
+       "AN": Map.newTile({y:1, x:1}).desc("anvil").inside({y:4, x:3}),
+       "HM": Map.newTile({y:1, x:1}).desc("hammer").inside({y:5, x:4}),
+       "FG": Map.newTile({y:1, x:1}).desc("forge").inside({y:1, x:5}),
+       "SW": Map.newTile({y:1, x:1}).desc("sword").inside({y:0, x:5}).passableBy(Transport.Foot)
+      }, baseTiles))
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM")
       .sprites("MM MM MM MM #- -- -- -- -- -- -- -- -# .  MM MM MM MM MM MM MM MM MM MM MM MM")
       .sprites("MM MM MM MM #| FG HM CH ,  SW SW SW |# .  .  MM MM MM MM MM #- -- -- -- -# MM")
@@ -118,16 +120,16 @@ function($, Map, MapConstants) {
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM .  .  MM MM MM MM MM MM MM MM MM MM")
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM .  .  MM MM MM MM MM MM MM MM MM MM")
       .sprites("MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM MM");
-   
-   Map.create(MapConstants.SARDAS_CAVE, {})
-      .tileMapping($.extend(base_tiles, {
-       "P" : {y:1, x:1, desc:"pots", inside:{y:3, x:6}},
-       "TB": {y:1, x:1, desc:"table", inside:{y:5, x:4}},
-       "CH": {y:1, x:1, desc:"chair", inside:{y:2, x:5}, passable:true},
-       "==": {y:1, x:1, desc:"bed top", inside:{y:0, x:6}},
-       "HH": {y:1, x:1, desc:"bed bottom", inside:{y:1, x:6}},
-       "FP": {y:1, x:1, desc:"fireplace", inside:{y:2, x:6}}
-      }))
+
+   Map.create(MapConstants.SARDAS_CAVE)
+      .tileMapping($.extend({
+       "P" : Map.newTile({y:1, x:1}).desc("pots").inside({y:3, x:6}),
+       "TB": Map.newTile({y:1, x:1}).desc("table").inside({y:5, x:4}),
+       "CH": Map.newTile({y:1, x:1}).desc("chair").inside({y:2, x:5}).passableBy(Transport.Foot),
+       "==": Map.newTile({y:1, x:1}).desc("bed top").inside({y:0, x:6}),
+       "HH": Map.newTile({y:1, x:1}).desc("bed bottom").inside({y:1, x:6}),
+       "FP": Map.newTile({y:1, x:1}).desc("fireplace").inside({y:2, x:6})
+      }, emptyFillerTiles))
       .sprites("#- -- -- -- -- -# -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -#")
       .sprites("#| ,  FP ,  == |# ,  ,  ,  P  |# ~  ~  ~  ~  ~  ~  ~  ~  #| ,  P  ,  P  ,  P  |#")
       .sprites("#| ,  ,  ,  HH |# ,  ,  CH ,  |# ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  P  P  P  P  |#")
@@ -145,13 +147,13 @@ function($, Map, MapConstants) {
       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  WW .  WW .  .  |W ~  ~  ~  ~")
       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~")
       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  ~  ~");
-   
-   Map.create(MapConstants.TITANS_TUNNEL, {})
-      .tileMapping($.extend(base_tiles, {
-       "$" : {y:1, x:1, desc:"chest", inside:{y:0, x:5}, passable:true},
-       "MM": {y:0, x:3, desc:"mountain", inside:{y:3, x:3}},
-       "M^": {y:1, x:3, desc:"mountain peak", inside:{y:4, x:3}}
-      }))
+
+   Map.create(MapConstants.TITANS_TUNNEL)
+      .tileMapping($.extend({
+       "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:0, x:5}).passableBy(Transport.Foot),
+       "MM": Map.newTile({y:0, x:3}).desc("mountain").inside({y:3, x:3}),
+       "M^": Map.newTile({y:1, x:3}).desc("mountain peak").inside({y:4, x:3})
+      }, emptyFillerTiles)).battleEverywhere()
       .sprites("~  ~  M^ MM ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
       .sprites("~  MM .  .  MM ~  ~  ~  ~  ~  ~  MM M^ ~  ~  ~  ~  ~")
       .sprites("M^ .  .  .  .  MM M^ ~  ~  ~  MM .  .  MM ~  ~  ~  ~")
@@ -176,13 +178,13 @@ function($, Map, MapConstants) {
       .sprites("~  ~  MM .  WW WW WW WW [] WW .  M^ ~  ~  ~  ~  ~  ~")
       .sprites("~  ~  M^ .  .  .  .  .  .  .  MM ~  ~  ~  ~  ~  ~  ~")
       .sprites("~  ~  ~  MM M^ MM M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~");
-   
-   
+
+
    Map.create(MapConstants.WATERFALL_CAVE, {})
-      .tileMapping($.extend(base_tiles, {
-       "$" : {y:1, x:1, desc:"chest", inside:{y:1, x:3}, passable:true},
-       "^" : {y:0, x:3, desc:"stairs up", passable:true},
-      }))
+      .tileMapping($.extend({
+       "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:1, x:3}).passableBy(Transport.Foot),
+       "^" : Map.newTile({y:0, x:3}).desc("stairs up").passableBy(Transport.Foot),
+      }, emptyFillerTiles))
       .sprites(",  ,  __ __ __ __ ,  ,  ,  ,  ,  ,  ,  ,  __ __ __ __ ,  ,  ,  ,  __ __ __ __ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
       .sprites(",  |# WW WW WW WW #| ,  ,  ,  ,  ,  ,  |# WW WW WW WW #| ,  ,  |# WW WW WW WW #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
       .sprites(",  |# .  .  .  .  #| ,  __ __ __ __ ,  |# .  .  .  .  #_ __ __ _# .  .  .  .  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
@@ -245,11 +247,10 @@ function($, Map, MapConstants) {
       .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# .  .  .  .  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
       .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  -- -- -- -- ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
       .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,");
-   
   };
-  
+
   return {
     init: init
   };
-  
+
 });

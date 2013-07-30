@@ -54,7 +54,6 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:221, x:136}).to(MapConstants.ELF_CASTLE, {y:32, x:16});
     MapTransition.from(MapConstants.WORLD_MAP, {y:186, x:102}).to(MapConstants.ASTOS_CASTLE, {y:24, x:21});
     MapTransition.from(MapConstants.WORLD_MAP, {y:186, x:103}).to(MapConstants.ASTOS_CASTLE, {y:24, x:21});
-
     MapTransition.from(MapConstants.WORLD_MAP, {y:45, x:129}).to(MapConstants.CASTLE_ORDEALS_1F, {y:24, x:12});
     MapTransition.from(MapConstants.WORLD_MAP, {y:45, x:130}).to(MapConstants.CASTLE_ORDEALS_1F, {y:24, x:12});
     MapTransition.from(MapConstants.CASTLE_ORDEALS_1F, {y:2, x:2}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:12});
@@ -75,6 +74,14 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:20, x:20}).to(MapConstants.CASTLE_ORDEALS_3F, {y:22, x:22});
     MapTransition.from(MapConstants.CASTLE_ORDEALS_3F, {y:17, x:16}).to(MapConstants.CASTLE_ORDEALS_1F, {y:2, x:2});
     MapTransition.from(MapConstants.CASTLE_ORDEALS_1F).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:12});
+
+    // Cave transitions
+    MapTransition.from(MapConstants.WORLD_MAP, {y:117, x:168}).to(MapConstants.MATOYAS_CAVE, {y:11, x:15}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:155, x:100}).to(MapConstants.DWARF_CAVE, {y:11, x:22}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:190, x:30}).to(MapConstants.SARDAS_CAVE, {y:13, x:18}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:174, x:42}).to(MapConstants.TITANS_TUNNEL, {y:14, x:11}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:175, x:30}).to(MapConstants.TITANS_TUNNEL, {y:3, x:5}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:29, x:54}).to(MapConstants.WATERFALL_CAVE, {y:56, x:57}).bidirectional();
 
     // Towns -> world map
     MapTransition.from(MapConstants.CONERIA).to(MapConstants.WORLD_MAP, {y:162, x:153});

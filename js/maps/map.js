@@ -48,7 +48,9 @@ function(Resource) {
     }
     return coords.x >= this.cols || coords.y >= this.rows;
   };
-  Map.prototype.isPassable = function(y, x, transportation) { return this.getTile(y, x).passable & transportation.flag; };
+  Map.prototype.isPassable = function(y, x, transportation) {
+    return transportation.id === "airship" || this.getTile(y, x).passable & transportation.flag;
+  };
   Map.prototype.repeatSprites = function(row, num) {
     for (var i = 0; i < num; i++) {
       this.sprites(row);

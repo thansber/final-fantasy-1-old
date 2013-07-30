@@ -1,18 +1,18 @@
 define(/* WorldMapData */
 ["maps/map", "constants/map", "constants/movement"],
 function(Map, MapConstants, MovementConstants) {
-    
+
   var rowIndex = -1;
-  
+
   var mapOptions = {
-    wrapsX: true, 
+    wrapsX: true,
     wrapsY: true
   };
-  
+
   var sections = [];
   var SECTIONS_PER_ROW = 8;
   var Transport = MovementConstants.Transportation;
-    
+
   var tiles = {
       "." : Map.newTile({y:3, x:8, desc:"plains"}).passableBy(Transport.Foot),
       "..": Map.newTile({y:0 ,x:13, desc:"town empty"}).passableBy(Transport.Foot),
@@ -50,7 +50,7 @@ function(Map, MapConstants, MovementConstants) {
       "V2": Map.newTile({y:2, x:17, desc:"gurgu volcano upper right"}).passableBy(Transport.Foot),
       "V3": Map.newTile({y:3, x:16, desc:"gurgu volcano lower left"}).passableBy(Transport.Foot),
       "V4": Map.newTile({y:3, x:17, desc:"gurgu volcano lower right"}).passableBy(Transport.Foot),
-      "WF": Map.newTile({y:5, x:14, desc:"waterfalls"}).passableBy(Transport.Foot),
+      "WF": Map.newTile({y:5, x:14, desc:"waterfalls"}).passableBy(Transport.Canoe),
       "^-": Map.newTile({y:2, x:10, desc:"coneria castle upper left"}),
       "-^": Map.newTile({y:2, x:11, desc:"coneria castle upper right"}),
       "[-": Map.newTile({y:3, x:10, desc:"coneria castle middle left"}),
@@ -76,8 +76,8 @@ function(Map, MapConstants, MovementConstants) {
       "--": Map.newTile({y:4, x:8, desc:"wall upper"}),
       "_|": Map.newTile({y:5, x:10, desc:"wall gate left"}),
       "|_": Map.newTile({y:5, x:11, desc:"wall gate right"}),
-      
-      // all ocean/mountain/forest tiles have descs 
+
+      // all ocean/mountain/forest tiles have descs
       // in the direction the tile points
       "f" : Map.newTile({y:1, x:1, desc:"forest"}).passableBy(Transport.Foot),
       "f1": Map.newTile({y:0, x:0, desc:"forest upper left"}).passableBy(Transport.Foot),
@@ -97,16 +97,16 @@ function(Map, MapConstants, MovementConstants) {
       "m6": Map.newTile({y:2, x:6, desc:"mountains lower left"}),
       "m7": Map.newTile({y:2, x:7, desc:"mountains lower"}),
       "m8": Map.newTile({y:2, x:8, desc:"mountains lower right"}),
-      "w" : Map.newTile({y:1, x:4, desc:"ocean"}),
+      "w" : Map.newTile({y:1, x:4, desc:"ocean"}).passableBy(Transport.Ship),
       "w1": Map.newTile({y:0, x:3, desc:"coastline upper left"}).passableBy(Transport.Foot),
-      "w2": Map.newTile({y:0, x:4, desc:"coastline upper"}),
+      "w2": Map.newTile({y:0, x:4, desc:"coastline upper"}).passableBy(Transport.Ship),
       "w3": Map.newTile({y:0, x:5, desc:"coastline upper right"}).passableBy(Transport.Foot),
-      "w4": Map.newTile({y:1, x:3, desc:"coastline left"}),
-      "w5": Map.newTile({y:1, x:5, desc:"coastline right"}),
+      "w4": Map.newTile({y:1, x:3, desc:"coastline left"}).passableBy(Transport.Ship),
+      "w5": Map.newTile({y:1, x:5, desc:"coastline right"}).passableBy(Transport.Ship),
       "w6": Map.newTile({y:2, x:3, desc:"coastline lower left"}).passableBy(Transport.Foot),
-      "w7": Map.newTile({y:2, x:4, desc:"coastline lower"}),
+      "w7": Map.newTile({y:2, x:4, desc:"coastline lower"}).passableBy(Transport.Ship),
       "w8": Map.newTile({y:2, x:5, desc:"coastline lower right"}).passableBy(Transport.Foot),
-      
+
       "d" : Map.newTile({y:5, x:6, desc:"desert"}).passableBy(Transport.Foot),
       "d1": Map.newTile({y:3, x:6, desc:"desert upper left"}).passableBy(Transport.Foot),
       "d2": Map.newTile({y:3, x:7, desc:"desert upper right"}).passableBy(Transport.Foot),
@@ -117,25 +117,25 @@ function(Map, MapConstants, MovementConstants) {
       "g2": Map.newTile({y:3, x:1, desc:"grass upper right"}).passableBy(Transport.Foot),
       "g3": Map.newTile({y:4, x:0, desc:"grass lower left"}).passableBy(Transport.Foot),
       "g4": Map.newTile({y:4, x:1, desc:"grass lower right"}).passableBy(Transport.Foot),
-      "r" : Map.newTile({y:5, x:2, desc:"river"}),
-      "r1": Map.newTile({y:3, x:2, desc:"river upper left"}),
-      "r2": Map.newTile({y:3, x:3, desc:"river upper right"}),
-      "r3": Map.newTile({y:4, x:2, desc:"river lower left"}),
-      "r4": Map.newTile({y:4, x:3, desc:"river lower right"}),
+      "r" : Map.newTile({y:5, x:2, desc:"river"}).passableBy(Transport.Canoe),
+      "r1": Map.newTile({y:3, x:2, desc:"river upper left"}).passableBy(Transport.Canoe),
+      "r2": Map.newTile({y:3, x:3, desc:"river upper right"}).passableBy(Transport.Canoe),
+      "r3": Map.newTile({y:4, x:2, desc:"river lower left"}).passableBy(Transport.Canoe),
+      "r4": Map.newTile({y:4, x:3, desc:"river lower right"}).passableBy(Transport.Canoe),
       "s" : Map.newTile({y:5, x:4, desc:"swamp"}).passableBy(Transport.Foot),
       "s1": Map.newTile({y:3, x:4, desc:"swamp upper left"}).passableBy(Transport.Foot),
       "s2": Map.newTile({y:3, x:5, desc:"swamp upper right"}).passableBy(Transport.Foot),
       "s3": Map.newTile({y:4, x:4, desc:"swamp lower left"}).passableBy(Transport.Foot),
       "s4": Map.newTile({y:4, x:5, desc:"swamp lower right"}).passableBy(Transport.Foot)
   };
-  
+
   var addSection = function(map) {
     if (!sections[rowIndex] || sections[rowIndex].length % SECTIONS_PER_ROW === 0) {
       sections[++rowIndex] = [];
     }
     sections[rowIndex].push(map);
   };
-  
+
   var allWater = function() {
     var s = [];
     for (var i = 0; i < 32; i++) {
@@ -143,9 +143,9 @@ function(Map, MapConstants, MovementConstants) {
     }
     return s.join("  ");
   };
-  
+
   var init = function() {
-    
+
     addSection(
       Map.create("WORLD-MAP-0-0")
          .repeatSprites(allWater(), 16)
@@ -186,7 +186,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("g4 f1 f2 f2 f2 f3 m6 m7 m  m  m  m  m  m  m  m  m  m  m7 m7 m7 m7 WF m7 m  m  m  m  m  m  m  m")
          .sprites(".  f6 f7 f  f  f  f2 f3 m6 m7 m  m  m  m  m  m  m  m5 r1 r  r  r  r  r2 m4 m  m  m  m  m  m  m")
          .sprites("m2 m2 m3 f6 f  f  f  f  f2 f3 m6 m7 m  m  m  m  m  m5 r  r  r  r  r  r  m4 m  m  m  m  m  m  m"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-2")
          .repeatSprites(allWater(), 15)
@@ -207,7 +207,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m5 .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m5 .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m  m3 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-3")
          .repeatSprites(allWater(), 24)
@@ -219,7 +219,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f1 f  f  f")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f1 f  f  f  f7")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f1 f  f  f7 f8 w1"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-4")
          .repeatSprites(allWater(), 13)
@@ -242,7 +242,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("f  f  f  f  f7 f8 w1 w  w  w  w  w  w7 w8 s1 s  s  s  s  s  s  s  s  s  s  s4 m1 m2 m  m  m  m")
          .sprites("f7 f7 f7 f8 w1 w2 w  w  w  w  w  w8 s1 s  s  s  s  s  s  s  s  s  s  s4 m1 m2 m  m  m  m  m  m")
          .sprites("w2 w2 w2 w2 w  w  w  w  w  w  w8 s1 s  s  s  s  s  s  s  s  s  s  s4 m1 m  m  m  m  m  m  m  m"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-5")
          .repeatSprites(allWater(), 13)
@@ -265,7 +265,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m  m5 d  d  d  d  d  d  d  d  d  d  d  d  d2 m4 m  m  m5 w1 w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m  m5 d  d  d  d  d  d  d  d  d  d  d  d  d  m6 m  m  m5 w4 w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m  m5 d3 d  d  d  d  d  d  d  d  d  d  d  d  d2 m6 m7 m8 w4 w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-6")
          .repeatSprites(allWater(), 23)
@@ -278,7 +278,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 m1 m  m7 m7 m  m  m  m  m  m  m8 g1 g4 m1 m")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 m1 m  m8 w1 w3 m4 m  m  m7 m7 m8 g1 g4 m1 m  m")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  m1 m  m8 w1 w  w8 m4 m  m8 g1 g  g  g4 m1 m  m  m"));
-    
+
     addSection(
       Map.create("WORLD-MAP-0-7")
          .repeatSprites(allWater(), 17)
@@ -332,7 +332,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 f6 f  f  f  f3 d3 d  d  d  d  d  d  d  d  d")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 f6 f  f  f  f3 d3 d  d  d  d  d  d  d  d")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 f6 f  f  f  f3 d3 d  d  d  d  d  d  d"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-1")
          .sprites("m  m  m  m3 f6 f  f  f  f  f  f2 f3 m6 m  m  m  m  m5 r3 r  r  r  r  r4 m4 m  m  m  m  m  m  m")
@@ -367,7 +367,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("d  d  d  d  d  d  m1 m  m  m  m  m  m  m  m  m8 f1 f2 f  f  f5 r1 r  r4 m6 m8 f1 f  f  f5 w4 w")
          .sprites("d  d  d  d  d  d  m4 m  m  m  m  m  m  m  m5 f1 f  f  f  f  f5 r  f1 f2 f2 f2 f  f  f  f5 w4 w")
          .sprites("d  d  d  d  d  d4 m6 m  m  m  m  m  m  m  m5 f4 f  f  f  f  f5 r  f4 f  f  f  f  f  f  f5 w6 w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-2")
          .sprites("m  m5 w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -402,7 +402,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 s3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f  f  f  f8 w1 w2 w")
@@ -437,7 +437,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("s  s  s  s  s2 w6 w  w  w  w  w2 w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w3 s3 s  s4 .  w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w7 w8 w4 w  w  w")
          .sprites("w  w  w2 w2 w2 w2 w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w7 w7 w7 w7 w7 w8 .  w1 w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-4")
          .sprites("w  w  w  w  w7 w7 w  w7 w7 w8 s1 s  s4 m1 m2 m2 m3 f1 f2 f3 m1 m2 m2 m  m  m  m7 m7 m7 m7 m7 m")
@@ -472,7 +472,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-5")
          .sprites("m  m  m3 d3 d  d  d  d  d  d  d  d  d  d  d  d  f1 f2 f3 w4 w  w  w  w  w  w  w  w  w  w  w  w")
@@ -507,7 +507,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m6 m  m  m  m  m  m  m  m  m  m  m5 d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d")
          .sprites("w3 m6 m7 m  m  m  m  m  m  m  m  m5 d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d")
          .sprites("w  w2 w3 m6 m7 m7 m  m  m  m  m  m5 d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-6")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 m6 m8 w1 w  w8 m1 m  m8 g1 g  g4 m1 m  m  m  m  m")
@@ -542,7 +542,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  m6 m  m  m  m3 f6 f  f  f  f  f  f  f  f  f  f  f")
          .sprites("d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d2 m6 m  m  m  m3 f6 f  f  f  f  f  f  f  f  f  f7")
          .sprites("d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d2 m4 m  m  m  m2 m3 f6 f  f  f  f  f  f  f8 w1"));
-    
+
     addSection(
       Map.create("WORLD-MAP-1-7")
          .sprites("m  m8 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -612,7 +612,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-1")
          .sprites("d  d  d  d  d4 .  .  m6 m  m  m  m  m  m  m5 f6 f  f  f  f  f5 r  f4 f  f  f  f  f  f  f  f3 w6")
@@ -647,14 +647,14 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w3 m6 m7 m7 m7 m  m  m  m  m  m  m  m  m  m  m  m  m  m3 w6 w7 w7 w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w2 w2 w2 w3 m6 m7 m7 m7 m7 m  m  m  m  m  m  m  m  m  m2 m2 m3 w6 w7 w7 w7 w7 w7 w  w  w  w")
          .sprites("w  w  w  w  w  w2 w2 w2 w2 w3 m6 m7 m7 m7 m7 m7 m  m  m  m  m  m  m2 m2 m2 m2 m2 m3 w6 w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 29));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-3")
          .sprites("w  w  w  w  w  w  w  w  w  w7 w7 w  w  w  w  w  w  w  w  w8 f1 f2 f2 f3 .  .  w1 w  w  w  w  w")
@@ -664,9 +664,9 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w3 f6 f7 f7 f7 f7 f8 w1 w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w2 w2 w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 26));
-    
+
     addSection(Map.create("WORLD-MAP-2-4").repeatSprites(allWater(), 32));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-5")
          .sprites("w  w  w  w2 w2 w3 m6 m  m  m  m  m5 d3 d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d")
@@ -701,7 +701,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w7 w7 w7 w8")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 .  .  ."));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-6")
          .sprites("d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d  d2 m4 m  m  m  m  m3 f  f  f  f  f  f  w1 w")
@@ -736,7 +736,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w8 m4 m  m  m  m  m  m  m  m  m  m  m  m  m5 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m1 m  m  m7 m7 m7 m7 m  m  m  m  m  m  m  m8 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("m6 m7 m8 w1 w2 w2 w3 m6 m7 m  m  m  m  m5 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-2-7")
          .sprites("w  w  w  w  w  w  w  w  w  w  w5 f6 f7 f7 f  f  f5 w6 w7 w7 w  w  w  w  w  w  w  w  w  w  w  w")
@@ -778,9 +778,9 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w3 m6 m7 m7 m7 m7 m7 m7 m7 m7 m7 m7 m8 w1 w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w2 w2 w2 w2 w2 w2 w2 w2 w  w  w  w")
          .repeatSprites(allWater(), 30));
-    
+
     addSection(Map.create("WORLD-MAP-3-2").repeatSprites(allWater(), 32));
-    
+
     addSection(
       Map.create("WORLD-MAP-3-3")
          .repeatSprites(allWater(), 23)
@@ -793,7 +793,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 f6 f")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 f6")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3"));
-    
+
     addSection(
       Map.create("WORLD-MAP-3-4")
          .repeatSprites(allWater(), 23)
@@ -806,7 +806,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("f  f  f  f  f  f  f  f  f3 .  w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 .  f1 f2")
          .sprites("f  f  f  f  f  f  f  f  f8 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 .  f1 f  f")
          .sprites("f6 f7 f7 f  f  f  f  f5 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f1 f2 f  f  f"));
-    
+
     addSection(
       Map.create("WORLD-MAP-3-5")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2")
@@ -826,7 +826,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("f  f  f  f  f  f  f  f5 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("f  f  f  f  f  f  f  f8 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("f7 f7 f7 f7 f7 f7 f8 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-3-6")
          .sprites("w2 w2 w2 w  w  w  w  w2 w3 m6 m7 m7 m7 m8 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -836,7 +836,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3")
          .repeatSprites(allWater(), 15));
-    
+
     addSection(
       Map.create("WORLD-MAP-3-7")
          .sprites("w  w  w  w3 f4 f  f3 w6 w  w  w8 f6 f7 f  f  f  f  f5 w4 w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -873,7 +873,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w5 .  .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
 
     addSection(Map.create("WORLD-MAP-4-0").repeatSprites(allWater(), 32));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-1")
          .repeatSprites(allWater(), 23)
@@ -886,7 +886,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w3 s3 s  s  m6 m  m5 s  s  s  s  s  s2 m6 m7 m  m  m3 w6 w7 w8")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w3 s3 s  s  m6 m8 s  s  s  s  s  s  s  s2 m6 m7 m8 s1 s  s")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w3 s3 s  s  s  s  s  s  s  s  s  s  s  s  s  s  s  s  s"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -921,7 +921,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("s  s  s  s  s  s  f1 f2 f3 s3 s  s  s  s  s  s  s  s4 w6 w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("s  s  s  s  s  s  f6 f  f  f3 s  s  s  s  s  s4 .  .  .  w6 w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("s  s  s  s  s  s  s2 f6 f7 f8 s  s  s  s  D1 D2 .  ML .  .  w6 w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w7 w7 w7 w  w  w  w  w  w  w")
@@ -956,7 +956,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w5 f6 f  f  f7 f7 f8 m1 m  m  m7 m7 m7 m8 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w3 f6 f8 m1 m2 m2 m  m  m8 .  w1 w2 w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w5 .  .  m6 m  m  m  m8 w1 w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-4")
          .sprites("w2 w2 w3 f6 f  f  f  f5 w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 f1 f2 f2 f  f  f  f  f5")
@@ -991,7 +991,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w8 .  .  .  .  f1 f  f  f  f8 .  ^- -^ .  f6 f  f  f  f3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w8 .  .  .  .  .  f4 f  f  f8 .  +- [- -] -+ .  f6 f  f  f5")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w5 .  .  .  .  .  .  f4 f  f5 .  -/ |- [_ _] -| /- .  f4 f  f5"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-5")
          .sprites("r  r  r  r  r  r  r  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1026,7 +1026,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  .  m4 m  m  m  m7")
          .sprites("w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  m1 m  m  m  m8 f1")
          .sprites("w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  m6 m  m  m5 .  f4"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-6")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1061,7 +1061,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m7 m7 m7 m7 m8 .  .  w6 w  w  w  w  w  w  w5 .  .  f1 f2 f2 f  f  f8 m6 m7 m7 m7 m7 m7 m  m  m")
          .sprites("f2 f2 f2 f2 f3 .  .  .  w6 w7 w7 w7 w7 w7 w8 f1 f2 f  f  f  f  f8 .  .  .  .  .  .  .  m6 m  m")
          .sprites("f  f  f  f  f  f2 f2 f2 f3 .  .  .  .  .  .  f6 f7 f7 f7 f7 f8 .  .  .  .  .  .  .  .  .  m6 m7"));
-    
+
     addSection(
       Map.create("WORLD-MAP-4-7")
          .sprites("w  w  w  w  w  w5 .  .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1131,7 +1131,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 m4 m  m")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 m6 CV m8")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  .  ."));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-1")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w5 s3 s  s  s  s  s  s  s  s  f1 f2 f2 f2 f2 f3 s  s  s")
@@ -1166,7 +1166,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m8 .  .  .  w1 w  w  w  w  w  w  w  w  w  w3 .  .  .  .  .  .  .  m6 m7 m7 m7 m  m  m2 m2 m3 s3")
          .sprites(".  .  .  w1 w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w2 w2 w3 .  .  .  .  m6 m7 m7 m7 m  m2")
          .sprites("w1 w2 w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w3 .  .  .  .  m6 m7"));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-2")
          .sprites("s  s  s  s  s  s  s  s  s  s  s  s  s  s  D4 w  .  ML ML .  .  w4 w  w  w  w  w  w  w  w  w  w")
@@ -1201,7 +1201,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("s  s4 .  .  .  .  .  .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5")
          .sprites("m2 m2 m2 m3 .  .  .  .  w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5")
          .sprites("m  m  m  m  m3 .  .  .  .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8"));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-3")
          .sprites("w  w  w  w5 .  .  .  m4 m  m8 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1236,7 +1236,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("f4 f  f  f  f  f  f2 f2 f2 f2 f3 r  .  .  .  w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("f6 f  f  f  f  f  f  f  f  f  f8 r3 r  r  w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites(".  f6 f7 f7 f7 f7 f7 f7 f7 f8 .  .  .  .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w"));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-4")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w3 .  .  .  .  .  f4 f  f5 .  /. CO .. .. CO ./ .  f4 f  f5")
@@ -1256,7 +1256,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 w1 w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 16));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-5")
          .sprites("w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  .  m6 m  m  m3 f6")
@@ -1291,7 +1291,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 m4 m  m  m  m  m  m  m5 r3 r  r4 m6 m7")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 m1 m  m  m  m  m  m  m  m  m3 g3 g  g  g2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 m1 m  m  m  m  m  m  m  m  m  m  m2 m2 m3 g3"));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-6")
          .sprites("f  f  f  f  f  f  f  f  f  f2 f2 f2 f3 .  .  .  .  .  .  m1 m2 m2 m2 m2 m2 m2 m2 m3 .  .  .  .")
@@ -1326,7 +1326,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m  m  m  m  m  m  m5 g  m4 m  m  m  m  m  m5 r  m6 m  m3 f6 f7 f8 .  .  r  r  r  r  r  r4 m4 m")
          .sprites("m7 m7 m7 m7 m7 m7 m8 g  m4 m  m  m  m  m  m5 r3 r2 m4 m  m3 .  .  .  m1 m2 m3 r  m1 m2 m2 m  m")
          .sprites("g  g  g  g  g  g  g  g  m4 m  m  m  m  m  m  m3 r  m4 m  m  m2 m2 m2 m  m  m5 r  m4 m  m  m  m"));
-    
+
     addSection(
       Map.create("WORLD-MAP-5-7")
          .sprites(".  .  .  m1 m  m  m  m3 .  .  m4 m  m  m3 w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1367,13 +1367,13 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 .  w1")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w")
          .repeatSprites(allWater(), 30));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-1")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w3 .  .")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w3")
          .repeatSprites(allWater(), 30));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-2")
          .sprites("m6 m7 m7 m  m  m2 m2 m3 .  w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 .")
@@ -1408,7 +1408,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  .  .  m4 m")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 .  .  m6 m")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w5 .  .  .  m4"));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-3")
          .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  w6 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1443,7 +1443,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m  m  m  m  m  m  m7 m7 m7 m7 m7 m7 m  m  m  m  m3 f4 f  f  f  f  f7 f8 m1 m2 m2 m  m  m  m  m8")
          .sprites("m  m  m7 m7 m7 m8 s1 s  s  s  s  s2 m6 m  m  m  m5 f6 f  f  f  f5 m1 m2 m  m  m  m  m  m  m5 .")
          .sprites("m  m8 s1 s  s  s  s  s  s  m1 m3 s3 s2 m6 m  m  m  m3 f6 f7 f7 f8 m6 m7 m7 m7 m7 m7 m7 m7 m8 f1"));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-4")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1478,7 +1478,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("f  f  f5 g1 g  g4 EL C3 C4 EL g3 g  g2 f4 f  f  f8 w4 w  w  w  w  w  w  w  w  w  w3 g3 g  g  g")
          .sprites("f  f  f5 g3 g  g2 EL .  .  EL g1 g  g4 f4 f  f8 w1 w  w  w  w  w  w  w  w  w  w  w  w3 g3 g  g")
          .sprites("f  f  f  f3 g3 g  g2 .  .  g1 g  g4 f1 f  f5 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w3 ."));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-5")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w8 m4 m  m  m  m  m  m  m  m  m  m  m  m  m  m2")
@@ -1513,7 +1513,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("g2 m4 m  m  m  m5 r  .  .  f6 f  f  f  f8 m4 m  m  m8 s1 s  s  s  s  s  s  s  s2 m6 m  m  m  m")
          .sprites("g4 m4 m  m  m  m5 r3 r  r2 .  f6 f7 f8 m1 m  m  m8 s1 s  s  s  s  s  s  s  s  s  s2 m6 m  m  m")
          .sprites(".  m4 m  m  m  m  m2 m3 r  m1 m2 m3 .  m6 m7 m8 s1 s  s  s  s  s4 f1 f2 f3 s3 s  s  s2 m6 m7 m8"));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-6")
          .sprites("m2 m2 m2 m2 m2 m2 m2 m2 m  m  m  m  m  m  m  m5 r  m4 m  m  m  m  m  m  m  m5 r  m6 m7 m7 m  m")
@@ -1548,7 +1548,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("m  m  m  m  m  m  m  m  m  m  m  m  m  m5 r  m1 m  m5 f6 f  f  f  f3 r3 r  r  r  r  r  r  r  r")
          .sprites("m7 m7 m  m  m  m  m  m  m  m  m  m  m  m5 r  m4 m  m  m3 f4 f  f  f  f3 r3 r  r  r  r  r  r  r")
          .sprites(".  .  m6 m  m  m  m  m  m  m  m  m  m  m5 r  m4 m  m  m5 f4 f  f  f  f  f2 f3 r3 r  r  r4 f1 f2"));
-    
+
     addSection(
       Map.create("WORLD-MAP-6-7")
          .sprites("m  m  m  m7 m7 m7 m7 m  m  m5 .  m4 m  m  m  m3 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1586,7 +1586,7 @@ function(Map, MapConstants, MovementConstants) {
 
     addSection(Map.create("WORLD-MAP-7-0").repeatSprites(allWater(), 32));
     addSection(Map.create("WORLD-MAP-7-1").repeatSprites(allWater(), 32));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 .  .  m6")
@@ -1600,7 +1600,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 22));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-3")
          .sprites("m8 s1 s  s  s  s  m1 m  m  m  m  m3 s  s2 m6 m  m  m  m2 m3 .  f1 f2 f2 f2 f2 f2 f2 f2 f2 f2 f")
@@ -1620,7 +1620,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w5 .  w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w  w  w  w  w  w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 16));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-4")
          .sprites("f  f  f  f  f3 g3 g  g  g  g  g4 f1 f  f  f8 w4 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3")
@@ -1634,7 +1634,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites(".  w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .sprites("w2 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
          .repeatSprites(allWater(), 22));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-5")
          .sprites(".  m4 m  m  m  m  m  m5 r  m4 m  m5 s1 s  s  s  s  s  s  s  s  f1 f  f  f  f3 s  s  s  s  s  s")
@@ -1652,7 +1652,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w3 s3 s  s  s  s  s  s  s  s")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w2 w2 w2 w2 w2")
          .repeatSprites(allWater(), 22));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-6")
          .sprites("s  s  s2 m6 m  m  m  m  m  m  m  m  m  m5 r  m4 m  m  m5 f4 f  f  f  f  f  f  f  f  f  f  f  f")
@@ -1678,7 +1678,7 @@ function(Map, MapConstants, MovementConstants) {
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w3 .  .  .  .  .  .  w1 w2 w2 w2")
          .sprites("w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w2 w2 w2 w2 w2 w2 w  w  w  w")
          .repeatSprites(allWater(), 11));
-    
+
     addSection(
       Map.create("WORLD-MAP-7-7")
          .sprites("f  f  f  f  f  f  f5 w1 w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w  w")
@@ -1706,11 +1706,11 @@ function(Map, MapConstants, MovementConstants) {
 
     joinSections();
   };
-  
+
   var joinSections = function() {
     var worldMap = Map.create(MapConstants.WORLD_MAP, mapOptions).tileMapping(tiles);
     var firstSection = sections[0][0];
-    
+
     for (var y = 0; y < SECTIONS_PER_ROW; y++) {
       for (var r = 0; r < firstSection.rows; r++) {
         var fullWorldMapRow = [];
@@ -1724,7 +1724,7 @@ function(Map, MapConstants, MovementConstants) {
       }
     }
   };
-  
+
   return {
     init: init
   };
