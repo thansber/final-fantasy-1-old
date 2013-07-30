@@ -46,10 +46,35 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
     MapTransition.from(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).to(MapConstants.WORLD_MAP, {y:123, x:130});
 
+    // Castle transitions
     MapTransition.from(MapConstants.WORLD_MAP, {y:159, x:152}).to(MapConstants.CONERIA_CASTLE, {y:30, x:14});
     MapTransition.from(MapConstants.WORLD_MAP, {y:159, x:153}).to(MapConstants.CONERIA_CASTLE, {y:30, x:14});
     MapTransition.from(MapConstants.CONERIA_CASTLE, {y:13, x:14}).to(MapConstants.CONERIA_CASTLE_2F, {y:16, x:12}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:221, x:135}).to(MapConstants.ELF_CASTLE, {y:32, x:16});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:221, x:136}).to(MapConstants.ELF_CASTLE, {y:32, x:16});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:186, x:102}).to(MapConstants.ASTOS_CASTLE, {y:24, x:21});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:186, x:103}).to(MapConstants.ASTOS_CASTLE, {y:24, x:21});
 
+    MapTransition.from(MapConstants.WORLD_MAP, {y:45, x:129}).to(MapConstants.CASTLE_ORDEALS_1F, {y:24, x:12});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:45, x:130}).to(MapConstants.CASTLE_ORDEALS_1F, {y:24, x:12});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_1F, {y:2, x:2}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:12});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:15, x:16}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:14});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:8, x:6}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:14});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:13, x:20}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:14});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:9, x:15}).to(MapConstants.CASTLE_ORDEALS_2F, {y:9, x:12});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:1, x:1}).to(MapConstants.CASTLE_ORDEALS_2F, {y:9, x:12});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:8, x:8}).to(MapConstants.CASTLE_ORDEALS_2F, {y:16, x:12});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:10, x:8}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:10});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:20, x:4}).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:10});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:15, x:9}).to(MapConstants.CASTLE_ORDEALS_2F, {y:20, x:1});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:11, x:20}).to(MapConstants.CASTLE_ORDEALS_2F, {y:20, x:1});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:22, x:4}).to(MapConstants.CASTLE_ORDEALS_2F, {y:4, x:6});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:18, x:4}).to(MapConstants.CASTLE_ORDEALS_2F, {y:4, x:4});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:2, x:3}).to(MapConstants.CASTLE_ORDEALS_2F, {y:4, x:8});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:16, x:18}).to(MapConstants.CASTLE_ORDEALS_2F, {y:22, x:23});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_2F, {y:20, x:20}).to(MapConstants.CASTLE_ORDEALS_3F, {y:22, x:22});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_3F, {y:17, x:16}).to(MapConstants.CASTLE_ORDEALS_1F, {y:2, x:2});
+    MapTransition.from(MapConstants.CASTLE_ORDEALS_1F).to(MapConstants.CASTLE_ORDEALS_2F, {y:12, x:12});
 
     // Towns -> world map
     MapTransition.from(MapConstants.CONERIA).to(MapConstants.WORLD_MAP, {y:162, x:153});

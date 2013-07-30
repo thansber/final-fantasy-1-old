@@ -22,6 +22,7 @@ function(Resource) {
     this.wrapsY = opt.wrapsY;
     this.start = new Coords(opt.start);
     this.inside = opt.inside;
+    this.allTilesHaveBattle = false;
     // filler set from tile mapping
 
     this.tiles = [];
@@ -31,6 +32,10 @@ function(Resource) {
     allMaps[this.id] = this;
   };
 
+  Map.prototype.battleEverywhere = function() {
+    this.allTilesHaveBattle = true;
+    return this;
+  };
   Map.prototype.getTile = function(y, x) { return this.mapping[this.getTileId(y, x) ? this.getTileId(y, x) : this.filler]; };
   Map.prototype.getTileId = function(y, x) { return this.tiles[y] ? this.tiles[y][x] : null; };
   Map.prototype.is = function(id) { return this.id == id; };
@@ -59,7 +64,9 @@ function(Resource) {
     this.tiles.push(rowTiles);
     return this;
   };
-  Map.prototype.tileCanHaveBattle = function(coords) { return this.getTile(coords.y, coords.x).hasBattles; };
+  Map.prototype.tileCanHaveBattle = function(coords) {
+    return this.allTilesHaveBattle || this.getTile(coords.y, coords.x).canHaveBattle;
+  };
   Map.prototype.tileMapping = function(mapping) {
     for (var m in mapping) {
       if (mapping[m].filler) {

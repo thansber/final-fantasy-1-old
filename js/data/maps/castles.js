@@ -17,6 +17,7 @@ function(Map, MapConstants, MovementConstants) {
     "W|": Map.newTile({y:0, x:3}).desc("wall left"),
     "|W": Map.newTile({y:0, x:5}).desc("wall right"),
     "I" : Map.newTile({y:2, x:4}).desc("pillar"),
+    "IT": Map.newTile({y:2, x:4}).desc("pillar transport").passableBy(Transport.Foot),
     "^" : Map.newTile({y:2, x:5}).desc("stairs up").passableBy(Transport.Foot),
     "v" : Map.newTile({y:3, x:5}).desc("stairs down").passableBy(Transport.Foot),
     "[]": Map.newTile({y:3, x:3}).desc("door").inside({y:3, x:4}).passableBy(Transport.Foot),
@@ -52,7 +53,7 @@ function(Map, MapConstants, MovementConstants) {
 
   var init = function() {
 
-    Map.create(MapConstants.CONERIA_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
+    Map.create(MapConstants.CONERIA_CASTLE, {start:{y:28, x:14}, exitOnOutOfBounds:true}).tileMapping(grassFillerTiles)
        .sprites("W+ WW WW WW WW WW WW WW WW WW WW WW WW +W .. W+ WW WW WW WW WW WW WW WW WW WW WW WW +W")
        .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W")
        .sprites("W| .  W+ WW WW WW +W .. .. .. .. .. .. .  .  .  .. .. .. .. .. .. W+ WW WW WW +W .  |W")
@@ -85,7 +86,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. W| .  .  .  |W .. .. .. .. .. .. .. .. .. .. .. .")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. WW WW .  WW WW .. .. .. .. .. .. .. .. .. .. .. .");
 
-    Map.create(MapConstants.CONERIA_CASTLE_2F, mapOptions({start:{y:16, x:13}})).tileMapping(skyFillerTiles)
+    Map.create(MapConstants.CONERIA_CASTLE_2F, {start:{y:16, x:13}}).tileMapping(skyFillerTiles)
        .sprites("~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  T- TT -T ,  ,  ,  ,  |# ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  #| ,  ,  }  }  T| tt |T {  {  ,  ,  |# ~  ~  ~  ~  ~  ~")
@@ -119,7 +120,7 @@ function(Map, MapConstants, MovementConstants) {
 
 
 
-    Map.create(MapConstants.ELF_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
+    Map.create(MapConstants.ELF_CASTLE, {exitOnOutOfBounds:true}).tileMapping(grassFillerTiles)
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .  ..")
        .sprites("W+ WW WW WW +W .. .. .. .. .. .. .. W+ WW WW WW +W .. .. .  #- -- -- -- -- -# .")
        .sprites("W| .  .  .  .  WW WW WW WW WW WW WW .  .  .  .  |W .. .  .  #| $  $  $  $  |# .")
@@ -154,7 +155,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites(".. .. .. .. .. .. .. WW WW WW WW WW .. .. .. .  .  .  .. .. .. WW WW WW WW WW ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .  .  .  .. .. .. .. .. .. .. .. ..");
 
-    Map.create(MapConstants.ASTOS_CASTLE, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
+    Map.create(MapConstants.ASTOS_CASTLE, {exitOnOutOfBounds:true}).tileMapping(grassFillerTiles).battleEverywhere()
        .sprites(".. .. W+ WW +W .. .. W+ WW WW WW WW WW W+ WW WW WW +W .. .. .. .. .. .. .. .. W+ WW +W .. ..")
        .sprites(".. W+ .  .  .  +W .. W| .  .  .  .  .  .  .  .  .  |W WW WW WW +W .. .. .. W+ .  .  .  +W ..")
        .sprites("W+ .  .  .  .  .  WW W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  WW WW WW .  .  .  .  .  +W")
@@ -181,7 +182,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites(".. .. WW .  WW .. .. .. .. .. .. .. .. .. WW WW WW .. .. .. W| .  |W .. .. .. WW .  WW .. ..")
        .sprites(".. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW .  WW .. .. .. .. .. .. .. ..");
 
-    Map.create(MapConstants.CASTLE_ORDEALS_1F, mapOptions({start:{y:28, x:14}})).tileMapping(grassFillerTiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_1F, {exitOnOutOfBounds:true}).tileMapping(grassFillerTiles).battleEverywhere()
        .sprites("#- -- -- -- -- -# .. .. .. .. .. .. .. .. .. .. .. .. .. #- -- -- -- -- -#")
        .sprites("#| T- TT -T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
        .sprites("#| T| tt |T ,  |# .. .. .. .. .. .. .. .. .. .. .. .. .. #| ,  ,  ,  ,  |#")
@@ -201,34 +202,34 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("#_ __ __ __ __ _# .. .. .. .. .. .. .. .. .. .. .. .. .. #_ __ __ __ __ _#")
        .sprites("WW WW WW WW WW WW .. .. .. .. .. .. .. .. .. .. .. .. .. WW WW WW WW WW WW")
 
-    Map.create(MapConstants.CASTLE_ORDEALS_2F, mapOptions({start:{y:28, x:14}})).tileMapping(skyFillerTiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_2F).tileMapping(skyFillerTiles).battleEverywhere()
        .sprites("W+ WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
-       .sprites("W| I  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  }  $  {  |#")
-       .sprites("W| .  .  I  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")
+       .sprites("W| IT .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  }  $  {  |#")
+       .sprites("W| .  .  IT .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")
        .sprites("W| .  .  .  .  |W WW +W WW WW WW WW WW WW WW WW WW WW WW #| ,  ,  ,  ,  |#")
        .sprites("W| .  .  .  .  |W .  |W .  .  .  .  .  .  .  .  .  .  .  #_ __ __ __ __ _#")
        .sprites("WW WW WW W+ WW WW .  |W .  WW WW WW WW WW WW WW WW WW .  WW [] +W WW WW WW")
        .sprites("~  ~  ~  W| .  .  .  |W .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~ ")
        .sprites("~  ~  ~  W| .  W+ WW W+ WW +W .  .  .  W+ WW WW WW +W .  W+ .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| I  W| I  .  WW WW WW W| .  .  .  |W .  W| .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W| .  .  .  .  .  W| .  I  .  |W .  W| .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W| I  .  .  .  .  W| .  .  .  |W .  W| .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W+ WW WW WW #- -- -# WW WW .  +W .  W| I  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| IT W| IT .  WW WW WW W| .  .  .  |W .  W| .  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W| .  .  .  .  .  W| .  IT .  |W .  W| .  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W| IT .  .  .  .  W| .  .  .  |W .  W| .  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W+ WW WW WW #- -- -# WW WW .  +W .  W| IT |W ~  ~  ~ ")
        .sprites("~  ~  ~  W| .  W| .  W| .  .  .  #| ,  |# .  .  .  |W .  WW WW +W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W| .  WW WW #_ ,  _# WW WW WW +W .  .  I  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W| .  WW WW #_ ,  _# WW WW WW +W .  .  IT |W ~  ~  ~ ")
        .sprites("~  ~  ~  W| .  W| .  W| .  .  .  W+ [] WW .  .  .  |W .  .  .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W| .  I  .  W| .  .  .  .  I  |W .  .  .  |W ~  ~  ~ ")
-       .sprites("~  ~  ~  W| .  W| .  W| .  .  .  W| .  .  .  .  .  |W I  .  .  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W| .  IT .  W| .  .  .  .  IT |W .  .  .  |W ~  ~  ~ ")
+       .sprites("~  ~  ~  W| .  W| .  W| .  .  .  W| .  .  .  .  .  |W IT .  .  |W ~  ~  ~ ")
        .sprites("~  ~  ~  W| .  W| .  W+ WW WW WW WW WW WW WW WW WW +W .  .  .  |W ~  ~  ~ ")
        .sprites("~  ~  ~  W| I  W| .  W| I  .  .  .  .  .  .  .  .  |W .  .  .  |W ~  ~  ~ ")
        .sprites("W+ WW WW WW WW +W .  WW WW WW WW WW WW WW WW WW WW WW .  W+ WW WW WW WW +W")
-       .sprites("W| .  .  .  I  |W .  .  .  .  .  .  .  .  .  .  .  .  .  W| ^  .  .  .  |W")
+       .sprites("W| .  .  .  IT |W .  .  .  .  .  .  .  .  .  .  .  .  .  W| ^  .  .  .  |W")
        .sprites("W| .  .  .  .  |W WW WW WW WW WW WW WW WW WW WW WW WW WW W| .  .  .  .  |W")
-       .sprites("W| .  .  .  I  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
+       .sprites("W| .  .  .  IT |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
        .sprites("W| .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  |W")
        .sprites("WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW");
 
-    Map.create(MapConstants.CASTLE_ORDEALS_3F, mapOptions({})).tileMapping(skyFillerTiles)
+    Map.create(MapConstants.CASTLE_ORDEALS_3F).tileMapping(skyFillerTiles).battleEverywhere()
        .sprites("#- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  $  ,  |#")
        .sprites("#| $  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |#")

@@ -33,7 +33,6 @@ function($, DebugHelper, Event, Map, MapConstants, MapTransition, Party, Status,
     var x = parseInt($row.find(".x").val(), 10);
     y = isNaN(y) ? 0 : y;
     x = isNaN(x) ? 0 : x;
-    console.log(mapId + "," + y + "," + x);
     Event.transmit(Event.Types.JumpTo, mapId, new Map.Coords({y:y, x:x}));
   };
 
@@ -65,7 +64,7 @@ function($, DebugHelper, Event, Map, MapConstants, MapTransition, Party, Status,
     event : function($target) {
       if ($target.is(".go")) {
         var $row = $target.closest(".row");
-        if ($row.is(".town")) { jumpToLocation($row); }
+        if ($row.is(".town")) { jumpToTown($row); }
         else if ($row.is(".shop")) { jumpToShop($row); }
         else if ($row.is(".location")) { jumpToLocation($row); }
       }
