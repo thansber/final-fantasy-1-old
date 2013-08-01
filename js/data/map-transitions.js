@@ -42,9 +42,15 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:235}).to(MapConstants.LEFEIN);
     MapTransition.from(MapConstants.WORLD_MAP, {y:99, x:236}).to(MapConstants.LEFEIN);
 
-    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:129}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
-    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
-    MapTransition.from(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).to(MapConstants.WORLD_MAP, {y:123, x:130});
+        // Towns -> world map
+    MapTransition.from(MapConstants.CONERIA).to(MapConstants.WORLD_MAP, {y:162, x:153});
+    MapTransition.from(MapConstants.PRAVOKA).to(MapConstants.WORLD_MAP, {y:150, x:210});
+    MapTransition.from(MapConstants.ELFLAND).to(MapConstants.WORLD_MAP, {y:222, x:136});
+    MapTransition.from(MapConstants.MELMOND).to(MapConstants.WORLD_MAP, {y:159, x:82});
+    MapTransition.from(MapConstants.CRESCENT_LAKE).to(MapConstants.WORLD_MAP, {y:217, x:219});
+    MapTransition.from(MapConstants.ONRAC).to(MapConstants.WORLD_MAP, {y:59, x:61});
+    MapTransition.from(MapConstants.GAIA).to(MapConstants.WORLD_MAP, {y:29, x:221});
+    MapTransition.from(MapConstants.LEFEIN).to(MapConstants.WORLD_MAP, {y:100, x:235});
 
     // Castle transitions
     MapTransition.from(MapConstants.WORLD_MAP, {y:159, x:152}).to(MapConstants.CONERIA_CASTLE, {y:30, x:14});
@@ -83,16 +89,76 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:175, x:30}).to(MapConstants.TITANS_TUNNEL, {y:3, x:5}).bidirectional();
     MapTransition.from(MapConstants.WORLD_MAP, {y:29, x:54}).to(MapConstants.WATERFALL_CAVE, {y:56, x:57}).bidirectional();
 
-    // Towns -> world map
-    MapTransition.from(MapConstants.CONERIA).to(MapConstants.WORLD_MAP, {y:162, x:153});
-    MapTransition.from(MapConstants.PRAVOKA).to(MapConstants.WORLD_MAP, {y:150, x:210});
-    MapTransition.from(MapConstants.ELFLAND).to(MapConstants.WORLD_MAP, {y:222, x:136});
-    MapTransition.from(MapConstants.MELMOND).to(MapConstants.WORLD_MAP, {y:159, x:82});
-    MapTransition.from(MapConstants.CRESCENT_LAKE).to(MapConstants.WORLD_MAP, {y:217, x:219});
-    MapTransition.from(MapConstants.ONRAC).to(MapConstants.WORLD_MAP, {y:59, x:61});
-    MapTransition.from(MapConstants.GAIA).to(MapConstants.WORLD_MAP, {y:29, x:221});
-    MapTransition.from(MapConstants.LEFEIN).to(MapConstants.WORLD_MAP, {y:100, x:235});
+    // Temple of Fiends
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:129}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:123, x:130}).to(MapConstants.TEMPLE_OF_FIENDS, {y:30, x:20}).bidirectional();
 
+    // Cardia Islands
+    MapTransition.from(MapConstants.WORLD_MAP, {y:49, x:79}).to(MapConstants.CARDIA_ISLANDS_MAIN, {y:10, x:7}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:48, x:92}).to(MapConstants.CARDIA_ISLANDS_MAIN, {y:13, x:25}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:58, x:93}).to(MapConstants.CARDIA_ISLANDS_MAIN, {y:31, x:14}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:59, x:105}).to(MapConstants.CARDIA_ISLANDS_MAIN, {y:24, x:38}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:66, x:116}).to(MapConstants.CARDIA_ISLANDS_MAIN, {y:50, x:53}).bidirectional();
+    MapTransition.from(MapConstants.WORLD_MAP, {y:51, x:96}).to(MapConstants.CARDIA_ISLANDS_BAHAMUT, {y:3, x:2}).bidirectional();
+    MapTransition.from(MapConstants.CARDIA_ISLANDS_BAHAMUT, {y:53, x:2}).to(MapConstants.CARDIA_ISLANDS_BAHAMUT_2F, {y:55, x:7}).bidirectional();
+
+    // Marsh Cave
+    MapTransition.from(MapConstants.WORLD_MAP, {y:236, x:102}).to(MapConstants.MARSH_CAVE_B1, {y:26, x:21}).bidirectional();
+    MapTransition.from(MapConstants.MARSH_CAVE_B1, {y:6, x:1}).to(MapConstants.MARSH_CAVE_B2A, {y:14, x:18}).bidirectional();
+    MapTransition.from(MapConstants.MARSH_CAVE_B1, {y:51, x:32}).to(MapConstants.MARSH_CAVE_B2B, {y:8, x:27}).bidirectional();
+    MapTransition.from(MapConstants.MARSH_CAVE_B2B, {y:29, x:51}).to(MapConstants.MARSH_CAVE_B3, {y:4, x:4}).bidirectional();
+
+    // Earth Cave
+    MapTransition.from(MapConstants.WORLD_MAP, {y:186, x:65}).to(MapConstants.EARTH_CAVE_B1, {y:14, x:19}).bidirectional();
+    MapTransition.from(MapConstants.EARTH_CAVE_B1, {y:26, x:42}).to(MapConstants.EARTH_CAVE_B2, {y:1, x:2}).bidirectional();
+    MapTransition.from(MapConstants.EARTH_CAVE_B2, {y:27, x:33}).to(MapConstants.EARTH_CAVE_B3, {y:37, x:19}).bidirectional();
+    MapTransition.from(MapConstants.EARTH_CAVE_B3, {y:19, x:18}).to(MapConstants.EARTH_CAVE_B4, {y:25, x:53}).bidirectional();
+    MapTransition.from(MapConstants.EARTH_CAVE_B4, {y:1, x:1}).to(MapConstants.EARTH_CAVE_B5, {y:31, x:17}).bidirectional();
+
+    // Gurgu Volcano
+    MapTransition.from(MapConstants.WORLD_MAP, {y:203, x:188}).to(MapConstants.GURGU_VOLCANO_B1, {y:14, x:27});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:203, x:189}).to(MapConstants.GURGU_VOLCANO_B1, {y:14, x:27});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:204, x:188}).to(MapConstants.GURGU_VOLCANO_B1, {y:14, x:27});
+    MapTransition.from(MapConstants.WORLD_MAP, {y:204, x:189}).to(MapConstants.GURGU_VOLCANO_B1, {y:14, x:27}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B1, {y:7, x:12}).to(MapConstants.GURGU_VOLCANO_B2, {y:30, x:30}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B2, {y:30, x:1}).to(MapConstants.GURGU_VOLCANO_B3A, {y:2, x:18}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B3A, {y:7, x:49}).to(MapConstants.GURGU_VOLCANO_B4A, {y:3, x:3}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B4A, {y:26, x:23}).to(MapConstants.GURGU_VOLCANO_B3B, {y:6, x:46}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B3B, {y:27, x:5}).to(MapConstants.GURGU_VOLCANO_B4B, {y:6, x:35}).bidirectional();
+    MapTransition.from(MapConstants.GURGU_VOLCANO_B4B, {y:46, x:40}).to(MapConstants.GURGU_VOLCANO_B5, {y:27, x:28}).bidirectional();
+
+    // Ice Cave
+    MapTransition.from(MapConstants.WORLD_MAP, {y:183, x:197}).to(MapConstants.ICE_CAVE_B1, {y:1, x:7}).bidirectional();
+    MapTransition.from(MapConstants.ICE_CAVE_B1, {y:11, x:30}).to(MapConstants.ICE_CAVE_B2A, {y:2, x:30}).bidirectional();
+    MapTransition.from(MapConstants.ICE_CAVE_B1, {y:22, x:21}).to(MapConstants.ICE_CAVE_B2B, {y:11, x:11}); // hole to floater/eye
+    MapTransition.from(MapConstants.ICE_CAVE_B1, {y:18, x:25}).to(MapConstants.WORLD_MAP, {y:183, x:197});
+    MapTransition.from(MapConstants.ICE_CAVE_B2A, {y:30, x:1}).to(MapConstants.ICE_CAVE_B3A, {y:4, x:5}).bidirectional();
+    MapTransition.from(MapConstants.ICE_CAVE_B3A, {y:2, x:3}).to(MapConstants.ICE_CAVE_B2B, {y:5, x:15}).bidirectional();
+    // holes on B2
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:7, x:11}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:7, x:12}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:8, x:8}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:8, x:10}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:8, x:13}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:9, x:9}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:9, x:11}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:10, x:8}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:10, x:12}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:10, x:13}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:10, x:14}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:11, x:9}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:11, x:10}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:11, x:12}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B2B, {y:12, x:11}).to(MapConstants.ICE_CAVE_B3B, {y:3, x:11});
+    MapTransition.from(MapConstants.ICE_CAVE_B3B, {y:30, x:31}).to(MapConstants.ICE_CAVE_B1, {y:20, x:6}).bidirectional();
+
+    // Sea Shrine
+
+    // Mirage Tower
+
+    // Floating Castle
+
+    // Temple of Fiends 2
   };
 
   return {

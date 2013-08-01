@@ -5,11 +5,6 @@ MOST RECENT
 - add passable transportation options to:
 - add filler sprites to:
 - add tile mappings which can have battle to:
--- CARDIA_ISLANDS
--- MARSH_CAVE
--- EARTH_CAVE
--- GURGU_VOLCANO
--- ICE_CAVE
 -- SEA_SHRINE
 -- MIRAGE_TOWER
 -- FLOATING_CASTLE
@@ -76,3 +71,4 @@ MAPS
 - door transitions, on enter trigger inside, on leave trigger outside
 - in castles/caves, what can be walked on for the weird tiles?
 - turn off battle in specific tiles?
+- filler in Gurgu B2?

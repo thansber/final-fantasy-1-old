@@ -1,44 +1,45 @@
 define(/* GurguVolcanoMapData */
-["jquery", "maps/map", "constants/map"],
-function($, Map, MapConstants) {
-    
+["jquery", "maps/map", "constants/map", "constants/movement"],
+function($, Map, MapConstants, MovementConstants) {
+
+  var Transport = MovementConstants.Transportation;
   var tiles_upper = {
-    "~" : {y:4, x:1, desc:"nothing"},
-    "." : {y:1, x:4, desc:"floor", inside:{y:4, x:4}, passable:true},
-    "!" : {y:2, x:6, desc:"lava", inside:{y:5, x:6}, passable:true},
-    "[]": {y:2, x:5, desc:"door", inside:{y:5, x:5}, passable:true},
-    "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}},
-    "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
-    "--": {y:0, x:1, desc:"room wall top", inside:{y:3, x:1}},
-    "-#": {y:0, x:2, desc:"room wall top right", inside:{y:3, x:2}},
-    "#|": {y:1, x:0, desc:"room wall left", inside:{y:4, x:0}},
-    "|#": {y:1, x:2, desc:"room wall right", inside:{y:4, x:2}},
-    "#_": {y:2, x:0, desc:"room wall bottom left", inside:{y:5, x:0}},
-    "__": {y:2, x:1, desc:"room wall bottom", inside:{y:5, x:1}, passable:true},
-    "_#": {y:2, x:2, desc:"room wall bottom right", inside:{y:5, x:2}},
-    "$" : {y:1, x:1, desc:"chest", inside:{y:1, x:6}, passable:true},
-    "WW": {y:0, x:4, desc:"wall", inside:{y:3, x:4}},
-    "W+": {y:0, x:3, desc:"wall top left", inside:{y:3, x:3}},
-    "+W": {y:0, x:5, desc:"wall top right", inside:{y:3, x:5}},
-    "W|": {y:1, x:3, desc:"wall left", inside:{y:4, x:3}},
-    "|W": {y:1, x:5, desc:"wall right", inside:{y:4, x:5}},
-    "MM": {y:0, x:6, desc:"mountain"},
-    "M^": {y:3, x:6, desc:"mountain peak"},
-    "^" : {y:2, x:3, desc:"stairs up", inside:{y:5, x:3}, passable:true},
-    "v" : {y:2, x:4, desc:"stairs down", inside:{y:5, x:4}, passable:true}
+    "~" : Map.newTile({y:4, x:1}).desc("nothing").isFiller(),
+    "." : Map.newTile({y:1, x:4}).desc("floor").inside({y:4, x:4}).passableBy(Transport.Foot),
+    "!" : Map.newTile({y:2, x:6}).desc("lava").inside({y:5, x:6}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top right").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:1, x:6}).passableBy(Transport.Foot),
+    "WW": Map.newTile({y:0, x:4}).desc("wall").inside({y:3, x:4}),
+    "W+": Map.newTile({y:0, x:3}).desc("wall top left").inside({y:3, x:3}),
+    "+W": Map.newTile({y:0, x:5}).desc("wall top right").inside({y:3, x:5}),
+    "W|": Map.newTile({y:1, x:3}).desc("wall left").inside({y:4, x:3}),
+    "|W": Map.newTile({y:1, x:5}).desc("wall right").inside({y:4, x:5}),
+    "MM": Map.newTile({y:0, x:6}).desc("mountain"),
+    "M^": Map.newTile({y:3, x:6}).desc("mountain peak"),
+    "^" : Map.newTile({y:2, x:3}).desc("stairs up").inside({y:5, x:3}).passableBy(Transport.Foot),
+    "v" : Map.newTile({y:2, x:4}).desc("stairs down").inside({y:5, x:4}).passableBy(Transport.Foot)
   };
-  
+
   var tiles_lower = $.extend({}, tiles_upper, {
-    "C" : {y:1, x:1, desc:"candles", inside:{y:4, x:6}},
-    "@" : {y:1, x:1, desc:"orb altar", inside:{y:0, x:7}},
-    "O" : {y:1, x:1, desc:"orb", inside:{y:4, x:7}},
-    "*" : {y:1, x:1, desc:"no idea", inside:{y:1, x:7}},
-    "&-" : {y:1, x:1, desc:"statue right", inside:{y:2, x:7}},
-    "-&" : {y:1, x:1, desc:"statue left", inside:{y:3, x:7}}
+    "C" : Map.newTile({y:1, x:1}).desc("candles").inside({y:4, x:6}),
+    "@" : Map.newTile({y:1, x:1}).desc("orb altar").inside({y:0, x:7}),
+    "O" : Map.newTile({y:1, x:1}).desc("orb").inside({y:4, x:7}),
+    "*" : Map.newTile({y:1, x:1}).desc("no idea").inside({y:1, x:7}),
+    "&-": Map.newTile({y:1, x:1}).desc("statue right").inside({y:2, x:7}),
+    "-&": Map.newTile({y:1, x:1}).desc("statue left").inside({y:3, x:7})
   });
-    
+
   var init = function() {
-      Map.create(MapConstants.GURGU_VOLCANO_B1).tileMapping(tiles_upper)
+      Map.create(MapConstants.GURGU_VOLCANO_B1).tileMapping(tiles_upper).battleEverywhere()
          .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
          .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~  ~")
          .sprites("~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~")
@@ -68,8 +69,8 @@ function($, Map, MapConstants) {
          .sprites("~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~")
          .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~  ~")
          .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ M^ ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
- 
-       Map.create(MapConstants.GURGU_VOLCANO_B2).tileMapping(tiles_upper)
+
+       Map.create(MapConstants.GURGU_VOLCANO_B2).tileMapping(tiles_upper).battleEverywhere()
           .sprites("#- -- -- -- #- -- -- #- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- #|")
           .sprites("#| ,  ,  ,  #| ,  ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #|")
           .sprites("#| ,  ,  ,  #| ,  ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #|")
@@ -81,8 +82,8 @@ function($, Map, MapConstants) {
           .sprites("#| ,  #| ,  #| ,  ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  ,  #|")
           .sprites("#| ,  #| ,  #| ,  ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  ,  #|")
           .sprites("#| ,  #| ,  #| ,  ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  #| ,  ,  ,  #| ,  #| ,  #| ,  #| ,  ,  #|")
-          .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  #| ,  ,  ,  #| ,  #| $  #| ,  ,  ,  #| ,  ,  ,  #| ,  ,  $  ,  #|") 
-          .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  #| ,  ,  ,  #| ,  #| ,  #| ,  ,  ,  #| ,  ,  ,  #| ,  ,  ,  ,  #|") 
+          .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  #| ,  ,  ,  #| ,  #| $  #| ,  ,  ,  #| ,  ,  ,  #| ,  ,  $  ,  #|")
+          .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  #| ,  ,  ,  #| ,  #| ,  #| ,  ,  ,  #| ,  ,  ,  #| ,  ,  ,  ,  #|")
           .sprites("#| ,  #| ,  #| ,  ,  -- -- -- -- -- -- -- -- #| ,  -- #- -- -- -- -- -- -- ,  ,  -- -- -- -- -- #|")
           .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #| ,  ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #|")
           .sprites("#| ,  #| ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #| ,  ,  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #|")
@@ -103,9 +104,9 @@ function($, Map, MapConstants) {
           .sprites("W| v  .  !  !  !  !  .  !  !  !  !  !  !  .  !  !  .  !  !  !  .  .  .  !  !  !  !  !  .  ^  |W ~")
           .sprites("W| !  !  !  .  .  !  !  .  .  .  .  .  !  !  !  !  !  .  .  !  !  !  !  .  !  .  !  !  !  !  |W ~")
           .sprites("WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~");
-          
+
        // TODO: Check weird surrounding walls for level
-       Map.create(MapConstants.GURGU_VOLCANO_B3A).tileMapping(tiles_upper)
+       Map.create(MapConstants.GURGU_VOLCANO_B3A).tileMapping(tiles_upper).battleEverywhere()
           .sprites(",  __ __ __ __ __ __ __ __ ,  ,  ,  ,  __ __ __ __ __ __ ,  ,  __ __ __ __ ,  ,  __ __ __ __ ,  ,  ,  ,  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ,")
           .sprites("|# WW WW WW WW WW WW WW WW #| ,  ,  |# WW WW WW WW WW WW #| |# WW WW WW WW #| |# WW WW WW WW #| ,  ,  |# WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW #|")
           .sprites("|# .  !  .  !  .  !  .  !  #| ,  ,  |# !  .  !  .  .  ^  #_ _# .  .  !  !  #| |# !  !  !  .  #| ,  ,  |# !  .  .  .  !  !  .  .  !  !  .  !  !  !  .  .  #|")
@@ -118,8 +119,8 @@ function($, Map, MapConstants) {
           .sprites(",  -- -- -- -- -- -- -- -- -- -- -- -- ,  |# .  !  .  .  #| ,  -- -- -- -# .  .  !  .  #| |# .  .  !  .  #- -- -- -- ,  ,  ,  ,  -- -- -- -- -- -- -- -- ,")
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# !  .  .  !  #| ,  ,  ,  ,  |# !  .  .  !  #| |# .  .  !  .  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  -- -- -- -- ,  ,  ,  ,  ,  ,  -- -- -- -- ,  ,  -- -- -- -- ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,");
-          
-       Map.create(MapConstants.GURGU_VOLCANO_B3B).tileMapping(tiles_upper)
+
+       Map.create(MapConstants.GURGU_VOLCANO_B3B).tileMapping(tiles_upper).battleEverywhere()
           .sprites(",  __ __ __ __ __ __ __ __ __ __ __ __ __ __ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("|# WW WW WW WW WW WW WW WW WW WW WW WW WW WW #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("|# .  .  .  !  !  !  !  !  .  .  .  .  M^ M^ #| ,  __ __ __ __ __ __ ,  ,  ,  ,  __ __ __ __ __ __ ,  ,  __ __ __ __ __ __ ,  ,  __ __ __ __ __ __ ,")
@@ -157,7 +158,7 @@ function($, Map, MapConstants) {
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  -- -- -- -- -- -- -- -- -- -- ,  ,  -- -- -- -- -- -- ,  ,  ,  ,  ,");
 
        // Darker shade
-       Map.create(MapConstants.GURGU_VOLCANO_B4A).tileMapping(tiles_lower)
+       Map.create(MapConstants.GURGU_VOLCANO_B4A).tileMapping(tiles_lower).battleEverywhere()
           .sprites(",  __ __ __ __ __ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("|# !  !  !  !  !  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("|# !  .  .  .  !  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
@@ -188,16 +189,16 @@ function($, Map, MapConstants) {
           .sprites("|# !  !  .  .  .  .  .  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  #|")
           .sprites("|# !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  !  #|")
           .sprites(",  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ,");
-       
-       
-       Map.create(MapConstants.GURGU_VOLCANO_B4B).tileMapping(tiles_lower)
+
+
+       Map.create(MapConstants.GURGU_VOLCANO_B4B).tileMapping(tiles_lower).battleEverywhere()
           .sprites("#- -- -- -- -- -# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #- -- -- -- -- -# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("#| ,  $  ,  $  |# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  #| $  ,  ,  ,  |# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("#| ,  ,  ,  $  |# __ __ __ __ __ __ __ __ ,  ,  ,  ,  ,  ,  ,  ,  __ __ __ __ __ __ __ __ #| ,  ,  ,  ,  |# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("#| $  ,  ,  $  |# WW WW WW WW WW WW WW WW #| ,  ,  ,  ,  ,  ,  |# WW WW WW WW WW WW WW WW #| ,  ,  ,  $  |# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("#_ __ __ __ __ _# .  .  .  .  !  !  !  .  #| ,  ,  ,  ,  ,  ,  |# .  .  !  !  !  !  !  !  #_ __ __ __ __ _# ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("W+ WW [] WW WW WW .  !  !  !  !  !  !  !  #| ,  ,  ,  ,  ,  ,  |# !  !  !  !  !  .  .  .  WW WW [] WW WW WW #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
-          .sprites("W| .  .  .  !  !  !  !  #- -- -- -# .  .  #| ,  ,  ,  ,  ,  ,  |# .  .  #- -- -- -# !  !  !  !  .  .  .  v  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
+          .sprites("W| .  .  .  !  !  !  !  #- -- -- -# .  .  #| ,  ,  ,  ,  ,  ,  |# .  .  #- -- -- -# !  !  !  !  .  .  .  ^  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("W| !  !  !  !  !  .  .  #| ,  ,  |# .  .  #| ,  ,  ,  ,  ,  ,  |# .  .  #| ,  ,  |# !  !  !  !  !  !  !  !  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites("-- -- -- -- -- -- -- -- ,  ,  ,  |# .  !  #| ,  #- -- -- -- -- -# .  .  #| ,  ,  ,  -- -- -- -- -- -- -- -- ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# !  !  #| ,  #| $  ,  ,  ,  |# .  .  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,")
@@ -239,8 +240,8 @@ function($, Map, MapConstants) {
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# .  .  !  !  !  !  !  !  #| ,  ,")
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# ^  .  .  .  .  !  !  .  #| ,  ,")
           .sprites(",  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  -- -- -- -- -- -- -- -- ,  ,  ,");
-       
-       Map.create(MapConstants.GURGU_VOLCANO_B5).tileMapping(tiles_lower)
+
+       Map.create(MapConstants.GURGU_VOLCANO_B5).tileMapping(tiles_lower).battleEverywhere()
           .sprites("#- -- -- -- -- -- -- -# WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW #- -- -- -- -- -- -- -#")
           .sprites("#| ,  ,  ,  ,  ,  ,  |# .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  #| ,  C  ,  ,  ,  ,  |#")
           .sprites("#| ,  ,  ,  ,  ,  ,  |# .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  C  C  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  #| ,  ,  ,  C  $  ,  |#")
@@ -298,7 +299,7 @@ function($, Map, MapConstants) {
           .sprites("W| .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  W| .  .  W+ WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  #_ __ __ __ _#")
           .sprites("WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW");
   };
-    
+
   return {
     init: init
   };

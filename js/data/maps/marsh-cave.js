@@ -1,32 +1,33 @@
 define(/* */
-["jquery", "maps/map", "constants/map"],
-function($, Map, MapConstants) {
+["jquery", "maps/map", "constants/map", "constants/movement"],
+function($, Map, MapConstants, MovementConstants) {
 
+  var Transport = MovementConstants.Transportation;
   var tiles = {
-    "~" : {y:4, x:1, desc:"nothing"},
-    "." : {y:0, x:3, desc:"floor", inside:{y:3, x:3}, passable:true},
-    "[]": {y:1, x:3, desc:"door", inside:{y:4, x:3}, passable:true},
-  "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}, passable:true},
-    "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
-    "--": {y:0, x:1, desc:"room wall top", inside:{y:3, x:1}},
-    "-#": {y:0, x:2, desc:"room wall top", inside:{y:3, x:2}},
-    "#|": {y:1, x:0, desc:"room wall left", inside:{y:4, x:0}},
-    "|#": {y:1, x:2, desc:"room wall right", inside:{y:4, x:2}},
-    "#_": {y:2, x:0, desc:"room wall bottom left", inside:{y:5, x:0}},
-    "__": {y:2, x:1, desc:"room wall bottom", inside:{y:5, x:1}, passable:true},
-    "_#": {y:2, x:2, desc:"room wall bottom right", inside:{y:5, x:2}},
-    "$" : {y:1, x:1, desc:"chest", inside:{y:2, x:5}, passable:true},
-    "&&": {y:1, x:1, desc:"statue", inside:{y:4, x:5}},
-    "RR": {y:0, x:5, desc:"room wall", inside:{y:3, x:5}},
-    "WW": {y:0, x:4, desc:"wall", inside:{y:3, x:4}},
-    "^" : {y:1, x:4, desc:"stairs up", passable:true, inside:{y:4, x:4}},
-    "v" : {y:1, x:5, desc:"stairs down", passable:true},
-    "#^": {y:1, x:1, desc:"ladder up", inside:{y:2, x:4}},
-    "#v": {y:1, x:1, desc:"ladder down", inside:{y:2, x:3}}
+    "~" : Map.newTile({y:4, x:1}).desc("nothing").isFiller(),
+    "." : Map.newTile({y:0, x:3}).desc("floor").inside({y:3, x:3}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:1, x:3}).desc("door").inside({y:4, x:3}).passableBy(Transport.Foot),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:2, x:5}).passableBy(Transport.Foot),
+    "&&": Map.newTile({y:1, x:1}).desc("statue").inside({y:4, x:5}),
+    "RR": Map.newTile({y:0, x:5}).desc("room wall").inside({y:3, x:5}),
+    "WW": Map.newTile({y:0, x:4}).desc("wall").inside({y:3, x:4}),
+    "^" : Map.newTile({y:1, x:4}).desc("stairs up").inside({y:4, x:4}).passableBy(Transport.Foot),
+    "v" : Map.newTile({y:1, x:5}).desc("stairs down").passableBy(Transport.Foot),
+    "#^": Map.newTile({y:1, x:1}).desc("ladder up").inside({y:2, x:4}).passableBy(Transport.Foot),
+    "#v": Map.newTile({y:1, x:1}).desc("ladder down").inside({y:2, x:3}).passableBy(Transport.Foot)
   };
 
   var init = function() {
-    Map.create(MapConstants.MARSH_CAVE_B1, {y:28, x:14}).tileMapping(tiles)
+    Map.create(MapConstants.MARSH_CAVE_B1).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  WW WW WW .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -84,7 +85,7 @@ function($, Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MARSH_CAVE_B2A).tileMapping(tiles)
+    Map.create(MapConstants.MARSH_CAVE_B2A).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW ~  ~  WW WW WW WW ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  WW ~  ~  WW .  .  WW ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW .  WW WW WW WW .  .  WW WW WW WW WW WW WW")
@@ -115,7 +116,7 @@ function($, Map, MapConstants) {
        .sprites("~  ~  WW .  .  .  .  .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MARSH_CAVE_B2B).tileMapping(tiles)
+    Map.create(MapConstants.MARSH_CAVE_B2B).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  .  .  .  .  .  .  .  WW ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  #- -- -- -- -- -# .  .  WW ~")
@@ -149,7 +150,7 @@ function($, Map, MapConstants) {
        .sprites("~  ~  WW WW WW WW .  .  WW .  .  .  .  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  WW")
        .sprites("~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW")
 
-    Map.create(MapConstants.MARSH_CAVE_B3).tileMapping(tiles)
+    Map.create(MapConstants.MARSH_CAVE_B3).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW ~  ~  WW WW WW WW ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  WW ~  ~  WW .  .  WW ~")
        .sprites("~  ~  ~  WW WW WW WW WW WW WW WW ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  WW .  .  .  .  WW WW WW WW .  .  WW ~")
