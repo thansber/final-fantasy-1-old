@@ -1,40 +1,41 @@
 define(/* SeaShrineMapData */
-["maps/map", "constants/map"],
-function(Map, MapConstants) {
- 
-  var tiles = {
-    "I" : {y:2, x:4, desc:"pillar", inside:{y:5, x:4}},
-    "$" : {y:1, x:1, desc:"chest", inside:{y:6, x:1}},
-    "~" : {y:2, x:3, desc:"water", inside:{y:5, x:3}},
-    "." : {y:1, x:4, desc:"path", inside:{y:4, x:4}},
-    "," : {y:1, x:1, desc:"room empty", inside:{y:4, x:1}},
-    "^" : {y:0, x:6, desc:"stairs up", inside:{y:3, x:6}},
-    "v" : {y:1, x:6, desc:"stairs down", inside:{y:4, x:6}},
-    "WW": {y:0, x:4, desc:"wall", inside:{y:3, x:4}},
-    "W+": {y:0, x:3, desc:"wall top left", inside:{y:3, x:3}},
-    "+W": {y:0, x:5, desc:"wall top right", inside:{y:3, x:5}},
-    "W|": {y:1, x:3, desc:"wall left", inside:{y:4, x:3}},
-    "|W": {y:1, x:5, desc:"wall right", inside:{y:4, x:5}},
-    "#-": {y:0, x:0, desc:"room wall top left", inside:{y:3, x:0}},
-    "--": {y:0, x:1, desc:"room wall top ", inside:{y:3, x:1}},
-    "-#": {y:0, x:2, desc:"room wall top right", inside:{y:3, x:2}},
-    "#|": {y:1, x:0, desc:"room wall left", inside:{y:4, x:0}},
-    "|#": {y:1, x:2, desc:"room wall right", inside:{y:4, x:2}},
-    "#_": {y:2, x:0, desc:"room wall bottom left", inside:{y:5, x:0}},
-    "__": {y:2, x:1, desc:"room wall bottom", inside:{y:5, x:1}},
-    "_#": {y:2, x:2, desc:"room wall bottom right", inside:{y:5, x:2}},
-    "[]": {y:2, x:5, desc:"door", inside:{y:5, x:5}},
-    "SB": {y:6, x:0, desc:"submarine"},
+["maps/map", "constants/map", "constants/movement"],
+function(Map, MapConstants, MovementConstants) {
 
-    "WO": {y:1, x:1, desc:"water orb", inside:{y:2, x:6}},
-    "&-": {y:1, x:1, desc:"statue left", inside:{y:5, x:6}},
-    "-&": {y:1, x:1, desc:"statue right", inside:{y:6, x:6}},
-    "@" : {y:1, x:1, desc:"orb altar", inside:{y:6, x:5}},
-    "*" : {y:1, x:1, desc:"no idea", inside:{y:6, x:3}},
-    "}" : {y:1, x:1, desc:"serpent statue left", inside:{y:6, x:2}},
-    "{" : {y:1, x:1, desc:"serpent statue right", inside:{y:6, x:4}}
+  var Transport = MovementConstants.Transportation;
+  var tiles = {
+    "I" : Map.newTile({y:2, x:4}).desc("pillar").inside({y:5, x:4}),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:6, x:1}).passableBy(Transport.Foot),
+    "~" : Map.newTile({y:2, x:3}).desc("water").inside({y:5, x:3}).isFiller(),
+    "." : Map.newTile({y:1, x:4}).desc("path").inside({y:4, x:4}).passableBy(Transport.Foot),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
+    "^" : Map.newTile({y:0, x:6}).desc("stairs up").inside({y:3, x:6}).passableBy(Transport.Foot),
+    "v" : Map.newTile({y:1, x:6}).desc("stairs down").inside({y:4, x:6}).passableBy(Transport.Foot),
+    "WW": Map.newTile({y:0, x:4}).desc("wall").inside({y:3, x:4}),
+    "W+": Map.newTile({y:0, x:3}).desc("wall top left").inside({y:3, x:3}),
+    "+W": Map.newTile({y:0, x:5}).desc("wall top right").inside({y:3, x:5}),
+    "W|": Map.newTile({y:1, x:3}).desc("wall left").inside({y:4, x:3}),
+    "|W": Map.newTile({y:1, x:5}).desc("wall right").inside({y:4, x:5}),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top ").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top right").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot),
+    "SB": Map.newTile({y:6, x:0}).desc("submarine").passableBy(Transport.Foot),
+
+    "WO": Map.newTile({y:1, x:1}).desc("water orb").inside({y:2, x:6}),
+    "&-": Map.newTile({y:1, x:1}).desc("statue left").inside({y:5, x:6}),
+    "-&": Map.newTile({y:1, x:1}).desc("statue right").inside({y:6, x:6}),
+    "@" : Map.newTile({y:1, x:1}).desc("orb altar").inside({y:6, x:5}),
+    "*" : Map.newTile({y:1, x:1}).desc("no idea").inside({y:6, x:3}),
+    "}" : Map.newTile({y:1, x:1}).desc("serpent statue left").inside({y:6, x:2}),
+    "{" : Map.newTile({y:1, x:1}).desc("serpent statue right").inside({y:6, x:4})
   };
- 
+
   var init = function() {
     Map.create(MapConstants.SEA_SHRINE_B1).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -187,7 +188,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW .  .  .  .  WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  SB ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
-    
+
     Map.create(MapConstants.SEA_SHRINE_B3A).tileMapping(tiles)
        .sprites("~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  .  .  ^  .  ~")
@@ -332,9 +333,9 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  .  .  .  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
   };
- 
+
   return {
     init: init
   };
 
-});   
+});

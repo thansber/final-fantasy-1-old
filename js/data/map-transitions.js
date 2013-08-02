@@ -153,8 +153,21 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.ICE_CAVE_B3B, {y:30, x:31}).to(MapConstants.ICE_CAVE_B1, {y:20, x:6}).bidirectional();
 
     // Sea Shrine
+    MapTransition.from(MapConstants.ONRAC, {y:30, x:46}).to(MapConstants.SEA_SHRINE_B3, {y:42, x:21}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B3, {y:7, x:31}).to(MapConstants.SEA_SHRINE_B2, {y:11, x:43}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B2, {y:51, x:41}).to(MapConstants.SEA_SHRINE_B1, {y:27, x:28}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B3, {y:2, x:2}).to(MapConstants.SEA_SHRINE_B4B, {y:44, x:42}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B4B, {y:1, x:44}).to(MapConstants.SEA_SHRINE_B3A, {y:3, x:2}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B3A, {y:1, x:4}).to(MapConstants.SEA_SHRINE_B2A, {y:2, x:3}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B2A, {y:10, x:10}).to(MapConstants.SEA_SHRINE_B3B, {y:8, x:2}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B3B, {y:27, x:1}).to(MapConstants.SEA_SHRINE_B4A, {y:19, x:42}).bidirectional();
+    MapTransition.from(MapConstants.SEA_SHRINE_B4A, {y:2, x:15}).to(MapConstants.SEA_SHRINE_B5, {y:45, x:49}).bidirectional();
 
     // Mirage Tower
+    MapTransition.from(MapConstants.WORLD_MAP, {y:58, x:194}).to(MapConstants.MIRAGE_TOWER_1F, {y:31, x:17}).bidirectional();
+    MapTransition.from(MapConstants.MIRAGE_TOWER_1F, {y:31, x:14}).to(MapConstants.MIRAGE_TOWER_2F, {y:31, x:16}).bidirectional();
+    MapTransition.from(MapConstants.MIRAGE_TOWER_2F, {y:3, x:16}).to(MapConstants.MIRAGE_TOWER_3F, {y:1, x:8}).bidirectional();
+    // TODO: add transition from mirage tower to floating castle
 
     // Floating Castle
 

@@ -5,8 +5,6 @@ MOST RECENT
 - add passable transportation options to:
 - add filler sprites to:
 - add tile mappings which can have battle to:
--- SEA_SHRINE
--- MIRAGE_TOWER
 -- FLOATING_CASTLE
 
 
