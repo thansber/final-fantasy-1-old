@@ -10,7 +10,7 @@ MOST RECENT
 
 MOVEMENT
 ========
-- moving against impassable, change dir? show walk animation?
+- moving against impassable, change dir? NO show walk animation? NO
 
 SPELLS
 ======
