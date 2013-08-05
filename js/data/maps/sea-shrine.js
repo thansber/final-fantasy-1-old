@@ -37,7 +37,7 @@ function(Map, MapConstants, MovementConstants) {
   };
 
   var init = function() {
-    Map.create(MapConstants.SEA_SHRINE_B1).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B1).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW W+ WW WW ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW WW +W WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW")
        .sprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ~  ~  .  ~  ~  ~  .  .  .  .  .  ~  ~  ~  ~  ~  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .")
@@ -73,7 +73,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  WW WW WW WW ~  ~  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B2).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B2).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -130,7 +130,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B2A).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B2A).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  .  .  .  .  .  .  .  .  .  .  ~")
        .sprites("~  .  .  v  .  .  .  .  .  .  .  ~")
@@ -144,7 +144,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  .  .  .  .  .  .  .  .  .  v  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B3).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B3).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  v  .  .  .  .  .  .  #- -- -- -- -- -- -# #- -- -- -- -- -- -- -# #- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -189,14 +189,14 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW .  .  .  .  WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  SB ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B3A).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B3A).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  .  .  ^  .  ~")
        .sprites("~  .  .  .  .  .  ~")
        .sprites("~  .  v  .  .  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B3B).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B3B).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  #- -- -- -- -- -# ~")
        .sprites("~  #| ,  ,  ,  $  |# ~")
@@ -216,7 +216,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  v  .  .  .  .  .  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~")
 
-    Map.create(MapConstants.SEA_SHRINE_B4A).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B4A).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  v  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ~")
@@ -248,7 +248,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  .  .  .  .  .  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B4B).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B4B).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -# .  .  .  ^  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  ,  |# .  .  .  .  ~")
@@ -277,7 +277,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.SEA_SHRINE_B5).tileMapping(tiles)
+    Map.create(MapConstants.SEA_SHRINE_B5).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  #- -- -- -- -- -- -- -# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  #| ,  ,  ,  @  ,  ,  |# ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")

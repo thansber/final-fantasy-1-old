@@ -1,16 +1,12 @@
 MOST RECENT
 ===========
-- add transitions to:
-- convert all tile mapping to use Map.newTile() to:
-- add passable transportation options to:
-- add filler sprites to:
-- add tile mappings which can have battle to:
--- FLOATING_CASTLE
-
+- add transitions to: Temple of Fiends 2
+- convert all tile mapping to use Map.newTile() to: Temple of Fiends 2
+- add passable transportation options to: Temple of Fiends 2
+- add filler sprites to: Temple of Fiends 2
 
 MOVEMENT
 ========
-- moving against impassable, change dir? NO show walk animation? NO
 
 SPELLS
 ======
@@ -64,10 +60,10 @@ MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
 - need to encode: Temple of Fiends 2
-- needs sprite sheets: Floating Castle, Temple of Fiends 2
+- needs sprite sheets: Temple of Fiends 2
 - door transitions, on enter trigger inside, on leave trigger outside
 - in castles/caves, what can be walked on for the weird tiles?
 - turn off battle in specific tiles?
 - filler in Gurgu B2?
 - map encounters for dungeons
-- floating castle, check chests on F2, fix space on xC tile
+- exits post orbs for Earth Cave, Gurgu, Sea Shrine, Floating Castle

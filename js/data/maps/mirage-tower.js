@@ -35,7 +35,7 @@ function(Map, MapConstants, MovementConstants) {
   };
 
   var init = function() {
-    Map.create(MapConstants.MIRAGE_TOWER_1F).tileMapping(tiles)
+    Map.create(MapConstants.MIRAGE_TOWER_1F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW .  .  .  .  .  .  WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  W+ WW WW .  .  .  .  .  #- -# .  .  .  .  .  WW WW +W ~  ~  ~  ~  ~  ~  ~")
@@ -70,7 +70,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW .  ^  |W W| v  .  WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MIRAGE_TOWER_2F).tileMapping(tiles)
+    Map.create(MapConstants.MIRAGE_TOWER_2F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW .  .  .  .  .  .  WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  W+ WW WW .  .  .  .  .  UU UU .  .  .  .  .  WW WW +W ~  ~  ~  ~  ~  ~  ~")
@@ -105,7 +105,7 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW .  .  UU v .  .  WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.MIRAGE_TOWER_3F).tileMapping(tiles)
+    Map.create(MapConstants.MIRAGE_TOWER_3F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  W+ WW WW WW +W ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  W+ WW .  .  v  .  .  WW +W ~  ~  ~  ~")
        .sprites("~  ~  ~  W+ .  .  .  .  .  .  .  .  .  +W ~  ~  ~")

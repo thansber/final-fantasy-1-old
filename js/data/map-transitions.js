@@ -167,9 +167,13 @@ function(Map, MapTransition, MapConstants) {
     MapTransition.from(MapConstants.WORLD_MAP, {y:58, x:194}).to(MapConstants.MIRAGE_TOWER_1F, {y:31, x:17}).bidirectional();
     MapTransition.from(MapConstants.MIRAGE_TOWER_1F, {y:31, x:14}).to(MapConstants.MIRAGE_TOWER_2F, {y:31, x:16}).bidirectional();
     MapTransition.from(MapConstants.MIRAGE_TOWER_2F, {y:3, x:16}).to(MapConstants.MIRAGE_TOWER_3F, {y:1, x:8}).bidirectional();
-    // TODO: add transition from mirage tower to floating castle
+    MapTransition.from(MapConstants.MIRAGE_TOWER_3F, {y:8, x:8}).to(MapConstants.FLOATING_CASTLE_1F, {y:21, x:19}).bidirectional();
 
     // Floating Castle
+    MapTransition.from(MapConstants.FLOATING_CASTLE_1F, {y:4, x:19}).to(MapConstants.FLOATING_CASTLE_2F, {y:4, x:19}).bidirectional();
+    MapTransition.from(MapConstants.FLOATING_CASTLE_2F, {y:38, x:19}).to(MapConstants.FLOATING_CASTLE_3F, {y:22, x:23}).bidirectional();
+    MapTransition.from(MapConstants.FLOATING_CASTLE_3F, {y:27, x:8}).to(MapConstants.FLOATING_CASTLE_4F, {y:55, x:7}).bidirectional();
+    MapTransition.from(MapConstants.FLOATING_CASTLE_4F, {y:23, x:40}).to(MapConstants.FLOATING_CASTLE_5F, {y:54, x:7}).bidirectional();
 
     // Temple of Fiends 2
   };

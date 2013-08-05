@@ -35,12 +35,10 @@ function(Map, MapConstants) {
     "xC": Map.newTile({y:1, x:1}).desc("console upper right").inside({y:4, x:3}),
     "Cx": Map.newTile({y:1, x:1}).desc("console upper left").inside({y:4, x:5}),
     "CC": Map.newTile({y:1, x:1}).desc("console double column").inside({y:4, x:4}),
-
-
   };
 
   var init = function() {
-    Map.create(MapConstants.FLOATING_CASTLE_1F).tileMapping(tiles)
+    Map.create(MapConstants.FLOATING_CASTLE_1F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ .  .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -88,7 +86,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.FLOATING_CASTLE_2F).tileMapping(tiles)
+    Map.create(MapConstants.FLOATING_CASTLE_2F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ .  .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -134,7 +132,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.FLOATING_CASTLE_3F).tileMapping(tiles)
+    Map.create(MapConstants.FLOATING_CASTLE_3F).tileMapping(tiles).battleEverywhere()
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  ~  ~  ~  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  ~  ~  ~  ~  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -175,7 +173,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  ~  ~  ~  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  .  ~  ~  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  #- -- -- -# .  .  ~  ~  ~  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
-       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  #| C- -C |# .  .  ~  ~  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  #| Cx xC |# .  .  ~  ~  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  #_ __ __ _# .  .  ~  .  ~  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  WW [] WW WW .  .  .  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  .  ~  ~  ~  ~  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
@@ -191,7 +189,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  WW [] WW .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  .  .  .  .  .  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~");
 
-    Map.create(MapConstants.FLOATING_CASTLE_4F, {wrapsX:true, wrapsY:true}).tileMapping(tiles)
+    Map.create(MapConstants.FLOATING_CASTLE_4F, {wrapsX:true, wrapsY:true}).tileMapping(tiles).battleEverywhere()
  .repeatSprites("~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~", 4)
        .sprites("WW WW WW WW .  .  .  .  .  .  .  .  WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW WW WW WW WW WW WW WW .  .  .  .  .  .  .  .  WW WW WW WW")
  .repeatSprites(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .", 7)
@@ -214,7 +212,7 @@ function(Map, MapConstants) {
        .sprites("WW WW WW WW W| .  .  .  .  .  .  |W WW WW WW WW WW WW WW WW W| .  .  .  .  .  .  |W WW WW WW WW WW WW WW WW W| .  .  .  .  .  .  |W WW WW WW WW WW WW WW WW W| .  .  .  .  .  .  |W WW WW WW WW")
  .repeatSprites("~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  |W ~  ~  ~  ~", 3);
 
-    Map.create(MapConstants.FLOATING_CASTLE_5F).tileMapping(tiles)
+    Map.create(MapConstants.FLOATING_CASTLE_5F).tileMapping(tiles).battleEverywhere()
        .sprites("#- -- -- -- -- -- -- -- -- -- -- -- -- -- -#")
        .sprites("#| ,  ,  ,  ,  ,  ,  @  ,  ,  ,  ,  ,  ,  |#")
        .sprites("#| ,  ,  ,  ,  ,  -{ *  }- ,  ,  ,  ,  ,  |#")
