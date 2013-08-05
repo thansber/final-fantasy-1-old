@@ -18,7 +18,6 @@ SPELLS
 
 BATTLE
 ======
-- fix borders
 - monster skills causing status prob need messages
 - casting a spell that cannot be cast in battle should not be allowed (added spell.inBattle)
 - running away for enemies
@@ -70,3 +69,5 @@ MAPS
 - in castles/caves, what can be walked on for the weird tiles?
 - turn off battle in specific tiles?
 - filler in Gurgu B2?
+- map encounters for dungeons
+- floating castle, check chests on F2, fix space on xC tile

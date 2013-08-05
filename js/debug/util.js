@@ -30,7 +30,11 @@ function($, Event, KeyPressNotifier, Movement, RandomParty,
                 MapConstants.ICE_CAVE_B1, MapConstants.ICE_CAVE_B2A, MapConstants.ICE_CAVE_B2B, MapConstants.ICE_CAVE_B3A, MapConstants.ICE_CAVE_B3B,
                 MapConstants.SEA_SHRINE_B1, MapConstants.SEA_SHRINE_B2, MapConstants.SEA_SHRINE_B2A, MapConstants.SEA_SHRINE_B3, MapConstants.SEA_SHRINE_B3A, MapConstants.SEA_SHRINE_B3B, MapConstants.SEA_SHRINE_B4A, MapConstants.SEA_SHRINE_B4B, MapConstants.SEA_SHRINE_B5,
                 MapConstants.CARDIA_ISLANDS_MAIN, MapConstants.CARDIA_ISLANDS_BAHAMUT, MapConstants.CARDIA_ISLANDS_BAHAMUT_2F,
-                MapConstants.MIRAGE_TOWER_1F, MapConstants.MIRAGE_TOWER_2F, MapConstants.MIRAGE_TOWER_3F];
+                MapConstants.MIRAGE_TOWER_1F, MapConstants.MIRAGE_TOWER_2F, MapConstants.MIRAGE_TOWER_3F,
+                MapConstants.FLOATING_CASTLE_1F, MapConstants.FLOATING_CASTLE_2F, MapConstants.FLOATING_CASTLE_3F, MapConstants.FLOATING_CASTLE_4F, MapConstants.FLOATING_CASTLE_5F,
+                MapConstants.TEMPLE_OF_FIENDS_REV_1F, MapConstants.TEMPLE_OF_FIENDS_REV_2F, MapConstants.TEMPLE_OF_FIENDS_REV_3F,
+                MapConstants.TEMPLE_OF_FIENDS_REV_B1, MapConstants.TEMPLE_OF_FIENDS_REV_B2, MapConstants.TEMPLE_OF_FIENDS_REV_B3,
+                MapConstants.TEMPLE_OF_FIENDS_REV_B4, MapConstants.TEMPLE_OF_FIENDS_REV_B5];
 
     var $selector = $container.find(".selector");
     for (var m in maps) {

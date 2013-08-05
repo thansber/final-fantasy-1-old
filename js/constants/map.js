@@ -79,6 +79,14 @@ function() {
    ,FLOATING_CASTLE_4F : "floating-castle-4f"
    ,FLOATING_CASTLE_5F : "floating-castle-5f"
 
+   ,TEMPLE_OF_FIENDS_REV_1F: "temple-of-fiends-rev-1f"
+   ,TEMPLE_OF_FIENDS_REV_2F: "temple-of-fiends-rev-2f"
+   ,TEMPLE_OF_FIENDS_REV_3F: "temple-of-fiends-rev-3f"
+   ,TEMPLE_OF_FIENDS_REV_B1: "temple-of-fiends-rev-b1"
+   ,TEMPLE_OF_FIENDS_REV_B2: "temple-of-fiends-rev-b2"
+   ,TEMPLE_OF_FIENDS_REV_B3: "temple-of-fiends-rev-b3"
+   ,TEMPLE_OF_FIENDS_REV_B4: "temple-of-fiends-rev-b4"
+   ,TEMPLE_OF_FIENDS_REV_B5: "temple-of-fiends-rev-b5"
 
      // battle backgrounds
    ,BattleBackgrounds : {

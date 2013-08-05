@@ -11,8 +11,8 @@ function($, DebugHelper, Map, MapArtist) {
     var ctx = MapArtist.context();
     for (var m in map.mapping) {
       var tile = map.mapping[m];
-      var x = (inside && tile.inside ? tile.inside.x : tile.x);
-      var y = (inside && tile.inside ? tile.inside.y : tile.y);
+      var x = (inside && tile.insideCoords ? tile.insideCoords.x : tile.x);
+      var y = (inside && tile.insideCoords ? tile.insideCoords.y : tile.y);
       ctx.fillText(tile.description + " (" + m + ")", 40, (i * 24) + 24);
       ctx.drawImage(map.resource.image, 16 * x, 16 * y, 16, 16, 4, (i * 24) + 12, 16, 16);
       i++;

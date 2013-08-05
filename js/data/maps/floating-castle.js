@@ -3,39 +3,38 @@ define(/* FloatingCastleMapData */
 function(Map, MapConstants) {
 
   var tiles = {
-    "W+": {y:0, x:0, desc:"wall top left", inside:{y:3, x:0}},
-    "WW": {y:0, x:1, desc:"wall", inside:{y:3, x:1}},
-    "+W": {y:0, x:2, desc:"wall top right", inside:{y:3, x:2}},
-    "W|": {y:1, x:0, desc:"wall left", inside:{y:4, x:0}},
-    "." : {y:1, x:1, desc:"path", inside:{y:4, x:1}},
-    "|W": {y:1, x:2, desc:"wall right", inside:{y:4, x:2}},
-    "^" : {y:2, x:1, desc:"stairs up", inside:{y:5, x:1}},
-    "v" : {y:2, x:1, desc:"stairs up", inside:{y:5, x:1}},
-    "[]": {y:2, x:2, desc:"door", inside:{y:5, x:2}},
-    "#-": {y:0, x:3, desc:"room wall top left", inside:{y:3, x:3}},
-    "--": {y:0, x:4, desc:"room wall top ", inside:{y:3, x:4}},
-    "-#": {y:0, x:5, desc:"room wall top right", inside:{y:3, x:5}},
-    "#|": {y:1, x:3, desc:"room wall left", inside:{y:4, x:3}},
-    "," : {y:1, x:4, desc:"room empty", inside:{y:4, x:4}},
-    "|#": {y:1, x:5, desc:"room wall right", inside:{y:4, x:5}},
-    "#_": {y:2, x:3, desc:"room wall bottom left", inside:{y:5, x:3}},
-    "__": {y:2, x:4, desc:"room wall bottom", inside:{y:5, x:4}},
-    "_#": {y:2, x:5, desc:"room wall bottom right", inside:{y:5, x:5}},
-    "$" : {y:1, x:4, desc:"chest", inside:{y:6, x:0}},
-    "-{": {y:1, x:4, desc:"snake statue left", inside:{y:7, x:0}},
-    "}-": {y:1, x:4, desc:"snake statue right", inside:{y:7, x:2}},
-
-    "~" : {y:4, x:4, desc:"nothing"},
-    "II": {y:4, x:4, desc:"monolith"},
-    "^^": {y:4, x:4, desc:"arrows"},
-    "@" : {y:1, x:1, desc:"orb altar", inside:{y:0, x:7}},
-    "O" : {y:1, x:1, desc:"orb", inside:{y:4, x:7}},
-    "*" : {y:1, x:1, desc:"no idea", inside:{y:1, x:7}},
-    "@@": {y:4, x:4, desc:"transporter"},
-    "|h": {y:4, x:4, desc:"chair"},
-    "xC": {y:4, x:4, desc:"console upper right"},
-    "Cx": {y:4, x:4, desc:"console upper left"},
-    "CC": {y:4, x:4, desc:"console double column"},
+    "~" : Map.newTile({y:3, x:3}).desc("nothing").isFiller(),
+    "W+": Map.newTile({y:0, x:3}).desc("wall top left"),
+    "WW": Map.newTile({y:0, x:4}).desc("wall"),
+    "+W": Map.newTile({y:0, x:5}).desc("wall top right"),
+    "W|": Map.newTile({y:1, x:3}).desc("wall left"),
+    "." : Map.newTile({y:1, x:4}).desc("path"),
+    "|W": Map.newTile({y:1, x:5}).desc("wall right"),
+    "^" : Map.newTile({y:2, x:3}).desc("stairs up"),
+    "v" : Map.newTile({y:2, x:5}).desc("stairs down"),
+    "[]": Map.newTile({y:2, x:4}).desc("door").inside({y:5, x:4}),
+    "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
+    "--": Map.newTile({y:0, x:1}).desc("room wall top ").inside({y:3, x:1}),
+    "-#": Map.newTile({y:0, x:2}).desc("room wall top right").inside({y:3, x:2}),
+    "#|": Map.newTile({y:1, x:0}).desc("room wall left").inside({y:4, x:0}),
+    "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}),
+    "|#": Map.newTile({y:1, x:2}).desc("room wall right").inside({y:4, x:2}),
+    "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
+    "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}),
+    "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
+    "$" : Map.newTile({y:1, x:1}).desc("chest").inside({y:5, x:3}),
+    "-{": Map.newTile({y:1, x:1}).desc("snake statue left").inside({y:6, x:3}),
+    "}-": Map.newTile({y:1, x:1}).desc("snake statue right").inside({y:6, x:5}),
+    "II": Map.newTile({y:1, x:1}).desc("monolith").inside({y:3, x:5}),
+    "^^": Map.newTile({y:1, x:1}).desc("arrows").inside({y:6, x:0}),
+    "@" : Map.newTile({y:1, x:1}).desc("orb altar").inside({y:6, x:1}),
+    "O" : Map.newTile({y:1, x:1}).desc("orb").inside({y:0, x:0}),
+    "*" : Map.newTile({y:1, x:1}).desc("no idea").inside({y:6, x:4}),
+    "@@": Map.newTile({y:1, x:1}).desc("transporter").inside({y:3, x:4}),
+    "|h": Map.newTile({y:1, x:1}).desc("chair").inside({y:5, x:5}),
+    "xC": Map.newTile({y:1, x:1}).desc("console upper right").inside({y:4, x:3}),
+    "Cx": Map.newTile({y:1, x:1}).desc("console upper left").inside({y:4, x:5}),
+    "CC": Map.newTile({y:1, x:1}).desc("console double column").inside({y:4, x:4}),
 
 
   };
@@ -99,7 +98,7 @@ function(Map, MapConstants) {
        .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW .  .  .  .  .  WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW +W ~  ~  ~  WW .  .  .  WW ~  ~  ~  W+ WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  W| .  #- -- -- -- -- -# |W ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  W| #- -- -- -- -- -# .  |W ~  ~  ~  ~  ~")
-       .sprites("~  ~  ~  ~  ~  W| .  #| $  ,  ,  $  |# |W ~  ~  ~  ~  W+ .  +W ~  ~  ~  ~  W| W| $  ,  ,  ,  |# .  |W ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  W| .  #| $  ,  ,  $  |# |W ~  ~  ~  ~  W+ .  +W ~  ~  ~  ~  W| #| $  ,  ,  ,  |# .  |W ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  W| .  #_ __ __ __ __ _# |W ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  W| #_ __ __ __ __ _# .  |W ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  W| .  WW WW WW [] WW WW |W ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  W| WW WW WW WW [] WW .  |W ~  ~  ~  ~  ~")
        .sprites("~  ~  ~  ~  ~  W| .  .  .  .  .  .  .  |W ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  W| .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~")

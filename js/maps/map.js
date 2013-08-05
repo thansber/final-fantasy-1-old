@@ -119,6 +119,7 @@ function(Resource) {
     this.passable = 0;
     this.canHaveBattle = false;
     this.filler = false;
+    this.insideCoords = false;
   };
   Tile.prototype.desc = function(d) {
     this.description = d;
@@ -133,7 +134,7 @@ function(Resource) {
     return this;
   };
   Tile.prototype.inside = function(coords) {
-    this.inside = coords;
+    this.insideCoords = coords;
     return this;
   };
   Tile.prototype.passableBy = function(transportation) {

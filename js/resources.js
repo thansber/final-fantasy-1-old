@@ -105,6 +105,12 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.MIRAGE_TOWER_2F, "images/maps/mirage-tower-lower-sheet.png");
       new Resource(MapConstants.MIRAGE_TOWER_3F, "images/maps/mirage-tower-upper-sheet.png");
 
+      new Resource(MapConstants.FLOATING_CASTLE_1F, "images/maps/floating-castle-sheet.png");
+      new Resource(MapConstants.FLOATING_CASTLE_2F, "images/maps/floating-castle-sheet.png");
+      new Resource(MapConstants.FLOATING_CASTLE_3F, "images/maps/floating-castle-sheet.png");
+      new Resource(MapConstants.FLOATING_CASTLE_4F, "images/maps/floating-castle-sheet.png");
+      new Resource(MapConstants.FLOATING_CASTLE_5F, "images/maps/floating-castle-sheet.png");
+
       loader.addProgressListener(imageFinishedLoading);
       loader.addCompletionListener(everythingFinishedLoading);
       loader.start();
