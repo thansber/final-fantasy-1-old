@@ -67,3 +67,5 @@ MAPS
 - filler in Gurgu B2?
 - map encounters for dungeons
 - exits post orbs for Earth Cave, Gurgu, Sea Shrine, Floating Castle
+- need a few more sprites in ToF sheet, stairs down, weird block thingy, grass, sky, ladder, tablet
+- ToF2, Kary floor, check lower left tile in upper left room

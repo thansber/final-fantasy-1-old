@@ -111,6 +111,16 @@ function(Event, Logger, MapConstants) {
       new Resource(MapConstants.FLOATING_CASTLE_4F, "images/maps/floating-castle-sheet.png");
       new Resource(MapConstants.FLOATING_CASTLE_5F, "images/maps/floating-castle-sheet.png");
 
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_1F, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_2F, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_3F, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_B1, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_B2, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_B3, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_B4, "images/maps/temple-of-fiends-sheet.png");
+      new Resource(MapConstants.TEMPLE_OF_FIENDS_REV_B5, "images/maps/temple-of-fiends-sheet.png");
+
+
       loader.addProgressListener(imageFinishedLoading);
       loader.addCompletionListener(everythingFinishedLoading);
       loader.start();
