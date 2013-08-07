@@ -23,7 +23,7 @@ function(Map, MapConstants, MovementConstants) {
     "v" : Map.newTile({y:4, x:5}).desc("stairs down").passableBy(Transport.Foot),
     "#v": Map.newTile({y:1, x:1}).desc("ladder down").inside({y:5, x:5}).passableBy(Transport.Foot),
     "#^": Map.newTile({y:1, x:1}).desc("ladder up").inside({y:6, x:5}).passableBy(Transport.Foot),
-    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot).roomEntry(),
     "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
     "--": Map.newTile({y:0, x:1}).desc("room wall top ").inside({y:3, x:1}),
     "-#": Map.newTile({y:0, x:2}).desc("room wall top right").inside({y:3, x:2}),
@@ -300,7 +300,47 @@ function(Map, MapConstants, MovementConstants) {
        .sprites("WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW");
 
     Map.create(MapConstants.TEMPLE_OF_FIENDS_REV_B4)
-       .tileMapping($.extend({"~": emptyFillerTile}, tiles)).battleEverywhere();
+       .tileMapping($.extend({"~": emptyFillerTile}, tiles)).battleEverywhere()
+       .sprites("W+ WW WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  .  WW WW WW WW WW WW +W ~  ~  ~  ~  W+ WW WW WW WW WW WW .  .  I  .  I  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  v  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| ^  .  .  .  .  |W WW WW WW WW W| .  |W ~  ~  ~  ~  W| .  .  WW WW WW WW W| .  I  .  I  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  |W ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("WW WW W| .  |W WW WW ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  WW WW W| .  |W WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  .  WW WW WW WW .  .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  .  .  .  .  .  .  .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W WW WW WW WW W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  .  WW WW WW WW WW WW .  .  |W ~  ~  ~  ~  W| .  .  WW WW WW WW WW WW .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  WW WW WW WW WW W| .  |W WW WW WW WW ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W+ WW WW WW WW .  .  .  WW WW WW +W ~  ~  ~  ~  W+ WW WW WW WW .  .  .  WW WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W WW WW WW WW WW WW W| .  |W ~  ~  ~  ~  W| .  |W WW WW WW WW WW WW W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  .  WW WW WW WW .  .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  W| .  |W ,  ,  ,  ,  ,  ,  W| .  .  .  .  .  .  .  .  |W ,  ,  ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W+ WW .  .  .  WW +W ,  ,  ,  ,  W| .  |W WW WW WW WW W| .  |W ,  ,  ,  ,  W+ WW .  .  .  WW WW +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  |W ,  ,  ,  ,  W| .  |W ~  ~  ~  ~  W| .  |W ,  ,  ,  ,  W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  .  WW WW WW WW .  .  |W ~  ~  ~  ~  W| .  .  WW WW WW WW .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  W| .  .  .  .  .  .  .  .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~")
+       .sprites("W| .  .  .  .  .  |W WW WW WW WW WW WW WW ~  ~  ~  ~  WW WW WW WW WW WW WW W| .  .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W+ WW WW WW WW WW +W")
+       .sprites("W| .  .  .  .  .  |W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  |W")
+       .sprites("WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW +W .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  #- -- -# .  |W")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  #| $  |# .  |W")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  #_ __ _# .  |W")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  WW [] WW .  |W")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  +W ~  ~  ~  ~  ~  ~  ~  ~  ~  W| .  .  .  .  .  |W")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  +W ~  ~  ~  ~  ~  ~  ~  W+ .  .  W+ WW WW WW WW")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  WW WW WW WW WW WW WW .  .  W+ ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  +W .  .  .  .  .  .  .  .  .  W+ ~  ~  ~  ~  ~  ~")
+       .sprites("~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  WW WW WW WW WW WW WW WW WW ~  ~  ~  ~  ~  ~  ~")
 
     Map.create(MapConstants.TEMPLE_OF_FIENDS_REV_B5)
        .tileMapping($.extend({"~": emptyFillerTile}, tiles)).battleEverywhere()

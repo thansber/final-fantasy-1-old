@@ -24,9 +24,8 @@ function(Map, MapConstants, MovementConstants) {
     "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
     "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
     "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
-    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot).roomEntry(),
     "SB": Map.newTile({y:6, x:0}).desc("submarine").passableBy(Transport.Foot),
-
     "WO": Map.newTile({y:1, x:1}).desc("water orb").inside({y:2, x:6}),
     "&-": Map.newTile({y:1, x:1}).desc("statue left").inside({y:5, x:6}),
     "-&": Map.newTile({y:1, x:1}).desc("statue right").inside({y:6, x:6}),

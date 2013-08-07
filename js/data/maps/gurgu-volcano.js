@@ -7,7 +7,7 @@ function($, Map, MapConstants, MovementConstants) {
     "~" : Map.newTile({y:4, x:1}).desc("nothing").isFiller(),
     "." : Map.newTile({y:1, x:4}).desc("floor").inside({y:4, x:4}).passableBy(Transport.Foot),
     "!" : Map.newTile({y:2, x:6}).desc("lava").inside({y:5, x:6}).passableBy(Transport.Foot),
-    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:5}).desc("door").inside({y:5, x:5}).passableBy(Transport.Foot).roomEntry(),
     "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
     "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
     "--": Map.newTile({y:0, x:1}).desc("room wall top").inside({y:3, x:1}),

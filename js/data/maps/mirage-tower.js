@@ -23,7 +23,7 @@ function(Map, MapConstants, MovementConstants) {
     "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
     "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
     "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
-    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot).roomEntry(),
     "U" : Map.newTile({y:1, x:1}).desc("inside rock").inside({y:0, x:6}),
     "UU": Map.newTile({y:1, x:6}).desc("rock").inside({y:2, x:6}),
     "C-": Map.newTile({y:1, x:1}).desc("computer left half").inside({y:6, x:0}),

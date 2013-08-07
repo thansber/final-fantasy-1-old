@@ -20,7 +20,7 @@ function(Map, MapConstants, MovementConstants) {
     "IT": Map.newTile({y:2, x:4}).desc("pillar transport").passableBy(Transport.Foot),
     "^" : Map.newTile({y:2, x:5}).desc("stairs up").passableBy(Transport.Foot),
     "v" : Map.newTile({y:3, x:5}).desc("stairs down").passableBy(Transport.Foot),
-    "[]": Map.newTile({y:3, x:3}).desc("door").inside({y:3, x:4}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:3, x:3}).desc("door").inside({y:3, x:4}).passableBy(Transport.Foot).roomEntry(),
     "," : Map.newTile({y:1, x:1}).desc("room empty").inside({y:4, x:1}).passableBy(Transport.Foot),
     "#-": Map.newTile({y:0, x:0}).desc("room wall top left").inside({y:3, x:0}),
     "--": Map.newTile({y:0, x:1}).desc("room wall top").inside({y:3, x:1}),

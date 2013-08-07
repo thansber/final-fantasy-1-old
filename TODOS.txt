@@ -1,9 +1,6 @@
 MOST RECENT
 ===========
 - add transitions to: Temple of Fiends 2
-- convert all tile mapping to use Map.newTile() to: Temple of Fiends 2
-- add passable transportation options to: Temple of Fiends 2
-- add filler sprites to: Temple of Fiends 2
 
 MOVEMENT
 ========
@@ -48,7 +45,7 @@ TOWNS
 - show use desc when using key item in correct place
 - what happens to stoned chars when in clinic?
 - what statuses does an inn stay heal? NONE
-- add "door" transitions for use in castles/dungeons
+- add "door" transitions for with trippy color animation
 - CSS transitions in town to leave and to enter shops
 - pressing Enter/Space in town displays message
 - add people in town initially not moving
@@ -59,13 +56,10 @@ TOWNS
 MAPS
 ====
 - Castle of Ordeals is different than NW Castle in world map
-- need to encode: Temple of Fiends 2
-- needs sprite sheets: Temple of Fiends 2
-- door transitions, on enter trigger inside, on leave trigger outside
 - in castles/caves, what can be walked on for the weird tiles?
 - turn off battle in specific tiles?
 - filler in Gurgu B2?
 - map encounters for dungeons
 - exits post orbs for Earth Cave, Gurgu, Sea Shrine, Floating Castle
-- need a few more sprites in ToF sheet, stairs down, weird block thingy, grass, sky, ladder, tablet
-- ToF2, Kary floor, check lower left tile in upper left room
+- need a few more sprites in ToF2 sheet, fire/earth/water/air on B5
+- tiles that can change, Coneria bridge, orbs in dungeons

@@ -22,7 +22,7 @@ function($, Map, MapConstants, MovementConstants) {
     "#_": Map.newTile({y:2, x:0}).desc("room wall bottom left").inside({y:5, x:0}),
     "__": Map.newTile({y:2, x:1}).desc("room wall bottom").inside({y:5, x:1}).passableBy(Transport.Foot),
     "_#": Map.newTile({y:2, x:2}).desc("room wall bottom right").inside({y:5, x:2}),
-    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot)
+    "[]": Map.newTile({y:2, x:3}).desc("door").inside({y:5, x:3}).passableBy(Transport.Foot).roomEntry()
   };
 
   var emptyFillerTiles = $.extend({"~" : Map.newTile({y:4, x:1}).desc("nothing").isFiller()}, baseTiles);

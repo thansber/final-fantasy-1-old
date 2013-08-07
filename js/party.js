@@ -20,6 +20,7 @@ return (function() {
   var currentShop = null;
   var currentTransportation = null;
   var worldMapPosition = null;
+  var inRoom = false;
 
   var orbsLit = [];
   var consumables = [
@@ -70,7 +71,28 @@ return (function() {
   var moveToPosition = function(xChange, yChange) {
     // We are currently moving the character
     Event.animate(Event.Animations.CharWalking).using({$player:$sprite, xChange:xChange, yChange:yChange}).start();
-    MapArtist.moveOneSquare({map:self.getMap(), position:currentPosition, x:xChange, y:yChange});
+    MapArtist.moveOneSquare({map:self.getMap(), position:currentPosition, x:xChange, y:yChange, inRoom:inRoom});
+  };
+
+  // Checks if party is entering/leaving a room
+  var roomTransition = function(yChange, xChange, oldPos) {
+    if (yChange < 0) {
+      // if the party is moving north
+      var newTile = self.getMap().getTile(currentPosition.y, currentPosition.x);
+      // and the new tile is a door, the party is entering a room
+      if (newTile.allowsRoomEntry) {
+        Logger.debug(LOG_ID, "entering a room");
+        inRoom = true;
+      }
+    } else if (yChange > 0) {
+      // if the party is moving south
+      var oldTile = self.getMap().getTile(oldPos.y, oldPos.x);
+      // and the old tile was a door, the party is leaving a room
+      if (oldTile.allowsRoomEntry) {
+        Logger.debug(LOG_ID, "leaving a room");
+        inRoom = false;
+      }
+    }
   };
 
   /* ============== */
@@ -164,6 +186,8 @@ return (function() {
       currentPosition = oldPos;
       return;
     }
+
+    roomTransition(yChange, xChange, oldPos);
 
     if (map.tileCanHaveBattle(currentPosition)) {
       stepsUntilBattle--;

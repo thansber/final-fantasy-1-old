@@ -55,10 +55,8 @@ function($, Event, Logger, MapConstants, Resource) {
 
     for (var y = 0, yMax = MapConstants.TILE_SIZE + directionOpt.yExtraTiles; y < yMax; y++) {
       for (var x = 0, xMax = MapConstants.TILE_SIZE + directionOpt.xExtraTiles; x < xMax; x++) {
-        var tileX = upperLeftX + x;
-        var tileY = upperLeftY + y;
-        var tile = opt.map.getTile(tileY, tileX);
-        drawTile(opt.map.resource.image, {x:tile.x, y:tile.y}, {x:x - xAdjustment, y:y - yAdjustment});
+        var tile = opt.map.getTile(upperLeftY + y, upperLeftX + x);
+        drawTile(opt.map.resource.image, opt.inRoom && tile.insideCoords ? tile.insideCoords : tile, {x:x - xAdjustment, y:y - yAdjustment});
       }
     }
   };

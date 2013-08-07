@@ -120,6 +120,7 @@ function(Resource) {
     this.canHaveBattle = false;
     this.filler = false;
     this.insideCoords = false;
+    this.allowsRoomEntry = false;
   };
   Tile.prototype.desc = function(d) {
     this.description = d;
@@ -144,6 +145,10 @@ function(Resource) {
     } else {
       $.each(transportation, function(i, val) { tile.passable += transportation.flag; });
     }
+    return this;
+  };
+  Tile.prototype.roomEntry = function() {
+    this.allowsRoomEntry = true;
     return this;
   };
 

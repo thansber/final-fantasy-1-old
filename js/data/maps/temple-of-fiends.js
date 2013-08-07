@@ -13,7 +13,7 @@ function(Map, MapConstants, MovementConstants) {
     "|W": Map.newTile({y:1, x:2}).desc("wall right").inside({y:4, x:2}),
     "I" : Map.newTile({y:2, x:0}).desc("pillar").inside({y:5, x:0}),
     "^" : Map.newTile({y:2, x:1}).desc("stairs up").inside({y:5, x:1}).passableBy(Transport.Foot),
-    "[]": Map.newTile({y:2, x:2}).desc("door").inside({y:5, x:2}).passableBy(Transport.Foot),
+    "[]": Map.newTile({y:2, x:2}).desc("door").inside({y:5, x:2}).passableBy(Transport.Foot).roomEntry(),
     "#-": Map.newTile({y:0, x:3}).desc("room wall top left").inside({y:3, x:3}),
     "--": Map.newTile({y:0, x:4}).desc("room wall top ").inside({y:3, x:4}),
     "-#": Map.newTile({y:0, x:5}).desc("room wall top right").inside({y:3, x:5}),
